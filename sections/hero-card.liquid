@@ -1,17 +1,40 @@
-<div class="sb-framing-card">
-  <div class="sb-framing-card__content">
-    <p class="font-body weight-semibold">{{ section.settings.page_title }}</p>
-    <h2 class="font-title weight-bold">{{ section.settings.page_benefits }}</h2>
+{% assign hero_card_fallback_image_desktop = 'hero-card-placeholder-desktop.jpg' | asset_url %}
+{% assign hero_card_fallback_image_mobile = 'hero-card-placeholder-mobile.jpg' | asset_url %}
+{% if section.settings.background_image_mobile != blank %}
+  {% assign hero_card_mobile_image = section.settings.background_image_mobile | image_url: width: 1110 %}
+{% else %}
+  {% assign hero_card_mobile_image = hero_card_fallback_image_mobile %}
+{% endif %}
+{% if section.settings.background_image_desktop != blank %}
+  {% assign hero_card_desktop_image = section.settings.background_image_desktop | image_url: width: 2480 %}
+{% else %}
+  {% assign hero_card_desktop_image = hero_card_fallback_image_desktop %}
+{% endif %}
+
+<div class="sb-hero-card-section">
+  <div
+    class="sb-framing-card"
+    style="--sb-hero-card-bg-mobile: url('{{ hero_card_mobile_image }}'); --sb-hero-card-bg-desktop: url('{{ hero_card_desktop_image }}');"
+  >
+    <div class="sb-framing-card__content">
+      <p class="font-body weight-semibold">{{ section.settings.page_title }}</p>
+      <h2 class="font-title weight-bold">{{ section.settings.page_benefits }}</h2>
+    </div>
   </div>
 </div>
 
 {% stylesheet %}
   .sb-framing-card {
-    align-items: center;
+    align-items: flex-start;
     background: var(--sb-color-neutral-200);
+    background-image: var(--sb-hero-card-bg-mobile);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     border-radius: var(--sb-radius-card);
     display: flex;
     height: 380px;
+    padding-block: var(--sb-space-i);
     padding-inline: var(--sb-space-i);
     width: 100%;
   }
@@ -22,7 +45,7 @@
     gap: var(--sb-space-e);
     margin-inline: 0;
     max-width: 560px;
-    text-align: left;
+    text-align: center;
     width: 100%;
   }
 
@@ -30,12 +53,41 @@
   .sb-framing-card__content p {
     margin: 0;
   }
+
+  @media (min-width: 750px) {
+    .sb-framing-card {
+      align-items: center;
+      background-image: var(--sb-hero-card-bg-desktop);
+    }
+
+    .sb-framing-card__content {
+      text-align: left;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "Hero card",
   "settings": [
+    {
+      "type": "paragraph",
+      "content": "Target 1240x380 at 2x export (2480x760)."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_desktop",
+      "label": "Background image desktop"
+    },
+    {
+      "type": "paragraph",
+      "content": "Target 370x380 at 3x export (1110x1140)."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image mobile"
+    },
     {
       "type": "text",
       "id": "page_title",
