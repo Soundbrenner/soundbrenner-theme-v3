@@ -14,8 +14,16 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "menu": "",
-        "show_payment_icons": true
+        "masthead_text": "MASTER YOUR CRAFT",
+        "newsletter_heading": "Join our newsletter",
+        "newsletter_subheading": "Get 20% off and stay up to date.",
+        "newsletter_placeholder": "Email",
+        "newsletter_button_label": "Submit",
+        "newsletter_success_text": "Thanks for subscribing.",
+        "trustpilot_label": "Trustpilot",
+        "trustpilot_rating": "X.X out of 5",
+        "legal_left": "Designed for musicians by Soundbrenner",
+        "legal_right": "Privacy policy · Terms of service · Legal · © 2026 Soundbrenner"
       }
     }
   },

@@ -1,0 +1,58 @@
+<div class="sb-framing-card">
+  <div class="sb-framing-card__content">
+    <p class="font-body weight-semibold">{{ section.settings.page_title }}</p>
+    <h2 class="font-title weight-bold">{{ section.settings.page_benefits }}</h2>
+  </div>
+</div>
+
+{% stylesheet %}
+  .sb-framing-card {
+    align-items: center;
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-radius-card);
+    display: flex;
+    height: 380px;
+    padding-inline: var(--sb-space-i);
+    width: 100%;
+  }
+
+  .sb-framing-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-e);
+    margin-inline: 0;
+    max-width: 560px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .sb-framing-card__content h2,
+  .sb-framing-card__content p {
+    margin: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hero card",
+  "settings": [
+    {
+      "type": "text",
+      "id": "page_title",
+      "label": "Page title",
+      "default": "Page title"
+    },
+    {
+      "type": "textarea",
+      "id": "page_benefits",
+      "label": "Page benefits (end with .)",
+      "default": "Page benefits."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero card"
+    }
+  ]
+}
+{% endschema %}

@@ -1,56 +1,738 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
+{% assign company_menu = linklists['company-footer'] %}
+{% assign resources_menu = linklists['support-footer'] %}
+{% assign partner_menu = linklists['partner-with-us-footer'] %}
+{% assign legal_menu = linklists['footer'] %}
+{% assign trustpilot_entry = metaobjects.trustpilot.values | first %}
+{% assign trustpilot_rating_value = trustpilot_entry.rating.value | default: trustpilot_entry.rating %}
+{% if trustpilot_rating_value != blank %}
+  {% assign trustpilot_rating_text = trustpilot_rating_value | append: ' out of 5' %}
+{% else %}
+  {% assign trustpilot_rating_text = section.settings.trustpilot_rating %}
+{% endif %}
+
+<footer class="sb-footer full-width">
+  <div class="sb-footer__masthead" aria-hidden="true">
+    <img
+      class="sb-footer__masthead-image sb-footer__masthead-image--dark"
+      src="{{ 'masthead-master-your-craft-dark.png' | asset_url }}"
+      alt=""
+      loading="lazy"
+    >
+    <img
+      class="sb-footer__masthead-image sb-footer__masthead-image--light"
+      src="{{ 'masthead-master-your-craft-light.png' | asset_url }}"
+      alt=""
+      loading="lazy"
+    >
   </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
+  <div class="sb-footer__card">
+    <div class="sb-footer__glow" aria-hidden="true"></div>
+
+    <div class="sb-footer__upper-row">
+      <div class="sb-footer__newsletter-row">
+        <div class="sb-footer__column sb-footer__newsletter-col">
+          <h3 class="sb-footer__heading font-body weight-bold">{{ section.settings.newsletter_heading }}</h3>
+          <p class="sb-footer__caption font-caption weight-regular">{{ section.settings.newsletter_subheading }}</p>
+
+          <div class="sb-footer__newsletter-klaviyo">
+            <div class="klaviyo-form-VkQDWe"></div>
+            <template id="sb-footer-klaviyo-arrow-template">
+              {{ 'icon-arrow-right.svg' | inline_asset_content }}
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <div class="sb-footer__menu-row">
+        <div class="sb-footer__column sb-footer__menu-column">
+          <h3 class="sb-footer__heading font-body weight-bold">Partner with us</h3>
+          <ul class="sb-footer__list font-caption weight-regular" role="list">
+            {% if partner_menu != blank %}
+              {% for link in partner_menu.links %}
+                <li><a class="link-neutral-900" href="{{ link.url }}">{{ link.title }}</a></li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+
+        <div class="sb-footer__column sb-footer__menu-column">
+          <h3 class="sb-footer__heading font-body weight-bold">Company</h3>
+          <ul class="sb-footer__list font-caption weight-regular" role="list">
+            {% if company_menu != blank %}
+              {% for link in company_menu.links %}
+                <li><a class="link-neutral-900" href="{{ link.url }}">{{ link.title }}</a></li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+
+        <div class="sb-footer__column sb-footer__menu-column">
+          <h3 class="sb-footer__heading font-body weight-bold">Resources</h3>
+          <ul class="sb-footer__list font-caption weight-regular" role="list">
+            {% if resources_menu != blank %}
+              {% for link in resources_menu.links %}
+                <li><a class="link-neutral-900" href="{{ link.url }}">{{ link.title }}</a></li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sb-footer__divider"></div>
+
+    <div class="sb-footer__lower-row">
+      <div class="sb-footer__trust font-caption weight-semibold">
+        <a
+          class="sb-footer__trust-link"
+          href="https://www.trustpilot.com/review/soundbrenner.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Trustpilot logo link"
+        >
+          <span class="sb-footer__trust-logo" aria-hidden="true">
+            {{ 'trustpilot-logo.svg' | inline_asset_content }}
+          </span>
+        </a>
+        <a
+          class="sb-footer__trust-link"
+          href="https://www.trustpilot.com/review/soundbrenner.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Trustpilot stars link"
+        >
+          <span class="sb-footer__trust-stars" aria-hidden="true">
+            {{ 'trustpilot-stars.svg' | inline_asset_content }}
+          </span>
+        </a>
+        <a
+          class="sb-footer__trust-link sb-footer__trust-link--text"
+          href="https://www.trustpilot.com/review/soundbrenner.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Read Soundbrenner reviews on Trustpilot"
+        >
+          <span>{{ trustpilot_rating_text }}</span>
+        </a>
+      </div>
+
+      <div class="sb-footer__social" aria-label="Social links">
+        <a class="sb-footer__social-link" href="https://www.instagram.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          {{ 'icon-instagram.svg' | inline_asset_content }}
+        </a>
+        <a class="sb-footer__social-link" href="https://www.facebook.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          {{ 'icon-facebook.svg' | inline_asset_content }}
+        </a>
+        <a class="sb-footer__social-link" href="https://www.tiktok.com/@soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+          {{ 'icon-tiktok.svg' | inline_asset_content }}
+        </a>
+        <a class="sb-footer__social-link" href="https://x.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="X">
+          {{ 'icon-x.svg' | inline_asset_content }}
+        </a>
+        <a class="sb-footer__social-link" href="https://www.youtube.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          {{ 'icon-youtube.svg' | inline_asset_content }}
+        </a>
+      </div>
+    </div>
   </div>
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+  <div class="sb-footer__legal font-caption weight-regular">
+    <p>{{ section.settings.legal_left }}</p>
+    <div class="sb-footer__legal-links">
+      {% if legal_menu != blank and legal_menu.links.size > 0 %}
+        {% for link in legal_menu.links %}
+          <a class="link-neutral-800" href="{{ link.url }}">{{ link.title }}</a>
+          {% unless forloop.last %}
+            <span class="sb-footer__legal-separator" aria-hidden="true"> · </span>
+          {% endunless %}
+        {% endfor %}
+      {% else %}
+        <span>{{ section.settings.legal_right }}</span>
+      {% endif %}
+      <span class="sb-footer__legal-separator" aria-hidden="true"> · </span>
+      <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+    </div>
   </div>
 </footer>
 
 {% stylesheet %}
-  footer {
+  .sb-footer {
+    background: var(--sb-color-neutral-100);
+    container-type: inline-size;
+    color: var(--sb-color-neutral-900);
     display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
+    flex-direction: column;
+    gap: 0;
+    margin-inline: auto;
+    padding: 0 0 var(--sb-space-g);
+    max-width: var(--page-width, 1240px);
+    width: min(
+      var(--page-width, 1240px),
+      calc(100% - (var(--page-margin, 16px) * 2))
+    );
   }
-  footer a {
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sb-footer--animate .sb-footer__masthead,
+    .sb-footer--animate .sb-footer__card,
+    .sb-footer--animate .sb-footer__legal {
+      opacity: 0;
+      transform: translateY(var(--sb-space-g));
+      transition:
+        opacity 650ms ease,
+        transform 750ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .sb-footer--animate .sb-footer__card {
+      transition-delay: 60ms;
+    }
+
+    .sb-footer--animate .sb-footer__legal {
+      transition-delay: 120ms;
+    }
+
+    .sb-footer--animate.is-inview .sb-footer__masthead,
+    .sb-footer--animate.is-inview .sb-footer__card,
+    .sb-footer--animate.is-inview .sb-footer__legal {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .sb-footer a {
     text-decoration: none;
-    color: var(--color-foreground);
   }
-  footer .footer__links,
-  footer .footer__payment {
+
+  .sb-footer__masthead {
+    margin: 0;
+    overflow: clip;
+    width: 100%;
+    line-height: 0;
+  }
+
+  .sb-footer__masthead-image--light {
+    display: none;
+  }
+
+  .sb-footer__masthead-image {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
+  html[data-theme='light'] .sb-footer__masthead-image--dark {
+    display: none;
+  }
+
+  html[data-theme='light'] .sb-footer__masthead-image--light {
+    display: block;
+  }
+
+  html[data-theme='dark'] .sb-footer__masthead-image--dark {
+    display: block;
+  }
+
+  html[data-theme='dark'] .sb-footer__masthead-image--light {
+    display: none;
+  }
+
+  .sb-footer__card {
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-radius-card);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sb-footer__glow {
+    background: var(--sb-color-primary-500);
+    bottom: -120px;
+    filter: blur(80px);
+    height: 240px;
+    left: 0;
+    opacity: 1;
+    pointer-events: none;
+    position: absolute;
+    transform: none;
+    width: 100%;
+  }
+
+  .sb-footer__upper-row {
+    display: grid;
+    gap: var(--sb-space-h);
+    grid-template-columns: 1fr;
+    padding: var(--sb-space-i);
+    position: relative;
+    z-index: 1;
+  }
+
+  .sb-footer__newsletter-row {
     display: flex;
-    gap: 1rem;
+    width: 100%;
   }
+
+  .sb-footer__menu-row {
+    display: grid;
+    gap: var(--sb-space-h);
+    grid-template-columns: 1fr;
+  }
+
+  .sb-footer__column {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: var(--sb-space-c);
+  }
+
+  .sb-footer__newsletter-col {
+    gap: var(--sb-space-e);
+    max-width: none;
+    width: 100%;
+  }
+
+  .sb-footer__menu-column {
+    gap: var(--sb-space-e);
+  }
+
+  .sb-footer__heading {
+    margin: 0;
+  }
+
+  .sb-footer__caption {
+    color: var(--sb-color-neutral-800);
+    margin: 0;
+  }
+
+  .sb-footer__newsletter-klaviyo {
+    margin-top: var(--sb-space-a);
+    width: 100%;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form {
+    background-color: var(--sb-color-neutral-600) !important;
+    box-shadow:
+      0 1px 0 0 var(--sb-color-always-white-25),
+      0 4px 4px 0 var(--sb-color-always-black-25) inset !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button {
+    align-items: center !important;
+    background: var(--sb-color-primary-500) !important;
+    border: 1px solid var(--sb-color-primary-500) !important;
+    border-radius: 500px !important;
+    box-shadow:
+      0 -10px 20px 0 var(--sb-color-primary-500-25),
+      0 0 0 1px var(--sb-color-primary-700) inset,
+      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+    display: inline-flex !important;
+    height: 40px !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    flex: 0 0 48px !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+    transition:
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 220ms ease;
+    will-change: transform, box-shadow;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button::before {
+    background: var(--sb-color-always-black-25);
+    border-radius: 30px;
+    content: '';
+    height: 8px;
+    left: -12px;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 72px;
+    filter: blur(10px);
+    transition:
+      opacity 220ms ease,
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button::after {
+    background: linear-gradient(
+      180deg,
+      var(--sb-color-always-white-0) 0%,
+      var(--sb-color-always-white-0) 50%,
+      var(--sb-color-always-white-50) 100%
+    );
+    border-radius: inherit;
+    content: '';
+    inset: 0;
+    padding: 0.5px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 3;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0.75;
+    transition: opacity 220ms ease;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__klaviyo-arrow {
+    display: block;
+    height: 12px;
+    position: relative;
+    width: 12px;
+    z-index: 4;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__klaviyo-arrow path:not([fill='none']) {
+    fill: var(--sb-color-always-white) !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form input[type='email'] {
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: var(--sb-color-neutral-900) !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    transform: translateY(-1px);
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form input[type='email']::placeholder {
+    color: var(--sb-color-neutral-800) !important;
+    opacity: 1 !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form input:focus,
+  .sb-footer__newsletter-klaviyo .klaviyo-form input:hover,
+  .sb-footer__newsletter-klaviyo .klaviyo-form input:active,
+  .sb-footer__newsletter-klaviyo .klaviyo-form input:focus-visible {
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
+  .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
+    transform: translateY(-1px);
+    box-shadow:
+      0 -18px 30px 0 var(--sb-color-primary-300-25),
+      0 -6px 14px 0 var(--sb-color-primary-300-25),
+      0 -10px 20px 0 var(--sb-color-primary-500-25),
+      0 0 0 1px var(--sb-color-primary-700) inset,
+      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form button:active {
+    transform: translateY(0);
+  }
+
+  .sb-footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-e);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sb-footer__divider {
+    background: var(--sb-color-neutral-900-25);
+    height: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sb-footer__lower-row {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-h);
+    justify-content: space-between;
+    padding: var(--sb-space-i);
+    position: relative;
+    z-index: 1;
+  }
+
+  .sb-footer__trust {
+    align-items: flex-end;
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-space-d);
+  }
+
+  .sb-footer__trust-link {
+    align-items: flex-end;
+    color: inherit;
+    display: inline-flex;
+    gap: var(--sb-space-d);
+    text-decoration: none;
+  }
+
+  .sb-footer__trust-link--text:hover,
+  .sb-footer__trust-link--text:focus-visible {
+    text-decoration: underline;
+  }
+
+  .sb-footer__trust-logo,
+  .sb-footer__trust-stars {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .sb-footer__trust-logo svg {
+    display: block;
+    height: 22px;
+    width: auto;
+  }
+
+  .sb-footer__trust-stars svg {
+    display: block;
+    height: 14px;
+    transform: translateY(-2px);
+    width: auto;
+  }
+
+  .sb-footer__trust-logo svg > g > g path:not([fill='none']),
+  .sb-footer__trust-stars svg > g path:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .sb-footer__social {
+    align-items: center;
+    display: flex;
+    gap: var(--sb-space-e);
+  }
+
+  .sb-footer__social-link {
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    line-height: 0;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .sb-footer__social-link:hover,
+  .sb-footer__social-link:focus-visible {
+    color: var(--sb-color-neutral-900-75);
+    text-decoration: none;
+  }
+
+  .sb-footer__social-link svg {
+    display: block;
+    height: 20px;
+    width: auto;
+  }
+
+  .sb-footer__social-link svg path:not([fill='none']),
+  .sb-footer__social-link svg circle:not([fill='none']),
+  .sb-footer__social-link svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .sb-footer__legal {
+    color: var(--sb-color-neutral-800);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-e);
+    margin: 0;
+    margin-top: var(--sb-space-g);
+    text-align: center;
+  }
+
+  .sb-footer__legal p {
+    margin: 0;
+  }
+
+  .sb-footer__legal-links {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sb-footer__legal-separator {
+    white-space: pre;
+  }
+
+  @media (min-width: 750px) {
+    .sb-footer {
+      padding: 0 0 var(--sb-space-g);
+    }
+
+    .sb-footer .sb-footer__upper-row {
+      gap: var(--sb-space-i);
+    }
+
+    .sb-footer .sb-footer__menu-row {
+      align-items: flex-start;
+      display: flex;
+      gap: 0;
+      justify-content: space-between;
+    }
+
+    .sb-footer__glow {
+      bottom: -180px;
+      filter: blur(130px);
+      height: 360px;
+      left: 0;
+      width: 100%;
+    }
+
+    .sb-footer .sb-footer__lower-row {
+      align-items: flex-end;
+      flex-direction: row;
+      gap: var(--sb-space-e);
+      padding: var(--sb-space-i);
+    }
+
+    .sb-footer .sb-footer__legal {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+      width: 100%;
+    }
+
+    .sb-footer .sb-footer__legal-links {
+      justify-content: flex-end;
+    }
+  }
+
 {% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    const footer = document.querySelector('.sb-footer');
+    if (!footer) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      footer.classList.add('is-inview');
+      return;
+    }
+
+    footer.classList.add('sb-footer--animate');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        footer.classList.add('is-inview');
+        observer.disconnect();
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px 0px -8% 0px',
+      }
+    );
+
+    observer.observe(footer);
+  })();
+
+  (() => {
+    const applyKlaviyoButtonIcon = () => {
+      const button = document.querySelector('.sb-footer__newsletter-klaviyo .klaviyo-form button');
+      const template = document.querySelector('#sb-footer-klaviyo-arrow-template');
+      if (!button || !template || button.dataset.sbArrowApplied === 'true') return false;
+
+      const svg = template.content.firstElementChild ? template.content.firstElementChild.cloneNode(true) : null;
+      if (!svg) return false;
+
+      svg.classList.add('sb-footer__klaviyo-arrow');
+      button.textContent = '';
+      button.appendChild(svg);
+      button.dataset.sbArrowApplied = 'true';
+      return true;
+    };
+
+    if (applyKlaviyoButtonIcon()) return;
+
+    const observer = new MutationObserver(() => {
+      if (!applyKlaviyoButtonIcon()) return;
+      observer.disconnect();
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
+{% endjavascript %}
 
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "Footer",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "text",
+      "id": "masthead_text",
+      "label": "Masthead text",
+      "default": "MASTER YOUR CRAFT"
     },
     {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
-      "default": true
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Join our newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subheading",
+      "label": "Newsletter subheading",
+      "default": "Get 20% off and stay up to date."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Newsletter placeholder",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_label",
+      "label": "Newsletter button label",
+      "default": "Submit"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_success_text",
+      "label": "Newsletter success message",
+      "default": "Thanks for subscribing."
+    },
+    {
+      "type": "text",
+      "id": "trustpilot_label",
+      "label": "Trustpilot label",
+      "default": "Trustpilot"
+    },
+    {
+      "type": "text",
+      "id": "trustpilot_rating",
+      "label": "Trustpilot rating",
+      "default": "X.X out of 5"
+    },
+    {
+      "type": "text",
+      "id": "legal_left",
+      "label": "Legal text left",
+      "default": "Designed for musicians by Soundbrenner"
+    },
+    {
+      "type": "text",
+      "id": "legal_right",
+      "label": "Legal text right",
+      "default": "Privacy policy · Terms of service · Legal · © 2026 Soundbrenner"
     }
   ]
 }

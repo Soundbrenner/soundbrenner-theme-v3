@@ -17,8 +17,39 @@
       {
         "type": "font_picker",
         "id": "type_primary_font",
-        "default": "work_sans_n4",
+        "default": "inter_n4",
         "label": "t:general.primary"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_display_font",
+        "default": "merriweather_n4",
+        "label": "Display"
+      }
+    ]
+  },
+  {
+    "name": "Theme",
+    "settings": [
+      {
+        "type": "select",
+        "id": "theme_mode",
+        "label": "Theme mode",
+        "default": "dark",
+        "options": [
+          {
+            "value": "dark",
+            "label": "Dark"
+          },
+          {
+            "value": "light",
+            "label": "Light"
+          },
+          {
+            "value": "auto",
+            "label": "Auto (system)"
+          }
+        ]
       }
     ]
   },
@@ -26,30 +57,34 @@
     "name": "t:general.layout",
     "settings": [
       {
-        "type": "select",
+        "type": "range",
         "id": "max_page_width",
-        "label": "t:labels.page_width",
-        "options": [
-          {
-            "value": "90rem",
-            "label": "t:options.page_width.narrow"
-          },
-          {
-            "value": "110rem",
-            "label": "t:options.page_width.wide"
-          }
-        ],
-        "default": "90rem"
+        "min": 960,
+        "max": 1600,
+        "step": 10,
+        "unit": "px",
+        "label": "Max page width",
+        "default": 1240
       },
       {
         "type": "range",
-        "id": "min_page_margin",
+        "id": "desktop_page_margin",
         "min": 10,
         "max": 100,
         "step": 1,
         "unit": "px",
-        "label": "t:labels.page_margin",
-        "default": 20
+        "label": "Desktop side margin",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "mobile_page_margin",
+        "min": 8,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "label": "Mobile side margin",
+        "default": 16
       }
     ]
   },

@@ -11,6 +11,10 @@ body {
   flex-direction: column;
   margin: 0;
   min-height: 100svh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
 }
 
 html:has(dialog[scroll-lock][open], details[scroll-lock][open]) {
@@ -78,6 +82,11 @@ body {
   color: var(--color-foreground);
 }
 
+::selection {
+  background: var(--sb-color-primary-500);
+  color: var(--sb-color-always-white);
+}
+
 /** Section layout utilities */
 
 /**
@@ -93,7 +102,7 @@ body {
  */
 .shopify-section {
   --content-width: min(
-    calc(var(--page-width) - var(--page-margin) * 2),
+    var(--page-width),
     calc(100% - var(--page-margin) * 2)
   );
   --content-margin: minmax(var(--page-margin), 1fr);
@@ -114,4 +123,9 @@ body {
 /* Child elements that use the full-width utility class span the entire viewport. */
 .shopify-section > .full-width {
   grid-column: 1 / -1;
+}
+
+/* Global section rhythm: Scaling-J (96 desktop via token) */
+.shopify-section + .shopify-section {
+  margin-top: var(--sb-space-j);
 }

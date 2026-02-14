@@ -8,5 +8,15 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "type_primary_font": "inter_n4",
+    "type_display_font": "merriweather_n4",
+    "theme_mode": "dark",
+    "max_page_width": 1240,
+    "desktop_page_margin": 60,
+    "mobile_page_margin": 16,
+    "background_color": "#FFFFFF",
+    "foreground_color": "#333333",
+    "input_corner_radius": 4
+  }
 }
