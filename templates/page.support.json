@@ -11,7 +11,12 @@
   "sections": {
     "main": {
       "type": "hero-card",
-      "settings": {}
+      "settings": {
+        "background_image_desktop": "shopify://shop_images/Property_1_Support.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Support_mobile.jpg",
+        "page_title": "Support",
+        "page_benefits": "We're here to help."
+      }
     }
   },
   "order": [
