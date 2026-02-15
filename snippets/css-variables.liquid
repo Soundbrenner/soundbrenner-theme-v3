@@ -1,19 +1,88 @@
+{% assign sb_primary_font_regular = settings.type_primary_font %}
+{% assign sb_primary_font_medium = settings.type_primary_font | font_modify: 'weight', '500' %}
+{% assign sb_primary_font_semibold = settings.type_primary_font | font_modify: 'weight', '600' %}
+{% assign sb_primary_font_bold = settings.type_primary_font | font_modify: 'weight', 'bold' %}
+{% assign sb_primary_font_italic = settings.type_primary_font | font_modify: 'style', 'italic' %}
+{% assign sb_primary_font_bold_italic = settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' %}
+{% assign sb_display_font_regular = settings.type_display_font %}
+{% assign sb_display_font_bold = settings.type_display_font | font_modify: 'weight', 'bold' %}
+
 {% style %}
-  {% # Loads all font variantions with display: swap %}
-  {{ settings.type_primary_font | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', '500' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', '600' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
-  {{ settings.type_display_font | font_face: font_display: 'swap' }}
-  {{ settings.type_display_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {% comment %}
+    Use theme-scoped font family aliases so late third-party styles that target generic family names
+    (e.g. Inter, Merriweather) can't override typography after initial paint.
+  {% endcomment %}
+  {% unless settings.type_primary_font.system? %}
+    @font-face {
+      font-family: 'SB Primary';
+      src: url('{{ sb_primary_font_regular | font_url }}');
+      font-style: {{ sb_primary_font_regular.style }};
+      font-weight: {{ sb_primary_font_regular.weight }};
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SB Primary';
+      src: url('{{ sb_primary_font_medium | font_url }}');
+      font-style: {{ sb_primary_font_medium.style }};
+      font-weight: {{ sb_primary_font_medium.weight }};
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SB Primary';
+      src: url('{{ sb_primary_font_semibold | font_url }}');
+      font-style: {{ sb_primary_font_semibold.style }};
+      font-weight: {{ sb_primary_font_semibold.weight }};
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SB Primary';
+      src: url('{{ sb_primary_font_bold | font_url }}');
+      font-style: {{ sb_primary_font_bold.style }};
+      font-weight: {{ sb_primary_font_bold.weight }};
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SB Primary';
+      src: url('{{ sb_primary_font_italic | font_url }}');
+      font-style: {{ sb_primary_font_italic.style }};
+      font-weight: {{ sb_primary_font_italic.weight }};
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SB Primary';
+      src: url('{{ sb_primary_font_bold_italic | font_url }}');
+      font-style: {{ sb_primary_font_bold_italic.style }};
+      font-weight: {{ sb_primary_font_bold_italic.weight }};
+      font-display: swap;
+    }
+  {% endunless %}
+
+  {% unless settings.type_display_font.system? %}
+    @font-face {
+      font-family: 'SB Display';
+      src: url('{{ sb_display_font_regular | font_url }}');
+      font-style: {{ sb_display_font_regular.style }};
+      font-weight: {{ sb_display_font_regular.weight }};
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'SB Display';
+      src: url('{{ sb_display_font_bold | font_url }}');
+      font-style: {{ sb_display_font_bold.style }};
+      font-weight: {{ sb_display_font_bold.weight }};
+      font-display: swap;
+    }
+  {% endunless %}
 
   :root {
-    --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
+    --font-primary--family:
+      {% if settings.type_primary_font.system? %}{{ settings.type_primary_font.family }}, {% else %}'SB Primary', {% endif %}
+      {{ settings.type_primary_font.fallback_families }};
     --font-primary--style: {{ settings.type_primary_font.style }};
     --font-primary--weight: {{ settings.type_primary_font.weight }};
-    --font-display--family: {{ settings.type_display_font.family }}, {{ settings.type_display_font.fallback_families }};
+    --font-display--family:
+      {% if settings.type_display_font.system? %}{{ settings.type_display_font.family }}, {% else %}'SB Display', {% endif %}
+      {{ settings.type_display_font.fallback_families }};
 
     --font-size-hero: 2rem;
     --font-size-title: 1.75rem;
@@ -22,18 +91,19 @@
     --font-size-caption: 0.75rem;
 
     /* Semantic spacing scale (mobile defaults) */
-    --sb-space-aa: 1px;
-    --sb-space-a: 2px;
-    --sb-space-b: 4px;
-    --sb-space-c: 8px;
-    --sb-space-d: 12px;
-    --sb-space-e: 16px;
-    --sb-space-f: 20px;
-    --sb-space-g: 28px;
-    --sb-space-h: 40px;
-    --sb-space-i: 48px;
-    --sb-space-j: 72px;
-    --sb-space-k: 96px;
+    --sb-space-2: 1px;
+    --sb-space-4: 2px;
+    --sb-space-8: 4px;
+    --sb-space-12: 8px;
+    --sb-space-16: 12px;
+    --sb-space-20: 16px;
+    --sb-space-24: 20px;
+    --sb-space-30: 24px;
+    --sb-space-36: 28px;
+    --sb-space-48: 40px;
+    --sb-space-64: 48px;
+    --sb-space-96: 72px;
+    --sb-space-128: 96px;
 
     --sb-radius-pill: 999px;
     --sb-radius-card: 1.5rem;
@@ -129,18 +199,19 @@
       --font-size-caption: 0.875rem;
 
       /* Semantic spacing scale (desktop + tablet) */
-      --sb-space-aa: 2px;
-      --sb-space-a: 4px;
-      --sb-space-b: 8px;
-      --sb-space-c: 12px;
-      --sb-space-d: 16px;
-      --sb-space-e: 20px;
-      --sb-space-f: 24px;
-      --sb-space-g: 36px;
-      --sb-space-h: 48px;
-      --sb-space-i: 64px;
-      --sb-space-j: 96px;
-      --sb-space-k: 128px;
+      --sb-space-2: 2px;
+      --sb-space-4: 4px;
+      --sb-space-8: 8px;
+      --sb-space-12: 12px;
+      --sb-space-16: 16px;
+      --sb-space-20: 20px;
+      --sb-space-24: 24px;
+      --sb-space-30: 30px;
+      --sb-space-36: 36px;
+      --sb-space-48: 48px;
+      --sb-space-64: 64px;
+      --sb-space-96: 96px;
+      --sb-space-128: 128px;
     }
   }
 

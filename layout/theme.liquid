@@ -4,17 +4,27 @@
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
+    {% assign sb_primary_font_regular = settings.type_primary_font %}
+    {% assign sb_primary_font_semibold = settings.type_primary_font | font_modify: 'weight', '600' %}
+    {% assign sb_primary_font_bold = settings.type_primary_font | font_modify: 'weight', 'bold' %}
+    {% assign sb_display_font_bold = settings.type_display_font | font_modify: 'weight', 'bold' %}
+
     {% comment %}
       Font preloading:
       1. Preconnect to font CDN for faster connection
-      2. Preload only the critical font variant (base weight)
+      2. Preload critical above-the-fold variants
       3. Additional variants load on-demand via @font-face
     {% endcomment %}
-    {% unless settings.type_primary_font.system? %}
+    {% if settings.type_primary_font.system? == false or settings.type_display_font.system? == false %}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-
-      {% comment %} Preload the base font variant for initial page render {% endcomment %}
-      {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+    {% endif %}
+    {% unless settings.type_primary_font.system? %}
+      {{ sb_primary_font_regular | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+      {{ sb_primary_font_semibold | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+      {{ sb_primary_font_bold | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+    {% endunless %}
+    {% unless settings.type_display_font.system? %}
+      {{ sb_display_font_bold | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {% endunless %}
 
     {% # Load and preload the critical CSS %}

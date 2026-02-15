@@ -1,0 +1,162 @@
+{% assign feature_tiles_fallback_image = 'tile-placeholder.jpg' | asset_url %}
+
+<div class="sb-feature-tiles">
+  {% if section.settings.title != blank %}
+    <h2 class="sb-feature-tiles__title font-title weight-bold">{{ section.settings.title }}</h2>
+  {% endif %}
+
+  <div class="sb-feature-tiles__grid">
+    {% for block in section.blocks %}
+      {% if block.settings.link != blank %}
+        {% assign tile_href = block.settings.link %}
+      {% else %}
+        {% assign tile_href = '#' %}
+      {% endif %}
+
+      {% if block.settings.image != blank %}
+        {% assign tile_image = block.settings.image | image_url: width: 680 %}
+      {% else %}
+        {% assign tile_image = feature_tiles_fallback_image %}
+      {% endif %}
+
+      <article class="sb-feature-tiles__item" {{ block.shopify_attributes }}>
+        <a class="sb-feature-tiles__link" href="{{ tile_href }}">
+          <div class="sb-feature-tiles__media">
+            <img
+              src="{{ tile_image }}"
+              alt="{{ block.settings.label | escape }}"
+              loading="lazy"
+              width="340"
+              height="260"
+            >
+          </div>
+
+          <div class="sb-feature-tiles__text-wrap">
+            <p class="sb-feature-tiles__text font-body weight-bold">{{ block.settings.label }}</p>
+          </div>
+        </a>
+      </article>
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .sb-feature-tiles__title {
+    margin: 0 0 var(--sb-space-24);
+  }
+
+  .sb-feature-tiles__grid {
+    display: grid;
+    gap: var(--sb-space-24);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-feature-tiles__item {
+    min-width: 0;
+  }
+
+  .sb-feature-tiles__link {
+    align-items: stretch;
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-radius-card);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--sb-space-30);
+    text-decoration: none;
+    transform: scale(1);
+    transition: transform 220ms ease;
+  }
+
+  .sb-feature-tiles__link:hover,
+  .sb-feature-tiles__link:focus-visible {
+    transform: scale(1.015);
+  }
+
+  .sb-feature-tiles__media {
+    aspect-ratio: 340 / 260;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-feature-tiles__media img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-feature-tiles__text-wrap {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    padding-top: var(--sb-space-30);
+    text-align: center;
+  }
+
+  .sb-feature-tiles__text {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  @media (min-width: 750px) {
+    .sb-feature-tiles__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Feature tiles",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Section title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Text",
+          "default": "Tile title"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature tiles",
+      "blocks": [
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        },
+        {
+          "type": "tile"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -14,7 +14,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
 }
 
 html:has(dialog[scroll-lock][open], details[scroll-lock][open]) {
@@ -125,7 +124,7 @@ body {
   grid-column: 1 / -1;
 }
 
-/* Global section rhythm: Scaling-J (96 desktop via token) */
+/* Global section rhythm: Scaling-L (96 desktop via token) */
 .shopify-section + .shopify-section {
-  margin-top: var(--sb-space-j);
+  margin-top: var(--sb-space-96);
 }

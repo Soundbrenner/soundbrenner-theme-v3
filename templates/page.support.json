@@ -17,9 +17,73 @@
         "page_title": "Support",
         "page_benefits": "Everything you need, in one place."
       }
+    },
+    "tiles_1": {
+      "type": "feature-tiles",
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "label": "Tile title"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "label": "Tile title"
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "label": "Tile title"
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3"
+      ],
+      "settings": {
+        "title": "Section title"
+      }
+    },
+    "tiles_2": {
+      "type": "feature-tiles",
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "label": "Tile title"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "label": "Tile title"
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "label": "Tile title"
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3"
+      ],
+      "settings": {
+        "title": "Section title"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "tiles_1",
+    "tiles_2"
   ]
 }
