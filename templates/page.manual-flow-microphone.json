@@ -12,9 +12,9 @@
     "main": {
       "type": "hero-card",
       "settings": {
-        "background_image_desktop": "shopify://shop_images/footer_wave_desktop.jpg",
-        "background_image_mobile": "shopify://shop_images/footer_wave_mobile.jpg",
-        "page_title": "Manual Wave in-ear monitors",
+        "background_image_desktop": "shopify://shop_images/Footer_flow_desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/Footer_flow_mobile.jpg",
+        "page_title": "Manual Flow microphone",
         "page_benefits": "Understand every detail.",
         "show_button": false,
         "button_label": "Placeholder",
@@ -97,7 +97,7 @@
           "type": "button",
           "settings": {
             "label": "View in the box",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "link": "shopify://products/flow-microphone"
           }
         },
         "divider_3": {
@@ -120,7 +120,7 @@
           "type": "button",
           "settings": {
             "label": "View tech specs",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "link": "shopify://pages/manual-flow-microphone"
           }
         },
         "divider_4": {
