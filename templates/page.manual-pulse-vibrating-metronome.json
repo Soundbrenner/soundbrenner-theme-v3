@@ -124,7 +124,7 @@
         "body_5": {
           "type": "text",
           "settings": {
-            "text": "<p>After you take the Pulse out of the box, charge it for at least 30 minutes. A full charge can take up to 2.5 hours and gives you an average of 6 hours metronome playback time.</p><p>Plug the charger into any computer USB port or use a USB wall adapter, including those that ship with a smartphone or tablet. Then align the cable’s magnets with the charging port on the Pulse.</p>"
+            "text": "<p>After you take the Pulse out of the box, charge it for at least 30 minutes. A full charge can take up to 2.5 hours and gives you an average of 6 hours metronome playback time.</p><p>Plug the charger into any computer USB port or use a USB wall adapter, including those that ship with a smartphone or tablet. Then align the cable’s magnets with the charging port on the Pulse.</p><p>Don't store your Pulse for extended periods (over 3 months) with an empty battery, as this can lead to permanent battery damage.</p>"
           }
         },
         "heading_small_yn6TBq": {
@@ -149,18 +149,6 @@
           "type": "text",
           "settings": {
             "text": "<p>When charging is complete, the soundwave will turn solid green.</p>"
-          }
-        },
-        "heading_small_FAJ98n": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Tip"
-          }
-        },
-        "text_WbWULm": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Don't store your Pulse for extended periods (over 3 months) with an empty battery, as this can lead to permanent battery damage.</p>"
           }
         },
         "divider_Jd6948": {
@@ -192,11 +180,66 @@
             "text": "<p>Requires an iPhone, iPad, iPod or Android device. View the app's manual for more details.</p>"
           }
         },
+        "button_Jq7dDW": {
+          "type": "button",
+          "settings": {
+            "label": "View compatibility",
+            "link": "shopify://pages/manual-the-metronome-app"
+          }
+        },
         "divider_5": {
           "type": "divider",
           "settings": {}
         },
         "chapter_6": {
+          "type": "heading",
+          "settings": {
+            "heading": "Inserting it into the band"
+          }
+        },
+        "text_HtN3ri": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Insert one side of the Pulse into the band. Next, pull up on the opposite side of the band until it snaps into place.</p>"
+          }
+        },
+        "divider_epqbmW": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_grJAeq": {
+          "type": "heading",
+          "settings": {
+            "heading": "Using the touch surface"
+          }
+        },
+        "text_JA9R9B": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Pulse uses a capacitive touch surface to register your inputs for interactions. Some tips for maximum reliability:</p><ul><li>Always use two fingers flat across the surface. Don’t just use your fingertips!</li><li>Make sure that you touch the surface only for a brief moment for each tap.</li><li>Always make sure you wear the device when using the touch surface. Our sensor is designed to work best when it’s in contact with your skin.</li></ul>"
+          }
+        },
+        "divider_N6Tqzk": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_kzir4x": {
+          "type": "heading",
+          "settings": {
+            "heading": "Powering it on and off"
+          }
+        },
+        "text_qQwfnp": {
+          "type": "text",
+          "settings": {
+            "text": "<p>To power your Pulse on or off twist the ring at least 1/4 turn – in either direction – and then hold the touch surface with two fingers for two seconds. Don’t forget to wear the device first before powering it on!</p><p>The light of the soundwave will stay lit until you power the device off. Make sure to power your Pulse off using the same procedure after you’re finished playing.</p>"
+          }
+        },
+        "divider_L6b7wJ": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_pbekez": {
           "type": "heading",
           "settings": {
             "heading": "Compliance"
@@ -261,15 +304,23 @@
         "text_8iMfyk",
         "heading_small_76mbcf",
         "text_Je89EH",
-        "heading_small_FAJ98n",
-        "text_WbWULm",
         "divider_Jd6948",
         "heading_m3RyAP",
         "text_B7JKP9",
         "button_iFYRgP",
         "text_aNciDx",
+        "button_Jq7dDW",
         "divider_5",
         "chapter_6",
+        "text_HtN3ri",
+        "divider_epqbmW",
+        "heading_grJAeq",
+        "text_JA9R9B",
+        "divider_N6Tqzk",
+        "heading_kzir4x",
+        "text_qQwfnp",
+        "divider_L6b7wJ",
+        "heading_pbekez",
         "faq_item_1",
         "faq_item_2",
         "faq_item_3",
