@@ -158,36 +158,36 @@
         "faq_item_1": {
           "type": "faq_item",
           "settings": {
-            "question": "Question",
+            "question": "Safety",
             "answer": "<p>Answer.</p>"
           }
         },
         "faq_item_2": {
           "type": "faq_item",
           "settings": {
-            "question": "Question",
+            "question": "Warranty",
             "answer": "<p>Answer.</p>"
           }
         },
         "faq_item_3": {
           "type": "faq_item",
           "settings": {
-            "question": "Question",
+            "question": "Recycling",
             "answer": "<p>Answer.</p>"
           }
         },
         "faq_item_4": {
           "type": "faq_item",
           "settings": {
-            "question": "Question",
-            "answer": "<p>Answer.</p>"
+            "question": "EU compliance",
+            "answer": "<p>Soundbrenner Limited hereby declares that this product complies with the essential requirements and all relevant provisions of Directive 1995/5/EC.</p>"
           }
         },
         "faq_item_5": {
           "type": "faq_item",
           "settings": {
-            "question": "Question",
-            "answer": "<p>Answer.</p>"
+            "question": "FCC compliance",
+            "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions:</p><ul><li>They may not cause harmful interference.</li><li>They must accept any interference received, including interference that may cause undesired operation.</li></ul><p>TM and © 2026 Soundbrenner Limited. All rights reserved.</p>"
           }
         }
       },
