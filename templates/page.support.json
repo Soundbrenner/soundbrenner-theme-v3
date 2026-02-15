@@ -21,32 +21,59 @@
     "tiles_1": {
       "type": "feature-tiles",
       "blocks": {
+        "tile_N39B4c": {
+          "type": "tile",
+          "settings": {
+            "label": "The Metronome app",
+            "link": "shopify://pages/manual-soundbrenner-app"
+          }
+        },
+        "tile_mDcJHA": {
+          "type": "tile",
+          "settings": {
+            "label": "Wave",
+            "link": "shopify://pages/manual-wave"
+          }
+        },
+        "tile_nPHHCm": {
+          "type": "tile",
+          "settings": {
+            "label": "Wave Pro",
+            "link": "shopify://pages/manual-wave-pro"
+          }
+        },
         "tile_1": {
           "type": "tile",
           "settings": {
-            "label": "Tile title"
+            "label": "Pulse",
+            "link": "shopify://pages/manual-pulse"
           }
         },
         "tile_2": {
           "type": "tile",
           "settings": {
-            "label": "Tile title"
+            "label": "Core and Spark",
+            "link": "shopify://pages/manual-core-and-spark"
           }
         },
         "tile_3": {
           "type": "tile",
           "settings": {
-            "label": "Tile title"
+            "label": "Flow",
+            "link": "shopify://pages/manual-flow"
           }
         }
       },
       "block_order": [
+        "tile_N39B4c",
+        "tile_mDcJHA",
+        "tile_nPHHCm",
         "tile_1",
         "tile_2",
         "tile_3"
       ],
       "settings": {
-        "title": "Section title"
+        "title": "Manuals"
       }
     },
     "tiles_2": {
@@ -55,19 +82,22 @@
         "tile_1": {
           "type": "tile",
           "settings": {
-            "label": "Tile title"
+            "label": "Suggest a feature",
+            "link": ""
           }
         },
         "tile_2": {
           "type": "tile",
           "settings": {
-            "label": "Tile title"
+            "label": "Start a return",
+            "link": ""
           }
         },
         "tile_3": {
           "type": "tile",
           "settings": {
-            "label": "Tile title"
+            "label": "Contact us",
+            "link": "shopify://pages/contact-us"
           }
         }
       },
