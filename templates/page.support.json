@@ -26,7 +26,7 @@
           "settings": {
             "image": "shopify://shop_images/Property_1_The_Metronome_app.jpg",
             "label": "The Metronome app",
-            "link": "shopify://pages/manual-soundbrenner-app"
+            "link": "shopify://pages/manual-the-metronome-app"
           }
         },
         "tile_mDcJHA": {
@@ -34,7 +34,7 @@
           "settings": {
             "image": "shopify://shop_images/Property_1_Wave.jpg",
             "label": "Wave",
-            "link": "shopify://pages/manual-wave"
+            "link": "shopify://pages/manual-wave-in-ear-monitors"
           }
         },
         "tile_nPHHCm": {
