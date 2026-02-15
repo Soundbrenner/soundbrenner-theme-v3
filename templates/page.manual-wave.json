@@ -59,12 +59,6 @@
             "body": "<p>Connect the cable to the earphones. Both sides feature the marking \"L\" for left and \"R\" for right, so make sure you match the correct sides with each other. <br/><br/>Also make sure the cable is pointing upwards like it's shown in the illustration.</p>"
           }
         },
-        "vimeo_video_1": {
-          "type": "vimeo_video",
-          "settings": {
-            "video_source": "https://vimeo.com/1102070112"
-          }
-        },
         "image_QD8E9d": {
           "type": "image",
           "settings": {
@@ -198,7 +192,6 @@
         "divider_1",
         "chapter_2",
         "body_2",
-        "vimeo_video_1",
         "image_QD8E9d",
         "body_GnBhmE",
         "image_tVbxTK",
