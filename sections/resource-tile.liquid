@@ -1,4 +1,4 @@
-{% assign resource_tile_fallback_image = 'tile-placeholder.jpg' | asset_url %}
+{% assign resource_tile_fallback_image = 'resource-tile-placeholder.jpg' | asset_url %}
 
 <div class="sb-resource-tile" data-sb-reveal>
   {% if section.settings.title != blank %}
@@ -75,6 +75,7 @@
 
   .sb-resource-tile__media {
     aspect-ratio: 340 / 260;
+    border-radius: 24px;
     overflow: hidden;
     width: 100%;
   }

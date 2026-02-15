@@ -44,8 +44,17 @@
               | image_tag:
                 loading: 'lazy',
                 class: 'sb-manual-chapters__media-file',
-                alt: block.settings.alt_text
+                alt: block.settings.image.alt
             }}
+          {% else %}
+            <img
+              src="{{ 'manual-chapter-placeholder.jpg' | asset_url }}"
+              alt=""
+              loading="lazy"
+              class="sb-manual-chapters__media-file"
+              width="1824"
+              height="1026"
+            >
           {% endif %}
         </figure>
       {% elsif block.type == 'divider' %}
@@ -132,6 +141,8 @@
 
   .sb-manual-chapters__media {
     margin: 0;
+    overflow: hidden;
+    border-radius: 24px;
     width: 100%;
   }
 
@@ -356,17 +367,12 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Any aspect ratio. Image fills available width."
+          "content": "Target minimum 912px at 2x export (1824px width)."
         },
         {
           "type": "image_picker",
           "id": "image",
           "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "alt_text",
-          "label": "Alt text"
         }
       ]
     },
