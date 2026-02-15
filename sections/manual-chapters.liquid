@@ -361,7 +361,13 @@
     color: var(--sb-color-neutral-800);
   }
 
-  .sb-manual-chapters__body > * + * {
+  .sb-manual-chapters__body [data-sb-reveal-item] > *,
+  .sb-manual-chapters__faq-answer > * {
+    margin: 0;
+  }
+
+  .sb-manual-chapters__body [data-sb-reveal-item] > * + *,
+  .sb-manual-chapters__faq-answer > * + * {
     margin-top: var(--sb-space-24);
   }
 
