@@ -25,7 +25,7 @@
           "type": "chapter",
           "settings": {
             "nav_label": "Read this first",
-            "anchor_id": "",
+            "anchor_id": "read-this-first",
             "heading": "Read this first",
             "body": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.<br/><br/>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.<br/><br/>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
           }
