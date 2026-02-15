@@ -62,9 +62,7 @@
         "vimeo_video_1": {
           "type": "vimeo_video",
           "settings": {
-            "video_source": "https://vimeo.com/1102070112",
-            "max_width": 400,
-            "caption": ""
+            "video_source": "https://vimeo.com/1102070112"
           }
         },
         "image_QD8E9d": {

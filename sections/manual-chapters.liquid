@@ -21,6 +21,31 @@
     </nav>
   </aside>
 
+  <div class="sb-manual-chapters__mobile-nav" data-sb-reveal>
+    <details class="sb-manual-chapters__mobile-details">
+      <summary class="sb-manual-chapters__mobile-trigger font-caption weight-semibold" data-sb-reveal-item>Browse chapters</summary>
+      <div class="sb-manual-chapters__mobile-list" role="list">
+        {% assign first_mobile_chapter_link = true %}
+        {% for block in section.blocks %}
+          {% if block.type == 'chapter' %}
+            {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
+            {% assign chapter_id = raw_anchor | handleize %}
+            <a
+              class="sb-manual-chapters__mobile-link font-caption weight-semibold{% if first_mobile_chapter_link %} is-active{% endif %}"
+              href="#{{ chapter_id }}"
+              data-sb-reveal-item
+              data-manual-link
+              data-target="{{ chapter_id }}"
+            >
+              {{ block.settings.heading | default: 'Chapter' }}
+            </a>
+            {% assign first_mobile_chapter_link = false %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </details>
+  </div>
+
   <div class="sb-manual-chapters__content">
     {% for block in section.blocks %}
       {% if block.type == 'chapter' %}
@@ -35,6 +60,14 @@
             {{ block.settings.body }}
           </div>
         </div>
+      {% elsif block.type == 'subheading' %}
+        <h3 class="sb-manual-chapters__heading-medium font-callout weight-bold" data-sb-reveal {{ block.shopify_attributes }}>
+          <span data-sb-reveal-item>{{ block.settings.heading }}</span>
+        </h3>
+      {% elsif block.type == 'heading_small' %}
+        <h4 class="sb-manual-chapters__heading-small font-body weight-bold" data-sb-reveal {{ block.shopify_attributes }}>
+          <span data-sb-reveal-item>{{ block.settings.heading }}</span>
+        </h4>
       {% elsif block.type == 'image' %}
         <figure class="sb-manual-chapters__media" data-sb-reveal {{ block.shopify_attributes }}>
           {% if block.settings.image != blank %}
@@ -83,22 +116,16 @@
           data-sb-reveal
           data-manual-vimeo
           data-vimeo-source="{{ block.settings.video_source | escape }}"
-          style="--sb-manual-video-max-width: {{ block.settings.max_width }}px;"
           {{ block.shopify_attributes }}
         >
           <iframe
-            title="{{ block.settings.caption | default: 'Vimeo video' | escape }}"
+            title="Vimeo video"
             loading="lazy"
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
             allowfullscreen
             referrerpolicy="strict-origin-when-cross-origin"
             data-manual-vimeo-frame
           ></iframe>
-          {% if block.settings.caption != blank %}
-            <figcaption class="sb-manual-chapters__video-caption font-caption weight-regular" data-sb-reveal-item>
-              {{ block.settings.caption }}
-            </figcaption>
-          {% endif %}
         </figure>
       {% elsif block.type == 'faq_item' %}
         <article class="sb-manual-chapters__faq" data-sb-reveal {{ block.shopify_attributes }}>
@@ -126,31 +153,6 @@
         </div>
       {% endif %}
     {% endfor %}
-  </div>
-
-  <div class="sb-manual-chapters__mobile-nav" data-sb-reveal>
-    <details class="sb-manual-chapters__mobile-details">
-      <summary class="sb-manual-chapters__mobile-trigger font-caption weight-semibold" data-sb-reveal-item>Browse chapters</summary>
-      <div class="sb-manual-chapters__mobile-list" role="list">
-        {% assign first_mobile_chapter_link = true %}
-        {% for block in section.blocks %}
-          {% if block.type == 'chapter' %}
-            {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
-            {% assign chapter_id = raw_anchor | handleize %}
-            <a
-              class="sb-manual-chapters__mobile-link font-caption weight-semibold{% if first_mobile_chapter_link %} is-active{% endif %}"
-              href="#{{ chapter_id }}"
-              data-sb-reveal-item
-              data-manual-link
-              data-target="{{ chapter_id }}"
-            >
-              {{ block.settings.heading | default: 'Chapter' }}
-            </a>
-            {% assign first_mobile_chapter_link = false %}
-          {% endif %}
-        {% endfor %}
-      </div>
-    </details>
   </div>
 </section>
 
@@ -229,7 +231,7 @@
 
   .sb-manual-chapters__video {
     margin: 0;
-    max-width: min(100%, var(--sb-manual-video-max-width, 300px));
+    max-width: min(100%, 400px);
     width: 100%;
   }
 
@@ -239,11 +241,6 @@
     display: block;
     height: auto;
     width: 100%;
-  }
-
-  .sb-manual-chapters__video-caption {
-    color: var(--sb-color-neutral-800);
-    margin-top: var(--sb-space-12);
   }
 
   .sb-manual-chapters__faq {
@@ -350,8 +347,18 @@
     margin: 0;
   }
 
-  .sb-manual-chapters__body {
+  .sb-manual-chapters__heading-medium {
     color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-manual-chapters__heading-small {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-manual-chapters__body {
+    color: var(--sb-color-neutral-800);
   }
 
   .sb-manual-chapters__body > * + * {
@@ -364,7 +371,9 @@
 
   @media (max-width: 749px) {
     .sb-manual-chapters {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sb-space-24);
     }
 
     .sb-manual-chapters__sidebar {
@@ -378,12 +387,7 @@
     }
 
     .sb-manual-chapters__mobile-nav {
-      bottom: var(--sb-space-16);
-      display: block;
-      left: var(--page-margin, 16px);
-      position: fixed;
-      right: var(--page-margin, 16px);
-      z-index: 40;
+      display: none;
     }
 
     .sb-manual-chapters__mobile-details {
@@ -410,7 +414,6 @@
     .sb-manual-chapters__mobile-list {
       background: var(--sb-color-neutral-200);
       border-radius: var(--sb-radius-card);
-      bottom: calc(100% + var(--sb-space-12));
       display: flex;
       flex-direction: column;
       gap: var(--sb-space-12);
@@ -420,6 +423,7 @@
       padding: var(--sb-space-12);
       position: absolute;
       right: 0;
+      top: calc(100% + var(--sb-space-12));
     }
 
     .sb-manual-chapters__mobile-link {
@@ -585,13 +589,13 @@
   "blocks": [
     {
       "type": "chapter",
-      "name": "Section title",
+      "name": "Header large",
       "settings": [
         {
           "type": "text",
           "id": "heading",
           "label": "Heading",
-          "default": "Chapter heading"
+          "default": "Header large"
         }
       ]
     },
@@ -604,6 +608,30 @@
           "id": "body",
           "label": "Body",
           "default": "<p>Write your manual content here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Header medium",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Header medium"
+        }
+      ]
+    },
+    {
+      "type": "heading_small",
+      "name": "Header small",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Header small"
         }
       ]
     },
@@ -648,21 +676,6 @@
           "id": "video_source",
           "label": "Vimeo URL or ID",
           "default": "https://vimeo.com/1102070112"
-        },
-        {
-          "type": "range",
-          "id": "max_width",
-          "label": "Max width",
-          "min": 220,
-          "max": 500,
-          "step": 10,
-          "unit": "px",
-          "default": 400
-        },
-        {
-          "type": "text",
-          "id": "caption",
-          "label": "Caption"
         }
       ]
     },
