@@ -24,6 +24,7 @@
         "tile_N39B4c": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_The_Metronome_app.jpg",
             "label": "The Metronome app",
             "link": "shopify://pages/manual-soundbrenner-app"
           }
@@ -31,6 +32,7 @@
         "tile_mDcJHA": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_Wave.jpg",
             "label": "Wave",
             "link": "shopify://pages/manual-wave"
           }
@@ -38,6 +40,7 @@
         "tile_nPHHCm": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_Wave_Pro_88264cd5-5aee-443f-80eb-8241c2b639b7.jpg",
             "label": "Wave Pro",
             "link": "shopify://pages/manual-wave-pro"
           }
@@ -45,6 +48,7 @@
         "tile_1": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_Pulse_cdf70979-65c7-410a-bfce-770fbd1e4db0.jpg",
             "label": "Pulse",
             "link": "shopify://pages/manual-pulse"
           }
@@ -52,6 +56,7 @@
         "tile_2": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_Core_and_Spark.jpg",
             "label": "Core and Spark",
             "link": "shopify://pages/manual-core-and-spark"
           }
@@ -59,6 +64,7 @@
         "tile_3": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_Flow_6296b5b3-aecc-4a07-a9dd-7dd9acd50c05.jpg",
             "label": "Flow",
             "link": "shopify://pages/manual-flow"
           }
@@ -82,6 +88,7 @@
         "tile_1": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_Suggest_a_feature.jpg",
             "label": "Suggest a feature",
             "link": ""
           }
@@ -89,6 +96,7 @@
         "tile_2": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_Start_a_return.jpg",
             "label": "Start a return",
             "link": ""
           }
@@ -96,6 +104,7 @@
         "tile_3": {
           "type": "tile",
           "settings": {
+            "image": "shopify://shop_images/Property_1_Contact_us.jpg",
             "label": "Contact us",
             "link": "shopify://pages/contact-us"
           }
