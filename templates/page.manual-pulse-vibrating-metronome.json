@@ -333,7 +333,14 @@
         "text_3dDnyy": {
           "type": "text",
           "settings": {
-            "text": "<p>Because we know every musician is different, you can customize the Pulse to your own liking with our app.</p><p>To customize or turn off the lights and vibrations, open our mobile app and go to: \"Settings\" → \"Pulse settings\" → \"Lights\" or \"Vibrations\".We recommend to experiment with different vibration intensities and durations to find out what works best for you!</p><p>For more info how to use it, view the app's manual.</p>"
+            "text": "<p>Because we know every musician is different, you can customize the Pulse to your own liking with our app.</p><p>To customize or turn off the lights and vibrations, open our mobile app and go to: \"Settings\" → \"Pulse settings\" → \"Lights\" or \"Vibrations\". We recommend to experiment with different vibration intensities and durations to find out what works best for you!</p><p>For more info how to use it, view the app's manual.</p>"
+          }
+        },
+        "button_NGjw3K": {
+          "type": "button",
+          "settings": {
+            "label": "View app manual",
+            "link": "shopify://pages/manual-the-metronome-app"
           }
         },
         "divider_ebpqCb": {
@@ -438,6 +445,7 @@
         "divider_tjcndY",
         "heading_7eTcFU",
         "text_3dDnyy",
+        "button_NGjw3K",
         "divider_ebpqCb",
         "heading_bLLggk",
         "faq_item_1",
