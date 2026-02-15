@@ -65,7 +65,7 @@
           <span data-sb-reveal-item>{{ block.settings.heading }}</span>
         </h3>
       {% elsif block.type == 'heading_small' %}
-        <h4 class="sb-manual-chapters__heading-small font-body weight-regular" data-sb-reveal {{ block.shopify_attributes }}>
+        <h4 class="sb-manual-chapters__heading-small font-body weight-bold" data-sb-reveal {{ block.shopify_attributes }}>
           <span data-sb-reveal-item>{{ block.settings.heading }}</span>
         </h4>
       {% elsif block.type == 'image' %}
@@ -305,7 +305,7 @@
   }
 
   .sb-manual-chapters__faq-answer {
-    color: var(--sb-color-neutral-900);
+    color: var(--sb-color-neutral-800);
     display: none;
     margin-top: var(--sb-space-24);
   }
@@ -600,18 +600,6 @@
       ]
     },
     {
-      "type": "text",
-      "name": "Body",
-      "settings": [
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Body",
-          "default": "<p>Write your manual content here.</p>"
-        }
-      ]
-    },
-    {
       "type": "subheading",
       "name": "Header medium",
       "settings": [
@@ -636,6 +624,18 @@
       ]
     },
     {
+      "type": "text",
+      "name": "Body",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Body",
+          "default": "<p>Write your manual content here.</p>"
+        }
+      ]
+    },
+    {
       "type": "image",
       "name": "Image",
       "settings": [
@@ -647,6 +647,18 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "vimeo_video",
+      "name": "Vimeo video",
+      "settings": [
+        {
+          "type": "text",
+          "id": "video_source",
+          "label": "Vimeo URL or ID",
+          "default": "https://vimeo.com/1102070112"
         }
       ]
     },
@@ -664,18 +676,6 @@
           "type": "url",
           "id": "link",
           "label": "Link"
-        }
-      ]
-    },
-    {
-      "type": "vimeo_video",
-      "name": "Vimeo video",
-      "settings": [
-        {
-          "type": "text",
-          "id": "video_source",
-          "label": "Vimeo URL or ID",
-          "default": "https://vimeo.com/1102070112"
         }
       ]
     },
