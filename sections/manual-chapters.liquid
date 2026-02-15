@@ -1,18 +1,19 @@
-<section class="sb-manual-chapters" id="sb-manual-{{ section.id }}" data-sb-reveal>
-  <aside class="sb-manual-chapters__sidebar">
+<section class="sb-manual-chapters" id="sb-manual-{{ section.id }}">
+  <aside class="sb-manual-chapters__sidebar" data-sb-reveal>
     <nav class="sb-manual-chapters__nav" aria-label="Manual chapters">
       {% assign first_chapter_link = true %}
       {% for block in section.blocks %}
         {% if block.type == 'chapter' %}
-          {% assign raw_anchor = block.settings.anchor_id | default: block.settings.nav_label | default: block.settings.heading | append: '-' | append: forloop.index %}
+          {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
           {% assign chapter_id = raw_anchor | handleize %}
           <a
             class="sb-manual-chapters__nav-link font-caption weight-semibold{% if first_chapter_link %} is-active{% endif %}"
             href="#{{ chapter_id }}"
+            data-sb-reveal-item
             data-manual-link
             data-target="{{ chapter_id }}"
           >
-            {{ block.settings.nav_label | default: block.settings.heading | default: 'Chapter' }}
+            {{ block.settings.heading | default: 'Chapter' }}
           </a>
           {% assign first_chapter_link = false %}
         {% endif %}
@@ -20,39 +21,54 @@
     </nav>
   </aside>
 
-  <div class="sb-manual-chapters__content" data-sb-reveal-item>
+  <div class="sb-manual-chapters__content">
     {% for block in section.blocks %}
       {% if block.type == 'chapter' %}
-        {% assign raw_anchor = block.settings.anchor_id | default: block.settings.nav_label | default: block.settings.heading | append: '-' | append: forloop.index %}
+        {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
         {% assign chapter_id = raw_anchor | handleize %}
-        <article id="{{ chapter_id }}" class="sb-manual-chapters__chapter" {{ block.shopify_attributes }}>
-          <h2 class="sb-manual-chapters__heading font-title weight-bold">{{ block.settings.heading }}</h2>
-          <div class="sb-manual-chapters__body font-body weight-regular rte">
+        <article id="{{ chapter_id }}" class="sb-manual-chapters__chapter" data-sb-reveal {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <div class="sb-manual-chapters__image" data-sb-reveal-item>
+              {{
+                block.settings.image
+                | image_url: width: 2000
+                | image_tag:
+                  loading: 'lazy',
+                  class: 'sb-manual-chapters__image-file',
+                  alt: block.settings.heading
+              }}
+            </div>
+          {% endif %}
+          <h2 class="sb-manual-chapters__heading font-title weight-bold" data-sb-reveal-item>{{ block.settings.heading }}</h2>
+          <div class="sb-manual-chapters__body font-body weight-regular rte" data-sb-reveal-item>
             {{ block.settings.body }}
           </div>
         </article>
       {% elsif block.type == 'divider' %}
-        <hr class="sb-manual-chapters__divider" {{ block.shopify_attributes }}>
+        <div data-sb-reveal>
+          <hr class="sb-manual-chapters__divider" data-sb-reveal-item {{ block.shopify_attributes }}>
+        </div>
       {% endif %}
     {% endfor %}
   </div>
 
-  <div class="sb-manual-chapters__mobile-nav">
+  <div class="sb-manual-chapters__mobile-nav" data-sb-reveal>
     <details class="sb-manual-chapters__mobile-details">
-      <summary class="sb-manual-chapters__mobile-trigger font-caption weight-semibold">Browse chapters</summary>
+      <summary class="sb-manual-chapters__mobile-trigger font-caption weight-semibold" data-sb-reveal-item>Browse chapters</summary>
       <div class="sb-manual-chapters__mobile-list" role="list">
         {% assign first_mobile_chapter_link = true %}
         {% for block in section.blocks %}
           {% if block.type == 'chapter' %}
-            {% assign raw_anchor = block.settings.anchor_id | default: block.settings.nav_label | default: block.settings.heading | append: '-' | append: forloop.index %}
+            {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
             {% assign chapter_id = raw_anchor | handleize %}
             <a
               class="sb-manual-chapters__mobile-link font-caption weight-semibold{% if first_mobile_chapter_link %} is-active{% endif %}"
               href="#{{ chapter_id }}"
+              data-sb-reveal-item
               data-manual-link
               data-target="{{ chapter_id }}"
             >
-              {{ block.settings.nav_label | default: block.settings.heading | default: 'Chapter' }}
+              {{ block.settings.heading | default: 'Chapter' }}
             </a>
             {% assign first_mobile_chapter_link = false %}
           {% endif %}
@@ -108,6 +124,17 @@
 
   .sb-manual-chapters__chapter {
     scroll-margin-top: var(--sb-space-64);
+  }
+
+  .sb-manual-chapters__image {
+    margin-bottom: var(--sb-space-24);
+    width: 100%;
+  }
+
+  .sb-manual-chapters__image-file {
+    display: block;
+    height: auto;
+    width: 100%;
   }
 
   .sb-manual-chapters__divider {
@@ -300,16 +327,13 @@
       "name": "Chapter",
       "settings": [
         {
-          "type": "text",
-          "id": "nav_label",
-          "label": "Nav label",
-          "default": "Chapter"
+          "type": "paragraph",
+          "content": "Any aspect ratio. Image fills available width."
         },
         {
-          "type": "text",
-          "id": "anchor_id",
-          "label": "Anchor id",
-          "info": "Optional. If blank, generated from nav label."
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
         },
         {
           "type": "text",

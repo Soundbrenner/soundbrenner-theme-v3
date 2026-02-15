@@ -61,14 +61,14 @@
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
+              if (!entry.isIntersecting && entry.intersectionRatio <= 0) return;
               entry.target.classList.add('is-inview');
               observer.unobserve(entry.target);
             });
           },
           {
-            threshold: 0.2,
-            rootMargin: '0px 0px -8% 0px',
+            threshold: 0,
+            rootMargin: '0px',
           }
         );
 
@@ -76,11 +76,15 @@
           group.classList.add('sb-reveal--animate');
 
           const rect = group.getBoundingClientRect();
-          const viewBottom = window.innerHeight * 0.92;
-          const inInitialView = rect.top < viewBottom && rect.bottom > 0;
+          const inInitialView = rect.top < window.innerHeight && rect.bottom > 0;
 
           if (inInitialView) {
-            group.classList.add('is-inview');
+            // Ensure above-the-fold items animate after initial paint.
+            window.requestAnimationFrame(() => {
+              window.requestAnimationFrame(() => {
+                group.classList.add('is-inview');
+              });
+            });
             return;
           }
 
