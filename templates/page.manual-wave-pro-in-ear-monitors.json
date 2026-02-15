@@ -12,9 +12,9 @@
     "main": {
       "type": "hero-card",
       "settings": {
-        "background_image_desktop": "shopify://shop_images/footer_wave_desktop.jpg",
-        "background_image_mobile": "shopify://shop_images/footer_wave_mobile.jpg",
-        "page_title": "Manual Wave in-ear monitors",
+        "background_image_desktop": "shopify://shop_images/Property_1_Wave_Pro_in-ear_monitors_0d5a67d1-31f5-4f97-bdb4-ae5b677763c3.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Wave_Pro_in-ear_monitors_0d5a67d1-31f5-4f97-bdb4-ae5b677763c3.jpg",
+        "page_title": "Manual Wave Pro in-ear monitors",
         "page_benefits": "Understand every detail.",
         "show_button": false,
         "button_label": "Placeholder",
@@ -56,25 +56,49 @@
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>Connect the cable to the earphones. Both sides feature the marking \"L\" for left and \"R\" for right, so make sure you match the correct sides with each other. <br/><br/>Also make sure the cable is pointing upwards like it's shown in the illustration.</p>"
+            "text": "<p>Connect the cable to the earphones by matching the “L” and “R” markings. Ensure the line pattern on the cable’s connectors faces outward toward the Soundbrenner logo, as shown by the arrow in the illustration.<br/><br/>Try all three ear tip types to find your ideal fit and sound.</p>"
           }
         },
-        "image_QD8E9d": {
-          "type": "image",
+        "heading_small_NUzHXt": {
+          "type": "heading_small",
           "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_1.jpg"
+            "heading": "Liquid Pro"
+          }
+        },
+        "text_Xwbe37": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A firm inner layer provides stability while the soft outer dome adapts to your ear shape for a comfortable, well-isolated fit.</p>"
+          }
+        },
+        "heading_small_jXzWe3": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Foam"
           }
         },
         "body_GnBhmE": {
           "type": "text",
           "settings": {
-            "text": "<p>Now experiment with various ear tip materials and sizes. Silicone is durable and easy to use, while foam provides up to 36dB of passive noise isolation. Compress the foam tips before insertion, letting them expand in your ears.<br/><br/>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
+            "text": "<p>Provides up to 36 dB of passive noise isolation. Compress before insertion and allow the tip to expand in your ear.</p>"
+          }
+        },
+        "heading_small_7yGwT4": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Double-flange"
+          }
+        },
+        "text_ayrGrc": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Creates a deeper seal for maximum stability and strong isolation.<br/><br/>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
           }
         },
         "image_tVbxTK": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_2.jpg"
+            "image": "shopify://shop_images/Property_1_Wave_Pro_1.jpg"
           }
         },
         "divider_2": {
@@ -97,7 +121,7 @@
           "type": "button",
           "settings": {
             "label": "View in the box",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "link": "shopify://products/wave-pro-in-ear-monitors"
           }
         },
         "divider_3": {
@@ -120,7 +144,7 @@
           "type": "button",
           "settings": {
             "label": "View tech specs",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "link": "shopify://products/wave-pro-in-ear-monitors"
           }
         },
         "divider_4": {
@@ -192,8 +216,12 @@
         "divider_1",
         "chapter_2",
         "body_2",
-        "image_QD8E9d",
+        "heading_small_NUzHXt",
+        "text_Xwbe37",
+        "heading_small_jXzWe3",
         "body_GnBhmE",
+        "heading_small_7yGwT4",
+        "text_ayrGrc",
         "image_tVbxTK",
         "divider_2",
         "chapter_3",
