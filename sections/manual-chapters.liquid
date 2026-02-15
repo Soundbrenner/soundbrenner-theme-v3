@@ -1,0 +1,351 @@
+<section class="sb-manual-chapters" id="sb-manual-{{ section.id }}" data-sb-reveal>
+  <aside class="sb-manual-chapters__sidebar">
+    <nav class="sb-manual-chapters__nav" aria-label="Manual chapters">
+      {% assign first_chapter_link = true %}
+      {% for block in section.blocks %}
+        {% if block.type == 'chapter' %}
+          {% assign raw_anchor = block.settings.anchor_id | default: block.settings.nav_label | default: block.settings.heading | append: '-' | append: forloop.index %}
+          {% assign chapter_id = raw_anchor | handleize %}
+          <a
+            class="sb-manual-chapters__nav-link font-caption weight-semibold{% if first_chapter_link %} is-active{% endif %}"
+            href="#{{ chapter_id }}"
+            data-manual-link
+            data-target="{{ chapter_id }}"
+          >
+            {{ block.settings.nav_label | default: block.settings.heading | default: 'Chapter' }}
+          </a>
+          {% assign first_chapter_link = false %}
+        {% endif %}
+      {% endfor %}
+    </nav>
+  </aside>
+
+  <div class="sb-manual-chapters__content" data-sb-reveal-item>
+    {% for block in section.blocks %}
+      {% if block.type == 'chapter' %}
+        {% assign raw_anchor = block.settings.anchor_id | default: block.settings.nav_label | default: block.settings.heading | append: '-' | append: forloop.index %}
+        {% assign chapter_id = raw_anchor | handleize %}
+        <article id="{{ chapter_id }}" class="sb-manual-chapters__chapter" {{ block.shopify_attributes }}>
+          <h2 class="sb-manual-chapters__heading font-title weight-bold">{{ block.settings.heading }}</h2>
+          <div class="sb-manual-chapters__body font-body weight-regular rte">
+            {{ block.settings.body }}
+          </div>
+        </article>
+      {% elsif block.type == 'divider' %}
+        <hr class="sb-manual-chapters__divider" {{ block.shopify_attributes }}>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="sb-manual-chapters__mobile-nav">
+    <details class="sb-manual-chapters__mobile-details">
+      <summary class="sb-manual-chapters__mobile-trigger font-caption weight-semibold">Browse chapters</summary>
+      <div class="sb-manual-chapters__mobile-list" role="list">
+        {% assign first_mobile_chapter_link = true %}
+        {% for block in section.blocks %}
+          {% if block.type == 'chapter' %}
+            {% assign raw_anchor = block.settings.anchor_id | default: block.settings.nav_label | default: block.settings.heading | append: '-' | append: forloop.index %}
+            {% assign chapter_id = raw_anchor | handleize %}
+            <a
+              class="sb-manual-chapters__mobile-link font-caption weight-semibold{% if first_mobile_chapter_link %} is-active{% endif %}"
+              href="#{{ chapter_id }}"
+              data-manual-link
+              data-target="{{ chapter_id }}"
+            >
+              {{ block.settings.nav_label | default: block.settings.heading | default: 'Chapter' }}
+            </a>
+            {% assign first_mobile_chapter_link = false %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </details>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-manual-chapters {
+    display: grid;
+    gap: var(--sb-space-48);
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+
+  .sb-manual-chapters__sidebar {
+    align-self: start;
+    position: sticky;
+    top: var(--sb-space-96);
+    width: 280px;
+  }
+
+  .sb-manual-chapters__nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-12);
+  }
+
+  .sb-manual-chapters__nav-link {
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-radius-pill);
+    color: var(--sb-color-neutral-900);
+    padding: var(--sb-space-16) var(--sb-space-20);
+    text-decoration: none;
+  }
+
+  .sb-manual-chapters__nav-link.is-active {
+    background: var(--sb-color-primary-500);
+  }
+
+  .sb-manual-chapters__nav-link:not(.is-active):hover,
+  .sb-manual-chapters__nav-link:not(.is-active):focus-visible {
+    background: var(--sb-color-neutral-300);
+  }
+
+  .sb-manual-chapters__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-24);
+    min-width: 0;
+  }
+
+  .sb-manual-chapters__chapter {
+    scroll-margin-top: var(--sb-space-64);
+  }
+
+  .sb-manual-chapters__divider {
+    background: var(--sb-color-neutral-600);
+    border: 0;
+    height: 1px;
+    margin: var(--sb-space-24) 0;
+    width: 100%;
+  }
+
+  .sb-manual-chapters__heading {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-24);
+  }
+
+  .sb-manual-chapters__body {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .sb-manual-chapters__body > * + * {
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-manual-chapters__mobile-nav {
+    display: none;
+  }
+
+  @media (max-width: 749px) {
+    .sb-manual-chapters {
+      display: block;
+    }
+
+    .sb-manual-chapters__sidebar {
+      display: none;
+    }
+
+    .sb-manual-chapters__content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sb-space-24);
+    }
+
+    .sb-manual-chapters__mobile-nav {
+      bottom: var(--sb-space-16);
+      display: block;
+      left: var(--page-margin, 16px);
+      position: fixed;
+      right: var(--page-margin, 16px);
+      z-index: 40;
+    }
+
+    .sb-manual-chapters__mobile-details {
+      position: relative;
+    }
+
+    .sb-manual-chapters__mobile-trigger {
+      align-items: center;
+      background: var(--sb-color-neutral-200);
+      border-radius: var(--sb-radius-pill);
+      color: var(--sb-color-neutral-900);
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: var(--sb-space-16) var(--sb-space-20);
+      text-align: center;
+    }
+
+    .sb-manual-chapters__mobile-trigger::-webkit-details-marker {
+      display: none;
+    }
+
+    .sb-manual-chapters__mobile-list {
+      background: var(--sb-color-neutral-200);
+      border-radius: var(--sb-radius-card);
+      bottom: calc(100% + var(--sb-space-12));
+      display: flex;
+      flex-direction: column;
+      gap: var(--sb-space-12);
+      left: 0;
+      max-height: 60svh;
+      overflow: auto;
+      padding: var(--sb-space-12);
+      position: absolute;
+      right: 0;
+    }
+
+    .sb-manual-chapters__mobile-link {
+      background: var(--sb-color-neutral-200);
+      border-radius: var(--sb-radius-pill);
+      color: var(--sb-color-neutral-900);
+      padding: var(--sb-space-16) var(--sb-space-20);
+      text-decoration: none;
+    }
+
+    .sb-manual-chapters__mobile-link.is-active {
+      background: var(--sb-color-primary-500);
+    }
+
+    .sb-manual-chapters__mobile-link:not(.is-active):hover,
+    .sb-manual-chapters__mobile-link:not(.is-active):focus-visible {
+      background: var(--sb-color-neutral-300);
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (() => {
+    const root = document.getElementById('sb-manual-{{ section.id }}');
+    if (!root || root.dataset.manualInit === 'true') return;
+    root.dataset.manualInit = 'true';
+
+    const links = [...root.querySelectorAll('[data-manual-link]')];
+    const chapters = [...root.querySelectorAll('.sb-manual-chapters__chapter')];
+    const mobileDetails = root.querySelector('.sb-manual-chapters__mobile-details');
+    const sidebar = root.querySelector('.sb-manual-chapters__sidebar');
+    if (!links.length || !chapters.length) return;
+
+    const chapterData = chapters.map((chapter) => {
+      const heading = chapter.querySelector('.sb-manual-chapters__heading');
+      return { id: chapter.id, heading: heading || chapter };
+    });
+
+    const getStickyOffset = () => {
+      if (!sidebar || window.getComputedStyle(sidebar).display === 'none') return 72;
+      const parsed = parseFloat(window.getComputedStyle(sidebar).top);
+      return Number.isNaN(parsed) ? 96 : parsed;
+    };
+
+    const setActive = (id) => {
+      links.forEach((link) => {
+        link.classList.toggle('is-active', link.dataset.target === id);
+      });
+    };
+
+    const getActiveChapterId = () => {
+      const triggerLine = getStickyOffset() + 8;
+      const pageY = window.scrollY || window.pageYOffset || 0;
+      const triggerPageY = pageY + triggerLine;
+      let current = chapterData[0].id;
+
+      chapterData.forEach((chapter) => {
+        const headingTop = chapter.heading.getBoundingClientRect().top + pageY;
+        if (headingTop <= triggerPageY) current = chapter.id;
+      });
+
+      return current;
+    };
+
+    let ticking = false;
+    const syncActive = () => {
+      setActive(getActiveChapterId());
+    };
+
+    const requestSync = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        syncActive();
+        ticking = false;
+      });
+    };
+
+    links.forEach((link) => {
+      link.addEventListener('click', () => {
+        window.setTimeout(requestSync, 0);
+        if (mobileDetails && mobileDetails.hasAttribute('open')) {
+          mobileDetails.removeAttribute('open');
+        }
+      });
+    });
+
+    window.addEventListener('scroll', requestSync, { passive: true });
+    window.addEventListener('resize', requestSync, { passive: true });
+    window.addEventListener('hashchange', requestSync);
+
+    syncActive();
+    window.setTimeout(syncActive, 120);
+    window.setTimeout(syncActive, 360);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Manual chapters",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "nav_label",
+          "label": "Nav label",
+          "default": "Chapter"
+        },
+        {
+          "type": "text",
+          "id": "anchor_id",
+          "label": "Anchor id",
+          "info": "Optional. If blank, generated from nav label."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Chapter heading"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body",
+          "default": "<p>Write your manual content here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": []
+    }
+  ],
+  "presets": [
+    {
+      "name": "Manual chapters",
+      "blocks": [
+        {
+          "type": "chapter"
+        },
+        {
+          "type": "chapter"
+        },
+        {
+          "type": "chapter"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -11,9 +11,10 @@
   {% assign hero_card_desktop_image = hero_card_fallback_image_desktop %}
 {% endif %}
 
-<div class="sb-hero-card-section">
+<div class="sb-hero-card-section" data-sb-reveal>
   <div
     class="sb-framing-card"
+    data-sb-reveal-item
     style="--sb-hero-card-bg-mobile: url('{{ hero_card_mobile_image }}'); --sb-hero-card-bg-desktop: url('{{ hero_card_desktop_image }}');"
   >
     <div class="sb-framing-card__content">

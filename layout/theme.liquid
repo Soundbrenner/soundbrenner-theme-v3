@@ -42,5 +42,51 @@
     {{ content_for_layout }}
 
     {% sections 'footer-group' %}
+
+    <script>
+      (() => {
+        const revealGroups = document.querySelectorAll('[data-sb-reveal]');
+        if (!revealGroups.length) return;
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          revealGroups.forEach((group) => group.classList.add('is-inview'));
+          return;
+        }
+
+        if (!('IntersectionObserver' in window)) {
+          revealGroups.forEach((group) => group.classList.add('is-inview'));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-inview');
+              observer.unobserve(entry.target);
+            });
+          },
+          {
+            threshold: 0.2,
+            rootMargin: '0px 0px -8% 0px',
+          }
+        );
+
+        revealGroups.forEach((group) => {
+          group.classList.add('sb-reveal--animate');
+
+          const rect = group.getBoundingClientRect();
+          const viewBottom = window.innerHeight * 0.92;
+          const inInitialView = rect.top < viewBottom && rect.bottom > 0;
+
+          if (inInitialView) {
+            group.classList.add('is-inview');
+            return;
+          }
+
+          observer.observe(group);
+        });
+      })();
+    </script>
   </body>
 </html>

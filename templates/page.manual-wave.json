@@ -1,0 +1,117 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "hero-card",
+      "settings": {
+        "page_title": "",
+        "page_benefits": "Manual Wave"
+      }
+    },
+    "chapters": {
+      "type": "manual-chapters",
+      "blocks": {
+        "chapter_1": {
+          "type": "chapter",
+          "settings": {
+            "nav_label": "Getting started",
+            "anchor_id": "getting-started",
+            "heading": "Getting started",
+            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras id commodo augue. Donec consequat sem sed eros accumsan, sed dictum justo aliquet. Aliquam vitae dapibus felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p><p>Vivamus convallis, nisi et consequat ullamcorper, sem risus efficitur ipsum, id feugiat justo turpis at turpis. Mauris malesuada, velit in volutpat dictum, purus erat varius augue, non porttitor neque eros eget erat. Sed lacinia aliquet sem, in tempus urna.</p><p>Praesent id urna at nisl vulputate tristique. Curabitur feugiat porta ligula, id vestibulum magna tincidunt at. Proin sed tempor nunc. Integer molestie, lorem at bibendum tincidunt, est elit blandit lacus, quis tempus quam dui sed lorem.</p>"
+          }
+        },
+        "divider_1": {
+          "type": "divider",
+          "settings": {}
+        },
+        "chapter_2": {
+          "type": "chapter",
+          "settings": {
+            "nav_label": "Using Wave",
+            "anchor_id": "using-wave",
+            "heading": "Using Wave",
+            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Aliquam erat volutpat. Suspendisse suscipit purus ut iaculis pharetra. Integer luctus luctus augue, vitae semper arcu pretium id. In dapibus, justo ac suscipit pellentesque, leo libero tristique lectus, vitae tempus risus urna et nunc.</p><p>Nunc et massa id arcu varius ornare. Curabitur non nisl in sem pellentesque luctus. Pellentesque commodo sem vel lectus imperdiet, et ullamcorper arcu pulvinar. Morbi aliquam mi turpis, eu tristique lorem congue non.</p><p>Quisque ut arcu eu purus ullamcorper suscipit. Sed eu neque vel sem tincidunt aliquet. Donec id est vehicula, finibus turpis id, lacinia neque. Integer feugiat metus non nulla tristique, at tristique est faucibus.</p>"
+          }
+        },
+        "divider_2": {
+          "type": "divider",
+          "settings": {}
+        },
+        "chapter_3": {
+          "type": "chapter",
+          "settings": {
+            "nav_label": "Tempo controls",
+            "anchor_id": "tempo-controls",
+            "heading": "Tempo controls",
+            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida elit non augue posuere, at ultricies augue vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean placerat tincidunt mattis.</p><p>Curabitur bibendum est ut velit varius, ac condimentum lacus auctor. Donec consequat velit in eros ultricies, at consequat sapien iaculis. Integer bibendum nulla sit amet risus interdum, ut mattis urna luctus.</p><p>Etiam feugiat, ipsum ut vulputate fermentum, turpis ex facilisis libero, sed facilisis libero erat non enim. Nulla volutpat sapien ut justo consectetur, sit amet suscipit mauris sodales. Sed ut massa sit amet erat sollicitudin vulputate.</p>"
+          }
+        },
+        "divider_3": {
+          "type": "divider",
+          "settings": {}
+        },
+        "chapter_4": {
+          "type": "chapter",
+          "settings": {
+            "nav_label": "Troubleshooting",
+            "anchor_id": "troubleshooting",
+            "heading": "Troubleshooting",
+            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis convallis elit vel magna aliquet, id viverra mauris tempus. Cras ultricies augue non erat vulputate iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p><p>Phasellus eget lorem vel nunc convallis sagittis. Integer aliquet posuere leo, a molestie magna commodo id. Sed sollicitudin gravida tellus, id consectetur dolor vehicula vitae. Cras consectetur nibh id ipsum luctus, in cursus quam placerat.</p><p>Maecenas sed diam sit amet turpis posuere efficitur. Nunc ut imperdiet nibh. Nunc varius venenatis risus, nec tempor enim faucibus vitae. Pellentesque sodales ligula et nibh sodales, non maximus dui ultrices.</p>"
+          }
+        },
+        "divider_4": {
+          "type": "divider",
+          "settings": {}
+        },
+        "chapter_5": {
+          "type": "chapter",
+          "settings": {
+            "nav_label": "Maintenance",
+            "anchor_id": "maintenance",
+            "heading": "Maintenance",
+            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut dapibus sem. Sed id turpis sit amet turpis interdum varius. Vestibulum dictum tempor sem quis elementum. Integer malesuada nisi sit amet eros condimentum, vel convallis justo scelerisque.</p><p>Nam facilisis pellentesque arcu, eu vestibulum neque pulvinar sed. Duis vehicula arcu odio, vitae fermentum sem aliquet non. Donec blandit molestie justo id lacinia. Pellentesque nec sem eu augue luctus tempor.</p><p>Morbi aliquet posuere erat et iaculis. Fusce vulputate, nunc non feugiat feugiat, nibh lectus posuere tortor, at egestas lacus eros vel orci. Sed sollicitudin dictum malesuada. Aenean at commodo nisl.</p>"
+          }
+        },
+        "divider_5": {
+          "type": "divider",
+          "settings": {}
+        },
+        "chapter_6": {
+          "type": "chapter",
+          "settings": {
+            "nav_label": "FAQ",
+            "anchor_id": "faq",
+            "heading": "FAQ",
+            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat urna vel nunc mollis, et scelerisque enim posuere. In at arcu hendrerit, volutpat est ut, hendrerit nibh. Aenean dapibus urna et convallis pulvinar.</p><p>Etiam posuere leo eu diam feugiat posuere. Donec in sem non ipsum porta malesuada. Curabitur vitae justo eu purus pharetra cursus. Morbi dictum sollicitudin sem, quis pellentesque risus condimentum sed.</p><p>Aliquam erat volutpat. Praesent posuere nisi non ipsum ullamcorper sagittis. Vivamus faucibus diam at nisi consequat, sed porta sem gravida. Nulla vel eleifend sem. Suspendisse vel ipsum ac sapien ullamcorper lacinia.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "chapter_1",
+        "divider_1",
+        "chapter_2",
+        "divider_2",
+        "chapter_3",
+        "divider_3",
+        "chapter_4",
+        "divider_4",
+        "chapter_5",
+        "divider_5",
+        "chapter_6"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "chapters"
+  ]
+}

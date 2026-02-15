@@ -128,3 +128,20 @@ body {
 .shopify-section + .shopify-section {
   margin-top: var(--sb-space-96);
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sb-reveal--animate [data-sb-reveal-item] {
+    opacity: 0;
+    transform: translateY(var(--sb-space-36));
+    transition:
+      opacity 650ms ease,
+      transform 750ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--sb-reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .sb-reveal--animate.is-inview [data-sb-reveal-item] {
+    opacity: 1;
+    transform: none;
+  }
+}
