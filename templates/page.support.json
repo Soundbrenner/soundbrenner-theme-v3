@@ -26,7 +26,7 @@
           "settings": {
             "image": "shopify://shop_images/Property_1_The_Metronome_app.jpg",
             "label": "The Metronome app",
-            "link": "shopify://pages/manual-soundbrenner-app"
+            "link": "shopify://pages/manual-the-metronome-app"
           }
         },
         "tile_mDcJHA": {
@@ -34,7 +34,7 @@
           "settings": {
             "image": "shopify://shop_images/Property_1_Wave.jpg",
             "label": "Wave",
-            "link": "shopify://pages/manual-wave"
+            "link": "shopify://pages/manual-wave-in-ear-monitors"
           }
         },
         "tile_nPHHCm": {
@@ -42,7 +42,7 @@
           "settings": {
             "image": "shopify://shop_images/Property_1_Wave_Pro_88264cd5-5aee-443f-80eb-8241c2b639b7.jpg",
             "label": "Wave Pro",
-            "link": "shopify://pages/manual-wave-pro"
+            "link": "shopify://pages/manual-wave-pro-in-ear-monitors"
           }
         },
         "tile_1": {
@@ -50,7 +50,7 @@
           "settings": {
             "image": "shopify://shop_images/Property_1_Pulse_cdf70979-65c7-410a-bfce-770fbd1e4db0.jpg",
             "label": "Pulse",
-            "link": "shopify://pages/manual-pulse"
+            "link": "shopify://pages/manual-pulse-vibrating-metronome"
           }
         },
         "tile_2": {
