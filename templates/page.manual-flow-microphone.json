@@ -50,31 +50,19 @@
         "chapter_2": {
           "type": "heading",
           "settings": {
-            "heading": "First steps"
+            "heading": "Features"
           }
         },
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>Connect the cable to the earphones. Both sides feature the marking \"L\" for left and \"R\" for right, so make sure you match the correct sides with each other. <br/><br/>Also make sure the cable is pointing upwards like it's shown in the illustration.</p>"
-          }
-        },
-        "image_QD8E9d": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_1.jpg"
+            "text": "<ul><li>Studio quality recording (up to 16-bit / 48kHz)</li><li>Minimizes background noise</li><li>No charging required (powered by your device!)</li><li>Built-in headphone jack for real-time monitoring</li><li>Integrated XLR and USB-C ports for lossless audio</li><li>Ships with USB-C, Lightning and USB-A cable</li><li>Includes tripod & mount for microphone stands</li></ul>"
           }
         },
         "body_GnBhmE": {
           "type": "text",
           "settings": {
             "text": "<p>Now experiment with various ear tip materials and sizes. Silicone is durable and easy to use, while foam provides up to 36dB of passive noise isolation. Compress the foam tips before insertion, letting them expand in your ears.<br/><br/>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
-          }
-        },
-        "image_tVbxTK": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_2.jpg"
           }
         },
         "divider_2": {
@@ -192,9 +180,7 @@
         "divider_1",
         "chapter_2",
         "body_2",
-        "image_QD8E9d",
         "body_GnBhmE",
-        "image_tVbxTK",
         "divider_2",
         "chapter_3",
         "body_3",
