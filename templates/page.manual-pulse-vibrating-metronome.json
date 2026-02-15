@@ -366,6 +366,22 @@
         "heading_UbVVPP": {
           "type": "heading",
           "settings": {
+            "heading": "Troubleshooting"
+          }
+        },
+        "text_w4eKbN": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If your Pulse is not responding, restarting the device will usually help.<br/><br/>To restart the device, you need to first remove the band. Locate the round hole in the recessed area that is usually occupied by the band. Next, insert a pointy item into the hole, like for example a needle. If the restart is successful, your device should light up briefly.</p>"
+          }
+        },
+        "divider_Cf3TTW": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_pyreUU": {
+          "type": "heading",
+          "settings": {
             "heading": "Compliance"
           }
         },
@@ -467,6 +483,9 @@
         "text_fPAj8t",
         "divider_r9CiCP",
         "heading_UbVVPP",
+        "text_w4eKbN",
+        "divider_Cf3TTW",
+        "heading_pyreUU",
         "faq_item_1",
         "faq_item_2",
         "faq_item_3",
