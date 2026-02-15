@@ -81,6 +81,20 @@ body {
   color: var(--color-foreground);
 }
 
+/* Shared rich-text link behavior */
+.rte a,
+.rte a:visited {
+  color: var(--sb-color-primary-500);
+  text-decoration: none;
+}
+
+.rte a:hover,
+.rte a:focus-visible,
+.rte a:active {
+  color: var(--sb-color-primary-500);
+  text-decoration: underline;
+}
+
 ::selection {
   background: var(--sb-color-primary-500);
   color: var(--sb-color-always-white);
