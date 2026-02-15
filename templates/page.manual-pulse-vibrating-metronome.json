@@ -350,6 +350,22 @@
         "heading_bLLggk": {
           "type": "heading",
           "settings": {
+            "heading": "Multi-player sync"
+          }
+        },
+        "text_fPAj8t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Pulse can be synced to other wearables by connecting all of them to the same mobile device. You can sync up to a total of five devices, allowing you to feel the beat together.</p><p>Open the Soundbrenner app on the mobile device you want to use to sync the wearables. Inside the app navigate to: \"Settings\" → \"Add a wearable\".</p>"
+          }
+        },
+        "divider_r9CiCP": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_UbVVPP": {
+          "type": "heading",
+          "settings": {
             "heading": "Compliance"
           }
         },
@@ -448,6 +464,9 @@
         "button_NGjw3K",
         "divider_ebpqCb",
         "heading_bLLggk",
+        "text_fPAj8t",
+        "divider_r9CiCP",
+        "heading_UbVVPP",
         "faq_item_1",
         "faq_item_2",
         "faq_item_3",
