@@ -33,7 +33,7 @@
         "body_1": {
           "type": "text",
           "settings": {
-            "text": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.<br/><br/>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.<br/><br/>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
+            "text": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.</p><p>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.</p><p>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
           }
         },
         "button_1": {
@@ -50,31 +50,19 @@
         "chapter_2": {
           "type": "heading",
           "settings": {
-            "heading": "First steps"
+            "heading": "The best way to get started"
           }
         },
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>Connect the cable to the earphones. Both sides feature the marking \"L\" for left and \"R\" for right, so make sure you match the correct sides with each other. <br/><br/>Also make sure the cable is pointing upwards like it's shown in the illustration.</p>"
+            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use the Pulse in the shortest time possible. It’s the best way to get started, so we highly recommend you to watch this video!</p>"
           }
         },
-        "image_QD8E9d": {
-          "type": "image",
+        "vimeo_video_4xgCB6": {
+          "type": "vimeo_video",
           "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_1.jpg"
-          }
-        },
-        "body_GnBhmE": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Now experiment with various ear tip materials and sizes. Silicone is durable and easy to use, while foam provides up to 36dB of passive noise isolation. Compress the foam tips before insertion, letting them expand in your ears.<br/><br/>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
-          }
-        },
-        "image_tVbxTK": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_2.jpg"
+            "video_source": "https://vimeo.com/1102070112"
           }
         },
         "divider_2": {
@@ -130,13 +118,78 @@
         "chapter_5": {
           "type": "heading",
           "settings": {
-            "heading": "Product care"
+            "heading": "Charging"
           }
         },
         "body_5": {
           "type": "text",
           "settings": {
-            "text": "<p>Keep the earphones and ear tips clean and dry when not in use. Never submerge them in water or expose them to extreme temperatures.<br/><br/>To clean ear tips, remove them, rinse with warm water, and let them air dry completely before reuse. Wipe the earphones and ear tips with a mild antiseptic. Do not use alcohol-based cleaners.</p>"
+            "text": "<p>After you take the Pulse out of the box, charge it for at least 30 minutes. A full charge can take up to 2.5 hours and gives you an average of 6 hours metronome playback time.</p><p>Plug the charger into any computer USB port or use a USB wall adapter, including those that ship with a smartphone or tablet. Then align the cable’s magnets with the charging port on the Pulse.</p>"
+          }
+        },
+        "heading_small_yn6TBq": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Charging"
+          }
+        },
+        "text_8iMfyk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>While charging, the soundwave will slowly pulse in an orange color.</p>"
+          }
+        },
+        "heading_small_76mbcf": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Fully charged"
+          }
+        },
+        "text_Je89EH": {
+          "type": "text",
+          "settings": {
+            "text": "<p>When charging is complete, the soundwave will turn solid green.</p>"
+          }
+        },
+        "heading_small_FAJ98n": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Tip"
+          }
+        },
+        "text_WbWULm": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Don't store your Pulse for extended periods (over 3 months) with an empty battery, as this can lead to permanent battery damage.</p>"
+          }
+        },
+        "divider_Jd6948": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_m3RyAP": {
+          "type": "heading",
+          "settings": {
+            "heading": "App & compatibility"
+          }
+        },
+        "text_B7JKP9": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Download our app on the product page.</p>"
+          }
+        },
+        "button_iFYRgP": {
+          "type": "button",
+          "settings": {
+            "label": "Download app",
+            "link": "shopify://pages/the-metronome-app"
+          }
+        },
+        "text_aNciDx": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Requires an iPhone, iPad, iPod or Android device. View the app's manual for more details.</p>"
           }
         },
         "divider_5": {
@@ -192,9 +245,7 @@
         "divider_1",
         "chapter_2",
         "body_2",
-        "image_QD8E9d",
-        "body_GnBhmE",
-        "image_tVbxTK",
+        "vimeo_video_4xgCB6",
         "divider_2",
         "chapter_3",
         "body_3",
@@ -206,6 +257,17 @@
         "divider_4",
         "chapter_5",
         "body_5",
+        "heading_small_yn6TBq",
+        "text_8iMfyk",
+        "heading_small_76mbcf",
+        "text_Je89EH",
+        "heading_small_FAJ98n",
+        "text_WbWULm",
+        "divider_Jd6948",
+        "heading_m3RyAP",
+        "text_B7JKP9",
+        "button_iFYRgP",
+        "text_aNciDx",
         "divider_5",
         "chapter_6",
         "faq_item_1",
