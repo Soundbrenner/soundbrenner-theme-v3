@@ -311,6 +311,38 @@
         "heading_pbekez": {
           "type": "heading",
           "settings": {
+            "heading": "How to feel the beat"
+          }
+        },
+        "text_EAFjAi": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Using a vibrational metronome is different. When you first start using the Pulse, you need to get used to it first. Don’t give up - you’ll get better over time. It’s just like learning to practice with a traditional metronome!</p><p>Over time, the vibration can even become a subconscious feeling that helps you keep the beat without thinking about it.</p>"
+          }
+        },
+        "divider_tjcndY": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_7eTcFU": {
+          "type": "heading",
+          "settings": {
+            "heading": "Using the companion app"
+          }
+        },
+        "text_3dDnyy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Because we know every musician is different, you can customize the Pulse to your own liking with our app.</p><p>To customize or turn off the lights and vibrations, open our mobile app and go to: \"Settings\" → \"Pulse settings\" → \"Lights\" or \"Vibrations\".We recommend to experiment with different vibration intensities and durations to find out what works best for you!</p><p>For more info how to use it, view the app's manual.</p>"
+          }
+        },
+        "divider_ebpqCb": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_bLLggk": {
+          "type": "heading",
+          "settings": {
             "heading": "Compliance"
           }
         },
@@ -402,6 +434,12 @@
         "button_UaWhag",
         "divider_Fhk86Q",
         "heading_pbekez",
+        "text_EAFjAi",
+        "divider_tjcndY",
+        "heading_7eTcFU",
+        "text_3dDnyy",
+        "divider_ebpqCb",
+        "heading_bLLggk",
         "faq_item_1",
         "faq_item_2",
         "faq_item_3",
