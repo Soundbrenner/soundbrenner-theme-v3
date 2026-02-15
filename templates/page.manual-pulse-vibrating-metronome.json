@@ -12,9 +12,9 @@
     "main": {
       "type": "hero-card",
       "settings": {
-        "background_image_desktop": "shopify://shop_images/footer_wave_desktop.jpg",
-        "background_image_mobile": "shopify://shop_images/footer_wave_mobile.jpg",
-        "page_title": "Manual Wave in-ear monitors",
+        "background_image_desktop": "shopify://shop_images/footer_pulse_desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/footer_pulse_mobile.jpg",
+        "page_title": "Manual Pulse vibrating metronome",
         "page_benefits": "Understand every detail.",
         "show_button": false,
         "button_label": "Placeholder",
