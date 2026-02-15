@@ -187,7 +187,7 @@
           "type": "faq_item",
           "settings": {
             "question": "FCC compliance",
-            "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions:</p><ul><li>They may not cause harmful interference.</li><li>They must accept any interference received, including interference that may cause undesired operation.</li></ul><p>TM and © 2026 Soundbrenner Limited. All rights reserved.</p>"
+            "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
           }
         }
       },
