@@ -68,7 +68,31 @@
         "body_GnBhmE": {
           "type": "text",
           "settings": {
-            "text": "<p>Now experiment with various ear tip materials and sizes. Silicone is durable and easy to use, while foam provides up to 36dB of passive noise isolation. Compress the foam tips before insertion, letting them expand in your ears.</p><p>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
+            "text": "<p>Try all three ear tip types to find your ideal fit and sound.</p>"
+          }
+        },
+        "heading_small_3iHXLi": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Silicone"
+          }
+        },
+        "text_Kh9nRX": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Silicone is durable and easy to use</p>"
+          }
+        },
+        "heading_small_8HAmmy": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Foam"
+          }
+        },
+        "text_pqMHaU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Provides up to 36 dB of passive noise isolation. Compress before insertion and allow the tip to expand in your ear.</p><p>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
           }
         },
         "image_tVbxTK": {
@@ -194,6 +218,10 @@
         "body_2",
         "image_QD8E9d",
         "body_GnBhmE",
+        "heading_small_3iHXLi",
+        "text_Kh9nRX",
+        "heading_small_8HAmmy",
+        "text_pqMHaU",
         "image_tVbxTK",
         "divider_2",
         "chapter_3",
