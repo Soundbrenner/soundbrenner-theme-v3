@@ -3,7 +3,7 @@
     <nav class="sb-manual-chapters__nav" aria-label="Manual chapters">
       {% assign first_chapter_link = true %}
       {% for block in section.blocks %}
-        {% if block.type == 'chapter' %}
+        {% if block.type == 'heading' %}
           {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
           {% assign chapter_id = raw_anchor | handleize %}
           <a
@@ -27,7 +27,7 @@
       <div class="sb-manual-chapters__mobile-list" role="list">
         {% assign first_mobile_chapter_link = true %}
         {% for block in section.blocks %}
-          {% if block.type == 'chapter' %}
+          {% if block.type == 'heading' %}
             {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
             {% assign chapter_id = raw_anchor | handleize %}
             <a
@@ -48,16 +48,16 @@
 
   <div class="sb-manual-chapters__content">
     {% for block in section.blocks %}
-      {% if block.type == 'chapter' %}
+      {% if block.type == 'heading' %}
         {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
         {% assign chapter_id = raw_anchor | handleize %}
         <article id="{{ chapter_id }}" class="sb-manual-chapters__chapter" data-sb-reveal {{ block.shopify_attributes }}>
           <h2 class="sb-manual-chapters__heading font-title weight-bold" data-sb-reveal-item>{{ block.settings.heading }}</h2>
         </article>
-      {% elsif block.type == 'body' %}
+      {% elsif block.type == 'text' %}
         <div class="sb-manual-chapters__body font-body weight-regular rte" data-sb-reveal {{ block.shopify_attributes }}>
           <div data-sb-reveal-item>
-            {{ block.settings.body }}
+            {{ block.settings.text }}
           </div>
         </div>
       {% elsif block.type == 'subheading' %}
@@ -65,7 +65,7 @@
           <span data-sb-reveal-item>{{ block.settings.heading }}</span>
         </h3>
       {% elsif block.type == 'heading_small' %}
-        <h4 class="sb-manual-chapters__heading-small font-body weight-bold" data-sb-reveal {{ block.shopify_attributes }}>
+        <h4 class="sb-manual-chapters__heading-small font-body weight-regular" data-sb-reveal {{ block.shopify_attributes }}>
           <span data-sb-reveal-item>{{ block.settings.heading }}</span>
         </h4>
       {% elsif block.type == 'image' %}
@@ -588,7 +588,7 @@
   "settings": [],
   "blocks": [
     {
-      "type": "chapter",
+      "type": "heading",
       "name": "Header large",
       "settings": [
         {
@@ -600,12 +600,12 @@
       ]
     },
     {
-      "type": "body",
+      "type": "text",
       "name": "Body",
       "settings": [
         {
           "type": "richtext",
-          "id": "body",
+          "id": "text",
           "label": "Body",
           "default": "<p>Write your manual content here.</p>"
         }
@@ -708,13 +708,13 @@
       "name": "Manual chapters",
       "blocks": [
         {
-          "type": "chapter"
+          "type": "heading"
         },
         {
-          "type": "body"
+          "type": "text"
         },
         {
-          "type": "chapter"
+          "type": "heading"
         }
       ]
     }
