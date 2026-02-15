@@ -159,14 +159,14 @@
           "type": "faq_item",
           "settings": {
             "question": "Safety",
-            "answer": "<p>Answer.</p>"
+            "answer": "<p>Avoid using the earphones in situations where hearing your surroundings is important, such as driving, biking, or walking near traffic.<br/><br/>Keep the product and its accessories out of reach of children. Small parts and cords can pose choking or strangulation hazards.<br/><br/>Always ensure ear tips are firmly attached before inserting the earphones. If a tip becomes lodged in the ear, seek immediate medical assistance.<br/><br/>Stop use and consult a professional if you experience irritation, discomfort, or excessive earwax buildup.<br/><br/>Do not disassemble or modify the device. Avoid applying excessive force or pulling on the cable to prevent damage.</p>"
           }
         },
         "faq_item_2": {
           "type": "faq_item",
           "settings": {
             "question": "Warranty",
-            "answer": "<p>Answer.</p>"
+            "answer": "<p>Our warranty terms are available at:<br/><span style=\"text-decoration:underline\">https://www.soundbrenner.com/warranty</span></p>"
           }
         },
         "faq_item_3": {
