@@ -166,7 +166,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Warranty",
-            "answer": "<p>Our warranty terms are available at:<br/><span style=\"text-decoration:underline\">https://www.soundbrenner.com/warranty</span></p>"
+            "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
           }
         },
         "faq_item_3": {
