@@ -1,11 +1,11 @@
-{% assign feature_tiles_fallback_image = 'tile-placeholder.jpg' | asset_url %}
+{% assign resource_tile_fallback_image = 'tile-placeholder.jpg' | asset_url %}
 
-<div class="sb-feature-tiles">
+<div class="sb-resource-tile">
   {% if section.settings.title != blank %}
-    <h2 class="sb-feature-tiles__title font-title weight-bold">{{ section.settings.title }}</h2>
+    <h2 class="sb-resource-tile__title font-title weight-bold">{{ section.settings.title }}</h2>
   {% endif %}
 
-  <div class="sb-feature-tiles__grid">
+  <div class="sb-resource-tile__grid">
     {% for block in section.blocks %}
       {% if block.settings.link != blank %}
         {% assign tile_href = block.settings.link %}
@@ -16,12 +16,12 @@
       {% if block.settings.image != blank %}
         {% assign tile_image = block.settings.image | image_url: width: 680 %}
       {% else %}
-        {% assign tile_image = feature_tiles_fallback_image %}
+        {% assign tile_image = resource_tile_fallback_image %}
       {% endif %}
 
-      <article class="sb-feature-tiles__item" {{ block.shopify_attributes }}>
-        <a class="sb-feature-tiles__link" href="{{ tile_href }}">
-          <div class="sb-feature-tiles__media">
+      <article class="sb-resource-tile__item" {{ block.shopify_attributes }}>
+        <a class="sb-resource-tile__link" href="{{ tile_href }}">
+          <div class="sb-resource-tile__media">
             <img
               src="{{ tile_image }}"
               alt="{{ block.settings.label | escape }}"
@@ -31,8 +31,8 @@
             >
           </div>
 
-          <div class="sb-feature-tiles__text-wrap">
-            <p class="sb-feature-tiles__text font-body weight-bold">{{ block.settings.label }}</p>
+          <div class="sb-resource-tile__text-wrap">
+            <p class="sb-resource-tile__text font-body weight-bold">{{ block.settings.label }}</p>
           </div>
         </a>
       </article>
@@ -41,21 +41,21 @@
 </div>
 
 {% stylesheet %}
-  .sb-feature-tiles__title {
+  .sb-resource-tile__title {
     margin: 0 0 var(--sb-space-24);
   }
 
-  .sb-feature-tiles__grid {
+  .sb-resource-tile__grid {
     display: grid;
     gap: var(--sb-space-24);
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .sb-feature-tiles__item {
+  .sb-resource-tile__item {
     min-width: 0;
   }
 
-  .sb-feature-tiles__link {
+  .sb-resource-tile__link {
     align-items: stretch;
     background: var(--sb-color-neutral-200);
     border-radius: var(--sb-radius-card);
@@ -68,25 +68,25 @@
     transition: transform 220ms ease;
   }
 
-  .sb-feature-tiles__link:hover,
-  .sb-feature-tiles__link:focus-visible {
+  .sb-resource-tile__link:hover,
+  .sb-resource-tile__link:focus-visible {
     transform: scale(1.015);
   }
 
-  .sb-feature-tiles__media {
+  .sb-resource-tile__media {
     aspect-ratio: 340 / 260;
     overflow: hidden;
     width: 100%;
   }
 
-  .sb-feature-tiles__media img {
+  .sb-resource-tile__media img {
     display: block;
     height: 100%;
     object-fit: cover;
     width: 100%;
   }
 
-  .sb-feature-tiles__text-wrap {
+  .sb-resource-tile__text-wrap {
     align-items: center;
     display: flex;
     flex: 1 1 auto;
@@ -95,13 +95,13 @@
     text-align: center;
   }
 
-  .sb-feature-tiles__text {
+  .sb-resource-tile__text {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
   @media (min-width: 750px) {
-    .sb-feature-tiles__grid {
+    .sb-resource-tile__grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
@@ -109,7 +109,7 @@
 
 {% schema %}
 {
-  "name": "Feature tiles",
+  "name": "Resource tile",
   "settings": [
     {
       "type": "text",
@@ -121,8 +121,12 @@
   "blocks": [
     {
       "type": "tile",
-      "name": "Tile",
+      "name": "Resource tile",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Target 340x260 at 2x export (680x520)."
+        },
         {
           "type": "image_picker",
           "id": "image",
@@ -132,7 +136,7 @@
           "type": "text",
           "id": "label",
           "label": "Text",
-          "default": "Tile title"
+          "default": "Resource tile"
         },
         {
           "type": "url",
@@ -144,7 +148,7 @@
   ],
   "presets": [
     {
-      "name": "Feature tiles",
+      "name": "Resource tile",
       "blocks": [
         {
           "type": "tile"

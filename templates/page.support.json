@@ -19,7 +19,7 @@
       }
     },
     "tiles_1": {
-      "type": "feature-tiles",
+      "type": "resource-tile",
       "blocks": {
         "tile_N39B4c": {
           "type": "tile",
@@ -77,7 +77,7 @@
       }
     },
     "tiles_2": {
-      "type": "feature-tiles",
+      "type": "resource-tile",
       "blocks": {
         "tile_1": {
           "type": "tile",
