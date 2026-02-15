@@ -36,6 +36,13 @@
             "body": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.<br/><br/>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.<br/><br/>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
           }
         },
+        "button_1": {
+          "type": "button",
+          "settings": {
+            "label": "Contact us",
+            "link": "shopify://pages/contact-us"
+          }
+        },
         "divider_1": {
           "type": "divider",
           "settings": {}
@@ -77,13 +84,20 @@
         "chapter_3": {
           "type": "chapter",
           "settings": {
-            "heading": "Tempo controls"
+            "heading": "In the box"
           }
         },
         "body_3": {
           "type": "body",
           "settings": {
-            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida elit non augue posuere, at ultricies augue vulputate. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean placerat tincidunt mattis.</p><p>Curabitur bibendum est ut velit varius, ac condimentum lacus auctor. Donec consequat velit in eros ultricies, at consequat sapien iaculis. Integer bibendum nulla sit amet risus interdum, ut mattis urna luctus.</p><p>Etiam feugiat, ipsum ut vulputate fermentum, turpis ex facilisis libero, sed facilisis libero erat non enim. Nulla volutpat sapien ut justo consectetur, sit amet suscipit mauris sodales. Sed ut massa sit amet erat sollicitudin vulputate.</p>"
+            "body": "<p>View the full list of packaging contents on the product page.</p>"
+          }
+        },
+        "button_rF6dEJ": {
+          "type": "button",
+          "settings": {
+            "label": "View in the box",
+            "link": "shopify://products/wave-in-ear-monitors"
           }
         },
         "divider_3": {
@@ -93,13 +107,20 @@
         "chapter_4": {
           "type": "chapter",
           "settings": {
-            "heading": "Troubleshooting"
+            "heading": "Tech specs"
           }
         },
         "body_4": {
           "type": "body",
           "settings": {
-            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis convallis elit vel magna aliquet, id viverra mauris tempus. Cras ultricies augue non erat vulputate iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p><p>Phasellus eget lorem vel nunc convallis sagittis. Integer aliquet posuere leo, a molestie magna commodo id. Sed sollicitudin gravida tellus, id consectetur dolor vehicula vitae. Cras consectetur nibh id ipsum luctus, in cursus quam placerat.</p><p>Maecenas sed diam sit amet turpis posuere efficitur. Nunc ut imperdiet nibh. Nunc varius venenatis risus, nec tempor enim faucibus vitae. Pellentesque sodales ligula et nibh sodales, non maximus dui ultrices.</p>"
+            "body": "<p>View the full specifications on the product page.</p>"
+          }
+        },
+        "button_CN7gAg": {
+          "type": "button",
+          "settings": {
+            "label": "View tech specs",
+            "link": "shopify://products/wave-in-ear-monitors"
           }
         },
         "divider_4": {
@@ -109,13 +130,13 @@
         "chapter_5": {
           "type": "chapter",
           "settings": {
-            "heading": "Maintenance"
+            "heading": "Product care"
           }
         },
         "body_5": {
           "type": "body",
           "settings": {
-            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut dapibus sem. Sed id turpis sit amet turpis interdum varius. Vestibulum dictum tempor sem quis elementum. Integer malesuada nisi sit amet eros condimentum, vel convallis justo scelerisque.</p><p>Nam facilisis pellentesque arcu, eu vestibulum neque pulvinar sed. Duis vehicula arcu odio, vitae fermentum sem aliquet non. Donec blandit molestie justo id lacinia. Pellentesque nec sem eu augue luctus tempor.</p><p>Morbi aliquet posuere erat et iaculis. Fusce vulputate, nunc non feugiat feugiat, nibh lectus posuere tortor, at egestas lacus eros vel orci. Sed sollicitudin dictum malesuada. Aenean at commodo nisl.</p>"
+            "body": "<p>Keep the earphones and ear tips clean and dry when not in use. Never submerge them in water or expose them to extreme temperatures.<br/><br/>To clean ear tips, remove them, rinse with warm water, and let them air dry completely before reuse. Wipe the earphones and ear tips with a mild antiseptic. Do not use alcohol-based cleaners.</p>"
           }
         },
         "divider_5": {
@@ -133,18 +154,12 @@
           "settings": {
             "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat urna vel nunc mollis, et scelerisque enim posuere. In at arcu hendrerit, volutpat est ut, hendrerit nibh. Aenean dapibus urna et convallis pulvinar.</p><p>Etiam posuere leo eu diam feugiat posuere. Donec in sem non ipsum porta malesuada. Curabitur vitae justo eu purus pharetra cursus. Morbi dictum sollicitudin sem, quis pellentesque risus condimentum sed.</p><p>Aliquam erat volutpat. Praesent posuere nisi non ipsum ullamcorper sagittis. Vivamus faucibus diam at nisi consequat, sed porta sem gravida. Nulla vel eleifend sem. Suspendisse vel ipsum ac sapien ullamcorper lacinia.</p>"
           }
-        },
-        "button_1": {
-          "type": "button",
-          "settings": {
-            "label": "Placeholder",
-            "link": ""
-          }
         }
       },
       "block_order": [
         "chapter_1",
         "body_1",
+        "button_1",
         "divider_1",
         "chapter_2",
         "body_2",
@@ -154,16 +169,17 @@
         "divider_2",
         "chapter_3",
         "body_3",
+        "button_rF6dEJ",
         "divider_3",
         "chapter_4",
         "body_4",
+        "button_CN7gAg",
         "divider_4",
         "chapter_5",
         "body_5",
         "divider_5",
         "chapter_6",
-        "body_6",
-        "button_1"
+        "body_6"
       ],
       "settings": {}
     },
