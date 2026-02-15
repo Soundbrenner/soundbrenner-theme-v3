@@ -146,7 +146,7 @@
         "text_XGrhm6": {
           "type": "text",
           "settings": {
-            "text": "<p>Please refer to the iOS instructions, but switch to the appropriate cable.</p><p>Please note that certain Android applications may not support external microphones, so if you're experiencing issues during the setup we recommend to try multiple apps.</p>"
+            "text": "<p>Flow microphone is also compatible with Android, macOS and Windows.</p><p>Please refer to the iOS instructions, but switch to the appropriate cable.</p><p>Please note that certain Android applications may not support external microphones, so if you're experiencing issues during the setup we recommend to try multiple apps.</p>"
           }
         },
         "divider_5": {
