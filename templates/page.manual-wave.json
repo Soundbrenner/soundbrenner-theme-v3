@@ -49,6 +49,26 @@
             "body": "<p>Connect the cable to the earphones. Both sides feature the marking \"L\" for left and \"R\" for right, so make sure you match the correct sides with each other. <br/><br/>Also make sure the cable is pointing upwards like it's shown in the illustration.</p>"
           }
         },
+        "image_QD8E9d": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Wave_media_1.png",
+            "alt_text": ""
+          }
+        },
+        "body_GnBhmE": {
+          "type": "body",
+          "settings": {
+            "body": "<p>Now experiment with various ear tip materials and sizes. Silicone is durable and easy to use, while foam provides up to 36dB of passive noise isolation. Compress the foam tips before insertion, letting them expand in your ears.<br/><br/>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
+          }
+        },
+        "image_tVbxTK": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Wave_media_2.png",
+            "alt_text": ""
+          }
+        },
         "divider_2": {
           "type": "divider",
           "settings": {}
@@ -120,6 +140,9 @@
         "divider_1",
         "chapter_2",
         "body_2",
+        "image_QD8E9d",
+        "body_GnBhmE",
+        "image_tVbxTK",
         "divider_2",
         "chapter_3",
         "body_3",
