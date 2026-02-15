@@ -239,6 +239,75 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_NWcY7r": {
+          "type": "heading",
+          "settings": {
+            "heading": "Interactions"
+          }
+        },
+        "heading_small_PXEqzz": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Start or pause"
+          }
+        },
+        "text_VmJxKr": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tap the soundwave twice quickly to start or pause the metronome.</p>"
+          }
+        },
+        "heading_small_qxGaTb": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Tap tempo"
+          }
+        },
+        "text_pD9eRG": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tap the soundwave three times or more at a steady pace. The Pulse will set a new tempo that matches the average pace of your taps.</p>"
+          }
+        },
+        "heading_small_NJN76f": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Change the tempo"
+          }
+        },
+        "text_yYneXf": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Turn the wheel to make fine adjustments to the tempo.</p>"
+          }
+        },
+        "divider_qH4tCT": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_iGiUqd": {
+          "type": "heading",
+          "settings": {
+            "heading": "Where to wear it"
+          }
+        },
+        "text_TGD86k": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Where you place the Pulse on your body can have a big impact on your experience. What works best is different for each musician.</p><p>The included short and long band allow you to wear the Pulse on your wrist, arm or ankle. For your first few sessions, try out different locations to see which one works best.</p><p>Remember to keep the band tight – the tighter the band, the stronger the feeling of the vibrations.</p><p>The hooks on the long band allow you to easily slide it over your arm.</p><p>Did you know we make a body strap for the chest, shoulder and thigh, that allows you to feel the beat even better? It's available here:</p>"
+          }
+        },
+        "button_UaWhag": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Pulse accessories",
+            "link": "shopify://collections/pulse-vibrating-metronome"
+          }
+        },
+        "divider_Fhk86Q": {
+          "type": "divider",
+          "settings": {}
+        },
         "heading_pbekez": {
           "type": "heading",
           "settings": {
@@ -320,6 +389,18 @@
         "heading_kzir4x",
         "text_qQwfnp",
         "divider_L6b7wJ",
+        "heading_NWcY7r",
+        "heading_small_PXEqzz",
+        "text_VmJxKr",
+        "heading_small_qxGaTb",
+        "text_pD9eRG",
+        "heading_small_NJN76f",
+        "text_yYneXf",
+        "divider_qH4tCT",
+        "heading_iGiUqd",
+        "text_TGD86k",
+        "button_UaWhag",
+        "divider_Fhk86Q",
         "heading_pbekez",
         "faq_item_1",
         "faq_item_2",
