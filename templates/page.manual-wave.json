@@ -14,8 +14,8 @@
       "settings": {
         "background_image_desktop": "shopify://shop_images/footer_wave_desktop.jpg",
         "background_image_mobile": "shopify://shop_images/footer_wave_mobile.jpg",
-        "page_title": "",
-        "page_benefits": "Manual Wave"
+        "page_title": "Manual Wave",
+        "page_benefits": "Understand every detail."
       }
     },
     "chapters": {
