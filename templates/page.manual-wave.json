@@ -12,6 +12,8 @@
     "main": {
       "type": "hero-card",
       "settings": {
+        "background_image_desktop": "shopify://shop_images/footer_wave_desktop.jpg",
+        "background_image_mobile": "shopify://shop_images/footer_wave_mobile.jpg",
         "page_title": "",
         "page_benefits": "Manual Wave"
       }
@@ -108,10 +110,18 @@
         "chapter_6"
       ],
       "settings": {}
+    },
+    "hero_card_wRrHA8": {
+      "type": "hero-card",
+      "settings": {
+        "page_title": "",
+        "page_benefits": "Want to get in touch?"
+      }
     }
   },
   "order": [
     "main",
-    "chapters"
+    "chapters",
+    "hero_card_wRrHA8"
   ]
 }
