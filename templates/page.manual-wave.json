@@ -39,8 +39,8 @@
           "settings": {
             "nav_label": "Using Wave",
             "anchor_id": "using-wave",
-            "heading": "Using Wave",
-            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Aliquam erat volutpat. Suspendisse suscipit purus ut iaculis pharetra. Integer luctus luctus augue, vitae semper arcu pretium id. In dapibus, justo ac suscipit pellentesque, leo libero tristique lectus, vitae tempus risus urna et nunc.</p><p>Nunc et massa id arcu varius ornare. Curabitur non nisl in sem pellentesque luctus. Pellentesque commodo sem vel lectus imperdiet, et ullamcorper arcu pulvinar. Morbi aliquam mi turpis, eu tristique lorem congue non.</p><p>Quisque ut arcu eu purus ullamcorper suscipit. Sed eu neque vel sem tincidunt aliquet. Donec id est vehicula, finibus turpis id, lacinia neque. Integer feugiat metus non nulla tristique, at tristique est faucibus.</p>"
+            "heading": "First steps",
+            "body": "<p>Connect the cable to the earphones. Both sides feature the marking \"L\" for left and \"R\" for right, so make sure you match the correct sides with each other. <br/><br/>Also make sure the cable is pointing upwards like it's shown in the illustration.</p>"
           }
         },
         "divider_2": {
