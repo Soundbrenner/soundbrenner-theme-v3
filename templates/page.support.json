@@ -12,8 +12,8 @@
     "main": {
       "type": "hero-card",
       "settings": {
-        "background_image_desktop": "shopify://shop_images/Property_1_Support.jpg",
-        "background_image_mobile": "shopify://shop_images/Property_1_Support_mobile.jpg",
+        "background_image_desktop": "shopify://shop_images/Property_1_Support_5e08c22d-2f71-4797-b52a-70946c388613.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Support_mobile_5c2f9bb6-8a92-437b-8eba-a70fd4f5583f.jpg",
         "page_title": "Support",
         "page_benefits": "We're here to help."
       }
