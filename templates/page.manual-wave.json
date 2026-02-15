@@ -130,6 +130,13 @@
           "settings": {
             "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat urna vel nunc mollis, et scelerisque enim posuere. In at arcu hendrerit, volutpat est ut, hendrerit nibh. Aenean dapibus urna et convallis pulvinar.</p><p>Etiam posuere leo eu diam feugiat posuere. Donec in sem non ipsum porta malesuada. Curabitur vitae justo eu purus pharetra cursus. Morbi dictum sollicitudin sem, quis pellentesque risus condimentum sed.</p><p>Aliquam erat volutpat. Praesent posuere nisi non ipsum ullamcorper sagittis. Vivamus faucibus diam at nisi consequat, sed porta sem gravida. Nulla vel eleifend sem. Suspendisse vel ipsum ac sapien ullamcorper lacinia.</p>"
           }
+        },
+        "button_1": {
+          "type": "button",
+          "settings": {
+            "label": "Placeholder",
+            "link": ""
+          }
         }
       },
       "block_order": [
@@ -152,7 +159,8 @@
         "body_5",
         "divider_5",
         "chapter_6",
-        "body_6"
+        "body_6",
+        "button_1"
       ],
       "settings": {}
     },

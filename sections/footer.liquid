@@ -37,9 +37,6 @@
 
           <div class="sb-footer__newsletter-klaviyo">
             <div class="klaviyo-form-VkQDWe"></div>
-            <template id="sb-footer-klaviyo-arrow-template">
-              {{ 'icon-arrow-right.svg' | inline_asset_content }}
-            </template>
           </div>
         </div>
       </div>
@@ -283,44 +280,77 @@
 
   .sb-footer__newsletter-klaviyo .klaviyo-form {
     background-color: var(--sb-color-neutral-600) !important;
+    border-radius: var(--sb-radius-pill) !important;
+    overflow: hidden !important;
     box-shadow:
       0 1px 0 0 var(--sb-color-always-white-25),
       0 4px 4px 0 var(--sb-color-always-black-25) inset !important;
   }
 
+  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-row'] {
+    align-items: stretch !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:first-child {
+    flex: 1 1 auto !important;
+    padding: 0 !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:first-child > div {
+    align-self: stretch !important;
+    height: 100% !important;
+    justify-content: center !important;
+    min-height: var(--sb-space-48) !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child {
+    margin: 0 !important;
+    padding: var(--sb-space-6) var(--sb-space-6) var(--sb-space-6) 0 !important;
+  }
+
   .sb-footer__newsletter-klaviyo .klaviyo-form button {
     align-items: center !important;
-    background: var(--sb-color-primary-500) !important;
+    background-color: var(--sb-color-primary-500) !important;
+    background-image: url('{{ 'icon-arrow-medium-transparent-padding-32.svg' | asset_url }}') !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: var(--sb-space-16) var(--sb-space-16) !important;
     border: 1px solid var(--sb-color-primary-500) !important;
-    border-radius: 500px !important;
+    border-radius: var(--sb-radius-pill) !important;
     box-shadow:
       0 -10px 20px 0 var(--sb-color-primary-500-25),
       0 0 0 1px var(--sb-color-primary-700) inset,
       0 -20px 20px 0 var(--sb-color-always-white-50) inset,
       0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-    display: inline-flex !important;
-    height: 40px !important;
-    justify-content: center !important;
-    padding: 0 !important;
-    line-height: 0 !important;
-    width: 48px !important;
-    min-width: 48px !important;
-    max-width: 48px !important;
-    flex: 0 0 48px !important;
     color: transparent !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
     font-size: 0 !important;
-    overflow: hidden !important;
+    font-weight: 700 !important;
+    justify-content: center !important;
+    line-height: 0 !important;
+    min-height: var(--sb-space-36) !important;
+    height: var(--sb-space-36) !important;
+    padding-inline: var(--sb-space-16) !important;
     position: relative !important;
+    text-decoration: none !important;
     transition:
       transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
       box-shadow 220ms ease;
+    white-space: nowrap !important;
     will-change: transform, box-shadow;
+    margin: 0 !important;
+    min-width: calc(var(--sb-space-16) * 3) !important;
+    width: calc(var(--sb-space-16) * 3) !important;
+    max-width: calc(var(--sb-space-16) * 3) !important;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form button::before {
     background: var(--sb-color-always-black-25);
     border-radius: 30px;
     content: '';
+    filter: blur(10px);
     height: 8px;
     left: -12px;
     pointer-events: none;
@@ -328,10 +358,7 @@
     top: 50%;
     transform: translateY(-50%);
     width: 72px;
-    filter: blur(10px);
-    transition:
-      opacity 220ms ease,
-      transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form button::after {
@@ -357,19 +384,22 @@
       linear-gradient(#000 0 0);
     mask-composite: exclude;
     opacity: 0.75;
-    transition: opacity 220ms ease;
   }
 
-  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__klaviyo-arrow {
-    display: block;
-    height: 12px;
-    position: relative;
-    width: 12px;
-    z-index: 4;
+  .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
+  .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
+    box-shadow:
+      0 -18px 30px 0 var(--sb-color-primary-300-25),
+      0 -6px 14px 0 var(--sb-color-primary-300-25),
+      0 -10px 20px 0 var(--sb-color-primary-500-25),
+      0 0 0 1px var(--sb-color-primary-700) inset,
+      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
+      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
+    transform: translateY(-1px);
   }
 
-  .sb-footer__newsletter-klaviyo .klaviyo-form button .sb-footer__klaviyo-arrow path:not([fill='none']) {
-    fill: var(--sb-color-always-white) !important;
+  .sb-footer__newsletter-klaviyo .klaviyo-form button:active {
+    transform: translateY(0);
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form input[type='email'] {
@@ -377,10 +407,18 @@
     border: 0 !important;
     box-shadow: none !important;
     color: var(--sb-color-neutral-900) !important;
+    font-size: var(--font-size-caption) !important;
+    font-weight: 400 !important;
+    font-family: var(--font-primary--family) !important;
     outline: none !important;
+    height: var(--sb-space-48) !important;
+    line-height: var(--sb-space-48) !important;
+    min-height: 0 !important;
+    padding-block: 0 !important;
+    padding-left: var(--sb-space-16) !important;
     -webkit-appearance: none !important;
     appearance: none !important;
-    transform: translateY(-1px);
+    transform: none !important;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form input[type='email']::placeholder {
@@ -395,22 +433,6 @@
     border: 0 !important;
     box-shadow: none !important;
     outline: none !important;
-  }
-
-  .sb-footer__newsletter-klaviyo .klaviyo-form button:hover,
-  .sb-footer__newsletter-klaviyo .klaviyo-form button:focus-visible {
-    transform: translateY(-1px);
-    box-shadow:
-      0 -18px 30px 0 var(--sb-color-primary-300-25),
-      0 -6px 14px 0 var(--sb-color-primary-300-25),
-      0 -10px 20px 0 var(--sb-color-primary-500-25),
-      0 0 0 1px var(--sb-color-primary-700) inset,
-      0 -20px 20px 0 var(--sb-color-always-white-50) inset,
-      0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-  }
-
-  .sb-footer__newsletter-klaviyo .klaviyo-form button:active {
-    transform: translateY(0);
   }
 
   .sb-footer__list {
@@ -588,33 +610,85 @@
 
 {% endstylesheet %}
 
-{% javascript %}
+<script>
   (() => {
-    const applyKlaviyoButtonIcon = () => {
-      const button = document.querySelector('.sb-footer__newsletter-klaviyo .klaviyo-form button');
-      const template = document.querySelector('#sb-footer-klaviyo-arrow-template');
-      if (!button || !template || button.dataset.sbArrowApplied === 'true') return false;
-
-      const svg = template.content.firstElementChild ? template.content.firstElementChild.cloneNode(true) : null;
-      if (!svg) return false;
-
-      svg.classList.add('sb-footer__klaviyo-arrow');
-      button.textContent = '';
-      button.appendChild(svg);
-      button.dataset.sbArrowApplied = 'true';
-      return true;
+    const setImportant = (el, prop, value) => {
+      el.style.setProperty(prop, value, 'important');
     };
 
-    if (applyKlaviyoButtonIcon()) return;
+    const applyKlaviyoOverrides = () => {
+      const root = document.querySelector('.sb-footer__newsletter-klaviyo');
+      if (!root) return;
 
-    const observer = new MutationObserver(() => {
-      if (!applyKlaviyoButtonIcon()) return;
-      observer.disconnect();
-    });
+      const form = root.querySelector('.klaviyo-form');
+      const input = root.querySelector('input[type="email"]');
+      const button = root.querySelector('button');
+      const firstComponent = root.querySelector('[data-testid="form-component"]:first-child');
+      const firstComponentInner = firstComponent ? firstComponent.querySelector('div') : null;
+      const lastComponent = root.querySelector('[data-testid="form-component"]:last-child');
+      const iconUrl = {{ 'icon-arrow-medium-transparent-padding-32.svg' | asset_url | json }};
+      if (!form || !input || !button) return;
 
+      button.classList.add('sb-button-radiant', 'sb-button-radiant--medium', 'sb-button-medium-radiant');
+      button.setAttribute('aria-label', {{ section.settings.newsletter_button_label | json }});
+
+      setImportant(form, 'border-radius', '999px');
+      setImportant(form, 'overflow', 'hidden');
+
+      if (firstComponent) {
+        setImportant(firstComponent, 'padding', '0');
+        setImportant(firstComponent, 'flex', '1 1 auto');
+      }
+      if (firstComponentInner) {
+        setImportant(firstComponentInner, 'height', '100%');
+        setImportant(firstComponentInner, 'justify-content', 'center');
+        setImportant(firstComponentInner, 'min-height', 'var(--sb-space-48)');
+        setImportant(firstComponentInner, 'align-self', 'stretch');
+      }
+      if (lastComponent) {
+        setImportant(lastComponent, 'padding', 'var(--sb-space-6) var(--sb-space-6) var(--sb-space-6) 0');
+        setImportant(lastComponent, 'margin', '0');
+      }
+
+      setImportant(input, 'height', 'var(--sb-space-48)');
+      setImportant(input, 'line-height', 'var(--sb-space-48)');
+      setImportant(input, 'padding-left', 'var(--sb-space-16)');
+      setImportant(input, 'padding-top', '0');
+      setImportant(input, 'padding-bottom', '0');
+      const captionSize = window.matchMedia('(min-width: 750px)').matches ? '14px' : '12px';
+      setImportant(input, 'font-size', captionSize);
+      setImportant(input, 'font-weight', '400');
+      setImportant(input, 'font-family', 'var(--font-primary--family)');
+      setImportant(input, 'transform', 'none');
+
+      setImportant(button, 'height', 'var(--sb-space-36)');
+      setImportant(button, 'min-height', 'var(--sb-space-36)');
+      setImportant(button, 'width', 'calc(var(--sb-space-16) * 3)');
+      setImportant(button, 'max-width', 'calc(var(--sb-space-16) * 3)');
+      setImportant(button, 'min-width', 'calc(var(--sb-space-16) * 3)');
+      setImportant(button, 'padding-left', 'var(--sb-space-16)');
+      setImportant(button, 'padding-right', 'var(--sb-space-16)');
+      setImportant(button, 'line-height', '0');
+      setImportant(button, 'font-size', '0');
+      setImportant(button, 'color', 'transparent');
+      setImportant(button, 'background-color', 'var(--sb-color-primary-500)');
+      setImportant(button, 'background-repeat', 'no-repeat');
+      setImportant(button, 'background-position', 'center');
+      setImportant(button, 'background-size', 'var(--sb-space-16) var(--sb-space-16)');
+      setImportant(button, 'background-image', `url("${iconUrl}")`);
+      button.textContent = '';
+    };
+
+    const requestApply = () => window.requestAnimationFrame(applyKlaviyoOverrides);
+    const observer = new MutationObserver(requestApply);
     observer.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('resize', requestApply, { passive: true });
+    requestApply();
+    window.setTimeout(requestApply, 300);
+    window.setTimeout(requestApply, 1200);
+    window.setInterval(requestApply, 2000);
   })();
-{% endjavascript %}
+</script>
 
 {% schema %}
 {

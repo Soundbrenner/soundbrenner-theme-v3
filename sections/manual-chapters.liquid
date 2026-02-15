@@ -57,6 +57,26 @@
             >
           {% endif %}
         </figure>
+      {% elsif block.type == 'button' %}
+        <div class="sb-manual-chapters__button-wrap" data-sb-reveal {{ block.shopify_attributes }}>
+          {% if block.settings.link != blank %}
+            <a
+              class="sb-button-radiant sb-button-radiant--large sb-button-large-radiant"
+              href="{{ block.settings.link }}"
+              data-sb-reveal-item
+            >
+              <span class="sb-button-radiant__label">{{ block.settings.label | default: 'Placeholder' }}</span>
+            </a>
+          {% else %}
+            <button
+              type="button"
+              class="sb-button-radiant sb-button-radiant--large sb-button-large-radiant"
+              data-sb-reveal-item
+            >
+              <span class="sb-button-radiant__label">{{ block.settings.label | default: 'Placeholder' }}</span>
+            </button>
+          {% endif %}
+        </div>
       {% elsif block.type == 'divider' %}
         <div data-sb-reveal>
           <hr class="sb-manual-chapters__divider" data-sb-reveal-item {{ block.shopify_attributes }}>
@@ -158,6 +178,10 @@
     height: 1px;
     margin: var(--sb-space-24) 0;
     width: 100%;
+  }
+
+  .sb-manual-chapters__button-wrap {
+    width: fit-content;
   }
 
   .sb-manual-chapters__heading {
@@ -373,6 +397,23 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button large radiant",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Placeholder"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
         }
       ]
     },
