@@ -77,6 +77,26 @@
             </button>
           {% endif %}
         </div>
+      {% elsif block.type == 'faq_item' %}
+        <article class="sb-manual-chapters__faq" data-sb-reveal {{ block.shopify_attributes }}>
+          <button
+            type="button"
+            class="sb-manual-chapters__faq-trigger"
+            aria-expanded="false"
+            data-manual-faq-trigger
+            data-sb-reveal-item
+          >
+            <span class="sb-manual-chapters__faq-question font-body weight-bold">{{ block.settings.question }}</span>
+            <span class="sb-manual-chapters__faq-icon" aria-hidden="true">
+              <span class="sb-manual-chapters__faq-icon-plus">{{ 'icon-faq-add.svg' | inline_asset_content }}</span>
+              <span class="sb-manual-chapters__faq-icon-close">{{ 'icon-faq-close.svg' | inline_asset_content }}</span>
+            </span>
+          </button>
+          <div class="sb-manual-chapters__faq-answer font-body weight-regular rte" data-manual-faq-answer data-sb-reveal-item>
+            {{ block.settings.answer }}
+          </div>
+          <hr class="sb-manual-chapters__faq-divider" data-sb-reveal-item>
+        </article>
       {% elsif block.type == 'divider' %}
         <div data-sb-reveal>
           <hr class="sb-manual-chapters__divider" data-sb-reveal-item {{ block.shopify_attributes }}>
@@ -182,6 +202,89 @@
 
   .sb-manual-chapters__button-wrap {
     width: fit-content;
+  }
+
+  .sb-manual-chapters__faq {
+    width: 100%;
+  }
+
+  .sb-manual-chapters__faq-trigger {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--sb-color-neutral-900);
+    cursor: pointer;
+    display: flex;
+    gap: var(--sb-space-16);
+    justify-content: space-between;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  .sb-manual-chapters__faq-question {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-manual-chapters__faq-icon {
+    color: var(--sb-color-primary-500);
+    display: inline-flex;
+    flex: 0 0 auto;
+    line-height: 0;
+  }
+
+  .sb-manual-chapters__faq-icon svg {
+    display: block;
+    height: var(--sb-space-20);
+    width: var(--sb-space-20);
+  }
+
+  .sb-manual-chapters__faq-icon svg path:not([fill='none']),
+  .sb-manual-chapters__faq-icon svg circle:not([fill='none']),
+  .sb-manual-chapters__faq-icon svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .sb-manual-chapters__faq-icon svg path:not([stroke='none']),
+  .sb-manual-chapters__faq-icon svg circle:not([stroke='none']),
+  .sb-manual-chapters__faq-icon svg rect:not([stroke='none']) {
+    stroke: currentColor !important;
+  }
+
+  .sb-manual-chapters__faq-icon-plus,
+  .sb-manual-chapters__faq-icon-close {
+    display: inline-flex;
+  }
+
+  .sb-manual-chapters__faq-icon-close {
+    display: none;
+  }
+
+  .sb-manual-chapters__faq-answer {
+    color: var(--sb-color-neutral-900);
+    display: none;
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-manual-chapters__faq.is-open .sb-manual-chapters__faq-answer {
+    display: block;
+  }
+
+  .sb-manual-chapters__faq.is-open .sb-manual-chapters__faq-icon-plus {
+    display: none;
+  }
+
+  .sb-manual-chapters__faq.is-open .sb-manual-chapters__faq-icon-close {
+    display: inline-flex;
+  }
+
+  .sb-manual-chapters__faq-divider {
+    background: var(--sb-color-neutral-600);
+    border: 0;
+    height: 1px;
+    margin: var(--sb-space-24) 0 0;
+    width: 100%;
   }
 
   .sb-manual-chapters__heading {
@@ -346,6 +449,15 @@
       });
     });
 
+    root.querySelectorAll('[data-manual-faq-trigger]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const faq = trigger.closest('.sb-manual-chapters__faq');
+        if (!faq) return;
+        const isOpen = faq.classList.toggle('is-open');
+        trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    });
+
     window.addEventListener('scroll', requestSync, { passive: true });
     window.addEventListener('resize', requestSync, { passive: true });
     window.addEventListener('hashchange', requestSync);
@@ -414,6 +526,24 @@
           "type": "url",
           "id": "link",
           "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "faq_item",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Placeholder question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Placeholder answer.</p>"
         }
       ]
     },
