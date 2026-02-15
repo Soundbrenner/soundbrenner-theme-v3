@@ -24,10 +24,10 @@
         "chapter_1": {
           "type": "chapter",
           "settings": {
-            "nav_label": "Getting started",
-            "anchor_id": "getting-started",
-            "heading": "Getting started",
-            "body": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras id commodo augue. Donec consequat sem sed eros accumsan, sed dictum justo aliquet. Aliquam vitae dapibus felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p><p>Vivamus convallis, nisi et consequat ullamcorper, sem risus efficitur ipsum, id feugiat justo turpis at turpis. Mauris malesuada, velit in volutpat dictum, purus erat varius augue, non porttitor neque eros eget erat. Sed lacinia aliquet sem, in tempus urna.</p><p>Praesent id urna at nisl vulputate tristique. Curabitur feugiat porta ligula, id vestibulum magna tincidunt at. Proin sed tempor nunc. Integer molestie, lorem at bibendum tincidunt, est elit blandit lacus, quis tempus quam dui sed lorem.</p>"
+            "nav_label": "Read this first",
+            "anchor_id": "",
+            "heading": "Read this first",
+            "body": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.<br/><br/>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.<br/><br/>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
           }
         },
         "divider_1": {
