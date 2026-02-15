@@ -14,217 +14,239 @@
       "settings": {
         "background_image_desktop": "shopify://shop_images/footer_wave_desktop.jpg",
         "background_image_mobile": "shopify://shop_images/footer_wave_mobile.jpg",
-        "page_title": "Manual Wave in-ear monitors",
-        "page_benefits": "Understand every detail.",
-        "show_button": false,
-        "button_label": "Placeholder",
-        "button_link": ""
+        "page_title": "Manual The metronome app",
+        "page_benefits": "Your all-in-one music practice companion.",
+        "show_button": true,
+        "button_label": "Download app",
+        "button_link": "shopify://pages/the-metronome-app"
       }
     },
     "chapters": {
       "type": "manual-chapters",
       "blocks": {
-        "chapter_1": {
+        "heading_1": {
           "type": "heading",
           "settings": {
-            "heading": "Read this first"
+            "heading": "Start"
           }
         },
-        "body_1": {
+        "text_1": {
           "type": "text",
           "settings": {
-            "text": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.<br/><br/>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.<br/><br/>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
-          }
-        },
-        "button_1": {
-          "type": "button",
-          "settings": {
-            "label": "Contact us",
-            "link": "shopify://pages/contact-us"
+            "text": "<p>The Metronome by Soundbrenner combines a metronome, practice tracker, and tuner in one app.</p><p>Use it as a free tool, or unlock advanced features with Soundbrenner Plus. Wearable owners can use their wearable features without needing Plus.</p>"
           }
         },
         "divider_1": {
           "type": "divider",
           "settings": {}
         },
-        "chapter_2": {
+        "heading_2": {
           "type": "heading",
           "settings": {
-            "heading": "First steps"
+            "heading": "Key features"
           }
         },
-        "body_2": {
+        "heading_small_2a": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Metronome"
+          }
+        },
+        "text_2a": {
           "type": "text",
           "settings": {
-            "text": "<p>Connect the cable to the earphones. Both sides feature the marking \"L\" for left and \"R\" for right, so make sure you match the correct sides with each other. <br/><br/>Also make sure the cable is pointing upwards like it's shown in the illustration.</p>"
+            "text": "<p>Professional tempo control with time signatures, subdivisions, accents, customizable sounds, and fast rhythm/setlist saving.</p>"
           }
         },
-        "image_QD8E9d": {
-          "type": "image",
+        "heading_small_2b": {
+          "type": "heading_small",
           "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_1.jpg"
+            "heading": "Practice tracker"
           }
         },
-        "body_GnBhmE": {
+        "text_2b": {
           "type": "text",
           "settings": {
-            "text": "<p>Now experiment with various ear tip materials and sizes. Silicone is durable and easy to use, while foam provides up to 36dB of passive noise isolation. Compress the foam tips before insertion, letting them expand in your ears.<br/><br/>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
+            "text": "<p>Track sessions, monitor goals and streaks, and keep structured progress across your instruments.</p>"
           }
         },
-        "image_tVbxTK": {
-          "type": "image",
+        "heading_small_2c": {
+          "type": "heading_small",
           "settings": {
-            "image": "shopify://shop_images/Property_1_Wave_2.jpg"
+            "heading": "Tuner"
+          }
+        },
+        "text_2c": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Accurate chromatic and profile-based tuning with adjustable reference frequency for your workflow.</p>"
           }
         },
         "divider_2": {
           "type": "divider",
           "settings": {}
         },
-        "chapter_3": {
+        "heading_3": {
           "type": "heading",
           "settings": {
-            "heading": "In the box"
+            "heading": "Wearables"
           }
         },
-        "body_3": {
+        "text_3": {
           "type": "text",
           "settings": {
-            "text": "<p>View the full list of packaging contents on the product page.</p>"
+            "text": "<p>Soundbrenner wearables (Core, Core 2, Pulse, Spark) connect via Bluetooth through the app.</p><p>Important: do not pair wearables in your phone’s Bluetooth menu. Pair inside the app using Add new wearable.</p>"
           }
         },
-        "button_rF6dEJ": {
+        "button_3a": {
           "type": "button",
           "settings": {
-            "label": "View in the box",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "label": "Open Pulse manual",
+            "link": "shopify://pages/manual-pulse-vibrating-metronome"
+          }
+        },
+        "button_3b": {
+          "type": "button",
+          "settings": {
+            "label": "Open Core & Spark manual",
+            "link": "shopify://pages/manual-core-and-spark-practice-companion"
           }
         },
         "divider_3": {
           "type": "divider",
           "settings": {}
         },
-        "chapter_4": {
+        "heading_4": {
           "type": "heading",
           "settings": {
-            "heading": "Tech specs"
+            "heading": "Compatibility"
           }
         },
-        "body_4": {
+        "text_4": {
           "type": "text",
           "settings": {
-            "text": "<p>View the full specifications on the product page.</p>"
-          }
-        },
-        "button_CN7gAg": {
-          "type": "button",
-          "settings": {
-            "label": "View tech specs",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "text": "<p><strong>iOS:</strong> all devices compatible with iOS 17 or later, including iPhone 6s+, iPod touch (7th gen)+, and iPad Air (2nd gen)+.</p><p><strong>Android:</strong> smartphones and tablets with Android 10 or later.</p><p>Some users historically reported Bluetooth issues on selected models from Sony, Huawei, Xiaomi, Oppo, Vivo, Nokia, Redmi, and Unihertz. This does not automatically mean current models are affected.</p>"
           }
         },
         "divider_4": {
           "type": "divider",
           "settings": {}
         },
-        "chapter_5": {
+        "heading_5": {
           "type": "heading",
           "settings": {
-            "heading": "Product care"
+            "heading": "Accents"
           }
         },
-        "body_5": {
+        "text_5": {
           "type": "text",
           "settings": {
-            "text": "<p>Keep the earphones and ear tips clean and dry when not in use. Never submerge them in water or expose them to extreme temperatures.<br/><br/>To clean ear tips, remove them, rinse with warm water, and let them air dry completely before reuse. Wipe the earphones and ear tips with a mild antiseptic. Do not use alcohol-based cleaners.</p>"
+            "text": "<p>Accent markers have four states: Off, 1st accent, 2nd accent, and 3rd accent.</p><p>Tap an accent marker in the metronome interface to cycle states. You can assign different sounds and visual feedback to each accent state.</p>"
           }
         },
         "divider_5": {
           "type": "divider",
           "settings": {}
         },
-        "chapter_6": {
+        "heading_6": {
           "type": "heading",
           "settings": {
-            "heading": "Compliance"
+            "heading": "FAQ"
           }
         },
-        "faq_item_1": {
+        "faq_1": {
           "type": "faq_item",
           "settings": {
-            "question": "Safety",
-            "answer": "<p>Avoid using the earphones in situations where hearing your surroundings is important, such as driving, biking, or walking near traffic.<br/><br/>Keep the product and its accessories out of reach of children. Small parts and cords can pose choking or strangulation hazards.<br/><br/>Always ensure ear tips are firmly attached before inserting the earphones. If a tip becomes lodged in the ear, seek immediate medical assistance.<br/><br/>Stop use and consult a professional if you experience irritation, discomfort, or excessive earwax buildup.<br/><br/>Do not disassemble or modify the device. Avoid applying excessive force or pulling on the cable to prevent damage.</p>"
+            "question": "Can I use the app without an account or subscription?",
+            "answer": "<p>Yes. You can use the app anonymously (no account) or as a free user (account created). Soundbrenner Plus is optional and unlocks advanced features.</p>"
           }
         },
-        "faq_item_2": {
+        "faq_2": {
           "type": "faq_item",
           "settings": {
-            "question": "Warranty",
-            "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
+            "question": "What are the library limits for free and Plus users?",
+            "answer": "<p>Anonymous use: up to 5 songs and 1 setlist (local only).</p><p>Free account: up to 10 songs and 2 setlists (local only).</p><p>Plus: unlimited songs and setlists with cloud storage and restore across devices.</p>"
           }
         },
-        "faq_item_3": {
+        "faq_3": {
           "type": "faq_item",
           "settings": {
-            "question": "Recycling",
-            "answer": "<p>Dispose of this product at an appropriate electronics recycling center to support sustainable reuse and resource conservation.</p>"
+            "question": "How do I pair wearables correctly?",
+            "answer": "<p>Always pair inside the app via Add new wearable, not in phone Bluetooth settings.</p><p>On Android, grant all onboarding permissions and set Location permission to Allow all the time. Missing permissions can block pairing.</p>"
           }
         },
-        "faq_item_4": {
+        "faq_4": {
           "type": "faq_item",
           "settings": {
-            "question": "EU compliance",
-            "answer": "<p>Soundbrenner Limited hereby declares that this product complies with the essential requirements and all relevant provisions of Directive 1995/5/EC.</p>"
+            "question": "How do I use Bluetooth foot pedals with the app?",
+            "answer": "<p>Pair the pedal first in your phone settings, then map actions in Settings → App settings → Foot pedal inputs. Verified support includes the Stomp Bluetooth foot pedal by Coda.</p>"
           }
         },
-        "faq_item_5": {
+        "faq_5": {
           "type": "faq_item",
           "settings": {
-            "question": "FCC compliance",
-            "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
+            "question": "I read the app supported DAWs, what happened?",
+            "answer": "<p>We discontinued the DAW sync beta due to usability and reliability issues. Setup often took too long, and there were too many DAW, operating system, and device combinations to troubleshoot reliably.</p><p>We are now focused on making tempo changes inside our mobile app more powerful and reliable.</p>"
+          }
+        },
+        "faq_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do refunds, cancellations, and restore purchases work for Plus?",
+            "answer": "<p>Plus subscriptions are billed by Apple App Store or Google Play. Refunds and cancellations must be handled through the store where you subscribed.</p><p>If your Plus status does not appear, open the subscription/paywall screen and use Restore purchase while logged into the correct Soundbrenner account.</p>"
+          }
+        },
+        "faq_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "My library does not sync or appears missing. What should I do?",
+            "answer": "<p>Confirm you are logged into the same Soundbrenner account on both devices. Then open Library and trigger manual sync from the top-right sync button on each device.</p><p>Note: if you used the app without Plus and deleted the app, locally stored library data cannot be recovered.</p>"
           }
         }
       },
       "block_order": [
-        "chapter_1",
-        "body_1",
-        "button_1",
+        "heading_1",
+        "text_1",
         "divider_1",
-        "chapter_2",
-        "body_2",
-        "image_QD8E9d",
-        "body_GnBhmE",
-        "image_tVbxTK",
+        "heading_2",
+        "heading_small_2a",
+        "text_2a",
+        "heading_small_2b",
+        "text_2b",
+        "heading_small_2c",
+        "text_2c",
         "divider_2",
-        "chapter_3",
-        "body_3",
-        "button_rF6dEJ",
+        "heading_3",
+        "text_3",
+        "button_3a",
+        "button_3b",
         "divider_3",
-        "chapter_4",
-        "body_4",
-        "button_CN7gAg",
+        "heading_4",
+        "text_4",
         "divider_4",
-        "chapter_5",
-        "body_5",
+        "heading_5",
+        "text_5",
         "divider_5",
-        "chapter_6",
-        "faq_item_1",
-        "faq_item_2",
-        "faq_item_3",
-        "faq_item_4",
-        "faq_item_5"
+        "heading_6",
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4",
+        "faq_5",
+        "faq_6",
+        "faq_7"
       ],
       "settings": {}
     },
-    "hero_card_wRrHA8": {
+    "support_cta": {
       "type": "hero-card",
       "settings": {
         "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Contact_us_mobile.jpg",
-        "page_title": "Contact us",
-        "page_benefits": "We're here to help.",
+        "page_title": "Need more help",
+        "page_benefits": "Our team is here for you.",
         "show_button": true,
-        "button_label": "Send us a message",
+        "button_label": "Contact us",
         "button_link": "shopify://pages/contact-us"
       }
     }
@@ -232,6 +254,6 @@
   "order": [
     "main",
     "chapters",
-    "hero_card_wRrHA8"
+    "support_cta"
   ]
 }
