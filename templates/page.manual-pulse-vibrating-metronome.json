@@ -395,6 +395,13 @@
         "faq_item_2": {
           "type": "faq_item",
           "settings": {
+            "question": "Privacy policy",
+            "answer": "<p>Our app's privacy policy is available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
+          }
+        },
+        "faq_item_EYUPeG": {
+          "type": "faq_item",
+          "settings": {
             "question": "Warranty",
             "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
           }
@@ -404,13 +411,6 @@
           "settings": {
             "question": "Terms of service",
             "answer": "<p>Our terms of service are available <a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">here</a>.</p>"
-          }
-        },
-        "faq_item_EYUPeG": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Warranty",
-            "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
           }
         },
         "faq_item_3": {
@@ -502,8 +502,8 @@
         "heading_pyreUU",
         "faq_item_1",
         "faq_item_2",
-        "faq_item_9g67Q4",
         "faq_item_EYUPeG",
+        "faq_item_9g67Q4",
         "faq_item_3",
         "faq_item_4",
         "faq_item_5"
