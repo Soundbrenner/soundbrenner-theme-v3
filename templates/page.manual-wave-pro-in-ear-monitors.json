@@ -197,14 +197,14 @@
         "faq_item_4": {
           "type": "faq_item",
           "settings": {
-            "question": "EU compliance",
+            "question": "EU declaration",
             "answer": "<p>Soundbrenner Limited hereby declares that this product complies with the essential requirements and all relevant provisions of Directive 1995/5/EC.</p>"
           }
         },
         "faq_item_5": {
           "type": "faq_item",
           "settings": {
-            "question": "FCC compliance",
+            "question": "FCC statement",
             "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
           }
         }
