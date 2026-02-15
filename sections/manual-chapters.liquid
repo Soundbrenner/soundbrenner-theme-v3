@@ -27,23 +27,27 @@
         {% assign raw_anchor = block.settings.heading | append: '-' | append: block.id %}
         {% assign chapter_id = raw_anchor | handleize %}
         <article id="{{ chapter_id }}" class="sb-manual-chapters__chapter" data-sb-reveal {{ block.shopify_attributes }}>
-          {% if block.settings.image != blank %}
-            <div class="sb-manual-chapters__image" data-sb-reveal-item>
-              {{
-                block.settings.image
-                | image_url: width: 2000
-                | image_tag:
-                  loading: 'lazy',
-                  class: 'sb-manual-chapters__image-file',
-                  alt: block.settings.heading
-              }}
-            </div>
-          {% endif %}
           <h2 class="sb-manual-chapters__heading font-title weight-bold" data-sb-reveal-item>{{ block.settings.heading }}</h2>
-          <div class="sb-manual-chapters__body font-body weight-regular rte" data-sb-reveal-item>
+        </article>
+      {% elsif block.type == 'body' %}
+        <div class="sb-manual-chapters__body font-body weight-regular rte" data-sb-reveal {{ block.shopify_attributes }}>
+          <div data-sb-reveal-item>
             {{ block.settings.body }}
           </div>
-        </article>
+        </div>
+      {% elsif block.type == 'image' %}
+        <figure class="sb-manual-chapters__media" data-sb-reveal {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            {{
+              block.settings.image
+              | image_url: width: 2400
+              | image_tag:
+                loading: 'lazy',
+                class: 'sb-manual-chapters__media-file',
+                alt: block.settings.alt_text
+            }}
+          {% endif %}
+        </figure>
       {% elsif block.type == 'divider' %}
         <div data-sb-reveal>
           <hr class="sb-manual-chapters__divider" data-sb-reveal-item {{ block.shopify_attributes }}>
@@ -126,12 +130,12 @@
     scroll-margin-top: var(--sb-space-64);
   }
 
-  .sb-manual-chapters__image {
-    margin-bottom: var(--sb-space-24);
+  .sb-manual-chapters__media {
+    margin: 0;
     width: 100%;
   }
 
-  .sb-manual-chapters__image-file {
+  .sb-manual-chapters__media-file {
     display: block;
     height: auto;
     width: 100%;
@@ -147,7 +151,7 @@
 
   .sb-manual-chapters__heading {
     color: var(--sb-color-neutral-900);
-    margin: 0 0 var(--sb-space-24);
+    margin: 0;
   }
 
   .sb-manual-chapters__body {
@@ -324,7 +328,31 @@
   "blocks": [
     {
       "type": "chapter",
-      "name": "Chapter",
+      "name": "Section title",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Chapter heading"
+        }
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Body",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body",
+          "default": "<p>Write your manual content here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
       "settings": [
         {
           "type": "paragraph",
@@ -337,15 +365,8 @@
         },
         {
           "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Chapter heading"
-        },
-        {
-          "type": "richtext",
-          "id": "body",
-          "label": "Body",
-          "default": "<p>Write your manual content here.</p>"
+          "id": "alt_text",
+          "label": "Alt text"
         }
       ]
     },
@@ -363,7 +384,7 @@
           "type": "chapter"
         },
         {
-          "type": "chapter"
+          "type": "body"
         },
         {
           "type": "chapter"
