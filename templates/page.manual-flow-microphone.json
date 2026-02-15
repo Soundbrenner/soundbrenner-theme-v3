@@ -33,7 +33,7 @@
         "body_1": {
           "type": "text",
           "settings": {
-            "text": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.<br/><br/>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.<br/><br/>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
+            "text": "<p>At Soundbrenner we firmly believe success is not given, it's earned. This is true for musicians, but also for companies.</p><p>We went to great lengths to ensure the product you’re holding was made to the highest standards. We care deeply that it becomes an irreplaceable companion on your musical journey.</p><p>If you experience any issues, our team will work hard to put a smile back on your face. We’re just an e-mail away.</p>"
           }
         },
         "button_1": {
@@ -59,13 +59,23 @@
             "text": "<ul><li>Studio quality recording (up to 16-bit / 48kHz)</li><li>Minimizes background noise</li><li>No charging required (powered by your device!)</li><li>Built-in headphone jack for real-time monitoring</li><li>Integrated XLR and USB-C ports for lossless audio</li><li>Ships with USB-C, Lightning and USB-A cable</li><li>Includes tripod & mount for microphone stands</li></ul>"
           }
         },
-        "body_GnBhmE": {
-          "type": "text",
+        "divider_2": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_GyKMY7": {
+          "type": "heading",
           "settings": {
-            "text": "<p>Now experiment with various ear tip materials and sizes. Silicone is durable and easy to use, while foam provides up to 36dB of passive noise isolation. Compress the foam tips before insertion, letting them expand in your ears.<br/><br/>After selecting your preferred ear tips, route the cable over your ears from behind before inserting the earphones. Happy listening!</p>"
+            "heading": "Important: use the right cable"
           }
         },
-        "divider_2": {
+        "text_L9hxMe": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Flow only works with cables that support data transfer. Use the included cable, or if you need a longer one, make sure it’s a USB-C data cable - most third-party cables are charging-only and won’t work.</p>"
+          }
+        },
+        "divider_JY3aW7": {
           "type": "divider",
           "settings": {}
         },
@@ -118,13 +128,25 @@
         "chapter_5": {
           "type": "heading",
           "settings": {
-            "heading": "Product care"
+            "heading": "How to use with iOS mobile devices"
           }
         },
         "body_5": {
           "type": "text",
           "settings": {
-            "text": "<p>Keep the earphones and ear tips clean and dry when not in use. Never submerge them in water or expose them to extreme temperatures.<br/><br/>To clean ear tips, remove them, rinse with warm water, and let them air dry completely before reuse. Wipe the earphones and ear tips with a mild antiseptic. Do not use alcohol-based cleaners.</p>"
+            "text": "<ol><li>Insert the USB-C or Lightning cable in your mobile device, and plug the other end into the microphone</li><li>Turn on the microphone. The LED will turn on. </li><li>Your microphone will automatically be detected and work in all iOS apps!</li><li>(Optional) Insert your headphone cable in the cable manager and connect it to the 3.5mm jack to monitor what's being recorded</li></ol>"
+          }
+        },
+        "heading_4eeHJr": {
+          "type": "heading",
+          "settings": {
+            "heading": "How to use with Android, macOS or Windows devices"
+          }
+        },
+        "text_XGrhm6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Please refer to the iOS instructions, but switch to the appropriate cable.</p><p>Please note that certain Android applications may not support external microphones, so if you're experiencing issues during the setup we recommend to try multiple apps.</p>"
           }
         },
         "divider_5": {
@@ -180,8 +202,10 @@
         "divider_1",
         "chapter_2",
         "body_2",
-        "body_GnBhmE",
         "divider_2",
+        "heading_GyKMY7",
+        "text_L9hxMe",
+        "divider_JY3aW7",
         "chapter_3",
         "body_3",
         "button_rF6dEJ",
@@ -192,6 +216,8 @@
         "divider_4",
         "chapter_5",
         "body_5",
+        "heading_4eeHJr",
+        "text_XGrhm6",
         "divider_5",
         "chapter_6",
         "faq_item_1",
