@@ -52,8 +52,7 @@
         "image_QD8E9d": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Wave_media_1.png",
-            "alt_text": ""
+            "image": "shopify://shop_images/Property_1_Wave_1.jpg"
           }
         },
         "body_GnBhmE": {
@@ -65,8 +64,7 @@
         "image_tVbxTK": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Wave_media_2.png",
-            "alt_text": ""
+            "image": "shopify://shop_images/Property_1_Wave_2.jpg"
           }
         },
         "divider_2": {
