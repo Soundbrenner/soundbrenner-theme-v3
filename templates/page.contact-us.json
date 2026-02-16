@@ -13,6 +13,8 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Contact_us_mobile.jpg",
         "kicker": "Contact us",
         "headline": "We’re here to help.",
         "subheadline": "",
