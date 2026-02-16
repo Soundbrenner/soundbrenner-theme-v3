@@ -99,28 +99,34 @@
         "body": "<p>We hire locally in Hong Kong and remotely around the world.</p><p>Our headquarters are in Sheung Wan, in the heart of the city’s vibrant center. The office is just steps from the MTR and surrounded by some of the best restaurants, cafés, and creative spaces the area has to offer.</p>"
       }
     },
-    "large_feature_gERXdi": {
-      "type": "large-feature",
-      "name": "Large feature",
+    "accordion_L39iGc": {
+      "type": "accordion",
+      "blocks": {
+        "accordion_item_iXHy7X": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "No open roles right now",
+            "answer": "<p>We do not have any open positions at the moment, but we are always growing. Please check back later for new opportunities.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_item_iXHy7X"
+      ],
+      "name": "Accordion",
       "settings": {
-        "media_position": "left",
-        "media": "shopify://shop_images/Property_1_Careers_3.jpg",
-        "title_part_one": "Where it all began",
-        "title_part_two": "",
-        "title_accent_color": "primary-500",
-        "body": "<p>Soundbrenner began in 2014 at a Startup Weekend in Berlin with a simple idea: a vibrating metronome. What started as a side project quickly became an obsession. The team later relocated to Asia while maintaining roots in Berlin.<br/><br/>Our journey took off through crowdfunding. In 2015, Pulse launched with $240K in pre-orders. In 2018, Core raised $1.6M and reached its goal in just 14 minutes. Today, our wearables are available in 30+ countries, have won “Best in Show” at NAMM, and are used by musicians around the world.<br/><br/>Alongside our hardware, The Metronome app has grown to over 600,000 monthly active users and millions of downloads.<br/><br/>We are proud of what we have built. And we are just getting started.</p>"
+        "use_custom_title": true,
+        "custom_title": "Open roles",
+        "show_subtitle": false
       }
     },
     "feature_carousel_main": {
       "type": "feature-carousel",
-      "settings": {
-        "title": "Feature carousel"
-      },
       "blocks": {
         "item_1": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+            "body": "<p><strong>The grind.</strong> Hard work. Consistency. Progress. Mastery takes time. We believe in showing up every day, putting in the work, and helping musicians improve step by step. Our products are built to support that journey.</p>"
           }
         },
         "item_2": {
@@ -154,65 +160,9 @@
         "item_3",
         "item_4",
         "item_5"
-      ]
-    },
-    "feature_carousel_secondary": {
-      "type": "feature-carousel",
+      ],
       "settings": {
         "title": "Feature carousel"
-      },
-      "blocks": {
-        "item_1": {
-          "type": "item",
-          "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
-          }
-        },
-        "item_2": {
-          "type": "item",
-          "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
-          }
-        },
-        "item_3": {
-          "type": "item",
-          "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
-          }
-        },
-        "item_4": {
-          "type": "item",
-          "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "item_1",
-        "item_2",
-        "item_3",
-        "item_4"
-      ]
-    },
-    "accordion_L39iGc": {
-      "type": "accordion",
-      "blocks": {
-        "accordion_item_iXHy7X": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "No open roles right now",
-            "answer": "<p>We do not have any open positions at the moment, but we are always growing. Please check back later for new opportunities.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "accordion_item_iXHy7X"
-      ],
-      "name": "Accordion",
-      "settings": {
-        "use_custom_title": true,
-        "custom_title": "Open roles",
-        "show_subtitle": false
       }
     },
     "accordion_PbEYpg": {
@@ -259,6 +209,56 @@
         "custom_title": "Frequently asked questions",
         "show_subtitle": true
       }
+    },
+    "large_feature_gERXdi": {
+      "type": "large-feature",
+      "name": "Large feature",
+      "settings": {
+        "media_position": "left",
+        "media": "shopify://shop_images/Property_1_Careers_3.jpg",
+        "title_part_one": "Where it all began",
+        "title_part_two": "",
+        "title_accent_color": "primary-500",
+        "body": "<p>Soundbrenner began in 2014 at a Startup Weekend in Berlin with a simple idea: a vibrating metronome. What started as a side project quickly became an obsession. The team later relocated to Asia while maintaining roots in Berlin.<br/><br/>Our journey took off through crowdfunding. In 2015, Pulse launched with $240K in pre-orders. In 2018, Core raised $1.6M and reached its goal in just 14 minutes. Today, our wearables are available in 30+ countries, have won “Best in Show” at NAMM, and are used by musicians around the world.<br/><br/>Alongside our hardware, The Metronome app has grown to over 600,000 monthly active users and millions of downloads.<br/><br/>We are proud of what we have built. And we are just getting started.</p>"
+      }
+    },
+    "feature_carousel_secondary": {
+      "type": "feature-carousel",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "title": "Feature carousel"
+      }
     }
   },
   "order": [
@@ -268,8 +268,8 @@
     "large_feature_4B9RkK",
     "accordion_L39iGc",
     "feature_carousel_main",
-    "feature_carousel_secondary",
     "accordion_PbEYpg",
-    "large_feature_gERXdi"
+    "large_feature_gERXdi",
+    "feature_carousel_secondary"
   ]
 }
