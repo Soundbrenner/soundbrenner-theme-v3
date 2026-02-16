@@ -135,6 +135,72 @@
             "text": "<p>Ableton Link lets you synchronize the Soundbrenner metronome with Ableton Live and other Link-enabled apps. For example, a band can run the app on multiple phones to share a synchronized audio click, you can sync your Soundbrenner wearable with Ableton Live on a desktop computer, or connect the app to another Link-enabled app on the same device so both share tempo and stay in sync.</p><p>Link-enabled apps and devices on the same Wi-Fi network connect automatically and remain in time with each other. Any participant can start or stop independently, change the tempo for everyone, and join or leave a session without disrupting synchronization.</p><p>To use Ableton Link, open the Soundbrenner app settings and enable Ableton Link. To sync with another app on the same device, enable Link in both apps. To sync with another device, ensure both devices are on the same Wi-Fi network with Ableton Link activated. Synchronization starts automatically, and the Ableton Link settings in the app will display connection indicators.</p>"
           }
         },
+        "heading_cFpRqT": {
+          "type": "heading",
+          "settings": {
+            "heading": "Advanced tempo and subdivision workarounds"
+          }
+        },
+        "heading_small_nEhdH4": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Using the metronome slower than 20 BPM"
+          }
+        },
+        "text_nnLU8B": {
+          "type": "text",
+          "settings": {
+            "text": "<p>You can simulate slower tempos by muting beats within a measure. Set the tempo to 20 BPM in 4/4. If you mute beats 2 and 4, you will hear a click every two beats, which equals 10 BPM. If you mute beats 2, 3, and 4, you will hear one click per measure, which equals 5 BPM.</p>"
+          }
+        },
+        "heading_small_UA6c3V": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Using the metronome faster than 400 BPM"
+          }
+        },
+        "text_B8zeAa": {
+          "type": "text",
+          "settings": {
+            "text": "<p>To simulate higher tempos, divide the tempo and use subdivisions. For example, to achieve 450 BPM in quarter notes, set the metronome to 225 BPM and select eighth notes as the subdivision. The resulting clicks equal 450 quarter notes per minute.</p>"
+          }
+        },
+        "heading_small_Qnq3gQ": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Using the metronome with sixtuplets"
+          }
+        },
+        "text_MUwUMx": {
+          "type": "text",
+          "settings": {
+            "text": "<p>To approximate sixtuplets, double the BPM and select triplet subdivisions. A sextuplet equals two groups of triplets within one beat, so this produces the correct rhythmic density.</p>"
+          }
+        },
+        "heading_small_yYmYqw": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Sending quarter notes to one band member and eighth notes to another"
+          }
+        },
+        "text_WJMJfq": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Use two devices linked via Ableton Link over Wi-Fi. Linked devices share the same BPM, but each device can choose its own subdivision.</p>"
+          }
+        },
+        "heading_small_xGwhxh": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Using quarter notes per minute instead of beats per minute"
+          }
+        },
+        "text_ELHRpf": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The app displays tempo in BPM, where the beat is defined by the selected time signature. Changing the time signature does not automatically change the BPM.</p><p>If you prefer to think in quarter notes per minute, adjust the BPM manually. For time signatures with x/8, double the BPM to maintain the same quarter-note pulse. For time signatures with x/2, halve the BPM accordingly.</p>"
+          }
+        },
         "divider_5": {
           "type": "divider",
           "settings": {}
@@ -159,39 +225,11 @@
             "answer": "<p>We hate when we need to jump through a lot of hoops to cancel a subscription. Hence we made it easy and frictionless for you.</p><p>You can cancel auto-renewal of your Soundbrenner Plus subscription any time. Once you cancelled:</p><ul><li>You won't be charged again</li><li>You can still enjoy the subscription benefits until the next renewal would have been due</li></ul><p>We currently do not offer the ability to subscribe directly from us. Instead we rely on Apple & Google to sell our subscription, collect payments and provide customer support relating to the payments. Please note if you contact us, we are unable to cancel the subscription for you since we are not granted these rights by Apple and Google - you will have to cancel at the place of your purchase. Luckily this is very easy!</p><p><strong>Cancel if you subscribed via Apple:</strong></p><p>Simply follow the steps outlined by Apple here:</p><p><a href=\"https://support.apple.com/en-us/HT202039\">https://support.apple.com/en-us/HT202039</a> </p><p><strong>Cancel if you subscribed via Google:</strong></p><p>Simply follow the steps outlined by Google here:</p><p><a href=\"https://support.google.com/googleplay/answer/7018481\">https://support.google.com/googleplay/answer/7018481</a> </p>"
           }
         },
-        "faq_3": {
-          "type": "faq_item",
-          "settings": {
-            "question": "How do I pair wearables correctly?",
-            "answer": "<p>Always pair inside the app via Add new wearable, not in phone Bluetooth settings.</p><p>On Android, grant all onboarding permissions and set Location permission to Allow all the time. Missing permissions can block pairing.</p>"
-          }
-        },
-        "faq_4": {
-          "type": "faq_item",
-          "settings": {
-            "question": "How do I use Bluetooth foot pedals with the app?",
-            "answer": "<p>Pair the pedal first in your phone settings, then map actions in Settings → App settings → Foot pedal inputs. Verified support includes the Stomp Bluetooth foot pedal by Coda.</p>"
-          }
-        },
         "faq_5": {
           "type": "faq_item",
           "settings": {
             "question": "I read the app supported DAWs, what happened?",
-            "answer": "<p>We discontinued the DAW sync beta due to usability and reliability issues. Setup often took too long, and there were too many DAW, operating system, and device combinations to troubleshoot reliably.</p><p>We are now focused on making tempo changes inside our mobile app more powerful and reliable.</p>"
-          }
-        },
-        "faq_6": {
-          "type": "faq_item",
-          "settings": {
-            "question": "How do refunds, cancellations, and restore purchases work for Plus?",
-            "answer": "<p>Plus subscriptions are billed by Apple App Store or Google Play. Refunds and cancellations must be handled through the store where you subscribed.</p><p>If your Plus status does not appear, open the subscription/paywall screen and use Restore purchase while logged into the correct Soundbrenner account.</p>"
-          }
-        },
-        "faq_7": {
-          "type": "faq_item",
-          "settings": {
-            "question": "My library does not sync or appears missing. What should I do?",
-            "answer": "<p>Confirm you are logged into the same Soundbrenner account on both devices. Then open Library and trigger manual sync from the top-right sync button on each device.</p><p>Note: if you used the app without Plus and deleted the app, locally stored library data cannot be recovered.</p>"
+            "answer": "<p>We discontinued the DAW sync beta due to usability and reliability issues. Setup often took too long, and there were too many DAW, operating system, and device combinations to troubleshoot reliably.</p><p>We are now focused on launching tempo changes in our app and making it as powerful as possible.</p>"
           }
         }
       },
@@ -215,15 +253,22 @@
         "text_9XTRJP",
         "heading_HRr34p",
         "text_Ucnxic",
+        "heading_cFpRqT",
+        "heading_small_nEhdH4",
+        "text_nnLU8B",
+        "heading_small_UA6c3V",
+        "text_B8zeAa",
+        "heading_small_Qnq3gQ",
+        "text_MUwUMx",
+        "heading_small_yYmYqw",
+        "text_WJMJfq",
+        "heading_small_xGwhxh",
+        "text_ELHRpf",
         "divider_5",
         "heading_6",
         "faq_1",
         "faq_2",
-        "faq_3",
-        "faq_4",
-        "faq_5",
-        "faq_6",
-        "faq_7"
+        "faq_5"
       ],
       "settings": {}
     },
