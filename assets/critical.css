@@ -165,6 +165,7 @@ body {
   justify-content: center !important;
   line-height: 1 !important;
   min-height: var(--sb-button-radiant-height, var(--sb-space-48)) !important;
+  padding-block: 0 !important;
   padding-inline: var(--sb-button-radiant-padding-inline, var(--sb-space-24)) !important;
   position: relative !important;
   text-decoration: none !important;
@@ -260,14 +261,35 @@ body {
 
 .sb-button-radiant__label,
 .sb-button-radiant__icon {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1;
   position: relative;
   z-index: 4;
 }
 
 .sb-button-radiant__icon {
-  display: block;
+  flex: 0 0 auto;
   height: 12px;
   width: 12px;
+}
+
+.sb-button-radiant__icon svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.sb-button-radiant--trailing-icon {
+  gap: var(--sb-space-8) !important;
+  justify-content: center !important;
+}
+
+.sb-button-radiant--trailing-icon .sb-button-radiant__icon {
+  flex: 0 0 var(--sb-space-16);
+  height: var(--sb-space-16);
+  width: var(--sb-space-16);
 }
 
 .sb-button-radiant__icon path:not([fill='none']),

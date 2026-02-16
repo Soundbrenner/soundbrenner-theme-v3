@@ -1,26 +1,26 @@
-<section class="sb-student-discount-text" data-sb-reveal>
-  <div class="sb-student-discount-text__content font-body weight-regular rte" data-sb-reveal-item>
+<section class="sb-body-text" data-sb-reveal>
+  <div class="sb-body-text__content font-body weight-regular rte" data-sb-reveal-item>
     {{ section.settings.content }}
   </div>
 </section>
 
 {% stylesheet %}
-  .sb-student-discount-text__content {
+  .sb-body-text__content {
     color: var(--sb-color-neutral-900);
   }
 
-  .sb-student-discount-text__content > * {
+  .sb-body-text__content > * {
     margin: 0;
   }
 
-  .sb-student-discount-text__content > * + * {
+  .sb-body-text__content > * + * {
     margin-top: var(--sb-space-24);
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Student discount text",
+  "name": "Body text",
   "settings": [
     {
       "type": "richtext",
@@ -31,9 +31,8 @@
   ],
   "presets": [
     {
-      "name": "Student discount text"
+      "name": "Body text"
     }
   ]
 }
 {% endschema %}
-
