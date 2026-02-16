@@ -96,13 +96,31 @@
         "heading_4": {
           "type": "heading",
           "settings": {
-            "heading": "Compatibility"
+            "heading": "The basics"
+          }
+        },
+        "heading_small_Ty9BrV": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Accents"
           }
         },
         "text_4": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>iOS:</strong> all devices compatible with iOS 17 or later, including iPhone 6s+, iPod touch (7th gen)+, and iPad Air (2nd gen)+.</p><p><strong>Android:</strong> smartphones and tablets with Android 10 or later.</p><p>Some users historically reported Bluetooth issues on selected models from Sony, Huawei, Xiaomi, Oppo, Vivo, Nokia, Redmi, and Unihertz. This does not automatically mean current models are affected.</p>"
+            "text": "<p>Accent markers have four states: Off, 1st accent, 2nd accent, and 3rd accent.</p><p>Tap an accent marker in the metronome interface to cycle states. In settings, you can assign different sounds and visual effects to each accent state.</p>"
+          }
+        },
+        "heading_small_kWiYA9": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Library"
+          }
+        },
+        "text_9XTRJP": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Here you can save songs and organize them into setlists. You can also share them with a convenient sharing link.</p><p>With Soundbrenner Plus, they are synced with the cloud across all your devices.</p>"
           }
         },
         "divider_4": {
@@ -195,7 +213,10 @@
         "button_3b",
         "divider_3",
         "heading_4",
+        "heading_small_Ty9BrV",
         "text_4",
+        "heading_small_kWiYA9",
+        "text_9XTRJP",
         "divider_4",
         "heading_5",
         "text_5",
