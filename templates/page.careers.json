@@ -126,7 +126,7 @@
         "item_1": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>The grind.</strong> Hard work. Consistency. Progress. Mastery takes time. We believe in showing up every day, putting in the work, and helping musicians improve step by step. Our products are built to support that journey.</p>"
+            "body": "<p><strong>The grind.</strong> Hard work. Consistency. Mastery takes time. We believe in showing up every day, putting in the work, and helping musicians improve step by step. Our products are built to support that journey.</p>"
           }
         },
         "item_2": {
@@ -138,19 +138,19 @@
         "item_3": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>We love our users.</strong> Care. Listening. Integrity. Our users inspire us. We build for real musicians, learn from feedback, and take responsibility when we fall short.</p>"
+            "body": "<p><strong>We love our users.</strong> Focus. Care. Our users inspire us. We build for real musicians, learn from feedback, and take responsibility when we fall short.</p>"
           }
         },
         "item_4": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>Truth.</strong> Honesty. Clarity. Ownership. We speak openly, take accountability, and focus on solving problems instead of hiding them.</p>"
+            "body": "<p><strong>Truth.</strong> Honesty. Transparency. We speak openly, take accountability, and focus on solving problems instead of hiding them.</p>"
           }
         },
         "item_5": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>We celebrate music.</strong> Passion. Community. Growth. From beginners to professionals, we support musicians at every stage. Practice should be empowering, not frustrating.</p>"
+            "body": "<p><strong>We celebrate music.</strong> Appreciation. Community. From beginners to professionals, we support musicians at every stage. Practice should be empowering, not frustrating.</p>"
           }
         }
       },
