@@ -7,14 +7,26 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "main": {
       "type": "404",
       "settings": {}
+    },
+    "hero_card_4dtMWy": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "page_title": "404",
+        "page_benefits": "The page you’re looking for can’t be found.",
+        "show_button": true,
+        "button_label": "Go to home page",
+        "button_link": "/"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "hero_card_4dtMWy"
   ]
 }
