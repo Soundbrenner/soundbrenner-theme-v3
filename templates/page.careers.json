@@ -13,6 +13,8 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_Careers.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Careers_mobile.jpg",
         "kicker": "Careers",
         "headline": "Soundbrenner is hiring. Might it be you?",
         "subheadline": "",
