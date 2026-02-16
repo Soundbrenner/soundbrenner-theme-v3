@@ -243,8 +243,8 @@
         "faq_5": {
           "type": "faq_item",
           "settings": {
-            "question": "I read the app supported DAWs, what happened?",
-            "answer": "<p>We discontinued the DAW sync beta due to usability and reliability issues. Setup often took too long, and there were too many DAW, operating system, and device combinations to troubleshoot reliably.</p><p>We are now focused on launching tempo changes in our app and making it as powerful as possible.</p>"
+            "question": "Does the app still support DAW synchronization?",
+            "answer": "<p>Outside of Ableton Link we discontinued the DAW sync beta due to usability and reliability issues. Setup was often complex and time-consuming, and the wide range of DAWs, operating systems, and device combinations made it difficult to ensure a stable experience.</p><p>Our current focus is on introducing tempo changes in the app and continuing to make the metronome as powerful and reliable as possible.</p>"
           }
         }
       },
