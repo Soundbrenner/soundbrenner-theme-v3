@@ -1,12 +1,36 @@
 {% assign hero_card_fallback_image_desktop = 'hero-card-placeholder-desktop.jpg' | asset_url %}
 {% assign hero_card_fallback_image_mobile = 'hero-card-placeholder-mobile.jpg' | asset_url %}
-{% if section.settings.background_image_mobile != blank %}
-  {% assign hero_card_mobile_image = section.settings.background_image_mobile | image_url: width: 1110 %}
+{% assign hero_card_use_seasonal = section.settings.use_seasonal_hero_card %}
+
+{% if hero_card_use_seasonal %}
+  {% assign hero_card_source_image_desktop = settings.seasonal_hero_image_desktop %}
+  {% assign hero_card_source_image_mobile = settings.seasonal_hero_image_mobile %}
+  {% assign hero_card_title = settings.seasonal_hero_page_title %}
+  {% assign hero_card_benefits = settings.seasonal_hero_page_benefits %}
+  {% assign hero_card_button_label = settings.seasonal_hero_button_label %}
+  {% assign hero_card_button_link = settings.seasonal_hero_button_link %}
+  {% if hero_card_button_label != blank or hero_card_button_link != blank %}
+    {% assign hero_card_show_button = true %}
+  {% else %}
+    {% assign hero_card_show_button = false %}
+  {% endif %}
+{% else %}
+  {% assign hero_card_source_image_desktop = section.settings.background_image_desktop %}
+  {% assign hero_card_source_image_mobile = section.settings.background_image_mobile %}
+  {% assign hero_card_title = section.settings.page_title %}
+  {% assign hero_card_benefits = section.settings.page_benefits %}
+  {% assign hero_card_button_label = section.settings.button_label %}
+  {% assign hero_card_button_link = section.settings.button_link %}
+  {% assign hero_card_show_button = section.settings.show_button %}
+{% endif %}
+
+{% if hero_card_source_image_mobile != blank %}
+  {% assign hero_card_mobile_image = hero_card_source_image_mobile | image_url: width: 1110 %}
 {% else %}
   {% assign hero_card_mobile_image = hero_card_fallback_image_mobile %}
 {% endif %}
-{% if section.settings.background_image_desktop != blank %}
-  {% assign hero_card_desktop_image = section.settings.background_image_desktop | image_url: width: 2480 %}
+{% if hero_card_source_image_desktop != blank %}
+  {% assign hero_card_desktop_image = hero_card_source_image_desktop | image_url: width: 2480 %}
 {% else %}
   {% assign hero_card_desktop_image = hero_card_fallback_image_desktop %}
 {% endif %}
@@ -18,16 +42,16 @@
     style="--sb-hero-card-bg-mobile: url('{{ hero_card_mobile_image }}'); --sb-hero-card-bg-desktop: url('{{ hero_card_desktop_image }}');"
   >
     <div class="sb-framing-card__content">
-      <p class="font-body weight-semibold">{{ section.settings.page_title }}</p>
-      <h2 class="font-title weight-bold">{{ section.settings.page_benefits }}</h2>
-      {% if section.settings.show_button %}
-        {% if section.settings.button_link != blank %}
-          <a class="sb-framing-card__button sb-button-radiant sb-button-radiant--large sb-button-large-radiant" href="{{ section.settings.button_link }}">
-            <span class="sb-button-radiant__label">{{ section.settings.button_label | default: 'Placeholder' }}</span>
+      <p class="font-body weight-semibold">{{ hero_card_title }}</p>
+      <h2 class="font-title weight-bold">{{ hero_card_benefits }}</h2>
+      {% if hero_card_show_button %}
+        {% if hero_card_button_link != blank %}
+          <a class="sb-framing-card__button sb-button-radiant sb-button-radiant--large sb-button-large-radiant" href="{{ hero_card_button_link }}">
+            <span class="sb-button-radiant__label">{{ hero_card_button_label | default: 'Placeholder' }}</span>
           </a>
         {% else %}
           <button type="button" class="sb-framing-card__button sb-button-radiant sb-button-radiant--large sb-button-large-radiant">
-            <span class="sb-button-radiant__label">{{ section.settings.button_label | default: 'Placeholder' }}</span>
+            <span class="sb-button-radiant__label">{{ hero_card_button_label | default: 'Placeholder' }}</span>
           </button>
         {% endif %}
       {% endif %}
@@ -92,6 +116,12 @@
 {
   "name": "Hero card",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_seasonal_hero_card",
+      "label": "Use seasonal hero card",
+      "default": false
+    },
     {
       "type": "paragraph",
       "content": "Target 1240x380 at 2x export (2480x760)."

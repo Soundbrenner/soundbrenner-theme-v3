@@ -114,5 +114,51 @@
         "default": 4
       }
     ]
+  },
+  {
+    "name": "Seasonal sale",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Desktop image target 1240x380 at 2x export (2480x760)."
+      },
+      {
+        "type": "image_picker",
+        "id": "seasonal_hero_image_desktop",
+        "label": "Seasonal hero image desktop"
+      },
+      {
+        "type": "paragraph",
+        "content": "Mobile image target 370x380 at 3x export (1110x1140)."
+      },
+      {
+        "type": "image_picker",
+        "id": "seasonal_hero_image_mobile",
+        "label": "Seasonal hero image mobile"
+      },
+      {
+        "type": "text",
+        "id": "seasonal_hero_page_title",
+        "label": "Seasonal page title",
+        "default": "Page title"
+      },
+      {
+        "type": "textarea",
+        "id": "seasonal_hero_page_benefits",
+        "label": "Seasonal page benefits",
+        "default": "Page benefits."
+      },
+      {
+        "type": "text",
+        "id": "seasonal_hero_button_label",
+        "label": "Seasonal button label",
+        "default": "Placeholder"
+      },
+      {
+        "type": "url",
+        "id": "seasonal_hero_button_link",
+        "label": "Seasonal button link"
+      }
+    ]
   }
 ]
