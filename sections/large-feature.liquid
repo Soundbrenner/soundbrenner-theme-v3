@@ -1,0 +1,218 @@
+<section class="sb-large-feature" data-sb-reveal>
+  <div class="sb-large-feature__layout {% if section.settings.media_position == 'right' %}sb-large-feature__layout--media-right{% endif %}">
+    <div class="sb-large-feature__media" data-sb-reveal-item>
+      {% assign media_alt = section.settings.media.alt | default: section.settings.title_part_one | default: 'Large feature image' %}
+      {% if section.settings.media != blank %}
+        {{
+          section.settings.media
+          | image_url: width: 1240
+          | image_tag:
+            class: 'sb-large-feature__media-image',
+            widths: '400, 620, 800, 1024, 1240',
+            sizes: '(min-width: 750px) 620px, 100vw',
+            alt: media_alt,
+            loading: 'lazy'
+        }}
+      {% else %}
+        {{
+          'large-feature-placeholder.png'
+          | asset_url
+          | image_tag:
+            class: 'sb-large-feature__media-image',
+            widths: '400, 620, 800, 1024, 1240',
+            sizes: '(min-width: 750px) 620px, 100vw',
+            alt: media_alt,
+            loading: 'lazy'
+        }}
+      {% endif %}
+    </div>
+
+    <div class="sb-large-feature__content" data-sb-reveal-item>
+      {% if section.settings.title_part_one != blank or section.settings.title_part_two != blank %}
+        <h2 class="sb-large-feature__title font-title weight-bold">
+          {% if section.settings.title_part_one != blank %}
+            <span class="sb-large-feature__title-primary">{{ section.settings.title_part_one }}</span>
+          {% endif %}
+          {% if section.settings.title_part_two != blank %}
+            {% if section.settings.title_part_one != blank %} {% endif %}
+            <span class="sb-large-feature__title-accent sb-large-feature__title-accent--{{ section.settings.title_accent_color }}">
+              {{ section.settings.title_part_two }}
+            </span>
+          {% endif %}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.body != blank %}
+        <div class="sb-large-feature__body font-body weight-regular rte">
+          {{ section.settings.body }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-large-feature {
+    width: 100%;
+  }
+
+  .sb-large-feature__layout {
+    align-items: center;
+    column-gap: var(--sb-space-96);
+    display: grid;
+    grid-template-areas: 'media content';
+    grid-template-columns: minmax(0, 620px) minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .sb-large-feature__layout--media-right {
+    grid-template-areas: 'content media';
+    grid-template-columns: minmax(0, 1fr) minmax(0, 620px);
+  }
+
+  .sb-large-feature__media {
+    border-radius: var(--sb-radius-card);
+    grid-area: media;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-large-feature__media-image {
+    aspect-ratio: 620 / 554;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-large-feature__content {
+    grid-area: content;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sb-large-feature__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-large-feature__title-accent--primary-500 {
+    color: var(--sb-color-primary-500);
+  }
+
+  .sb-large-feature__title-accent--tangerine-pop-500 {
+    color: var(--sb-color-tangerine-pop-500);
+  }
+
+  .sb-large-feature__title-accent--grape-jam-500 {
+    color: var(--sb-color-grape-jam-500);
+  }
+
+  .sb-large-feature__title-accent--berry-blue-700 {
+    color: var(--sb-color-berry-blue-700);
+  }
+
+  .sb-large-feature__body {
+    color: var(--sb-color-neutral-900);
+    margin-top: var(--sb-space-36);
+  }
+
+  .sb-large-feature__body > * {
+    margin: 0;
+  }
+
+  .sb-large-feature__body > * + * {
+    margin-top: var(--sb-space-24);
+  }
+
+  @media (max-width: 749px) {
+    .sb-large-feature__layout,
+    .sb-large-feature__layout--media-right {
+      gap: var(--sb-space-36);
+      grid-template-areas:
+        'content'
+        'media';
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Large feature",
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Media position (desktop)",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "media",
+      "label": "Media image"
+    },
+    {
+      "type": "paragraph",
+      "content": "Target 620x554 at 2x export (1240x1108)."
+    },
+    {
+      "type": "text",
+      "id": "title_part_one",
+      "label": "Title part 1",
+      "default": "Your primary"
+    },
+    {
+      "type": "text",
+      "id": "title_part_two",
+      "label": "Title part 2",
+      "default": "highlight"
+    },
+    {
+      "type": "select",
+      "id": "title_accent_color",
+      "label": "Title accent color",
+      "default": "primary-500",
+      "options": [
+        {
+          "value": "primary-500",
+          "label": "Primary-500"
+        },
+        {
+          "value": "tangerine-pop-500",
+          "label": "Tangerine-pop-500"
+        },
+        {
+          "value": "grape-jam-500",
+          "label": "Grape-jam-500"
+        },
+        {
+          "value": "berry-blue-700",
+          "label": "Berry-blue-700"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Body copy goes here.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Large feature"
+    }
+  ]
+}
+{% endschema %}
