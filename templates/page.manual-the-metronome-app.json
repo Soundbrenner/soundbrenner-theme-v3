@@ -236,7 +236,7 @@
         "faq_item_bpJkt4": {
           "type": "faq_item",
           "settings": {
-            "question": "I'm subscribed to Soundbrenner Plus. Why does the app show me as a free user?",
+            "question": "Why does the app not recognize my Plus subscription?",
             "answer": "<p>If your Plus subscription is not recognized in the app, you can restore it manually. Open the app and go to \"Settings\" → \"User Profile\" → \"Subscription\". On the subscription screen, scroll down and tap \"Restore Purchase\". The app will check whether the Apple ID or Google Play account currently logged in has an active subscription and, if so, activate Soundbrenner Plus on your current Soundbrenner account.</p>"
           }
         },
