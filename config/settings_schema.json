@@ -119,22 +119,16 @@
     "name": "Seasonal sale",
     "settings": [
       {
-        "type": "paragraph",
-        "content": "Desktop image target 1240x380 at 2x export (2480x760)."
-      },
-      {
         "type": "image_picker",
         "id": "seasonal_hero_image_desktop",
-        "label": "Seasonal hero image desktop"
-      },
-      {
-        "type": "paragraph",
-        "content": "Mobile image target 370x380 at 3x export (1110x1140)."
+        "label": "Seasonal hero image desktop",
+        "info": "Target minimum 1240x380 at 2x export (2480x760)."
       },
       {
         "type": "image_picker",
         "id": "seasonal_hero_image_mobile",
-        "label": "Seasonal hero image mobile"
+        "label": "Seasonal hero image mobile",
+        "info": "Target minimum 370x380 at 3x export (1110x1140)."
       },
       {
         "type": "text",

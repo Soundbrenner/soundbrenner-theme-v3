@@ -7,6 +7,7 @@
     <div class="sb-feature-carousel__track" data-sb-carousel-track>
       {% for block in section.blocks %}
         {% assign item_image = block.settings.image %}
+        {% assign item_video = block.settings.video %}
         {% if item_image != blank %}
           {% assign item_image_url = item_image | image_url: width: 566 %}
         {% else %}
@@ -15,13 +16,27 @@
 
         <article class="sb-feature-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
           <div class="sb-feature-carousel__media">
-            <img
-              src="{{ item_image_url }}"
-              alt="{{ item_image.alt | default: block.settings.body | strip_html | truncate: 80 | escape }}"
-              loading="lazy"
-              width="283"
-              height="283"
-            >
+            {% if item_video != blank %}
+              {{
+                item_video
+                | video_tag:
+                  class: 'sb-feature-carousel__media-video',
+                  controls: true,
+                  autoplay: false,
+                  loop: false,
+                  muted: false,
+                  image_size: '566x',
+                  preload: 'metadata'
+              }}
+            {% else %}
+              <img
+                src="{{ item_image_url }}"
+                alt="{{ item_image.alt | default: block.settings.body | strip_html | truncate: 80 | escape }}"
+                loading="lazy"
+                width="283"
+                height="283"
+              >
+            {% endif %}
           </div>
           <div class="sb-feature-carousel__body font-body weight-regular rte">
             {{ block.settings.body }}
@@ -94,6 +109,14 @@
   }
 
   .sb-feature-carousel__media img {
+    aspect-ratio: 1 / 1;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-feature-carousel__media-video {
     aspect-ratio: 1 / 1;
     display: block;
     height: auto;
@@ -429,7 +452,13 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Target 288x288 at 3x export (864x864)."
+          "info": "Target minimum 288x288 at 3x export (864x864)."
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Target minimum 288x288 at 3x export (864x864). If both are set, Video is shown."
         },
         {
           "type": "richtext",
