@@ -39,10 +39,6 @@
           "type": "name_field",
           "settings": {}
         },
-        "last_name": {
-          "type": "last_name_field",
-          "settings": {}
-        },
         "email": {
           "type": "email_field",
           "settings": {}
@@ -57,7 +53,6 @@
       },
       "block_order": [
         "name",
-        "last_name",
         "email",
         "university"
       ],

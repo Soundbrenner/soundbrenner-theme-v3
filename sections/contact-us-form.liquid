@@ -14,35 +14,15 @@
           {% assign field_id = 'ContactFormField-' | append: section.id | append: '-' | append: block.id %}
 
           {% case block.type %}
-            {% when 'subtitle' %}
-              {% if block.settings.content != blank %}
-                <div class="sb-contact-form__subtitle-block font-body weight-regular rte" {{ block.shopify_attributes }}>
-                  {{ block.settings.content }}
-                </div>
-              {% endif %}
-
             {% when 'name_field' %}
               <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
                 <input
                   id="{{ field_id }}"
                   type="text"
-                  name="contact[first_name]"
-                  value="{{ form.first_name }}"
-                  autocomplete="given-name"
-                  placeholder="Name"
-                  required
-                >
-              </div>
-
-            {% when 'last_name_field' %}
-              <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
-                <input
-                  id="{{ field_id }}"
-                  type="text"
-                  name="contact[last_name]"
-                  value="{{ form.last_name }}"
-                  autocomplete="family-name"
-                  placeholder="Last name"
+                  name="contact[name]"
+                  value="{{ form.name }}"
+                  autocomplete="name"
+                  placeholder="Full name"
                   required
                 >
               </div>
@@ -99,6 +79,14 @@
           extra_class: 'sb-contact-form__submit'
         %}
       </div>
+
+      {% for block in section.blocks %}
+        {% if block.type == 'subtitle' and block.settings.content != blank %}
+          <div class="sb-contact-form__subtitle-block font-body weight-regular rte" {{ block.shopify_attributes }}>
+            {{ block.settings.content }}
+          </div>
+        {% endif %}
+      {% endfor %}
     {% endform %}
   </div>
 </section>
@@ -109,12 +97,15 @@
   }
 
   .sb-contact-form__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-20);
     width: 100%;
   }
 
   .sb-contact-form__status {
     color: var(--sb-color-neutral-900);
-    margin: 0 0 var(--sb-space-20);
+    margin: 0;
   }
 
   .sb-contact-form__success-title {
@@ -148,7 +139,7 @@
   .sb-contact-form__grid {
     display: grid;
     gap: var(--sb-space-20);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, calc((100% - var(--sb-space-20)) / 2)));
   }
 
   .sb-contact-form__field {
@@ -220,7 +211,7 @@
   }
 
   .sb-contact-form__submit-row {
-    margin-top: var(--sb-space-20);
+    margin: 0;
     width: 100%;
   }
 
@@ -261,11 +252,7 @@
     },
     {
       "type": "name_field",
-      "name": "Name"
-    },
-    {
-      "type": "last_name_field",
-      "name": "Last name"
+      "name": "Full name"
     },
     {
       "type": "email_field",

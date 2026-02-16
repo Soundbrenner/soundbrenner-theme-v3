@@ -53,7 +53,7 @@
         "item_2": {
           "type": "item",
           "settings": {
-            "gradient_value": "linear-gradient(135deg, #00B59C 0%, #5CCFC1 100%)",
+            "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
             "title": "Follow your passion",
             "body": "<p>Build for musicians. Work on what excites you.</p>"
           }
