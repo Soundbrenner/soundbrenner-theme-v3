@@ -1,6 +1,6 @@
 <section class="sb-manual-chapters" id="sb-manual-{{ section.id }}">
   <aside class="sb-manual-chapters__sidebar" data-sb-reveal>
-    <nav class="sb-manual-chapters__nav" aria-label="Manual chapters">
+    <nav class="sb-manual-chapters__nav" aria-label="Product manual">
       {% assign first_chapter_link = true %}
       {% for block in section.blocks %}
         {% if block.type == 'heading' %}
@@ -120,25 +120,25 @@
             Vimeo video placeholder
           </div>
         </figure>
-      {% elsif block.type == 'faq_item' %}
-        <article class="sb-manual-chapters__faq" data-sb-reveal {{ block.shopify_attributes }}>
+      {% elsif block.type == 'accordion_item' %}
+        <article class="sb-manual-chapters__accordion" data-sb-reveal {{ block.shopify_attributes }}>
           <button
             type="button"
-            class="sb-manual-chapters__faq-trigger"
+            class="sb-manual-chapters__accordion-trigger"
             aria-expanded="false"
-            data-manual-faq-trigger
+            data-manual-accordion-trigger
             data-sb-reveal-item
           >
-            <span class="sb-manual-chapters__faq-question font-body weight-bold">{{ block.settings.question }}</span>
-            <span class="sb-manual-chapters__faq-icon" aria-hidden="true">
-              <span class="sb-manual-chapters__faq-icon-plus">{{ 'icon-faq-add.svg' | inline_asset_content }}</span>
-              <span class="sb-manual-chapters__faq-icon-close">{{ 'icon-faq-close.svg' | inline_asset_content }}</span>
+            <span class="sb-manual-chapters__accordion-question font-body weight-bold">{{ block.settings.question }}</span>
+            <span class="sb-manual-chapters__accordion-icon" aria-hidden="true">
+              <span class="sb-manual-chapters__accordion-icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+              <span class="sb-manual-chapters__accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
             </span>
           </button>
-          <div class="sb-manual-chapters__faq-answer font-body weight-regular rte" data-manual-faq-answer data-sb-reveal-item>
+          <div class="sb-manual-chapters__accordion-answer font-body weight-regular rte" data-manual-accordion-answer data-sb-reveal-item>
             {{ block.settings.answer }}
           </div>
-          <hr class="sb-manual-chapters__faq-divider" data-sb-reveal-item>
+          <hr class="sb-manual-chapters__accordion-divider" data-sb-reveal-item>
         </article>
       {% elsif block.type == 'divider' %}
         <div data-sb-reveal>
@@ -257,11 +257,11 @@
     width: 100%;
   }
 
-  .sb-manual-chapters__faq {
+  .sb-manual-chapters__accordion {
     width: 100%;
   }
 
-  .sb-manual-chapters__faq-trigger {
+  .sb-manual-chapters__accordion-trigger {
     align-items: center;
     background: transparent;
     border: 0;
@@ -275,12 +275,12 @@
     width: 100%;
   }
 
-  .sb-manual-chapters__faq-question {
+  .sb-manual-chapters__accordion-question {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
-  .sb-manual-chapters__faq-icon {
+  .sb-manual-chapters__accordion-icon {
     color: var(--sb-color-primary-500);
     display: inline-flex;
     flex: 0 0 auto;
@@ -290,26 +290,26 @@
     width: var(--sb-space-20);
   }
 
-  .sb-manual-chapters__faq-icon svg {
+  .sb-manual-chapters__accordion-icon svg {
     display: block;
     height: var(--sb-space-20);
     width: var(--sb-space-20);
   }
 
-  .sb-manual-chapters__faq-icon svg path:not([fill='none']),
-  .sb-manual-chapters__faq-icon svg circle:not([fill='none']),
-  .sb-manual-chapters__faq-icon svg rect:not([fill='none']) {
+  .sb-manual-chapters__accordion-icon svg path:not([fill='none']),
+  .sb-manual-chapters__accordion-icon svg circle:not([fill='none']),
+  .sb-manual-chapters__accordion-icon svg rect:not([fill='none']) {
     fill: currentColor !important;
   }
 
-  .sb-manual-chapters__faq-icon svg path:not([stroke='none']),
-  .sb-manual-chapters__faq-icon svg circle:not([stroke='none']),
-  .sb-manual-chapters__faq-icon svg rect:not([stroke='none']) {
+  .sb-manual-chapters__accordion-icon svg path:not([stroke='none']),
+  .sb-manual-chapters__accordion-icon svg circle:not([stroke='none']),
+  .sb-manual-chapters__accordion-icon svg rect:not([stroke='none']) {
     stroke: currentColor !important;
   }
 
-  .sb-manual-chapters__faq-icon-plus,
-  .sb-manual-chapters__faq-icon-close {
+  .sb-manual-chapters__accordion-icon-plus,
+  .sb-manual-chapters__accordion-icon-close {
     display: inline-flex;
     inset: 0;
     position: absolute;
@@ -318,37 +318,37 @@
       transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .sb-manual-chapters__faq-answer {
+  .sb-manual-chapters__accordion-answer {
     color: var(--sb-color-neutral-800);
     display: none;
     margin-top: var(--sb-space-24);
   }
 
-  .sb-manual-chapters__faq.is-open .sb-manual-chapters__faq-answer {
+  .sb-manual-chapters__accordion.is-open .sb-manual-chapters__accordion-answer {
     display: block;
   }
 
-  .sb-manual-chapters__faq-icon-plus {
+  .sb-manual-chapters__accordion-icon-plus {
     opacity: 1;
     transform: rotate(0deg) scale(1);
   }
 
-  .sb-manual-chapters__faq-icon-close {
+  .sb-manual-chapters__accordion-icon-close {
     opacity: 0;
     transform: rotate(-90deg) scale(0.85);
   }
 
-  .sb-manual-chapters__faq.is-open .sb-manual-chapters__faq-icon-plus {
+  .sb-manual-chapters__accordion.is-open .sb-manual-chapters__accordion-icon-plus {
     opacity: 0;
     transform: rotate(90deg) scale(0.85);
   }
 
-  .sb-manual-chapters__faq.is-open .sb-manual-chapters__faq-icon-close {
+  .sb-manual-chapters__accordion.is-open .sb-manual-chapters__accordion-icon-close {
     opacity: 1;
     transform: rotate(0deg) scale(1);
   }
 
-  .sb-manual-chapters__faq-divider {
+  .sb-manual-chapters__accordion-divider {
     background: var(--sb-color-neutral-600);
     border: 0;
     height: 1px;
@@ -376,12 +376,12 @@
   }
 
   .sb-manual-chapters__body [data-sb-reveal-item] > *,
-  .sb-manual-chapters__faq-answer > * {
+  .sb-manual-chapters__accordion-answer > * {
     margin: 0;
   }
 
   .sb-manual-chapters__body [data-sb-reveal-item] > * + *,
-  .sb-manual-chapters__faq-answer > * + * {
+  .sb-manual-chapters__accordion-answer > * + * {
     margin-top: var(--sb-space-24);
   }
 
@@ -531,20 +531,20 @@
       });
     });
 
-    root.querySelectorAll('[data-manual-faq-trigger]').forEach((trigger) => {
+    root.querySelectorAll('[data-manual-accordion-trigger]').forEach((trigger) => {
       trigger.addEventListener('click', () => {
-        const faq = trigger.closest('.sb-manual-chapters__faq');
-        if (!faq) return;
+        const accordionItem = trigger.closest('.sb-manual-chapters__accordion');
+        if (!accordionItem) return;
 
-        const isOpening = !faq.classList.contains('is-open');
-        root.querySelectorAll('.sb-manual-chapters__faq').forEach((item) => {
+        const isOpening = !accordionItem.classList.contains('is-open');
+        root.querySelectorAll('.sb-manual-chapters__accordion').forEach((item) => {
           item.classList.remove('is-open');
-          const itemTrigger = item.querySelector('[data-manual-faq-trigger]');
+          const itemTrigger = item.querySelector('[data-manual-accordion-trigger]');
           if (itemTrigger) itemTrigger.setAttribute('aria-expanded', 'false');
         });
 
         if (isOpening) {
-          faq.classList.add('is-open');
+          accordionItem.classList.add('is-open');
           trigger.setAttribute('aria-expanded', 'true');
         }
       });
@@ -605,7 +605,7 @@
 
 {% schema %}
 {
-  "name": "Manual chapters",
+  "name": "Product manual",
   "settings": [],
   "blocks": [
     {
@@ -719,8 +719,8 @@
       ]
     },
     {
-      "type": "faq_item",
-      "name": "FAQ item",
+      "type": "accordion_item",
+      "name": "Accordion item",
       "settings": [
         {
           "type": "text",
@@ -744,7 +744,7 @@
   ],
   "presets": [
     {
-      "name": "Manual chapters",
+      "name": "Product manual",
       "blocks": [
         {
           "type": "heading"

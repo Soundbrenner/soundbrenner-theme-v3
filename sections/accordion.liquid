@@ -1,8 +1,8 @@
 {% assign contact_page_url = pages['contact-us'].url | default: '/pages/contact-us' %}
 
-<section class="sb-standalone-faq" id="sb-standalone-faq-{{ section.id }}">
-  <div class="sb-standalone-faq__intro" data-sb-reveal>
-    <h2 class="sb-standalone-faq__title font-title weight-bold" data-sb-reveal-item>
+<section class="sb-accordion" id="sb-accordion-{{ section.id }}">
+  <div class="sb-accordion__intro" data-sb-reveal>
+    <h2 class="sb-accordion__title font-title weight-bold" data-sb-reveal-item>
       {% if section.settings.use_custom_title and section.settings.custom_title != blank %}
         {{ section.settings.custom_title }}
       {% else %}
@@ -10,34 +10,34 @@
       {% endif %}
     </h2>
     {% if section.settings.show_subtitle %}
-      <p class="sb-standalone-faq__subtitle font-body weight-semibold" data-sb-reveal-item>
+      <p class="sb-accordion__subtitle font-body weight-semibold" data-sb-reveal-item>
         If you can't find your answer,
         <a href="{{ contact_page_url }}">contact us</a>!
       </p>
     {% endif %}
   </div>
 
-  <div class="sb-standalone-faq__items">
+  <div class="sb-accordion__items">
     {% for block in section.blocks %}
-      {% if block.type == 'faq_item' %}
-        <article class="sb-standalone-faq__item" data-sb-reveal {{ block.shopify_attributes }}>
+      {% if block.type == 'accordion_item' %}
+        <article class="sb-accordion__item" data-sb-reveal {{ block.shopify_attributes }}>
           <button
             type="button"
-            class="sb-standalone-faq__trigger"
+            class="sb-accordion__trigger"
             aria-expanded="false"
-            data-standalone-faq-trigger
+            data-accordion-trigger
             data-sb-reveal-item
           >
-            <span class="sb-standalone-faq__question font-body weight-bold">{{ block.settings.question }}</span>
-            <span class="sb-standalone-faq__icon" aria-hidden="true">
-              <span class="sb-standalone-faq__icon-plus">{{ 'icon-faq-add.svg' | inline_asset_content }}</span>
-              <span class="sb-standalone-faq__icon-close">{{ 'icon-faq-close.svg' | inline_asset_content }}</span>
+            <span class="sb-accordion__question font-body weight-bold">{{ block.settings.question }}</span>
+            <span class="sb-accordion__icon" aria-hidden="true">
+              <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+              <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
             </span>
           </button>
-          <div class="sb-standalone-faq__answer font-body weight-regular rte" data-standalone-faq-answer data-sb-reveal-item>
+          <div class="sb-accordion__answer font-body weight-regular rte" data-accordion-answer data-sb-reveal-item>
             {{ block.settings.answer }}
           </div>
-          <hr class="sb-standalone-faq__divider" data-sb-reveal-item>
+          <hr class="sb-accordion__divider" data-sb-reveal-item>
         </article>
       {% endif %}
     {% endfor %}
@@ -45,11 +45,11 @@
 </section>
 
 {% stylesheet %}
-  .sb-standalone-faq {
+  .sb-accordion {
     width: 100%;
   }
 
-  .sb-standalone-faq__intro {
+  .sb-accordion__intro {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -57,41 +57,41 @@
     text-align: center;
   }
 
-  .sb-standalone-faq__title {
+  .sb-accordion__title {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
-  .sb-standalone-faq__subtitle {
+  .sb-accordion__subtitle {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
-  .sb-standalone-faq__subtitle a,
-  .sb-standalone-faq__subtitle a:visited {
+  .sb-accordion__subtitle a,
+  .sb-accordion__subtitle a:visited {
     color: var(--sb-color-primary-500);
     text-decoration: none;
   }
 
-  .sb-standalone-faq__subtitle a:hover,
-  .sb-standalone-faq__subtitle a:focus-visible,
-  .sb-standalone-faq__subtitle a:active {
+  .sb-accordion__subtitle a:hover,
+  .sb-accordion__subtitle a:focus-visible,
+  .sb-accordion__subtitle a:active {
     color: var(--sb-color-primary-500);
     text-decoration: underline;
   }
 
-  .sb-standalone-faq__items {
+  .sb-accordion__items {
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-24);
     margin-top: var(--sb-space-48);
   }
 
-  .sb-standalone-faq__item {
+  .sb-accordion__item {
     width: 100%;
   }
 
-  .sb-standalone-faq__trigger {
+  .sb-accordion__trigger {
     align-items: center;
     background: transparent;
     border: 0;
@@ -105,12 +105,12 @@
     width: 100%;
   }
 
-  .sb-standalone-faq__question {
+  .sb-accordion__question {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
-  .sb-standalone-faq__icon {
+  .sb-accordion__icon {
     color: var(--sb-color-primary-500);
     display: inline-flex;
     flex: 0 0 auto;
@@ -120,26 +120,26 @@
     width: var(--sb-space-20);
   }
 
-  .sb-standalone-faq__icon svg {
+  .sb-accordion__icon svg {
     display: block;
     height: var(--sb-space-20);
     width: var(--sb-space-20);
   }
 
-  .sb-standalone-faq__icon svg path:not([fill='none']),
-  .sb-standalone-faq__icon svg circle:not([fill='none']),
-  .sb-standalone-faq__icon svg rect:not([fill='none']) {
+  .sb-accordion__icon svg path:not([fill='none']),
+  .sb-accordion__icon svg circle:not([fill='none']),
+  .sb-accordion__icon svg rect:not([fill='none']) {
     fill: currentColor !important;
   }
 
-  .sb-standalone-faq__icon svg path:not([stroke='none']),
-  .sb-standalone-faq__icon svg circle:not([stroke='none']),
-  .sb-standalone-faq__icon svg rect:not([stroke='none']) {
+  .sb-accordion__icon svg path:not([stroke='none']),
+  .sb-accordion__icon svg circle:not([stroke='none']),
+  .sb-accordion__icon svg rect:not([stroke='none']) {
     stroke: currentColor !important;
   }
 
-  .sb-standalone-faq__icon-plus,
-  .sb-standalone-faq__icon-close {
+  .sb-accordion__icon-plus,
+  .sb-accordion__icon-close {
     display: inline-flex;
     inset: 0;
     position: absolute;
@@ -148,45 +148,45 @@
       transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .sb-standalone-faq__answer {
+  .sb-accordion__answer {
     color: var(--sb-color-neutral-800);
     display: none;
     margin-top: var(--sb-space-24);
   }
 
-  .sb-standalone-faq__answer > * {
+  .sb-accordion__answer > * {
     margin: 0;
   }
 
-  .sb-standalone-faq__answer > * + * {
+  .sb-accordion__answer > * + * {
     margin-top: var(--sb-space-24);
   }
 
-  .sb-standalone-faq__item.is-open .sb-standalone-faq__answer {
+  .sb-accordion__item.is-open .sb-accordion__answer {
     display: block;
   }
 
-  .sb-standalone-faq__icon-plus {
+  .sb-accordion__icon-plus {
     opacity: 1;
     transform: rotate(0deg) scale(1);
   }
 
-  .sb-standalone-faq__icon-close {
+  .sb-accordion__icon-close {
     opacity: 0;
     transform: rotate(-90deg) scale(0.85);
   }
 
-  .sb-standalone-faq__item.is-open .sb-standalone-faq__icon-plus {
+  .sb-accordion__item.is-open .sb-accordion__icon-plus {
     opacity: 0;
     transform: rotate(90deg) scale(0.85);
   }
 
-  .sb-standalone-faq__item.is-open .sb-standalone-faq__icon-close {
+  .sb-accordion__item.is-open .sb-accordion__icon-close {
     opacity: 1;
     transform: rotate(0deg) scale(1);
   }
 
-  .sb-standalone-faq__divider {
+  .sb-accordion__divider {
     background: var(--sb-color-neutral-600);
     border: 0;
     height: 1px;
@@ -197,24 +197,24 @@
 
 <script>
   (() => {
-    const root = document.getElementById('sb-standalone-faq-{{ section.id }}');
-    if (!root || root.dataset.standaloneFaqInit === 'true') return;
-    root.dataset.standaloneFaqInit = 'true';
+    const root = document.getElementById('sb-accordion-{{ section.id }}');
+    if (!root || root.dataset.accordionInit === 'true') return;
+    root.dataset.accordionInit = 'true';
 
-    root.querySelectorAll('[data-standalone-faq-trigger]').forEach((trigger) => {
+    root.querySelectorAll('[data-accordion-trigger]').forEach((trigger) => {
       trigger.addEventListener('click', () => {
-        const faq = trigger.closest('.sb-standalone-faq__item');
-        if (!faq) return;
+        const accordionItem = trigger.closest('.sb-accordion__item');
+        if (!accordionItem) return;
 
-        const isOpening = !faq.classList.contains('is-open');
-        root.querySelectorAll('.sb-standalone-faq__item').forEach((item) => {
+        const isOpening = !accordionItem.classList.contains('is-open');
+        root.querySelectorAll('.sb-accordion__item').forEach((item) => {
           item.classList.remove('is-open');
-          const itemTrigger = item.querySelector('[data-standalone-faq-trigger]');
+          const itemTrigger = item.querySelector('[data-accordion-trigger]');
           if (itemTrigger) itemTrigger.setAttribute('aria-expanded', 'false');
         });
 
         if (isOpening) {
-          faq.classList.add('is-open');
+          accordionItem.classList.add('is-open');
           trigger.setAttribute('aria-expanded', 'true');
         }
       });
@@ -248,7 +248,7 @@
   ],
   "blocks": [
     {
-      "type": "faq_item",
+      "type": "accordion_item",
       "name": "Accordion item",
       "settings": [
         {
@@ -271,7 +271,7 @@
       "name": "Accordion",
       "blocks": [
         {
-          "type": "faq_item"
+          "type": "accordion_item"
         }
       ]
     }

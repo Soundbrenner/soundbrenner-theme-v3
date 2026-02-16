@@ -1,0 +1,326 @@
+<section class="sb-feature-carousel" data-sb-carousel data-sb-reveal>
+  {% if section.settings.title != blank %}
+    <h2 class="sb-feature-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section.settings.title }}</h2>
+  {% endif %}
+
+  <div class="sb-feature-carousel__viewport-wrap">
+    <div class="sb-feature-carousel__viewport" data-sb-carousel-viewport>
+      <div class="sb-feature-carousel__track" data-sb-carousel-track>
+        {% for block in section.blocks %}
+          {% assign item_image = block.settings.image %}
+          {% if item_image != blank %}
+            {% assign item_image_url = item_image | image_url: width: 566 %}
+          {% else %}
+            {% assign item_image_url = 'resource-tile-placeholder.jpg' | asset_url %}
+          {% endif %}
+
+          <article class="sb-feature-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
+            <div class="sb-feature-carousel__media">
+              <img
+                src="{{ item_image_url }}"
+                alt="{{ item_image.alt | default: block.settings.body | strip_html | truncate: 80 | escape }}"
+                loading="lazy"
+                width="283"
+                height="283"
+              >
+            </div>
+            <div class="sb-feature-carousel__body font-body weight-regular rte">
+              {{ block.settings.body }}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-feature-carousel__controls" data-sb-carousel-controls>
+    <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+      <span class="sb-feature-carousel__arrow-icon sb-feature-carousel__arrow-icon--left" aria-hidden="true">
+        {{ 'icon-carousel-arrow-left-filled.svg' | inline_asset_content }}
+      </span>
+    </button>
+
+    <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-next aria-label="Next" disabled>
+      <span class="sb-feature-carousel__arrow-icon sb-feature-carousel__arrow-icon--right" aria-hidden="true">
+        {{ 'icon-carousel-arrow-left-filled.svg' | inline_asset_content }}
+      </span>
+    </button>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-feature-carousel {
+    --sb-carousel-gap: var(--sb-space-36);
+    width: 100%;
+  }
+
+  .sb-feature-carousel__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-48);
+    text-align: center;
+  }
+
+  .sb-feature-carousel__viewport-wrap {
+    margin-right: calc(-1 * var(--page-margin));
+    overflow: hidden;
+    padding-right: var(--page-margin);
+  }
+
+  .sb-feature-carousel__viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sb-feature-carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sb-feature-carousel__track {
+    display: flex;
+    gap: var(--sb-carousel-gap);
+    padding: 0;
+    width: max-content;
+  }
+
+  .sb-feature-carousel__item {
+    flex: 0 0 283px;
+    max-width: 283px;
+    min-width: 283px;
+  }
+
+  .sb-feature-carousel__media {
+    border-radius: var(--sb-radius-card);
+    overflow: hidden;
+  }
+
+  .sb-feature-carousel__media img {
+    aspect-ratio: 1 / 1;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-feature-carousel__body {
+    color: var(--sb-color-neutral-900);
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-feature-carousel__body > * {
+    margin: 0;
+  }
+
+  .sb-feature-carousel__body > * + * {
+    margin-top: var(--sb-space-20);
+  }
+
+  .sb-feature-carousel__controls {
+    align-items: center;
+    display: none;
+    gap: var(--sb-space-16);
+    justify-content: flex-end;
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-feature-carousel.is-overflowing .sb-feature-carousel__controls {
+    display: flex;
+  }
+
+  .sb-feature-carousel__arrow {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    height: var(--sb-space-48);
+    justify-content: center;
+    padding: 0;
+    width: var(--sb-space-48);
+  }
+
+  .sb-feature-carousel__arrow[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .sb-feature-carousel__arrow-icon {
+    display: inline-flex;
+    height: var(--sb-space-48);
+    width: var(--sb-space-48);
+  }
+
+  .sb-feature-carousel__arrow-icon--right {
+    transform: scaleX(-1);
+  }
+
+  .sb-feature-carousel__arrow-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-feature-carousel__arrow-icon svg path:first-child {
+    fill: var(--sb-color-neutral-200);
+  }
+
+  .sb-feature-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-neutral-800);
+    transition: fill 180ms ease;
+  }
+
+  .sb-feature-carousel__arrow:hover:not([disabled]) .sb-feature-carousel__arrow-icon svg path:last-child,
+  .sb-feature-carousel__arrow:focus-visible:not([disabled]) .sb-feature-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-primary-500);
+  }
+
+  .sb-feature-carousel.is-not-overflowing .sb-feature-carousel__track {
+    margin-inline: auto;
+  }
+
+  @media (max-width: 749px) {
+    .sb-feature-carousel__controls {
+      margin-top: var(--sb-space-20);
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  (() => {
+    const roots = document.querySelectorAll('[data-sb-carousel]');
+    if (!roots.length) return;
+
+    roots.forEach((root) => {
+      if (root.dataset.sbCarouselInit === 'true') return;
+      root.dataset.sbCarouselInit = 'true';
+
+      const viewport = root.querySelector('[data-sb-carousel-viewport]');
+      const track = root.querySelector('[data-sb-carousel-track]');
+      const prev = root.querySelector('[data-sb-carousel-prev]');
+      const next = root.querySelector('[data-sb-carousel-next]');
+
+      if (!viewport || !track || !prev || !next) return;
+
+      const px = (value) => {
+        const n = Number.parseFloat(value || '0');
+        return Number.isFinite(n) ? n : 0;
+      };
+
+      const pageMargin = () => px(getComputedStyle(document.documentElement).getPropertyValue('--page-margin'));
+      const gap = () => px(getComputedStyle(root).getPropertyValue('--sb-carousel-gap'));
+      const itemStep = () => {
+        const firstItem = root.querySelector('[data-sb-carousel-item]');
+        if (!firstItem) return 0;
+        return firstItem.getBoundingClientRect().width + gap();
+      };
+
+      const virtualClientWidth = () => Math.max(1, viewport.clientWidth - pageMargin());
+      const virtualMaxScroll = () => Math.max(0, viewport.scrollWidth - virtualClientWidth());
+
+      const update = () => {
+        const overflow = viewport.scrollWidth > virtualClientWidth() + 1;
+        root.classList.toggle('is-overflowing', overflow);
+        root.classList.toggle('is-not-overflowing', !overflow);
+
+        if (!overflow) {
+          prev.disabled = true;
+          next.disabled = true;
+          return;
+        }
+
+        const max = virtualMaxScroll();
+        const left = viewport.scrollLeft;
+        prev.disabled = left <= 1;
+        next.disabled = left >= max - 1;
+      };
+
+      const scrollTo = (left) => {
+        const max = virtualMaxScroll();
+        const clamped = Math.max(0, Math.min(left, max));
+        viewport.scrollTo({ left: clamped, behavior: 'smooth' });
+      };
+
+      prev.addEventListener('click', () => {
+        scrollTo(viewport.scrollLeft - itemStep());
+      });
+
+      next.addEventListener('click', () => {
+        scrollTo(viewport.scrollLeft + itemStep());
+      });
+
+      viewport.addEventListener('scroll', update, { passive: true });
+      viewport.addEventListener('wheel', (event) => {
+        if (!root.classList.contains('is-overflowing')) return;
+
+        const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+        if (Math.abs(delta) < 2) return;
+
+        const max = virtualMaxScroll();
+        const current = viewport.scrollLeft;
+        const target = Math.max(0, Math.min(current + delta, max));
+        if (target !== current) {
+          event.preventDefault();
+          viewport.scrollLeft = target;
+        }
+      }, { passive: false });
+
+      window.addEventListener('resize', update);
+      update();
+      window.setTimeout(update, 120);
+      window.setTimeout(update, 360);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Feature carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Feature carousel"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Carousel item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Text",
+          "default": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature carousel",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

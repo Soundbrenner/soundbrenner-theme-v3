@@ -71,13 +71,13 @@
     column-gap: var(--sb-space-96);
     display: grid;
     grid-template-areas: 'media content';
-    grid-template-columns: minmax(0, 620px) minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
   }
 
   .sb-large-feature__layout--media-right {
     grid-template-areas: 'content media';
-    grid-template-columns: minmax(0, 1fr) minmax(0, 620px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .sb-large-feature__media {
@@ -178,20 +178,20 @@
     {
       "type": "image_picker",
       "id": "media",
-      "label": "Media image",
+      "label": "Image",
       "info": "Image/video target 620x554 at 2x export (1240x1108)."
     },
     {
       "type": "video",
       "id": "media_video",
-      "label": "Media video",
-      "info": "Image/video target 620x554 at 2x export (1240x1108)."
+      "label": "Video",
+      "info": "Image/video target 620x554 at 2x export (1240x1108). If both are set, Video is shown."
     },
     {
       "type": "text",
       "id": "title_part_one",
       "label": "Title part 1",
-      "default": "Title 1."
+      "default": "Title."
     },
     {
       "type": "text",

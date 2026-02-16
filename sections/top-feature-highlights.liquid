@@ -5,7 +5,7 @@
     </h2>
   {% endif %}
 
-  <div class="sb-top-feature-highlights__items">
+  <div class="sb-top-feature-highlights__items" style="--sb-top-feature-columns: {{ section.blocks.size | at_least: 1 }};">
     {% for block in section.blocks %}
       {% assign icon_url = '' %}
       {% if block.settings.icon != blank %}
@@ -51,21 +51,21 @@
 
   .sb-top-feature-highlights__items {
     align-items: stretch;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: var(--sb-space-36);
-    justify-content: center;
+    grid-template-columns: repeat(var(--sb-top-feature-columns), minmax(0, 1fr));
+    justify-items: center;
     width: 100%;
   }
 
   .sb-top-feature-highlights__item {
     align-items: center;
     display: flex;
-    flex: 1 1 219.2px;
     flex-direction: column;
     max-width: 240px;
-    min-width: 219.2px;
+    min-width: 0;
     text-align: center;
+    width: 100%;
   }
 
   .sb-top-feature-highlights__icon {
@@ -107,6 +107,13 @@
 
   .sb-top-feature-highlights__item-body > * + * {
     margin-top: var(--sb-space-8);
+  }
+
+  @media (max-width: 749px) {
+    .sb-top-feature-highlights__items {
+      gap: var(--sb-space-30);
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 {% endstylesheet %}
 

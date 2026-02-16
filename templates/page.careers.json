@@ -99,72 +99,6 @@
         "body": "<p>We hire locally in Hong Kong and remotely around the world.</p><p>Our headquarters are in Sheung Wan, in the heart of the city’s vibrant center. The office is just steps from the MTR and surrounded by some of the best restaurants, cafés, and creative spaces the area has to offer.</p>"
       }
     },
-    "faq_L39iGc": {
-      "type": "faq",
-      "blocks": {
-        "faq_item_iXHy7X": {
-          "type": "faq_item",
-          "settings": {
-            "question": "No open roles right now",
-            "answer": "<p>We do not have any open positions at the moment, but we are always growing. Please check back later for new opportunities.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "faq_item_iXHy7X"
-      ],
-      "name": "Accordion",
-      "settings": {
-        "use_custom_title": true,
-        "custom_title": "Open roles",
-        "show_subtitle": false
-      }
-    },
-    "faq_PbEYpg": {
-      "type": "faq",
-      "blocks": {
-        "faq_item_q74rpE": {
-          "type": "faq_item",
-          "settings": {
-            "question": "How do I get in touch?",
-            "answer": "<p>Each job description includes an email address at the end for applications. If your background aligns with what we’re looking for, we’ll reach out to arrange a call and discuss the next steps.</p>"
-          }
-        },
-        "faq_item_GDy8G9": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Who works at Soundbrenner?",
-            "answer": "<p>We’re a multi-disciplinary team of about 10 passionate creators with expertise in product design, software engineering, hardware engineering, manufacturing, logistics, digital marketing, and more. This mix of skills and perspectives is what drives innovation at Soundbrenner.</p>"
-          }
-        },
-        "faq_item_8ack3q": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Do I need to be a musician to work at Soundbrenner?",
-            "answer": "<p>While many of us are musicians, it’s not a requirement. If you’re passionate about technology, design, or innovation, you’ll fit right in - whether or not you play an instrument. Feel free to apply!</p>"
-          }
-        },
-        "faq_item_dg4HqC": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Can I try out your products?",
-            "answer": "<p>Absolutely! We recommend starting with our free app to get a feel for what we’re all about. You can download it going to the app's <a href=\"/pages/the-metronome-app\" title=\"The Metronome App\">product page</a>.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "faq_item_q74rpE",
-        "faq_item_GDy8G9",
-        "faq_item_8ack3q",
-        "faq_item_dg4HqC"
-      ],
-      "name": "Accordion",
-      "settings": {
-        "use_custom_title": false,
-        "custom_title": "Frequently asked questions",
-        "show_subtitle": true
-      }
-    },
     "large_feature_gERXdi": {
       "type": "large-feature",
       "name": "Large feature",
@@ -176,6 +110,110 @@
         "title_accent_color": "primary-500",
         "body": "<p>Soundbrenner began in 2014 at a Startup Weekend in Berlin with a simple idea: a vibrating metronome. What started as a side project quickly became an obsession. The team later relocated to Asia while maintaining roots in Berlin.<br/><br/>Our journey took off through crowdfunding. In 2015, Pulse launched with $240K in pre-orders. In 2018, Core raised $1.6M and reached its goal in just 14 minutes. Today, our wearables are available in 30+ countries, have won “Best in Show” at NAMM, and are used by musicians around the world.<br/><br/>Alongside our hardware, The Metronome app has grown to over 600,000 monthly active users and millions of downloads.<br/><br/>We are proud of what we have built. And we are just getting started.</p>"
       }
+    },
+    "feature_carousel_main": {
+      "type": "feature-carousel",
+      "settings": {
+        "title": "Feature carousel"
+      },
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ]
+    },
+    "accordion_L39iGc": {
+      "type": "accordion",
+      "blocks": {
+        "accordion_item_iXHy7X": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "No open roles right now",
+            "answer": "<p>We do not have any open positions at the moment, but we are always growing. Please check back later for new opportunities.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_item_iXHy7X"
+      ],
+      "name": "Accordion",
+      "settings": {
+        "use_custom_title": true,
+        "custom_title": "Open roles",
+        "show_subtitle": false
+      }
+    },
+    "accordion_PbEYpg": {
+      "type": "accordion",
+      "blocks": {
+        "accordion_item_q74rpE": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How do I get in touch?",
+            "answer": "<p>Each job description includes an email address at the end for applications. If your background aligns with what we’re looking for, we’ll reach out to arrange a call and discuss the next steps.</p>"
+          }
+        },
+        "accordion_item_GDy8G9": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Who works at Soundbrenner?",
+            "answer": "<p>We’re a multi-disciplinary team of about 10 passionate creators with expertise in product design, software engineering, hardware engineering, manufacturing, logistics, digital marketing, and more. This mix of skills and perspectives is what drives innovation at Soundbrenner.</p>"
+          }
+        },
+        "accordion_item_8ack3q": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Do I need to be a musician to work at Soundbrenner?",
+            "answer": "<p>While many of us are musicians, it’s not a requirement. If you’re passionate about technology, design, or innovation, you’ll fit right in - whether or not you play an instrument. Feel free to apply!</p>"
+          }
+        },
+        "accordion_item_dg4HqC": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Can I try out your products?",
+            "answer": "<p>Absolutely! We recommend starting with our free app to get a feel for what we’re all about. You can download it going to the app's <a href=\"/pages/the-metronome-app\" title=\"The Metronome App\">product page</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_item_q74rpE",
+        "accordion_item_GDy8G9",
+        "accordion_item_8ack3q",
+        "accordion_item_dg4HqC"
+      ],
+      "name": "Accordion",
+      "settings": {
+        "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
+        "show_subtitle": true
+      }
     }
   },
   "order": [
@@ -183,8 +221,9 @@
     "top_feature_highlights",
     "large_feature_RdgGf6",
     "large_feature_4B9RkK",
-    "faq_L39iGc",
-    "faq_PbEYpg",
+    "accordion_L39iGc",
+    "feature_carousel_main",
+    "accordion_PbEYpg",
     "large_feature_gERXdi"
   ]
 }

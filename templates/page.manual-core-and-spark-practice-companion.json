@@ -157,36 +157,36 @@
             "heading": "Compliance"
           }
         },
-        "faq_item_1": {
-          "type": "faq_item",
+        "accordion_item_1": {
+          "type": "accordion_item",
           "settings": {
             "question": "Safety",
             "answer": "<p>Avoid using the earphones in situations where hearing your surroundings is important, such as driving, biking, or walking near traffic.<br/><br/>Keep the product and its accessories out of reach of children. Small parts and cords can pose choking or strangulation hazards.<br/><br/>Always ensure ear tips are firmly attached before inserting the earphones. If a tip becomes lodged in the ear, seek immediate medical assistance.<br/><br/>Stop use and consult a professional if you experience irritation, discomfort, or excessive earwax buildup.<br/><br/>Do not disassemble or modify the device. Avoid applying excessive force or pulling on the cable to prevent damage.</p>"
           }
         },
-        "faq_item_2": {
-          "type": "faq_item",
+        "accordion_item_2": {
+          "type": "accordion_item",
           "settings": {
             "question": "Warranty",
             "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
           }
         },
-        "faq_item_3": {
-          "type": "faq_item",
+        "accordion_item_3": {
+          "type": "accordion_item",
           "settings": {
             "question": "Recycling",
             "answer": "<p>Dispose of this product at an appropriate electronics recycling center to support sustainable reuse and resource conservation.</p>"
           }
         },
-        "faq_item_4": {
-          "type": "faq_item",
+        "accordion_item_4": {
+          "type": "accordion_item",
           "settings": {
             "question": "EU declaration",
             "answer": "<p>Soundbrenner Limited hereby declares that this product complies with the essential requirements and all relevant provisions of Directive 1995/5/EC.</p>"
           }
         },
-        "faq_item_5": {
-          "type": "faq_item",
+        "accordion_item_5": {
+          "type": "accordion_item",
           "settings": {
             "question": "FCC statement",
             "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
@@ -216,11 +216,11 @@
         "body_5",
         "divider_5",
         "chapter_6",
-        "faq_item_1",
-        "faq_item_2",
-        "faq_item_3",
-        "faq_item_4",
-        "faq_item_5"
+        "accordion_item_1",
+        "accordion_item_2",
+        "accordion_item_3",
+        "accordion_item_4",
+        "accordion_item_5"
       ],
       "settings": {}
     },
