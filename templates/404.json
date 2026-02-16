@@ -9,10 +9,6 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "404",
-      "settings": {}
-    },
     "hero_card_4dtMWy": {
       "type": "hero-card",
       "name": "Hero card",
@@ -39,7 +35,6 @@
     }
   },
   "order": [
-    "main",
     "hero_card_4dtMWy",
     "hero_card_ixgYW9"
   ]
