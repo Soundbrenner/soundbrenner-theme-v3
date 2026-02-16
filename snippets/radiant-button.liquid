@@ -1,0 +1,39 @@
+{% assign button_size = size | default: 'large' %}
+{% assign button_icon_position = icon_position | default: 'none' %}
+
+{% capture button_classes -%}
+  sb-button-radiant
+  sb-button-radiant--{{ button_size }}
+  {%- if button_icon_position == 'leading' -%} sb-button-radiant--leading-icon{%- endif -%}
+  {%- if button_icon_position == 'trailing' -%} sb-button-radiant--trailing-icon{%- endif -%}
+  {%- if extra_class != blank -%} {{ extra_class }}{%- endif -%}
+{%- endcapture %}
+
+{% capture button_icon %}
+  <span class="sb-button-radiant__icon" aria-hidden="true">
+    {{ 'icon-arrow-large-40.svg' | inline_asset_content }}
+  </span>
+{% endcapture %}
+
+{% if link != blank %}
+  <a class="{{ button_classes | strip }}" href="{{ link }}" {% if reveal %}data-sb-reveal-item{% endif %}>
+    {% if button_icon_position == 'leading' %}
+      {{ button_icon }}
+    {% endif %}
+    <span class="sb-button-radiant__label">{{ label }}</span>
+    {% if button_icon_position == 'trailing' %}
+      {{ button_icon }}
+    {% endif %}
+  </a>
+{% else %}
+  <button type="button" class="{{ button_classes | strip }}" {% if reveal %}data-sb-reveal-item{% endif %}>
+    {% if button_icon_position == 'leading' %}
+      {{ button_icon }}
+    {% endif %}
+    <span class="sb-button-radiant__label">{{ label }}</span>
+    {% if button_icon_position == 'trailing' %}
+      {{ button_icon }}
+    {% endif %}
+  </button>
+{% endif %}
+

@@ -18,6 +18,8 @@
         "subheadline": "",
         "show_button": false,
         "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
         "button_link": ""
       }
     }

@@ -2,11 +2,19 @@
 
 <section class="sb-standalone-faq" id="sb-standalone-faq-{{ section.id }}">
   <div class="sb-standalone-faq__intro" data-sb-reveal>
-    <h2 class="sb-standalone-faq__title font-title weight-bold" data-sb-reveal-item>Frequently asked questions</h2>
-    <p class="sb-standalone-faq__subtitle font-body weight-semibold" data-sb-reveal-item>
-      If you can't find your answer,
-      <a href="{{ contact_page_url }}">contact us</a>!
-    </p>
+    <h2 class="sb-standalone-faq__title font-title weight-bold" data-sb-reveal-item>
+      {% if section.settings.use_custom_title and section.settings.custom_title != blank %}
+        {{ section.settings.custom_title }}
+      {% else %}
+        Frequently asked questions
+      {% endif %}
+    </h2>
+    {% if section.settings.show_subtitle %}
+      <p class="sb-standalone-faq__subtitle font-body weight-semibold" data-sb-reveal-item>
+        If you can't find your answer,
+        <a href="{{ contact_page_url }}">contact us</a>!
+      </p>
+    {% endif %}
   </div>
 
   <div class="sb-standalone-faq__items">
@@ -216,12 +224,32 @@
 
 {% schema %}
 {
-  "name": "FAQ",
-  "settings": [],
+  "name": "Accordion",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_custom_title",
+      "label": "Use custom title",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Custom title",
+      "default": "Frequently asked questions",
+      "visible_if": "{{ section.settings.use_custom_title }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subtitle",
+      "label": "Show subtitle",
+      "default": true
+    }
+  ],
   "blocks": [
     {
       "type": "faq_item",
-      "name": "FAQ item",
+      "name": "Accordion item",
       "settings": [
         {
           "type": "text",
@@ -240,7 +268,7 @@
   ],
   "presets": [
     {
-      "name": "FAQ",
+      "name": "Accordion",
       "blocks": [
         {
           "type": "faq_item"

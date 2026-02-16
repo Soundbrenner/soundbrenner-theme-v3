@@ -629,7 +629,7 @@
       const iconUrl = {{ 'icon-arrow-medium-transparent-padding-32.svg' | asset_url | json }};
       if (!form || !input || !button) return;
 
-      button.classList.add('sb-button-radiant', 'sb-button-radiant--medium', 'sb-button-medium-radiant');
+      button.classList.add('sb-button-radiant', 'sb-button-radiant--medium');
       button.setAttribute('aria-label', {{ section.settings.newsletter_button_label | json }});
 
       setImportant(form, 'border-radius', '999px');

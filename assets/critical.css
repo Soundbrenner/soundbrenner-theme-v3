@@ -243,20 +243,10 @@ body {
   --sb-button-hover-lift: -2px;
 }
 
-.sb-button-large-radiant {
-  --sb-button-radiant-height: var(--sb-space-48);
-  --sb-button-radiant-padding-inline: var(--sb-space-24);
-}
-
 .sb-button-radiant--medium {
   --sb-button-radiant-height: var(--sb-space-36);
   --sb-button-radiant-padding-inline: var(--sb-space-16);
   --sb-button-hover-lift: -2px;
-}
-
-.sb-button-medium-radiant {
-  --sb-button-radiant-height: var(--sb-space-36);
-  --sb-button-radiant-padding-inline: var(--sb-space-16);
 }
 
 .sb-button-radiant__label,
@@ -281,11 +271,13 @@ body {
   width: 100%;
 }
 
+.sb-button-radiant--leading-icon,
 .sb-button-radiant--trailing-icon {
   gap: var(--sb-space-8) !important;
   justify-content: center !important;
 }
 
+.sb-button-radiant--leading-icon .sb-button-radiant__icon,
 .sb-button-radiant--trailing-icon .sb-button-radiant__icon {
   flex: 0 0 var(--sb-space-16);
   height: var(--sb-space-16);

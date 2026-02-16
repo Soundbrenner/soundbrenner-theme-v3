@@ -21,6 +21,8 @@
         "subheadline": "",
         "show_button": false,
         "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
         "button_link": ""
       }
     },
@@ -31,8 +33,45 @@
       }
     },
     "contact_form": {
-      "type": "contact-form",
-      "settings": {}
+      "type": "contact-us-form",
+      "settings": {
+        "subtitle": ""
+      },
+      "blocks": {
+        "name": {
+          "type": "name_field",
+          "settings": {}
+        },
+        "last_name": {
+          "type": "last_name_field",
+          "settings": {}
+        },
+        "email": {
+          "type": "email_field",
+          "settings": {}
+        },
+        "university": {
+          "type": "open_text_50",
+          "settings": {
+            "label": "University",
+            "required": false
+          }
+        },
+        "comment": {
+          "type": "open_text_100",
+          "settings": {
+            "label": "Comment",
+            "required": true
+          }
+        }
+      },
+      "block_order": [
+        "name",
+        "last_name",
+        "email",
+        "university",
+        "comment"
+      ]
     },
     "faq": {
       "type": "faq",

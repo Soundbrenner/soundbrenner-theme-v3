@@ -54,15 +54,13 @@
         <p class="sb-framing-card__subheadline font-body weight-semibold">{{ hero_card_subheadline }}</p>
       {% endif %}
       {% if hero_card_show_button %}
-        {% if hero_card_button_link != blank %}
-          <a class="sb-framing-card__button sb-button-radiant sb-button-radiant--large sb-button-large-radiant" href="{{ hero_card_button_link }}">
-            <span class="sb-button-radiant__label">{{ hero_card_button_label }}</span>
-          </a>
-        {% else %}
-          <button type="button" class="sb-framing-card__button sb-button-radiant sb-button-radiant--large sb-button-large-radiant">
-            <span class="sb-button-radiant__label">{{ hero_card_button_label }}</span>
-          </button>
-        {% endif %}
+        {% render 'radiant-button',
+          label: hero_card_button_label,
+          link: hero_card_button_link,
+          size: section.settings.button_size,
+          icon_position: section.settings.icon_position,
+          extra_class: 'sb-framing-card__button'
+        %}
       {% endif %}
     </div>
   </div>
@@ -183,6 +181,29 @@
       "type": "text",
       "id": "button_label",
       "label": "Button label",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "large",
+      "options": [
+        { "value": "large", "label": "Large" },
+        { "value": "medium", "label": "Medium" }
+      ],
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
+    },
+    {
+      "type": "select",
+      "id": "icon_position",
+      "label": "Icon position",
+      "default": "none",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "leading", "label": "Leading" },
+        { "value": "trailing", "label": "Trailing" }
+      ],
       "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
     },
     {

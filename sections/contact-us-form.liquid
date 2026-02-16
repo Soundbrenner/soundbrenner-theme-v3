@@ -1,0 +1,295 @@
+<section class="sb-contact-form" data-sb-reveal>
+  <div class="sb-contact-form__inner">
+    {% form 'contact', class: 'sb-contact-form__form' %}
+      {% if form.posted_successfully? %}
+        <h3 class="sb-contact-form__success-title font-title weight-bold">
+          Thank you for contacting us. We'll get back as soon as possible.
+        </h3>
+      {% elsif form.errors %}
+        <p class="sb-contact-form__status font-caption weight-regular">{{ form.errors | default_errors }}</p>
+      {% endif %}
+
+      {% if section.settings.subtitle != blank %}
+        <p class="sb-contact-form__subtitle font-body weight-regular">{{ section.settings.subtitle }}</p>
+      {% endif %}
+
+      <div class="sb-contact-form__grid">
+        {% for block in section.blocks %}
+          {% assign field_id = 'ContactFormField-' | append: section.id | append: '-' | append: block.id %}
+
+          {% case block.type %}
+            {% when 'name_field' %}
+              <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
+                <input
+                  id="{{ field_id }}"
+                  type="text"
+                  name="contact[first_name]"
+                  value="{{ form.first_name }}"
+                  autocomplete="given-name"
+                  placeholder="Name"
+                  required
+                >
+              </div>
+
+            {% when 'last_name_field' %}
+              <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
+                <input
+                  id="{{ field_id }}"
+                  type="text"
+                  name="contact[last_name]"
+                  value="{{ form.last_name }}"
+                  autocomplete="family-name"
+                  placeholder="Last name"
+                  required
+                >
+              </div>
+
+            {% when 'email_field' %}
+              <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
+                <input
+                  id="{{ field_id }}"
+                  type="email"
+                  name="contact[email]"
+                  value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                  autocomplete="email"
+                  spellcheck="false"
+                  autocapitalize="off"
+                  placeholder="Email"
+                  required
+                >
+              </div>
+
+            {% when 'open_text_50' %}
+              {% assign key = block.settings.label | handleize %}
+              {% if key == blank %}{% assign key = block.id %}{% endif %}
+              <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
+                <input
+                  id="{{ field_id }}"
+                  type="text"
+                  name="contact[{{ key }}]"
+                  value=""
+                  placeholder="{{ block.settings.label }}"
+                  {% if block.settings.required %}required{% endif %}
+                >
+              </div>
+
+            {% when 'open_text_100' %}
+              <div class="sb-contact-form__field sb-contact-form__field--full" {{ block.shopify_attributes }}>
+                <textarea
+                  id="{{ field_id }}"
+                  name="contact[body]"
+                  rows="6"
+                  placeholder="{{ block.settings.label }}"
+                  {% if block.settings.required %}required{% endif %}
+                >{{ form.body }}</textarea>
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+
+      {% render 'radiant-button',
+        label: 'Send',
+        size: 'large',
+        icon_position: 'trailing',
+        extra_class: 'sb-contact-form__submit'
+      %}
+    {% endform %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-contact-form__inner {
+    width: 100%;
+  }
+
+  .sb-contact-form__form {
+    width: 100%;
+  }
+
+  .sb-contact-form__status {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-20);
+  }
+
+  .sb-contact-form__success-title {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-48);
+  }
+
+  .sb-contact-form__subtitle {
+    color: var(--sb-color-neutral-800);
+    margin: 0 0 var(--sb-space-20);
+  }
+
+  .sb-contact-form__grid {
+    display: grid;
+    gap: var(--sb-space-20);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sb-contact-form__field {
+    min-width: 0;
+  }
+
+  .sb-contact-form__field--full {
+    grid-column: 1 / -1;
+    position: relative;
+  }
+
+  .sb-contact-form input,
+  .sb-contact-form textarea {
+    background: var(--sb-color-always-white);
+    border: 0;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.12);
+    color: var(--sb-color-always-black);
+    font-family: var(--sb-font-primary);
+    font-size: var(--font-size-caption);
+    font-weight: 400;
+    line-height: 1.4;
+    width: 100%;
+  }
+
+  .sb-contact-form input {
+    border-radius: var(--sb-radius-pill);
+    box-sizing: border-box;
+    height: var(--sb-space-48);
+    padding-inline: var(--sb-space-20);
+  }
+
+  .sb-contact-form textarea {
+    border-radius: var(--sb-radius-card);
+    box-sizing: border-box;
+    min-height: 160px;
+    padding: var(--sb-space-20);
+    padding-bottom: calc(var(--sb-space-20) + var(--sb-space-16) + var(--sb-space-8));
+    padding-right: calc(var(--sb-space-20) + var(--sb-space-16) + var(--sb-space-8));
+    resize: vertical;
+  }
+
+  .sb-contact-form textarea::-webkit-resizer {
+    background: transparent;
+  }
+
+  .sb-contact-form__field--full::after {
+    background:
+      linear-gradient(135deg, transparent 28%, var(--sb-color-neutral-800) 28% 34%, transparent 34% 100%),
+      linear-gradient(135deg, transparent 52%, var(--sb-color-neutral-800) 52% 58%, transparent 58% 100%);
+    content: '';
+    height: var(--sb-space-16);
+    pointer-events: none;
+    position: absolute;
+    right: 8px;
+    bottom: 12px;
+    width: var(--sb-space-16);
+  }
+
+  .sb-contact-form input::placeholder,
+  .sb-contact-form textarea::placeholder {
+    color: var(--sb-color-neutral-800);
+    opacity: 1;
+  }
+
+  .sb-contact-form input:focus-visible,
+  .sb-contact-form textarea:focus-visible {
+    outline: 2px solid var(--sb-color-primary-500);
+    outline-offset: 2px;
+  }
+
+  .sb-contact-form__submit {
+    margin-top: var(--sb-space-20);
+    width: 100%;
+  }
+
+  @media (max-width: 749px) {
+    .sb-contact-form__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sb-contact-form__field--full {
+      grid-column: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact us form",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "name_field",
+      "name": "Name"
+    },
+    {
+      "type": "last_name_field",
+      "name": "Last name"
+    },
+    {
+      "type": "email_field",
+      "name": "Email"
+    },
+    {
+      "type": "open_text_50",
+      "name": "Open text 50%",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "University"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "open_text_100",
+      "name": "Open text 100%",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Comment"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact us form",
+      "blocks": [
+        {
+          "type": "name_field"
+        },
+        {
+          "type": "email_field"
+        },
+        {
+          "type": "open_text_100",
+          "settings": {
+            "label": "Comment",
+            "required": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

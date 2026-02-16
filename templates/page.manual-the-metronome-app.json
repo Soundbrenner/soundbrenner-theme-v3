@@ -18,6 +18,8 @@
         "headline": "Understand every detail.",
         "show_button": false,
         "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
         "button_link": "shopify://pages/the-metronome-app"
       }
     },
@@ -40,6 +42,8 @@
           "type": "button",
           "settings": {
             "label": "View product page",
+            "button_size": "large",
+            "icon_position": "none",
             "link": "shopify://pages/the-metronome-app"
           }
         },
@@ -79,6 +83,8 @@
           "type": "button",
           "settings": {
             "label": "View Pulse manual",
+            "button_size": "large",
+            "icon_position": "none",
             "link": "shopify://pages/manual-pulse-vibrating-metronome"
           }
         },
@@ -86,6 +92,8 @@
           "type": "button",
           "settings": {
             "label": "View Core and Spark manual",
+            "button_size": "large",
+            "icon_position": "none",
             "link": "shopify://pages/manual-core-and-spark"
           }
         },
@@ -299,6 +307,8 @@
         "headline": "Our team is here for you.",
         "show_button": true,
         "button_label": "Contact us",
+        "button_size": "large",
+        "icon_position": "none",
         "button_link": "shopify://pages/contact-us"
       }
     }

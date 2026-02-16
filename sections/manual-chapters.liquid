@@ -92,23 +92,13 @@
         </figure>
       {% elsif block.type == 'button' %}
         <div class="sb-manual-chapters__button-wrap" data-sb-reveal {{ block.shopify_attributes }}>
-          {% if block.settings.link != blank %}
-            <a
-              class="sb-button-radiant sb-button-radiant--large sb-button-large-radiant"
-              href="{{ block.settings.link }}"
-              data-sb-reveal-item
-            >
-              <span class="sb-button-radiant__label">{{ block.settings.label | default: 'Placeholder' }}</span>
-            </a>
-          {% else %}
-            <button
-              type="button"
-              class="sb-button-radiant sb-button-radiant--large sb-button-large-radiant"
-              data-sb-reveal-item
-            >
-              <span class="sb-button-radiant__label">{{ block.settings.label | default: 'Placeholder' }}</span>
-            </button>
-          {% endif %}
+          {% render 'radiant-button',
+            label: block.settings.label,
+            link: block.settings.link,
+            size: block.settings.button_size,
+            icon_position: block.settings.icon_position,
+            reveal: true
+          %}
         </div>
       {% elsif block.type == 'vimeo_video' %}
         <figure
@@ -695,13 +685,34 @@
     },
     {
       "type": "button",
-      "name": "Button large radiant",
+      "name": "Button radiant",
       "settings": [
         {
           "type": "text",
           "id": "label",
           "label": "Label",
           "default": "Placeholder"
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Size",
+          "default": "large",
+          "options": [
+            { "value": "large", "label": "Large" },
+            { "value": "medium", "label": "Medium" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon position",
+          "default": "none",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "leading", "label": "Leading" },
+            { "value": "trailing", "label": "Trailing" }
+          ]
         },
         {
           "type": "url",

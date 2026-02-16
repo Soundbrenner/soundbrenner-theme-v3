@@ -21,6 +21,8 @@
         "subheadline": "",
         "show_button": true,
         "button_label": "Go to home page",
+        "button_size": "large",
+        "icon_position": "none",
         "button_link": "/"
       }
     },
@@ -34,6 +36,8 @@
         "subheadline": "",
         "show_button": false,
         "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
         "button_link": "/"
       }
     }

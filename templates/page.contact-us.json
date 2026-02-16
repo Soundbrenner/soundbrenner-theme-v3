@@ -1,0 +1,59 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "kicker": "Contact us",
+        "headline": "We’re here to help.",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
+      }
+    },
+    "form": {
+      "type": "contact-us-form",
+      "blocks": {
+        "name": {
+          "type": "name_field",
+          "settings": {}
+        },
+        "email": {
+          "type": "email_field",
+          "settings": {}
+        },
+        "comment": {
+          "type": "open_text_100",
+          "settings": {
+            "label": "Comment",
+            "required": true
+          }
+        }
+      },
+      "block_order": [
+        "name",
+        "email",
+        "comment"
+      ],
+      "settings": {
+        "subtitle": ""
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "form"
+  ]
+}
