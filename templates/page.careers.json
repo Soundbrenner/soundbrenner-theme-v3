@@ -164,6 +164,18 @@
         "custom_title": "Frequently asked questions",
         "show_subtitle": true
       }
+    },
+    "large_feature_gERXdi": {
+      "type": "large-feature",
+      "name": "Large feature",
+      "settings": {
+        "media_position": "left",
+        "media": "shopify://shop_images/Property_1_Careers_3.jpg",
+        "title_part_one": "Where it all began",
+        "title_part_two": "",
+        "title_accent_color": "primary-500",
+        "body": "<p>Soundbrenner began in 2014 at a Startup Weekend in Berlin with a simple idea: a vibrating metronome. What started as a side project quickly became an obsession. The team later relocated to Asia while maintaining roots in Berlin.<br/><br/>Our journey took off through crowdfunding. In 2015, Pulse launched with $240K in pre-orders. In 2018, Core raised $1.6M and reached its goal in just 14 minutes. Today, our wearables are available in 30+ countries, have won “Best in Show” at NAMM, and are used by musicians around the world.<br/><br/>Alongside our hardware, The Metronome app has grown to over 600,000 monthly active users and millions of downloads.<br/><br/>We are proud of what we have built. And we are just getting started.</p>"
+      }
     }
   },
   "order": [
@@ -172,6 +184,7 @@
     "large_feature_RdgGf6",
     "large_feature_4B9RkK",
     "faq_L39iGc",
-    "faq_PbEYpg"
+    "faq_PbEYpg",
+    "large_feature_gERXdi"
   ]
 }
