@@ -27,13 +27,20 @@
         "heading_1": {
           "type": "heading",
           "settings": {
-            "heading": "Start"
+            "heading": "Overview"
           }
         },
         "text_1": {
           "type": "text",
           "settings": {
-            "text": "<p>The Metronome by Soundbrenner combines a metronome, practice tracker, and tuner in one app.</p><p>Use it as a free tool, or unlock advanced features with Soundbrenner Plus. Wearable owners can use their wearable features without needing Plus.</p>"
+            "text": "<p>The Metronome by Soundbrenner combines a metronome, practice tracker, and tuner in one app.</p><p>Use it as a free tool, or unlock advanced features with Soundbrenner Plus.</p><p>Use it standalone or as companion to the Pulse, Core or Spark.</p><p>To learn more about the app and to download it for free, visit the app's product page.</p>"
+          }
+        },
+        "button_gjb4h4": {
+          "type": "button",
+          "settings": {
+            "label": "View product page",
+            "link": "shopify://pages/the-metronome-app"
           }
         },
         "divider_1": {
@@ -43,43 +50,13 @@
         "heading_2": {
           "type": "heading",
           "settings": {
-            "heading": "Key features"
-          }
-        },
-        "heading_small_2a": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Metronome"
+            "heading": "Compatibility"
           }
         },
         "text_2a": {
           "type": "text",
           "settings": {
-            "text": "<p>Professional tempo control with time signatures, subdivisions, accents, customizable sounds, and fast rhythm/setlist saving.</p>"
-          }
-        },
-        "heading_small_2b": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Practice tracker"
-          }
-        },
-        "text_2b": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Track sessions, monitor goals and streaks, and keep structured progress across your instruments.</p>"
-          }
-        },
-        "heading_small_2c": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Tuner"
-          }
-        },
-        "text_2c": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Accurate chromatic and profile-based tuning with adjustable reference frequency for your workflow.</p>"
+            "text": "<p>The app is compatible with iPhone models running iOS 16 or later, iPad models running iPadOS 16 or later, and Apple silicon Mac computers running macOS 13 Ventura or later.</p><p>On Android, the app is compatible with smartphones and tablets running Android 10 or later.</p>"
           }
         },
         "divider_2": {
@@ -89,7 +66,7 @@
         "heading_3": {
           "type": "heading",
           "settings": {
-            "heading": "Wearables"
+            "heading": "Using wearables"
           }
         },
         "text_3": {
@@ -101,15 +78,15 @@
         "button_3a": {
           "type": "button",
           "settings": {
-            "label": "Open Pulse manual",
+            "label": "View Pulse manual",
             "link": "shopify://pages/manual-pulse-vibrating-metronome"
           }
         },
         "button_3b": {
           "type": "button",
           "settings": {
-            "label": "Open Core & Spark manual",
-            "link": "shopify://pages/manual-core-and-spark-practice-companion"
+            "label": "View Core and Spark manual",
+            "link": "shopify://pages/manual-core-and-spark"
           }
         },
         "divider_3": {
@@ -207,14 +184,10 @@
       "block_order": [
         "heading_1",
         "text_1",
+        "button_gjb4h4",
         "divider_1",
         "heading_2",
-        "heading_small_2a",
         "text_2a",
-        "heading_small_2b",
-        "text_2b",
-        "heading_small_2c",
-        "text_2c",
         "divider_2",
         "heading_3",
         "text_3",
