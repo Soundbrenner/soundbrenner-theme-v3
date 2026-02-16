@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -5,7 +14,7 @@
       "settings": {
         "use_seasonal_hero_card": false,
         "kicker": "Careers",
-        "headline": "Build the future of practice with us.",
+        "headline": "Soundbrenner is hiring. Might it be you?",
         "subheadline": "",
         "show_button": false,
         "button_label": "",
@@ -16,40 +25,49 @@
     },
     "top_feature_highlights": {
       "type": "top-feature-highlights",
-      "settings": {
-        "title": "Top feature highlights"
-      },
       "blocks": {
+        "item_ngEUyU": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Ownership",
+            "body": "<p>Take real responsibility. Make decisions. Shape the company.</p>"
+          }
+        },
+        "item_gWpPP7": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Meaningful impact",
+            "body": "<p>Work on what matters. No unnecessary bureaucracy.</p>"
+          }
+        },
         "item_1": {
           "type": "item",
           "settings": {
             "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
-            "title": "Mission-driven",
-            "body": "<p>Work on products used by musicians around the world.</p>"
+            "title": "Grow fast",
+            "body": "<p>Tackle real challenges. Level up every day.</p>"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
             "gradient_value": "linear-gradient(135deg, #00B59C 0%, #5CCFC1 100%)",
-            "title": "Ownership",
-            "body": "<p>Take responsibility from concept to launch.</p>"
-          }
-        },
-        "item_3": {
-          "type": "item",
-          "settings": {
-            "gradient_value": "linear-gradient(135deg, #5C7CFA 0%, #9F5AFA 100%)",
-            "title": "Craft",
-            "body": "<p>Obsess over details and ship high-quality experiences.</p>"
+            "title": "Follow your passion",
+            "body": "<p>Build for musicians. Work on what excites you.</p>"
           }
         }
       },
       "block_order": [
+        "item_ngEUyU",
+        "item_gWpPP7",
         "item_1",
-        "item_2",
-        "item_3"
-      ]
+        "item_2"
+      ],
+      "settings": {
+        "title": "Why join Soundbrenner"
+      }
     }
   },
   "order": [
