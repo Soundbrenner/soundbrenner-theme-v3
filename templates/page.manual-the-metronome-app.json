@@ -14,8 +14,8 @@
       "settings": {
         "background_image_desktop": "shopify://shop_images/Property_1_App_1_6ff69b0f-a787-456a-8986-2636d4ddafe0.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_App_1_mobile.jpg",
-        "page_title": "Manual The Metronome app",
-        "page_benefits": "Understand every detail.",
+        "kicker": "Manual The Metronome app",
+        "headline": "Understand every detail.",
         "show_button": false,
         "button_label": "Placeholder",
         "button_link": "shopify://pages/the-metronome-app"
@@ -295,8 +295,8 @@
       "settings": {
         "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Contact_us_mobile.jpg",
-        "page_title": "Need more help",
-        "page_benefits": "Our team is here for you.",
+        "kicker": "Need more help",
+        "headline": "Our team is here for you.",
         "show_button": true,
         "button_label": "Contact us",
         "button_link": "shopify://pages/contact-us"

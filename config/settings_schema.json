@@ -138,21 +138,23 @@
       },
       {
         "type": "text",
-        "id": "seasonal_hero_page_title",
-        "label": "Seasonal page title",
-        "default": "Page title"
+        "id": "seasonal_hero_kicker",
+        "label": "Seasonal kicker"
       },
       {
         "type": "textarea",
-        "id": "seasonal_hero_page_benefits",
-        "label": "Seasonal page benefits",
-        "default": "Page benefits."
+        "id": "seasonal_hero_headline",
+        "label": "Seasonal headline"
+      },
+      {
+        "type": "textarea",
+        "id": "seasonal_hero_subheadline",
+        "label": "Seasonal subheadline"
       },
       {
         "type": "text",
         "id": "seasonal_hero_button_label",
-        "label": "Seasonal button label",
-        "default": "Placeholder"
+        "label": "Seasonal button label"
       },
       {
         "type": "url",

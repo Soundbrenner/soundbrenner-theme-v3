@@ -14,8 +14,8 @@
       "settings": {
         "background_image_desktop": "shopify://shop_images/footer_wave_desktop.jpg",
         "background_image_mobile": "shopify://shop_images/footer_wave_mobile.jpg",
-        "page_title": "Manual Wave in-ear monitors",
-        "page_benefits": "Understand every detail.",
+        "kicker": "Manual Wave in-ear monitors",
+        "headline": "Understand every detail.",
         "show_button": false,
         "button_label": "Placeholder",
         "button_link": ""
@@ -221,8 +221,8 @@
       "settings": {
         "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Contact_us_mobile.jpg",
-        "page_title": "Contact us",
-        "page_benefits": "We're here to help.",
+        "kicker": "Contact us",
+        "headline": "We're here to help.",
         "show_button": true,
         "button_label": "Send us a message",
         "button_link": "shopify://pages/contact-us"

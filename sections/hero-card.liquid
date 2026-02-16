@@ -5,11 +5,12 @@
 {% if hero_card_use_seasonal %}
   {% assign hero_card_source_image_desktop = settings.seasonal_hero_image_desktop %}
   {% assign hero_card_source_image_mobile = settings.seasonal_hero_image_mobile %}
-  {% assign hero_card_title = settings.seasonal_hero_page_title %}
-  {% assign hero_card_benefits = settings.seasonal_hero_page_benefits %}
+  {% assign hero_card_kicker = settings.seasonal_hero_kicker %}
+  {% assign hero_card_headline = settings.seasonal_hero_headline %}
+  {% assign hero_card_subheadline = settings.seasonal_hero_subheadline %}
   {% assign hero_card_button_label = settings.seasonal_hero_button_label %}
   {% assign hero_card_button_link = settings.seasonal_hero_button_link %}
-  {% if hero_card_button_label != blank or hero_card_button_link != blank %}
+  {% if hero_card_button_label != blank %}
     {% assign hero_card_show_button = true %}
   {% else %}
     {% assign hero_card_show_button = false %}
@@ -17,8 +18,9 @@
 {% else %}
   {% assign hero_card_source_image_desktop = section.settings.background_image_desktop %}
   {% assign hero_card_source_image_mobile = section.settings.background_image_mobile %}
-  {% assign hero_card_title = section.settings.page_title %}
-  {% assign hero_card_benefits = section.settings.page_benefits %}
+  {% assign hero_card_kicker = section.settings.kicker %}
+  {% assign hero_card_headline = section.settings.headline %}
+  {% assign hero_card_subheadline = section.settings.subheadline %}
   {% assign hero_card_button_label = section.settings.button_label %}
   {% assign hero_card_button_link = section.settings.button_link %}
   {% assign hero_card_show_button = section.settings.show_button %}
@@ -42,16 +44,23 @@
     style="--sb-hero-card-bg-mobile: url('{{ hero_card_mobile_image }}'); --sb-hero-card-bg-desktop: url('{{ hero_card_desktop_image }}');"
   >
     <div class="sb-framing-card__content">
-      <p class="font-body weight-semibold">{{ hero_card_title }}</p>
-      <h2 class="font-title weight-bold">{{ hero_card_benefits }}</h2>
+      {% if hero_card_kicker != blank %}
+        <p class="sb-framing-card__kicker font-body weight-semibold">{{ hero_card_kicker }}</p>
+      {% endif %}
+      {% if hero_card_headline != blank %}
+        <h2 class="sb-framing-card__headline font-title weight-bold">{{ hero_card_headline }}</h2>
+      {% endif %}
+      {% if hero_card_subheadline != blank %}
+        <p class="sb-framing-card__subheadline font-body weight-semibold">{{ hero_card_subheadline }}</p>
+      {% endif %}
       {% if hero_card_show_button %}
         {% if hero_card_button_link != blank %}
           <a class="sb-framing-card__button sb-button-radiant sb-button-radiant--large sb-button-large-radiant" href="{{ hero_card_button_link }}">
-            <span class="sb-button-radiant__label">{{ hero_card_button_label | default: 'Placeholder' }}</span>
+            <span class="sb-button-radiant__label">{{ hero_card_button_label }}</span>
           </a>
         {% else %}
           <button type="button" class="sb-framing-card__button sb-button-radiant sb-button-radiant--large sb-button-large-radiant">
-            <span class="sb-button-radiant__label">{{ hero_card_button_label | default: 'Placeholder' }}</span>
+            <span class="sb-button-radiant__label">{{ hero_card_button_label }}</span>
           </button>
         {% endif %}
       {% endif %}
@@ -124,50 +133,62 @@
     },
     {
       "type": "paragraph",
-      "content": "Target 1240x380 at 2x export (2480x760)."
+      "content": "Target 1240x380 at 2x export (2480x760).",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "image_picker",
       "id": "background_image_desktop",
-      "label": "Background image desktop"
+      "label": "Background image desktop",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "paragraph",
-      "content": "Target 370x380 at 3x export (1110x1140)."
+      "content": "Target 370x380 at 3x export (1110x1140).",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "image_picker",
       "id": "background_image_mobile",
-      "label": "Background image mobile"
+      "label": "Background image mobile",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "text",
-      "id": "page_title",
-      "label": "Page title",
-      "default": "Page title"
+      "id": "kicker",
+      "label": "Kicker",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "textarea",
-      "id": "page_benefits",
-      "label": "Page benefits",
-      "default": "Page benefits."
+      "id": "headline",
+      "label": "Headline",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "checkbox",
       "id": "show_button",
       "label": "Show button",
-      "default": false
+      "default": false,
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
-      "default": "Placeholder"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button link"
+      "label": "Button link",
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
     }
   ],
   "presets": [

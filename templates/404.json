@@ -19,8 +19,8 @@
       "settings": {
         "background_image_desktop": "shopify://shop_images/Property_1_404_77e221c0-0adc-463b-8ca8-a59d9093e83b.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_404_mobile.jpg",
-        "page_title": "404",
-        "page_benefits": "The page you’re looking for can’t be found.",
+        "kicker": "404",
+        "headline": "The page you’re looking for can’t be found.",
         "show_button": true,
         "button_label": "Go to home page",
         "button_link": "/"
@@ -30,8 +30,8 @@
       "type": "hero-card",
       "name": "Hero card",
       "settings": {
-        "page_title": "404",
-        "page_benefits": "The page you’re looking for can’t be found.",
+        "kicker": "404",
+        "headline": "The page you’re looking for can’t be found.",
         "show_button": true,
         "button_label": "Go to home page",
         "button_link": "/"
