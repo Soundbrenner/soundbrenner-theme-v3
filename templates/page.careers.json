@@ -230,39 +230,51 @@
     "feature_carousel_secondary": {
       "type": "feature-carousel",
       "blocks": {
+        "item_P4WXPw": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/Product_Careers_team_photos_Order_1.jpg",
+            "body": "<p>Soundbrenner team at a photo shoot.</p>"
+          }
+        },
         "item_1": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+            "image": "shopify://shop_images/Product_Careers_team_photos_Order_2.jpg",
+            "body": "<p>Global team meetup at a beach in Hong Kong.</p>"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+            "image": "shopify://shop_images/Product_Careers_team_photos_Order_3.jpg",
+            "body": "<p>Stevie Wonder visiting our NAMM booth near Los Angeles.</p>"
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+            "image": "shopify://shop_images/Product_Careers_team_photos_Order_4.jpg",
+            "body": "<p>Creative production team during a photo shoot.</p>"
           }
         },
         "item_4": {
           "type": "item",
           "settings": {
-            "body": "<p><strong>Placeholder.</strong> Placeholder 2.</p>"
+            "image": "shopify://shop_images/Product_Careers_team_photos_Order_5.jpg",
+            "body": "<p>Engineering team in Berlin go-karting.</p>"
           }
         }
       },
       "block_order": [
+        "item_P4WXPw",
         "item_1",
         "item_2",
         "item_3",
         "item_4"
       ],
       "settings": {
-        "title": "Feature carousel"
+        "title": "Team photos"
       }
     }
   },
