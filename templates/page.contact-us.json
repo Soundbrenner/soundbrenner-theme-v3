@@ -48,10 +48,7 @@
         "name",
         "email",
         "comment"
-      ],
-      "settings": {
-        "subtitle": ""
-      }
+      ]
     }
   },
   "order": [

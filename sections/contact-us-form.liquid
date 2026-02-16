@@ -9,15 +9,18 @@
         <p class="sb-contact-form__status font-caption weight-regular">{{ form.errors | default_errors }}</p>
       {% endif %}
 
-      {% if section.settings.subtitle != blank %}
-        <p class="sb-contact-form__subtitle font-body weight-regular">{{ section.settings.subtitle }}</p>
-      {% endif %}
-
       <div class="sb-contact-form__grid">
         {% for block in section.blocks %}
           {% assign field_id = 'ContactFormField-' | append: section.id | append: '-' | append: block.id %}
 
           {% case block.type %}
+            {% when 'subtitle' %}
+              {% if block.settings.content != blank %}
+                <div class="sb-contact-form__subtitle-block font-body weight-regular rte sb-contact-form__field--full" {{ block.shopify_attributes }}>
+                  {{ block.settings.content }}
+                </div>
+              {% endif %}
+
             {% when 'name_field' %}
               <div class="sb-contact-form__field" {{ block.shopify_attributes }}>
                 <input
@@ -119,9 +122,26 @@
     margin: 0 0 var(--sb-space-48);
   }
 
-  .sb-contact-form__subtitle {
+  .sb-contact-form__subtitle-block {
     color: var(--sb-color-neutral-800);
-    margin: 0 0 var(--sb-space-20);
+    margin: 0;
+  }
+
+  .sb-contact-form__subtitle-block > * {
+    margin: 0;
+  }
+
+  .sb-contact-form__subtitle-block a,
+  .sb-contact-form__subtitle-block a:visited {
+    color: var(--sb-color-primary-500);
+    text-decoration: none;
+  }
+
+  .sb-contact-form__subtitle-block a:hover,
+  .sb-contact-form__subtitle-block a:focus-visible,
+  .sb-contact-form__subtitle-block a:active {
+    color: var(--sb-color-primary-500);
+    text-decoration: underline;
   }
 
   .sb-contact-form__grid {
@@ -223,15 +243,21 @@
 
 {% schema %}
 {
-  "name": "Contact us form",
-  "settings": [
-    {
-      "type": "textarea",
-      "id": "subtitle",
-      "label": "Subtitle"
-    }
-  ],
+  "name": "Contact form",
+  "settings": [],
   "blocks": [
+    {
+      "type": "subtitle",
+      "name": "Subtitle",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Subtitle</p>"
+        }
+      ]
+    },
     {
       "type": "name_field",
       "name": "Name"
@@ -246,7 +272,7 @@
     },
     {
       "type": "open_text_50",
-      "name": "Open text 50%",
+      "name": "Universal input small",
       "settings": [
         {
           "type": "text",
@@ -264,7 +290,7 @@
     },
     {
       "type": "open_text_100",
-      "name": "Open text 100%",
+      "name": "Universal input large",
       "settings": [
         {
           "type": "text",
@@ -283,7 +309,7 @@
   ],
   "presets": [
     {
-      "name": "Contact us form",
+      "name": "Contact form",
       "blocks": [
         {
           "type": "name_field"

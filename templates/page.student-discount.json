@@ -34,9 +34,6 @@
     },
     "contact_form": {
       "type": "contact-us-form",
-      "settings": {
-        "subtitle": ""
-      },
       "blocks": {
         "name": {
           "type": "name_field",
