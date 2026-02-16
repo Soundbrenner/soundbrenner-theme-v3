@@ -29,6 +29,7 @@
         "item_ngEUyU": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Property_1_Workspace_premium.svg",
             "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
             "title": "Ownership",
             "body": "<p>Take real responsibility. Make decisions. Shape the company.</p>"
@@ -37,6 +38,7 @@
         "item_gWpPP7": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Property_1_Track_changes.svg",
             "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
             "title": "Meaningful impact",
             "body": "<p>Work on what matters. No unnecessary bureaucracy.</p>"
@@ -45,6 +47,7 @@
         "item_1": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Property_1_Rocket_launch.svg",
             "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
             "title": "Grow fast",
             "body": "<p>Tackle real challenges. Level up every day.</p>"
@@ -53,6 +56,7 @@
         "item_2": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Property_1_Music_note.svg",
             "gradient_value": "linear-gradient(135deg, #E67702 0%, #FF4700 100%)",
             "title": "Follow your passion",
             "body": "<p>Build for musicians. Work on what excites you.</p>"
