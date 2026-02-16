@@ -215,6 +215,56 @@
         "show_subtitle": true
       }
     },
+    "trust_indicators_careers": {
+      "type": "trust-indicators",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Wired.svg",
+            "text": "<p>”The best gear to learn music like a pro”</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_CNET.svg",
+            "text": "<p>”If Iron Man played guitar, he'd use this watch to tune it”</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_TechCrunch.svg",
+            "text": "<p>”Helps you get down to your own sick beat”</p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_NAMM_19c1b3cf-9d45-40a3-8132-5ad216b897b8.svg",
+            "text": "<p>Best in Show</p>"
+          }
+        },
+        "item_5": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Property_1_Rolling_Stone_af496e24-568b-4a4c-ab38-b0ad040d5fa7.svg",
+            "text": "<p>\"The best vibrating metronome for musicians\"</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5"
+      ],
+      "settings": {
+        "title": "Trust indicators"
+      }
+    },
     "large_feature_gERXdi": {
       "type": "large-feature",
       "name": "Large feature",
@@ -275,51 +325,6 @@
       ],
       "settings": {
         "title": "Team photos"
-      }
-    },
-    "trust_indicators_careers": {
-      "type": "trust-indicators",
-      "blocks": {
-        "item_1": {
-          "type": "item",
-          "settings": {
-            "text": "<p>Trust indicator.</p>"
-          }
-        },
-        "item_2": {
-          "type": "item",
-          "settings": {
-            "text": "<p>Trust indicator.</p>"
-          }
-        },
-        "item_3": {
-          "type": "item",
-          "settings": {
-            "text": "<p>Trust indicator.</p>"
-          }
-        },
-        "item_4": {
-          "type": "item",
-          "settings": {
-            "text": "<p>Trust indicator.</p>"
-          }
-        },
-        "item_5": {
-          "type": "item",
-          "settings": {
-            "text": "<p>Trust indicator.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "item_1",
-        "item_2",
-        "item_3",
-        "item_4",
-        "item_5"
-      ],
-      "settings": {
-        "title": "Trust indicators"
       }
     }
   },
