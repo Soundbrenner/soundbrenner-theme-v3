@@ -33,7 +33,7 @@
         "text_1": {
           "type": "text",
           "settings": {
-            "text": "<p>The Metronome by Soundbrenner combines a metronome, practice tracker, and tuner in one app.</p><p>Use it as a free tool, or unlock advanced features with Soundbrenner Plus.</p><p>Use it standalone or as companion to the Pulse, Core or Spark.</p><p>To learn more about the app and to download it for free, visit the app's product page.</p>"
+            "text": "<p>The Metronome by Soundbrenner combines a metronome, practice tracker, and tuner in one app.</p><p>To learn more about the app and to download it for free, visit the app's product page.</p>"
           }
         },
         "button_gjb4h4": {
@@ -72,7 +72,7 @@
         "text_3": {
           "type": "text",
           "settings": {
-            "text": "<p>Soundbrenner wearables (Core, Core 2, Pulse, Spark) connect via Bluetooth through the app.</p><p>Important: do not pair wearables in your phone’s Bluetooth menu. Pair inside the app using Add new wearable.</p>"
+            "text": "<p>To learn more, visit the product's manuals.</p>"
           }
         },
         "button_3a": {
