@@ -1,0 +1,40 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "text": {
+      "type": "student-discount-text",
+      "settings": {
+        "content": "<p>Add your student discount information here.</p>"
+      }
+    },
+    "faq": {
+      "type": "standalone-faq",
+      "blocks": {
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Question",
+            "answer": "<p>Answer.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_1"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "text",
+    "faq"
+  ]
+}
+

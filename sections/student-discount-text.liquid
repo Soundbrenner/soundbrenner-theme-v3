@@ -1,0 +1,39 @@
+<section class="sb-student-discount-text" data-sb-reveal>
+  <div class="sb-student-discount-text__content font-body weight-regular rte" data-sb-reveal-item>
+    {{ section.settings.content }}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-student-discount-text__content {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .sb-student-discount-text__content > * {
+    margin: 0;
+  }
+
+  .sb-student-discount-text__content > * + * {
+    margin-top: var(--sb-space-24);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Student discount text",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Add your student discount details here.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Student discount text"
+    }
+  ]
+}
+{% endschema %}
+
