@@ -53,21 +53,13 @@
             "label": "University",
             "required": false
           }
-        },
-        "comment": {
-          "type": "open_text_100",
-          "settings": {
-            "label": "Comment",
-            "required": true
-          }
         }
       },
       "block_order": [
         "name",
         "last_name",
         "email",
-        "university",
-        "comment"
+        "university"
       ],
       "settings": {}
     },
@@ -117,7 +109,11 @@
         "faq_item_7NY6Vd",
         "faq_item_bRiFCB"
       ],
-      "settings": {}
+      "settings": {
+        "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
+        "show_subtitle": true
+      }
     }
   },
   "order": [
