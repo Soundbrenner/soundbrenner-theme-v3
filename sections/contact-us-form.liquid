@@ -87,12 +87,15 @@
         {% endfor %}
       </div>
 
-      {% render 'radiant-button',
-        label: 'Send',
-        size: 'large',
-        icon_position: 'trailing',
-        extra_class: 'sb-contact-form__submit'
-      %}
+      <div class="sb-contact-form__submit-row">
+        {% render 'radiant-button',
+          label: 'Send',
+          size: 'large',
+          icon_position: 'trailing',
+          button_type: 'submit',
+          extra_class: 'sb-contact-form__submit'
+        %}
+      </div>
     {% endform %}
   </div>
 </section>
@@ -195,9 +198,16 @@
     outline-offset: 2px;
   }
 
-  .sb-contact-form__submit {
+  .sb-contact-form__submit-row {
     margin-top: var(--sb-space-20);
     width: 100%;
+  }
+
+  .sb-contact-form__submit-row .sb-button-radiant,
+  .sb-contact-form__submit {
+    display: flex !important;
+    flex: 0 0 100% !important;
+    width: 100% !important;
   }
 
   @media (max-width: 749px) {

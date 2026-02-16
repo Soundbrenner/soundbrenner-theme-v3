@@ -1,5 +1,6 @@
 {% assign button_size = size | default: 'large' %}
 {% assign button_icon_position = icon_position | default: 'none' %}
+{% assign button_html_type = button_type | default: 'button' %}
 
 {% capture button_classes -%}
   sb-button-radiant
@@ -26,7 +27,7 @@
     {% endif %}
   </a>
 {% else %}
-  <button type="button" class="{{ button_classes | strip }}" {% if reveal %}data-sb-reveal-item{% endif %}>
+  <button type="{{ button_html_type }}" class="{{ button_classes | strip }}" {% if reveal %}data-sb-reveal-item{% endif %}>
     {% if button_icon_position == 'leading' %}
       {{ button_icon }}
     {% endif %}
@@ -36,4 +37,3 @@
     {% endif %}
   </button>
 {% endif %}
-
