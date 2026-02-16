@@ -20,10 +20,13 @@
     "input_corner_radius": 4,
     "seasonal_hero_image_desktop": "shopify://shop_images/Property_1_Valentine_s_Day_Sale_373634bf-b192-4924-829b-7bd67ca9e28b.jpg",
     "seasonal_hero_image_mobile": "shopify://shop_images/Property_1_Valentine_s_Day_Sale_mobile_024ca7f0-b014-4642-a7fa-c6131d2e30f2.jpg",
-    "seasonal_hero_page_title": "Valentine's Day Sale is here!",
-    "seasonal_hero_page_benefits": "Save up to XX% and get free shipping in XX on orders over XX.",
+    "seasonal_hero_kicker": "",
+    "seasonal_hero_headline": "Valentine's Day Sale is here!",
+    "seasonal_hero_subheadline": "Save up to XX and get free shipping in XX on orders over XX.",
     "seasonal_hero_button_label": "Shop the sale",
     "seasonal_hero_button_link": "shopify://collections/all",
+    "seasonal_hero_page_title": "Valentine's Day Sale is here!",
+    "seasonal_hero_page_benefits": "Save up to XX% and get free shipping in XX on orders over XX.",
     "content_for_index": []
   }
 }
