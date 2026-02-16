@@ -9,10 +9,25 @@
  */
 {
   "sections": {
+    "hero_card_k7f97P": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_Student_discount_b5d9b145-679b-4aa4-a39f-fa0a86e12d70.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Student_discount_mobile.jpg",
+        "kicker": "Student discount",
+        "headline": "Students, time to upgrade.",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_link": ""
+      }
+    },
     "text": {
       "type": "student-discount-text",
       "settings": {
-        "content": "<p>Add your student discount information here.</p>"
+        "content": "<p>If you are a student, you get our best available offer - even better than any seasonal sale.</p><p>No matter which music major you are pursuing, our products are designed to support you every step of the way. Practice more efficiently, stay focused, and reach your musical goals with tools that grow with you - during your time on campus and beyond. Be ready for everything your studies and your musical journey bring.</p><p>Getting your student discount is simple.</p><ol><li>Submit your name, email address, and the university you are attending.</li><li>We will verify your information and send you a personal discount code by email.</li><li>Enter the code at checkout on our website to receive your student pricing.</li></ol>"
       }
     },
     "faq": {
@@ -33,8 +48,8 @@
     }
   },
   "order": [
+    "hero_card_k7f97P",
     "text",
     "faq"
   ]
 }
-
