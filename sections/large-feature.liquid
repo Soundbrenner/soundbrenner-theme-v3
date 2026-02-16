@@ -2,7 +2,19 @@
   <div class="sb-large-feature__layout {% if section.settings.media_position == 'right' %}sb-large-feature__layout--media-right{% endif %}">
     <div class="sb-large-feature__media" data-sb-reveal-item>
       {% assign media_alt = section.settings.media.alt | default: section.settings.title_part_one | default: 'Large feature image' %}
-      {% if section.settings.media != blank %}
+      {% if section.settings.media_video != blank %}
+        {{
+          section.settings.media_video
+          | video_tag:
+            class: 'sb-large-feature__media-video',
+            controls: true,
+            autoplay: false,
+            loop: false,
+            muted: false,
+            image_size: '1240x',
+            preload: 'metadata'
+        }}
+      {% elsif section.settings.media != blank %}
         {{
           section.settings.media
           | image_url: width: 1240
@@ -14,16 +26,14 @@
             loading: 'lazy'
         }}
       {% else %}
-        {{
-          'large-feature-placeholder.png'
-          | asset_url
-          | image_tag:
-            class: 'sb-large-feature__media-image',
-            widths: '400, 620, 800, 1024, 1240',
-            sizes: '(min-width: 750px) 620px, 100vw',
-            alt: media_alt,
-            loading: 'lazy'
-        }}
+        <img
+          class="sb-large-feature__media-image"
+          src="{{ 'large-feature-placeholder.png' | asset_url }}"
+          alt="{{ media_alt | escape }}"
+          loading="lazy"
+          width="1240"
+          height="1108"
+        >
       {% endif %}
     </div>
 
@@ -78,6 +88,14 @@
   }
 
   .sb-large-feature__media-image {
+    aspect-ratio: 620 / 554;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-large-feature__media-video {
     aspect-ratio: 620 / 554;
     display: block;
     height: auto;
@@ -160,23 +178,26 @@
     {
       "type": "image_picker",
       "id": "media",
-      "label": "Media image"
+      "label": "Media image",
+      "info": "Image/video target 620x554 at 2x export (1240x1108)."
     },
     {
-      "type": "paragraph",
-      "content": "Target 620x554 at 2x export (1240x1108)."
+      "type": "video",
+      "id": "media_video",
+      "label": "Media video",
+      "info": "Image/video target 620x554 at 2x export (1240x1108)."
     },
     {
       "type": "text",
       "id": "title_part_one",
       "label": "Title part 1",
-      "default": "Your primary"
+      "default": "Title 1."
     },
     {
       "type": "text",
       "id": "title_part_two",
       "label": "Title part 2",
-      "default": "highlight"
+      "default": "Title 2."
     },
     {
       "type": "select",

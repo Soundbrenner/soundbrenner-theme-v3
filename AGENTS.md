@@ -12,3 +12,4 @@
 - Use sentence case for UI copy labels and headings (for example `Section title`).
 - Keep Theme Editor helper/documentation copy minimal and direct.
 - When new assets are provided, always rename them to clean, Shopify-safe, usage-based filenames that match the element/component they are used in.
+- For media upload guidance in Theme Editor, use the setting `info` on the media uploader field (not separate paragraph rows) with concise target wording in this format: `Target WxH at 2x export (WxH).`
