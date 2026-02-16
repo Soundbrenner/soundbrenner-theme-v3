@@ -119,6 +119,51 @@
         "custom_title": "Open roles",
         "show_subtitle": false
       }
+    },
+    "faq_PbEYpg": {
+      "type": "faq",
+      "blocks": {
+        "faq_item_q74rpE": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I get in touch?",
+            "answer": "<p>Each job description includes an email address at the end for applications. If your background aligns with what we’re looking for, we’ll reach out to arrange a call and discuss the next steps.</p>"
+          }
+        },
+        "faq_item_GDy8G9": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Who works at Soundbrenner?",
+            "answer": "<p>We’re a multi-disciplinary team of about 10 passionate creators with expertise in product design, software engineering, hardware engineering, manufacturing, logistics, digital marketing, and more. This mix of skills and perspectives is what drives innovation at Soundbrenner.</p>"
+          }
+        },
+        "faq_item_8ack3q": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do I need to be a musician to work at Soundbrenner?",
+            "answer": "<p>While many of us are musicians, it’s not a requirement. If you’re passionate about technology, design, or innovation, you’ll fit right in - whether or not you play an instrument. Feel free to apply!</p>"
+          }
+        },
+        "faq_item_dg4HqC": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I try out your products?",
+            "answer": "<p>Absolutely! We recommend starting with our free app to get a feel for what we’re all about. You can download it going to the app's <a href=\"/pages/the-metronome-app\" title=\"The Metronome App\">product page</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_q74rpE",
+        "faq_item_GDy8G9",
+        "faq_item_8ack3q",
+        "faq_item_dg4HqC"
+      ],
+      "name": "Accordion",
+      "settings": {
+        "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
+        "show_subtitle": true
+      }
     }
   },
   "order": [
@@ -126,6 +171,7 @@
     "top_feature_highlights",
     "large_feature_RdgGf6",
     "large_feature_4B9RkK",
-    "faq_L39iGc"
+    "faq_L39iGc",
+    "faq_PbEYpg"
   ]
 }
