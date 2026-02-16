@@ -1,0 +1,187 @@
+<section class="sb-top-feature-highlights" id="sb-top-feature-highlights-{{ section.id }}" data-sb-reveal>
+  {% if section.settings.title != blank %}
+    <h2 class="sb-top-feature-highlights__title font-title weight-bold" data-sb-reveal-item>
+      {{ section.settings.title }}
+    </h2>
+  {% endif %}
+
+  <div class="sb-top-feature-highlights__items">
+    {% for block in section.blocks %}
+      {% assign icon_url = '' %}
+      {% if block.settings.icon != blank %}
+        {% assign icon_url = block.settings.icon | image_url: width: 192 %}
+      {% else %}
+        {% assign icon_url = 'Property 1=Placeholder.svg' | asset_url %}
+      {% endif %}
+
+      <article
+        class="sb-top-feature-highlights__item"
+        style="--sb-highlight-gradient: {{ block.settings.gradient_value }}; --sb-highlight-mask-url: url('{{ icon_url }}');"
+        data-sb-reveal-item
+        {{ block.shopify_attributes }}
+      >
+        <div class="sb-top-feature-highlights__icon" aria-hidden="true">
+          <span class="sb-top-feature-highlights__icon-glyph"></span>
+        </div>
+
+        {% if block.settings.title != blank %}
+          <h3 class="sb-top-feature-highlights__item-title font-body weight-bold">{{ block.settings.title }}</h3>
+        {% endif %}
+
+        {% if block.settings.body != blank %}
+          <div class="sb-top-feature-highlights__item-body font-body weight-regular rte">
+            {{ block.settings.body }}
+          </div>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-top-feature-highlights {
+    width: 100%;
+  }
+
+  .sb-top-feature-highlights__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-48);
+    text-align: center;
+  }
+
+  .sb-top-feature-highlights__items {
+    align-items: stretch;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-space-36);
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sb-top-feature-highlights__item {
+    align-items: center;
+    display: flex;
+    flex: 1 1 219.2px;
+    flex-direction: column;
+    max-width: 240px;
+    min-width: 219.2px;
+    text-align: center;
+  }
+
+  .sb-top-feature-highlights__icon {
+    height: var(--sb-space-48);
+    width: var(--sb-space-48);
+  }
+
+  .sb-top-feature-highlights__icon-glyph {
+    background: var(--sb-highlight-gradient);
+    display: block;
+    height: 100%;
+    mask-image: var(--sb-highlight-mask-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-image: var(--sb-highlight-mask-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    width: 100%;
+  }
+
+  .sb-top-feature-highlights__item-title {
+    background: var(--sb-highlight-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin: var(--sb-space-4) 0 0;
+  }
+
+  .sb-top-feature-highlights__item-body {
+    color: var(--sb-color-neutral-900);
+    margin-top: var(--sb-space-8);
+  }
+
+  .sb-top-feature-highlights__item-body > * {
+    margin: 0;
+  }
+
+  .sb-top-feature-highlights__item-body > * + * {
+    margin-top: var(--sb-space-8);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Top feature highlights",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Top feature highlights"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Highlight item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon (SVG recommended)"
+        },
+        {
+          "type": "select",
+          "id": "gradient_value",
+          "label": "Gradient",
+          "default": "linear-gradient(180deg, #FF0739 0%, #8E3BFF 100%)",
+          "options": [
+            {
+              "value": "linear-gradient(180deg, #FF0739 0%, #8E3BFF 100%)",
+              "label": "Gradient 1 (FF0739 to 8E3BFF)"
+            },
+            {
+              "value": "linear-gradient(180deg, #00B59C 0%, #5CCFC1 100%)",
+              "label": "Gradient 2 (00B59C to 5CCFC1)"
+            },
+            {
+              "value": "linear-gradient(180deg, #5C7CFA 0%, #9F5AFA 100%)",
+              "label": "Gradient 3 (5C7CFA to 9F5AFA)"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Highlight title"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body",
+          "default": "<p>Highlight body copy.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Top feature highlights",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

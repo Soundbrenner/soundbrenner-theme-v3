@@ -1,0 +1,68 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "kicker": "Careers",
+        "headline": "Build the future of practice with us.",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
+      }
+    },
+    "top_feature_highlights": {
+      "type": "top-feature-highlights",
+      "settings": {
+        "title": "Top feature highlights"
+      },
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(180deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Mission-driven",
+            "body": "<p>Work on products used by musicians around the world.</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(180deg, #00B59C 0%, #5CCFC1 100%)",
+            "title": "Ownership",
+            "body": "<p>Take responsibility from concept to launch.</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(180deg, #5C7CFA 0%, #9F5AFA 100%)",
+            "title": "Craft",
+            "body": "<p>Obsess over details and ship high-quality experiences.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "top_feature_highlights"
+  ]
+}
