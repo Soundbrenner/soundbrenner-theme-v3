@@ -68,7 +68,8 @@
         "email",
         "university",
         "comment"
-      ]
+      ],
+      "settings": {}
     },
     "faq": {
       "type": "faq",
