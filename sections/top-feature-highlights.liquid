@@ -11,7 +11,7 @@
       {% if block.settings.icon != blank %}
         {% assign icon_url = block.settings.icon | image_url: width: 192 %}
       {% else %}
-        {% assign icon_url = 'Property 1=Placeholder.svg' | asset_url %}
+        {% assign icon_url = 'top-feature-highlight-placeholder.svg' | asset_url %}
       {% endif %}
 
       <article
@@ -135,18 +135,18 @@
           "type": "select",
           "id": "gradient_value",
           "label": "Gradient",
-          "default": "linear-gradient(180deg, #FF0739 0%, #8E3BFF 100%)",
+          "default": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
           "options": [
             {
-              "value": "linear-gradient(180deg, #FF0739 0%, #8E3BFF 100%)",
+              "value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
               "label": "Gradient 1 (FF0739 to 8E3BFF)"
             },
             {
-              "value": "linear-gradient(180deg, #00B59C 0%, #5CCFC1 100%)",
+              "value": "linear-gradient(135deg, #00B59C 0%, #5CCFC1 100%)",
               "label": "Gradient 2 (00B59C to 5CCFC1)"
             },
             {
-              "value": "linear-gradient(180deg, #5C7CFA 0%, #9F5AFA 100%)",
+              "value": "linear-gradient(135deg, #5C7CFA 0%, #9F5AFA 100%)",
               "label": "Gradient 3 (5C7CFA to 9F5AFA)"
             }
           ]

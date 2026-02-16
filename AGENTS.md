@@ -11,3 +11,4 @@
 - Use semantic spacing tokens only (for example `--sb-space-2` to `--sb-space-128`) instead of raw pixel/rem spacing values in component styles.
 - Use sentence case for UI copy labels and headings (for example `Section title`).
 - Keep Theme Editor helper/documentation copy minimal and direct.
+- When new assets are provided, always rename them to clean, Shopify-safe, usage-based filenames that match the element/component they are used in.

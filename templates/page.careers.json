@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero": {
@@ -32,7 +23,7 @@
         "item_1": {
           "type": "item",
           "settings": {
-            "gradient_value": "linear-gradient(180deg, #FF0739 0%, #8E3BFF 100%)",
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
             "title": "Mission-driven",
             "body": "<p>Work on products used by musicians around the world.</p>"
           }
@@ -40,7 +31,7 @@
         "item_2": {
           "type": "item",
           "settings": {
-            "gradient_value": "linear-gradient(180deg, #00B59C 0%, #5CCFC1 100%)",
+            "gradient_value": "linear-gradient(135deg, #00B59C 0%, #5CCFC1 100%)",
             "title": "Ownership",
             "body": "<p>Take responsibility from concept to launch.</p>"
           }
@@ -48,7 +39,7 @@
         "item_3": {
           "type": "item",
           "settings": {
-            "gradient_value": "linear-gradient(180deg, #5C7CFA 0%, #9F5AFA 100%)",
+            "gradient_value": "linear-gradient(135deg, #5C7CFA 0%, #9F5AFA 100%)",
             "title": "Craft",
             "body": "<p>Obsess over details and ship high-quality experiences.</p>"
           }
@@ -58,7 +49,7 @@
         "item_1",
         "item_2",
         "item_3"
-      }
+      ]
     }
   },
   "order": [
