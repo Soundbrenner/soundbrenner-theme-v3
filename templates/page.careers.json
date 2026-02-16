@@ -74,10 +74,35 @@
       "settings": {
         "title": "Why join Soundbrenner"
       }
+    },
+    "large_feature_RdgGf6": {
+      "type": "large-feature",
+      "name": "Large feature",
+      "settings": {
+        "media_position": "left",
+        "media": "shopify://shop_images/Property_1_Careers_1.jpg",
+        "title_part_one": "Building the future of music practice",
+        "title_part_two": "",
+        "title_accent_color": "primary-500",
+        "body": "<p>Music has the power to transform people and bring them together. At Soundbrenner, our mission is simple: make music practice addictive.</p><p>We build tools that combine hardware and software to make practice more focused, effective, and motivating. Our products are trusted by hundreds of thousands of musicians around the world, who collectively log the equivalent of hundreds of years of music practice every year.</p><p>And we are just getting started.</p><p>Join us and help shape the future of music.</p>"
+      }
+    },
+    "large_feature_4B9RkK": {
+      "type": "large-feature",
+      "name": "Large feature",
+      "settings": {
+        "media_position": "right",
+        "title_part_one": "Built in Hong Kong and around the world",
+        "title_part_two": "",
+        "title_accent_color": "primary-500",
+        "body": "<p>We hire locally in Hong Kong and remotely around the world.</p><p>Our headquarters are in Sheung Wan, in the heart of the city’s vibrant center. The office is just steps from the MTR and surrounded by some of the best restaurants, cafés, and creative spaces the area has to offer.</p>"
+      }
     }
   },
   "order": [
     "hero",
-    "top_feature_highlights"
+    "top_feature_highlights",
+    "large_feature_RdgGf6",
+    "large_feature_4B9RkK"
   ]
 }
