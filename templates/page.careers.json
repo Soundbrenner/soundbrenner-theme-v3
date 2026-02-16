@@ -92,10 +92,32 @@
       "name": "Large feature",
       "settings": {
         "media_position": "right",
+        "media": "shopify://shop_images/Property_1_Careers_2.jpg",
         "title_part_one": "Built in Hong Kong and around the world",
         "title_part_two": "",
         "title_accent_color": "primary-500",
         "body": "<p>We hire locally in Hong Kong and remotely around the world.</p><p>Our headquarters are in Sheung Wan, in the heart of the city’s vibrant center. The office is just steps from the MTR and surrounded by some of the best restaurants, cafés, and creative spaces the area has to offer.</p>"
+      }
+    },
+    "faq_L39iGc": {
+      "type": "faq",
+      "blocks": {
+        "faq_item_iXHy7X": {
+          "type": "faq_item",
+          "settings": {
+            "question": "No open roles right now",
+            "answer": "<p>We do not have any open positions at the moment, but we are always growing. Please check back later for new opportunities.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_iXHy7X"
+      ],
+      "name": "Accordion",
+      "settings": {
+        "use_custom_title": true,
+        "custom_title": "Open roles",
+        "show_subtitle": false
       }
     }
   },
@@ -103,6 +125,7 @@
     "hero",
     "top_feature_highlights",
     "large_feature_RdgGf6",
-    "large_feature_4B9RkK"
+    "large_feature_4B9RkK",
+    "faq_L39iGc"
   ]
 }
