@@ -36,13 +36,45 @@
         "faq_1": {
           "type": "faq_item",
           "settings": {
-            "question": "Question",
-            "answer": "<p>Answer.</p>"
+            "question": "Do I need to study music at university to be eligible?",
+            "answer": "<p>No, regardless of your major, you will be able to enjoy our student discount as long as you attend university!</p>"
+          }
+        },
+        "faq_item_6MUPHC": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Which countries are eligible?",
+            "answer": "<p>Our student discount program is global, so it doesn't matter in which country you study in.</p>"
+          }
+        },
+        "faq_item_4wzpPM": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I use the discount code for Soundbrenner products on other websites?",
+            "answer": "<p>No, our student discounts are only valid on soundbrenner.com.</p>"
+          }
+        },
+        "faq_item_7NY6Vd": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Which products can I get a discount on?",
+            "answer": "<p>The student discount applies to all products.</p>"
+          }
+        },
+        "faq_item_bRiFCB": {
+          "type": "faq_item",
+          "settings": {
+            "question": "When will I receive my code?",
+            "answer": "<p>Usually it takes us less than 1 hour to process student discount submissions!</p>"
           }
         }
       },
       "block_order": [
-        "faq_1"
+        "faq_1",
+        "faq_item_6MUPHC",
+        "faq_item_4wzpPM",
+        "faq_item_7NY6Vd",
+        "faq_item_bRiFCB"
       ],
       "settings": {}
     }
