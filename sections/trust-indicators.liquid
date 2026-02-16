@@ -1,0 +1,156 @@
+<section class="sb-trust-indicators" data-sb-reveal>
+  {% if section.settings.title != blank %}
+    <h2 class="sb-trust-indicators__title font-title weight-bold" data-sb-reveal-item>
+      {{ section.settings.title }}
+    </h2>
+  {% endif %}
+
+  <div class="sb-trust-indicators__items" style="--sb-trust-columns: {{ section.blocks.size | at_least: 1 }};">
+    {% for block in section.blocks %}
+      {% assign icon_url = '' %}
+      {% if block.settings.icon != blank %}
+        {% assign icon_url = block.settings.icon | image_url: width: 192 %}
+      {% else %}
+        {% assign icon_url = 'icon-trust-indicator-placeholder.svg' | asset_url %}
+      {% endif %}
+
+      <article
+        class="sb-trust-indicators__item"
+        style="--sb-trust-icon-mask-url: url('{{ icon_url }}');"
+        data-sb-reveal-item
+        {{ block.shopify_attributes }}
+      >
+        <div class="sb-trust-indicators__icon" aria-hidden="true">
+          <span class="sb-trust-indicators__icon-glyph"></span>
+        </div>
+
+        {% if block.settings.text != blank %}
+          <div class="sb-trust-indicators__text font-body weight-regular rte">
+            {{ block.settings.text }}
+          </div>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-trust-indicators {
+    width: 100%;
+  }
+
+  .sb-trust-indicators__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-48);
+    text-align: center;
+  }
+
+  .sb-trust-indicators__items {
+    align-items: stretch;
+    display: grid;
+    gap: var(--sb-space-36);
+    grid-template-columns: repeat(var(--sb-trust-columns), minmax(0, 1fr));
+    justify-items: center;
+    width: 100%;
+  }
+
+  .sb-trust-indicators__item {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 240px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .sb-trust-indicators__icon {
+    width: 100%;
+  }
+
+  .sb-trust-indicators__icon-glyph {
+    aspect-ratio: 200 / 61;
+    background: var(--sb-color-neutral-900);
+    display: block;
+    height: auto;
+    mask-image: var(--sb-trust-icon-mask-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-image: var(--sb-trust-icon-mask-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    width: 100%;
+  }
+
+  .sb-trust-indicators__text {
+    color: var(--sb-color-neutral-900);
+    margin-top: var(--sb-space-8);
+  }
+
+  .sb-trust-indicators__text > * {
+    margin: 0;
+  }
+
+  .sb-trust-indicators__text > * + * {
+    margin-top: var(--sb-space-8);
+  }
+
+  @media (max-width: 749px) {
+    .sb-trust-indicators__items {
+      gap: var(--sb-space-30);
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Trust indicators",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Trust indicators"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Trust indicator",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon (White SVG files only)",
+          "info": "Target minimum 48x48. White SVG files only."
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Trust indicator.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Trust indicators",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

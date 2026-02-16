@@ -32,13 +32,14 @@
 
 {% stylesheet %}
   .header {
+    --sb-header-height: 5rem;
     background-color: var(--sb-color-neutral-200);
     left: 0;
-    position: sticky;
+    position: fixed;
     right: 0;
     top: 0;
     transform: translateY(0);
-    transition: transform 240ms ease;
+    transition: none;
     z-index: 50;
   }
 
@@ -50,7 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 5rem;
+    height: var(--sb-header-height);
     margin-inline: auto;
     max-width: var(--page-width, 1240px);
     width: min(
@@ -91,6 +92,10 @@
     font: inherit;
     padding: 0.375rem 0.75rem;
   }
+
+  .shopify-section:has(> .header) {
+    min-height: 5rem;
+  }
 {% endstylesheet %}
 
 <script>
@@ -99,30 +104,63 @@
     if (!header || header.dataset.headerInit === 'true') return;
     header.dataset.headerInit = 'true';
 
-    let lastY = window.scrollY || 0;
-    let ticking = false;
+    const getWindowY = () => window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+    let lastY = getWindowY();
+    const topThreshold = 8;
+    const revealAfterUpDistance = 18;
+    let upwardTravel = 0;
+    let hiddenOffset = 0;
+    let topExitMode = lastY <= topThreshold;
 
-    const applyHeaderVisibility = () => {
-      const currentY = window.scrollY || 0;
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const headerHeight = () => header.getBoundingClientRect().height || 0;
+    const applyOffset = () => {
+      header.style.transform = `translateY(${-hiddenOffset}px)`;
+    };
+
+    const sync = (currentY, { force = false } = {}) => {
       const delta = currentY - lastY;
+      const maxOffset = headerHeight();
 
-      if (currentY <= 0 || currentY < 64 || delta < 0) {
-        header.classList.remove('is-hidden');
-      } else if (delta > 0) {
-        header.classList.add('is-hidden');
+      if (force || currentY <= topThreshold) {
+        hiddenOffset = 0;
+        upwardTravel = 0;
+        topExitMode = true;
+        applyOffset();
+        lastY = currentY;
+        return;
+      }
+
+      if (delta > 0) {
+        upwardTravel = 0;
+        if (topExitMode) {
+          // Only when leaving the top, follow page scroll.
+          hiddenOffset = clamp(currentY, 0, maxOffset);
+          if (hiddenOffset >= maxOffset - 0.5 || currentY > maxOffset) topExitMode = false;
+        } else {
+          // Everywhere else, hide instantly on downward scroll.
+          hiddenOffset = maxOffset;
+        }
+        applyOffset();
+      } else if (delta < 0) {
+        upwardTravel += Math.abs(delta);
+        if (upwardTravel >= revealAfterUpDistance) {
+          hiddenOffset = 0;
+          upwardTravel = 0;
+          applyOffset();
+        }
       }
 
       lastY = currentY;
-      ticking = false;
     };
 
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(applyHeaderVisibility);
+    const onWindowScroll = () => {
+      sync(getWindowY());
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onWindowScroll, { passive: true });
+    window.addEventListener('resize', () => sync(getWindowY(), { force: true }), { passive: true });
+    window.requestAnimationFrame(() => sync(getWindowY(), { force: true }));
 
     const root = document.documentElement;
     const toggle = header.querySelector('[data-theme-toggle]');

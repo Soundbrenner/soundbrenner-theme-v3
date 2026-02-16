@@ -276,6 +276,51 @@
       "settings": {
         "title": "Team photos"
       }
+    },
+    "trust_indicators_careers": {
+      "type": "trust-indicators",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        },
+        "item_5": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5"
+      ],
+      "settings": {
+        "title": "Trust indicators"
+      }
     }
   },
   "order": [
@@ -286,6 +331,7 @@
     "accordion_L39iGc",
     "feature_carousel_main",
     "accordion_PbEYpg",
+    "trust_indicators_careers",
     "large_feature_gERXdi",
     "feature_carousel_secondary"
   ]
