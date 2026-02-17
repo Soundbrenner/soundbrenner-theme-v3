@@ -37,49 +37,57 @@
         "body_main": {
           "type": "body",
           "settings": {
-            "text": "<p>Privacy policy</p>"
+            "text": "<p><a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy policy</a></p>",
+            "disable_link_color": true
           }
         },
         "body_aFV9c7": {
           "type": "body",
           "settings": {
-            "text": "<p>Your privacy choices</p>"
+            "text": "<p><a href=\"/pages/data-sharing-opt-out\" title=\"Your Privacy Choices\">Your privacy choices</a></p>",
+            "disable_link_color": true
           }
         },
         "body_rixm4T": {
           "type": "body",
           "settings": {
-            "text": "<p>Terms of service</p>"
+            "text": "<p>Terms of service</p>",
+            "disable_link_color": true
           }
         },
         "body_DpcbCx": {
           "type": "body",
           "settings": {
-            "text": "<p>Terms of warranty</p>"
+            "text": "<p>Terms of warranty</p>",
+            "disable_link_color": false
           }
         },
         "body_7hJikj": {
           "type": "body",
           "settings": {
-            "text": "<p>Terms of protection plan</p>"
+            "text": "<p>Terms of protection plan</p>",
+            "disable_link_color": false
           }
         },
         "body_6hQRVG": {
           "type": "body",
           "settings": {
-            "text": "<p>Refund policy</p>"
+            "text": "<p>Refund policy</p>",
+            "disable_link_color": false
           }
         },
         "body_aN7MD7": {
           "type": "body",
           "settings": {
-            "text": "<p>Shipping policy</p>"
+            "text": "<p>Shipping policy</p>",
+            "disable_link_color": false
           }
         },
         "body_btBxXc": {
           "type": "body",
           "settings": {
-            "text": "<p>Contact information</p>"
+            "text": "<p>Contact information</p>",
+            "disable_link_color": false
           }
         },
         "divider_DqErqe": {
@@ -95,13 +103,15 @@
         "body_aVTdhi": {
           "type": "body",
           "settings": {
-            "text": "<p><a href=\"/pages/privacy-policy-the-metronome-app\" title=\"Privacy policy The Metronome app\">Privacy policy</a></p>"
+            "text": "<p><a href=\"/pages/privacy-policy-the-metronome-app\" title=\"Privacy policy The Metronome app\">Privacy policy</a></p>",
+            "disable_link_color": true
           }
         },
         "body_dUBVd7": {
           "type": "body",
           "settings": {
-            "text": "<p><a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">Terms of service</a></p>"
+            "text": "<p><a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">Terms of service</a></p>",
+            "disable_link_color": true
           }
         }
       },
