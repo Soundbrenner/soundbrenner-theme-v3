@@ -85,6 +85,24 @@
         "divider_DqErqe": {
           "type": "divider",
           "settings": {}
+        },
+        "header_large_39Xwz3": {
+          "type": "header_large",
+          "settings": {
+            "heading": "The Metronome app"
+          }
+        },
+        "body_aVTdhi": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Privacy policy</p>"
+          }
+        },
+        "body_dUBVd7": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Terms of service</p>"
+          }
         }
       },
       "block_order": [
@@ -97,7 +115,10 @@
         "body_6hQRVG",
         "body_aN7MD7",
         "body_btBxXc",
-        "divider_DqErqe"
+        "divider_DqErqe",
+        "header_large_39Xwz3",
+        "body_aVTdhi",
+        "body_dUBVd7"
       ],
       "settings": {}
     }
