@@ -1,0 +1,99 @@
+{% assign hero_vide_video = section.settings.youtube_url %}
+{% assign hero_vide_heading = section.settings.heading %}
+
+<section class="sb-hero-vide" data-sb-reveal>
+  <div class="sb-hero-vide__inner">
+    {% if hero_vide_heading != blank %}
+      <h2 class="sb-hero-vide__heading font-title weight-bold" data-sb-reveal-item>
+        {{ hero_vide_heading }}
+      </h2>
+    {% endif %}
+
+    <div class="sb-hero-vide__frame-wrap" data-sb-reveal-item>
+      {% if hero_vide_video != blank and hero_vide_video.type == 'youtube' %}
+        <iframe
+          class="sb-hero-vide__frame"
+          src="https://www.youtube.com/embed/{{ hero_vide_video.id }}"
+          title="{{ hero_vide_heading | default: 'Hero video' | escape }}"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+      {% else %}
+        <div class="sb-hero-vide__placeholder font-body weight-regular">
+          Add a YouTube video URL in the section settings.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-hero-vide {
+    width: 100%;
+  }
+
+  .sb-hero-vide__inner {
+    margin-inline: auto;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .sb-hero-vide__heading {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-24);
+    text-align: center;
+  }
+
+  .sb-hero-vide__frame-wrap {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--sb-radius-card);
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-hero-vide__frame {
+    border: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-hero-vide__placeholder {
+    align-items: center;
+    background: var(--sb-color-neutral-200);
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    padding: var(--sb-space-24);
+    text-align: center;
+    width: 100%;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hero vide",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Hero video"
+    },
+    {
+      "type": "video_url",
+      "id": "youtube_url",
+      "label": "YouTube URL",
+      "accept": ["youtube"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero vide"
+    }
+  ]
+}
+{% endschema %}
