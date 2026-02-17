@@ -5,7 +5,7 @@
     </h2>
   {% endif %}
 
-  <div class="sb-trust-indicators__items" style="--sb-trust-columns: {{ section.blocks.size | at_least: 1 }};">
+  <div class="sb-trust-indicators__items">
     {% for block in section.blocks %}
       {% assign icon_url = '' %}
       {% if block.settings.icon != blank %}
@@ -47,16 +47,17 @@
 
   .sb-trust-indicators__items {
     align-items: stretch;
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--sb-space-36);
-    grid-template-columns: repeat(var(--sb-trust-columns), minmax(0, 1fr));
-    justify-items: center;
+    justify-content: center;
     width: 100%;
   }
 
   .sb-trust-indicators__item {
     align-items: center;
     display: flex;
+    flex: 1 1 240px;
     flex-direction: column;
     max-width: 240px;
     text-align: center;
@@ -99,7 +100,11 @@
   @media (max-width: 749px) {
     .sb-trust-indicators__items {
       gap: var(--sb-space-30);
-      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sb-trust-indicators__item {
+      flex-basis: 100%;
+      max-width: 100%;
     }
   }
 {% endstylesheet %}
