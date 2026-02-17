@@ -13,10 +13,10 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
-        "background_image_desktop": "",
-        "background_image_mobile": "",
+        "background_image_desktop": "shopify://shop_images/legal-banner.jpg",
+        "background_image_mobile": "shopify://shop_images/legal-banner-mobile.jpg",
         "kicker": "Legal",
-        "headline": "Legal.",
+        "headline": "Terms and policies for our products and services.",
         "subheadline": "",
         "show_button": false,
         "button_label": "",
@@ -28,25 +28,76 @@
     "text": {
       "type": "text-section",
       "blocks": {
+        "header_large_chtFci": {
+          "type": "header_large",
+          "settings": {
+            "heading": "Online shop"
+          }
+        },
         "body_main": {
           "type": "body",
           "settings": {
-            "text": "<p>Body text.</p>"
+            "text": "<p>Privacy policy</p>"
           }
         },
-        "button_main": {
-          "type": "button",
+        "body_aFV9c7": {
+          "type": "body",
           "settings": {
-            "label": "Placeholder",
-            "button_size": "large",
-            "icon_position": "trailing",
-            "link": ""
+            "text": "<p>Privacy policy</p>"
           }
+        },
+        "body_rixm4T": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Privacy policy</p>"
+          }
+        },
+        "body_DpcbCx": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Privacy policy</p>"
+          }
+        },
+        "body_7hJikj": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Privacy policy</p>"
+          }
+        },
+        "body_6hQRVG": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Privacy policy</p>"
+          }
+        },
+        "body_aN7MD7": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Privacy policy</p>"
+          }
+        },
+        "body_btBxXc": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Privacy policy</p>"
+          }
+        },
+        "divider_DqErqe": {
+          "type": "divider",
+          "settings": {}
         }
       },
       "block_order": [
+        "header_large_chtFci",
         "body_main",
-        "button_main"
+        "body_aFV9c7",
+        "body_rixm4T",
+        "body_DpcbCx",
+        "body_7hJikj",
+        "body_6hQRVG",
+        "body_aN7MD7",
+        "body_btBxXc",
+        "divider_DqErqe"
       ],
       "settings": {}
     }
