@@ -72,22 +72,22 @@
         "body_6hQRVG": {
           "type": "body",
           "settings": {
-            "text": "<p>Refund policy</p>",
+            "text": "<p><a href=\"/policies/refund-policy\" title=\"Refund Policy\">Refund policy</a></p>",
             "disable_link_color": true
           }
         },
         "body_aN7MD7": {
           "type": "body",
           "settings": {
-            "text": "<p>Shipping policy</p>",
-            "disable_link_color": false
+            "text": "<p><a href=\"/policies/shipping-policy\" title=\"Shipping Policy\">Shipping policy</a></p>",
+            "disable_link_color": true
           }
         },
         "body_btBxXc": {
           "type": "body",
           "settings": {
-            "text": "<p>Contact information</p>",
-            "disable_link_color": false
+            "text": "<p><a href=\"/policies/contact-information\" title=\"Contact Information\">Contact information</a></p>",
+            "disable_link_color": true
           }
         },
         "divider_DqErqe": {
