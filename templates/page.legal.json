@@ -58,22 +58,22 @@
         "body_DpcbCx": {
           "type": "body",
           "settings": {
-            "text": "<p>Terms of warranty</p>",
-            "disable_link_color": false
+            "text": "<p><a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">Terms of warranty</a></p>",
+            "disable_link_color": true
           }
         },
         "body_7hJikj": {
           "type": "body",
           "settings": {
-            "text": "<p>Terms of protection plan</p>",
-            "disable_link_color": false
+            "text": "<p><a href=\"/pages/terms-of-protection-plan\" title=\"Terms of protection plan\">Terms of protection plan</a></p>",
+            "disable_link_color": true
           }
         },
         "body_6hQRVG": {
           "type": "body",
           "settings": {
             "text": "<p>Refund policy</p>",
-            "disable_link_color": false
+            "disable_link_color": true
           }
         },
         "body_aN7MD7": {
