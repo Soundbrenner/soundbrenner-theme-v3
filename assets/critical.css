@@ -143,6 +143,69 @@ body {
   margin-top: var(--sb-space-96);
 }
 
+/* Shared layout utilities */
+.sb-content-width {
+  margin: 0 auto;
+  width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+}
+
+.sb-page-rhythm {
+  padding-block: var(--sb-space-96);
+}
+
+.sb-flow-24 > * {
+  margin: 0 !important;
+}
+
+.sb-flow-24 > * + * {
+  margin-top: var(--sb-space-24) !important;
+}
+
+/* Native Shopify policy pages */
+body .shopify-policy__container {
+  box-sizing: border-box !important;
+  margin: var(--sb-space-96) auto !important;
+  max-width: calc(var(--page-width) + (var(--page-margin) * 2)) !important;
+  padding-inline: var(--page-margin) !important;
+  width: 100% !important;
+}
+
+body .shopify-policy__title {
+  color: var(--sb-color-neutral-900) !important;
+  text-align: left !important;
+}
+
+body .shopify-policy__title h1 {
+  color: var(--sb-color-neutral-900) !important;
+  font-family: var(--font-display--family) !important;
+  font-size: var(--font-size-title) !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+body .shopify-policy__body {
+  color: var(--sb-color-neutral-900) !important;
+  margin-top: var(--sb-space-24) !important;
+}
+
+body .shopify-policy__body .rte {
+  color: var(--sb-color-neutral-900) !important;
+  font-family: var(--font-primary--family) !important;
+  font-size: var(--font-size-body) !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+}
+
+body .shopify-policy__body .rte > * {
+  margin: 0 !important;
+}
+
+body .shopify-policy__body .rte > * + * {
+  margin-top: var(--sb-space-24) !important;
+}
+
 /* Reusable radiant buttons */
 .sb-button-radiant {
   --sb-button-hover-lift: -2px;

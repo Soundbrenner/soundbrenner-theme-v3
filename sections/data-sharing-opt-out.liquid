@@ -1,0 +1,167 @@
+<section class="sb-data-sharing-opt-out" data-sb-reveal>
+  <div class="sb-data-sharing-opt-out__title" data-sb-reveal-item>
+    <h1 class="font-title weight-bold">{{ page.title }}</h1>
+  </div>
+
+  <div class="sb-data-sharing-opt-out__content rte font-body weight-regular sb-flow-24" data-sb-reveal-item>
+    {{ page.content }}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-data-sharing-opt-out__title {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .sb-data-sharing-opt-out__title h1 {
+    margin: 0;
+  }
+
+  .sb-data-sharing-opt-out__content {
+    color: var(--sb-color-neutral-900);
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-data-sharing-opt-out #pc--optOutFormContainer {
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-form-container {
+    width: 100%;
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-form,
+  .sb-data-sharing-opt-out .pc--opt-out-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-20);
+    width: 100%;
+  }
+
+  .sb-data-sharing-opt-out #optout,
+  .sb-data-sharing-opt-out #pc--opt-out-not-applicable,
+  .sb-data-sharing-opt-out .pc--opt-out-form-message {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-data-sharing-opt-out .pc--show-email-field label {
+    align-items: center;
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    font-family: var(--font-primary--family);
+    font-size: var(--font-size-body);
+    font-weight: 400;
+    gap: 10px;
+  }
+
+  .sb-data-sharing-opt-out .pc--show-email-field {
+    margin-top: var(--sb-space-24);
+    margin-bottom: 0;
+  }
+
+  .sb-data-sharing-opt-out #pc--show-email-field {
+    accent-color: var(--sb-color-primary-500);
+    block-size: var(--sb-space-20);
+    inline-size: var(--sb-space-20);
+    margin: 0;
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-form-field-email label {
+    display: none !important;
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-email_input {
+    background: var(--sb-color-always-white) !important;
+    border: 0 !important;
+    border-radius: var(--sb-radius-pill) !important;
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-25);
+    box-sizing: border-box;
+    color: var(--sb-color-always-black) !important;
+    font-family: var(--font-primary--family) !important;
+    font-size: var(--font-size-caption) !important;
+    font-weight: 400 !important;
+    height: var(--sb-space-48);
+    line-height: var(--sb-space-48);
+    padding-inline: var(--sb-space-20);
+    width: 100%;
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-email_input::placeholder {
+    color: var(--sb-color-neutral-800);
+    opacity: 1;
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-email_input:focus-visible {
+    outline: 2px solid var(--sb-color-primary-500);
+    outline-offset: 2px;
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-button.sb-button-radiant {
+    max-width: 400px !important;
+    width: min(100%, 400px) !important;
+  }
+
+  .sb-data-sharing-opt-out #pc--opt-out-button .sb-button-radiant__label {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    letter-spacing: 0 !important;
+    line-height: 1 !important;
+    text-transform: none !important;
+  }
+{% endstylesheet %}
+
+<script>
+  (() => {
+    const root = document.querySelector('.sb-data-sharing-opt-out');
+    if (!root) return;
+
+    const arrowSvg = {{ 'icon-arrow-large-40.svg' | inline_asset_content | json }};
+
+    const applyOptOutOverrides = () => {
+      const button = root.querySelector('#pc--opt-out-button');
+      const emailInput = root.querySelector('#pc--opt-out-email_input');
+      if (!button) return;
+
+      button.classList.add('sb-button-radiant', 'sb-button-radiant--large', 'sb-button-radiant--trailing-icon');
+
+      if (emailInput) {
+        if (!emailInput.getAttribute('placeholder')) {
+          emailInput.setAttribute('placeholder', 'Email');
+        }
+      }
+
+      const existingLabel = button.querySelector('.sb-button-radiant__label');
+      if (!existingLabel) {
+        const labelText = (button.textContent || '').trim() || 'Opt out';
+        button.textContent = '';
+
+        const label = document.createElement('span');
+        label.className = 'sb-button-radiant__label';
+        label.textContent = labelText;
+
+        const icon = document.createElement('span');
+        icon.className = 'sb-button-radiant__icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.innerHTML = arrowSvg;
+
+        button.append(label, icon);
+      }
+    };
+
+    const observer = new MutationObserver(applyOptOutOverrides);
+    observer.observe(root, { childList: true, subtree: true });
+
+    applyOptOutOverrides();
+    window.setTimeout(applyOptOutOverrides, 300);
+    window.setTimeout(applyOptOutOverrides, 1200);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Data sharing opt out",
+  "settings": []
+}
+{% endschema %}
