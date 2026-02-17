@@ -25,6 +25,12 @@
         "button_link": ""
       }
     },
+    "reviews_heading": {
+      "type": "reviews-heading",
+      "settings": {
+        "heading": "Real reviews by real people"
+      }
+    },
     "177131069649277515": {
       "type": "apps",
       "blocks": {
@@ -41,6 +47,7 @@
   },
   "order": [
     "hero",
+    "reviews_heading",
     "177131069649277515"
   ]
 }

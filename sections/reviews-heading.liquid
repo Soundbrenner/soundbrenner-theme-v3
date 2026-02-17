@@ -1,0 +1,38 @@
+<section class="sb-reviews-heading" data-sb-reveal>
+  {% if section.settings.heading != blank %}
+    <h2 class="sb-reviews-heading__title font-title weight-bold" data-sb-reveal-item>
+      {{ section.settings.heading }}
+    </h2>
+  {% endif %}
+</section>
+
+{% stylesheet %}
+  .sb-reviews-heading {
+    width: 100%;
+  }
+
+  .sb-reviews-heading__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    text-align: center;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Reviews heading",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Real reviews by real people"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews heading"
+    }
+  ]
+}
+{% endschema %}

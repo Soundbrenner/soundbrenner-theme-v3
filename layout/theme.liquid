@@ -92,5 +92,144 @@
         });
       })();
     </script>
+    <script>
+      (() => {
+        const rootSelector = '#klaviyo-reviews-all';
+        const countPattern = /\b(\d{4,})(?=\s+reviews\b)/g;
+        const klaviyoStarPath =
+          'M3.825 19.5L5.45 12.475L0 7.75L7.2 7.125L10 0.5L12.8 7.125L20 7.75L14.55 12.475L16.175 19.5L10 15.775L3.825 19.5Z';
+        const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
+        let formattingObserver = null;
+
+        const formatCounts = (root) => {
+          const targets = root.querySelectorAll('.kl_reviews__summary__stars__count');
+
+          targets.forEach((target) => {
+            const currentText = target.textContent;
+            if (!currentText) return;
+
+            const nextText = currentText.replace(countPattern, (_, digits) =>
+              numberFormatter.format(Number(digits))
+            );
+
+            if (nextText !== currentText) {
+              target.textContent = nextText;
+            }
+          });
+
+          const orderTimestamps = root.querySelectorAll('.kl_reviews__review__order_timestamp');
+          orderTimestamps.forEach((target) => {
+            const currentText = target.textContent;
+            if (!currentText) return;
+
+            const withoutBullet = currentText.replace(/^\s*[•·]\s*/, '').trim();
+            const deduped = withoutBullet.replace(/^(.+?)\1+$/, '$1').trim();
+
+            if (deduped !== currentText.trim()) {
+              target.textContent = deduped;
+              return;
+            }
+
+            if (withoutBullet !== currentText.trim()) {
+              target.textContent = withoutBullet;
+              return;
+            }
+
+            if (deduped !== withoutBullet) {
+              target.textContent = deduped;
+              return;
+            }
+
+            if (deduped !== currentText) {
+              target.textContent = deduped;
+            }
+          });
+
+          const productReviewInfos = root.querySelectorAll(
+            '.kl_reviews__review__product_card__details__review_info'
+          );
+          productReviewInfos.forEach((target) => {
+            const currentText = target.textContent;
+            if (!currentText) return;
+
+            const nextText = currentText
+              .replace(/\s+/g, ' ')
+              .replace(/\s·\s/g, ' • ')
+              .trim();
+
+            const ratingMatch = nextText.match(/(\d+(?:[.,]\d+)?)/);
+            const reviewsMatch = nextText.match(/(\d[\d,]*)\s+reviews\b/i);
+
+            if (ratingMatch && reviewsMatch) {
+              const ratingValue = ratingMatch[1];
+              const reviewsValue = reviewsMatch[1];
+              const nextHtml =
+                `<span class="sb-klaviyo-rating-value">${ratingValue}</span>` +
+                `<span class="sb-klaviyo-inline-star" aria-hidden="true"></span>` +
+                `<span class="sb-klaviyo-inline-dot" aria-hidden="true">•</span>` +
+                `<span class="sb-klaviyo-rating-reviews">${reviewsValue} reviews</span>`;
+              if (target.innerHTML !== nextHtml) target.innerHTML = nextHtml;
+              return;
+            }
+
+            // Fallback dedupe for any repeated fragments during rerenders.
+            const dedupedText = nextText.replace(/(.+?)\s+\1+$/, '$1').trim();
+            if (dedupedText !== currentText.trim()) target.textContent = dedupedText;
+          });
+
+          const productNames = root.querySelectorAll('.kl_reviews__review__product_card__details__name');
+          productNames.forEach((target) => {
+            const currentText = target.textContent;
+            if (!currentText) return;
+            const compact = currentText.replace(/\s+/g, ' ').trim();
+            const deduped = compact.replace(/^(.+?)\s+\1+$/, '$1').trim();
+            if (deduped !== compact) target.textContent = deduped;
+          });
+
+          const stars = root.querySelectorAll('path.kl_reviews__star');
+          stars.forEach((star) => {
+            if (star.getAttribute('d') === klaviyoStarPath) return;
+            star.setAttribute('d', klaviyoStarPath);
+          });
+        };
+
+        const observeAndFormat = (root) => {
+          if (formattingObserver) return;
+
+          formatCounts(root);
+
+          let isQueued = false;
+          formattingObserver = new MutationObserver(() => {
+            if (isQueued) return;
+            isQueued = true;
+            requestAnimationFrame(() => {
+              isQueued = false;
+              formatCounts(root);
+            });
+          });
+
+          formattingObserver.observe(root, { childList: true, subtree: true });
+        };
+
+        const init = () => {
+          const root = document.querySelector(rootSelector);
+          if (!root) return false;
+          observeAndFormat(root);
+          return true;
+        };
+
+        if (init()) return;
+
+        const rootFinder = new MutationObserver(() => {
+          if (!init()) return;
+          rootFinder.disconnect();
+        });
+
+        rootFinder.observe(document.body, {
+          childList: true,
+          subtree: true,
+        });
+      })();
+    </script>
   </body>
 </html>
