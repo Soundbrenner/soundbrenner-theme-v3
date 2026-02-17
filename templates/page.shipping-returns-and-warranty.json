@@ -27,16 +27,12 @@
     },
     "highlights": {
       "type": "top-feature-highlights",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "title": ""
       }
     },
     "accordion": {
       "type": "accordion",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "use_custom_title": false,
         "custom_title": "Frequently asked questions",
