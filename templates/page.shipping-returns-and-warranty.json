@@ -92,36 +92,36 @@
         "accordion_item_cwxVmi": {
           "type": "accordion_item",
           "settings": {
-            "question": "Question",
-            "answer": "<p>Answer.</p>"
+            "question": "Do you offer a product warranty?",
+            "answer": "<p>Yes, we offer a 1 year warranty on all of our products. If your item has a defect due to a mistake on our part, we will send you a replacement free of charge. For more information check our <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">terms of warranty</a>.</p>"
           }
         },
         "accordion_item_xqk77R": {
           "type": "accordion_item",
           "settings": {
-            "question": "Question",
-            "answer": "<p>Answer.</p>"
+            "question": "When will I receive the tracking number?",
+            "answer": "<p>When your order is dispatched, you'll receive an email with tracking details.</p>"
           }
         },
         "accordion_item_HneDrm": {
           "type": "accordion_item",
           "settings": {
-            "question": "Question",
-            "answer": "<p>Answer.</p>"
+            "question": "Do you ship to P.O. boxes?",
+            "answer": "<p>Our logistic partners require a signature upon delivery so unfortunately they are unable to make deliveries to P.O. boxes.</p>"
           }
         },
         "accordion_item_gNhhK8": {
           "type": "accordion_item",
           "settings": {
-            "question": "Question",
-            "answer": "<p>Answer.</p>"
+            "question": "Do I have to pay additional taxes and duties?",
+            "answer": "<p>We try to avoid international shipments whenever possible and ship locally instead, so your government won't charge you additional taxes or duties. However, sometimes there is no way around international shipments. In many countries, we prepay all applicable taxes and duties and ship \"Delivered Duties Paid\" (DDP), so you won’t have to pay anything upon delivery. On our website, we clearly display whether taxes and duties are already included in the price or may be due upon delivery, based on the location you set up. For more information check our <a href=\"/policies/shipping-policy\" title=\"Shipping Policy\">shipping policy</a>.</p>"
           }
         },
         "accordion_item_9h7JaD": {
           "type": "accordion_item",
           "settings": {
-            "question": "Question",
-            "answer": "<p>Answer.</p>"
+            "question": "How do I initiate a return?",
+            "answer": "<p><a href=\"/pages/contact-us\" title=\"Contact us\">Contact us</a> and our team will guide you through the next steps.</p>"
           }
         }
       },
