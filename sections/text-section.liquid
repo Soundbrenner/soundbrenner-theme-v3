@@ -11,7 +11,7 @@
 
         {% when 'body' %}
           {% if block.settings.text != blank %}
-            <div class="sb-text-section__body font-body weight-regular rte" data-sb-reveal-item {{ block.shopify_attributes }}>
+            <div class="sb-text-section__body font-body weight-regular rte{% if block.settings.disable_link_color %} sb-text-section__body--neutral-links{% endif %}" data-sb-reveal-item {{ block.shopify_attributes }}>
               {{ block.settings.text }}
             </div>
           {% endif %}
@@ -85,6 +85,19 @@
     margin-top: var(--sb-space-24);
   }
 
+  .sb-text-section__body--neutral-links a,
+  .sb-text-section__body--neutral-links a:visited {
+    color: var(--sb-color-neutral-900);
+    text-decoration: none;
+  }
+
+  .sb-text-section__body--neutral-links a:hover,
+  .sb-text-section__body--neutral-links a:focus-visible,
+  .sb-text-section__body--neutral-links a:active {
+    color: var(--sb-color-primary-500);
+    text-decoration: none;
+  }
+
   .sb-text-section__divider-wrap {
     padding-block: var(--sb-space-24);
   }
@@ -155,6 +168,12 @@
           "id": "text",
           "label": "Text",
           "default": "<p>Body text.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "disable_link_color",
+          "label": "Disable link color",
+          "default": false
         }
       ]
     },
