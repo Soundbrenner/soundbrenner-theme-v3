@@ -1783,6 +1783,74 @@ button[aria-label='Modal close button']:focus-visible::after {
   -webkit-mask: center / contain no-repeat url("icon-klaviyo-star.svg");
 }
 
+/* Product-page Klaviyo average rating widget */
+.klaviyo-star-rating-widget .kl_reviews__star_rating_widget {
+  align-items: flex-start !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--sb-color-neutral-900) !important;
+  display: inline-flex !important;
+  gap: var(--sb-space-12) !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.klaviyo-star-rating-widget .kl_reviews__stars_badge {
+  align-items: flex-start !important;
+  display: inline-flex !important;
+  gap: var(--sb-space-4) !important;
+  line-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.klaviyo-star-rating-widget .kl_reviews__stars_badge svg {
+  height: var(--sb-space-20) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: var(--sb-space-20) !important;
+}
+
+.klaviyo-star-rating-widget .kl_reviews__star--fill {
+  stop-color: var(--sb-color-reviews) !important;
+}
+
+.klaviyo-star-rating-widget .kl_reviews__star--empty {
+  stop-color: var(--sb-color-reviews-50) !important;
+}
+
+.klaviyo-star-rating-widget .sb-klaviyo-average-rating,
+.klaviyo-star-rating-widget .kl_reviews__star_rating_widget__label {
+  align-items: center !important;
+  color: var(--sb-color-neutral-900) !important;
+  display: inline-flex !important;
+  font-family: var(--font-primary--family) !important;
+  font-size: var(--font-size-body) !important;
+  font-weight: 600 !important;
+  justify-content: center !important;
+  line-height: 1.35 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.klaviyo-star-rating-widget .sb-klaviyo-average-rating {
+  margin: 0 !important;
+}
+
+.klaviyo-star-rating-widget .sb-klaviyo-average-rating:hover,
+.klaviyo-star-rating-widget .sb-klaviyo-average-rating:focus-visible {
+  color: var(--sb-color-primary-500) !important;
+}
+
+.klaviyo-star-rating-widget .kl_reviews__star_rating_widget__label {
+  display: none !important;
+}
+
+/* Hide Klaviyo's anonymous spacer span so only explicit gap is used */
+.klaviyo-star-rating-widget .kl_reviews__star_rating_widget > span:not(.sb-klaviyo-average-rating):not(.kl_reviews__star_rating_widget__label) {
+  display: none !important;
+}
+
 #klaviyo-reviews-all .kl_reviews__review__product_card__details__review_info {
   align-items: center !important;
   display: inline-flex !important;

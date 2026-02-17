@@ -100,6 +100,52 @@
           'M3.825 19.5L5.45 12.475L0 7.75L7.2 7.125L10 0.5L12.8 7.125L20 7.75L14.55 12.475L16.175 19.5L10 15.775L3.825 19.5Z';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
         let formattingObserver = null;
+        let widgetObserver = null;
+
+        const applyCustomStarPaths = (scope = document) => {
+          const stars = scope.querySelectorAll('path.kl_reviews__star');
+          stars.forEach((star) => {
+            if (star.getAttribute('d') === klaviyoStarPath) return;
+            star.setAttribute('d', klaviyoStarPath);
+          });
+        };
+
+        const formatStarRatingWidgets = (scope = document) => {
+          const buttons = scope.querySelectorAll('.klaviyo-star-rating-widget .kl_reviews__star_rating_widget');
+          buttons.forEach((button) => {
+            const aria = button.getAttribute('aria-label') || '';
+            const ratingMatch = aria.match(/([\d.,]+)\s*stars?/i);
+            const countFromAria = aria.match(/(\d[\d,]*)\s*(ratings?|reviews?)/i);
+            if (!ratingMatch) return;
+
+            const starsBadge = button.querySelector('.kl_reviews__stars_badge');
+            if (!starsBadge) return;
+
+            const existingLabel = button.querySelector('.kl_reviews__star_rating_widget__label');
+            const countFromLabel = (existingLabel?.textContent || '').match(/(\d[\d,]*)/);
+            const rawCount = (countFromAria && countFromAria[1]) || (countFromLabel && countFromLabel[1]) || '0';
+            const countNumber = Number(String(rawCount).replace(/,/g, ''));
+            const formattedCount = Number.isFinite(countNumber) ? numberFormatter.format(countNumber) : rawCount;
+            const ratingNumber = Number(String(ratingMatch[1]).replace(',', '.'));
+            const formattedRating = Number.isFinite(ratingNumber) ? ratingNumber.toFixed(1) : ratingMatch[1];
+
+            const copy = `${formattedRating} (by ${formattedCount} musicians)`;
+
+            let label = button.querySelector('.sb-klaviyo-average-rating');
+            if (!label) {
+              label = document.createElement('span');
+              label.className = 'sb-klaviyo-average-rating';
+              starsBadge.insertAdjacentElement('afterend', label);
+            }
+            if (label.textContent !== copy) {
+              label.textContent = copy;
+            }
+
+            if (existingLabel && existingLabel.style.display !== 'none') {
+              existingLabel.style.display = 'none';
+            }
+          });
+        };
 
         const formatCounts = (root) => {
           const targets = root.querySelectorAll('.kl_reviews__summary__stars__count');
@@ -186,11 +232,7 @@
             if (deduped !== compact) target.textContent = deduped;
           });
 
-          const stars = root.querySelectorAll('path.kl_reviews__star');
-          stars.forEach((star) => {
-            if (star.getAttribute('d') === klaviyoStarPath) return;
-            star.setAttribute('d', klaviyoStarPath);
-          });
+          applyCustomStarPaths(root);
         };
 
         const observeAndFormat = (root) => {
@@ -211,6 +253,26 @@
           formattingObserver.observe(root, { childList: true, subtree: true });
         };
 
+        const observeWidgets = () => {
+          if (widgetObserver) return;
+
+          applyCustomStarPaths(document);
+          formatStarRatingWidgets(document);
+
+          let isQueued = false;
+          widgetObserver = new MutationObserver(() => {
+            if (isQueued) return;
+            isQueued = true;
+            requestAnimationFrame(() => {
+              isQueued = false;
+              applyCustomStarPaths(document);
+              formatStarRatingWidgets(document);
+            });
+          });
+
+          widgetObserver.observe(document.body, { childList: true, subtree: true });
+        };
+
         const init = () => {
           const root = document.querySelector(rootSelector);
           if (!root) return false;
@@ -218,6 +280,7 @@
           return true;
         };
 
+        observeWidgets();
         if (init()) return;
 
         const rootFinder = new MutationObserver(() => {

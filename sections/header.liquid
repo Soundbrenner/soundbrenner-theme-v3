@@ -8,6 +8,61 @@
       {% for link in section.settings.menu.links %}
         {{ link.title | link_to: link.url }}
       {% endfor %}
+
+      {% if localization.available_languages.size > 1 %}
+        <localization-form class="header__localization">
+          {% form 'localization', class: 'header__language-form', id: 'HeaderLanguageForm' %}
+            <div class="header__language-disclosure">
+              <input type="hidden" name="return_to" value="{{ request.path }}">
+              <button
+                type="button"
+                class="header__language-button"
+                aria-expanded="false"
+                aria-controls="HeaderLanguageList"
+              >
+                {{ localization.language.endonym_name | capitalize }}
+                <span aria-hidden="true">▾</span>
+              </button>
+
+              <ul id="HeaderLanguageList" role="list" class="header__language-list" hidden>
+                {% for language in localization.available_languages %}
+                  <li class="header__language-item" tabindex="-1">
+                    <a
+                      href="#"
+                      {% if language.iso_code == localization.language.iso_code %}
+                        aria-current="true"
+                      {% endif %}
+                      hreflang="{{ language.iso_code }}"
+                      lang="{{ language.iso_code }}"
+                      data-value="{{ language.iso_code }}"
+                    >
+                      {{ language.endonym_name | capitalize }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+
+              <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+            </div>
+
+            <noscript>
+              <select name="language_code" class="header__language-select" aria-label="Language">
+                {% for language in localization.available_languages %}
+                  <option
+                    value="{{ language.iso_code }}"
+                    {% if language.iso_code == localization.language.iso_code %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ language.endonym_name | capitalize }}
+                  </option>
+                {% endfor %}
+              </select>
+              <button type="submit" class="header__language-submit">Update</button>
+            </noscript>
+          {% endform %}
+        </localization-form>
+      {% endif %}
     </div>
 
     <div class="header__icons">
@@ -81,6 +136,55 @@
   .header .header__icons {
     display: flex;
     gap: 1rem;
+  }
+
+  .header .header__language-form,
+  .header .header__localization {
+    margin: 0;
+    position: relative;
+  }
+
+  .header .header__language-select,
+  .header .header__language-button {
+    background: transparent;
+    border: 1px solid var(--sb-color-neutral-600);
+    border-radius: var(--sb-radius-pill);
+    color: var(--sb-color-neutral-900);
+    cursor: pointer;
+    font: inherit;
+    min-height: var(--sb-space-36);
+    padding-block: 0;
+    padding-inline: var(--sb-space-12) var(--sb-space-28);
+  }
+
+  .header .header__language-list {
+    background: var(--sb-color-neutral-100);
+    border: 1px solid var(--sb-color-neutral-600);
+    border-radius: var(--sb-radius-16);
+    list-style: none;
+    margin: var(--sb-space-8) 0 0;
+    min-width: 100%;
+    padding: var(--sb-space-8);
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 60;
+  }
+
+  .header .header__language-item a {
+    border-radius: var(--sb-radius-pill);
+    display: block;
+    padding: var(--sb-space-8) var(--sb-space-12);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .header .header__language-item a:hover {
+    background: var(--sb-color-neutral-200);
+  }
+
+  .header .header__language-submit {
+    margin-left: var(--sb-space-8);
   }
 
   .header .header__theme-toggle {
@@ -164,27 +268,85 @@
 
     const root = document.documentElement;
     const toggle = header.querySelector('[data-theme-toggle]');
-    if (!toggle) return;
 
     const STORAGE_KEY = 'sb-theme-mode';
 
     const applyTheme = (theme) => {
+      if (!toggle) return;
       if (theme !== 'dark' && theme !== 'light') return;
       root.setAttribute('data-theme', theme);
       toggle.setAttribute('data-theme-current', theme);
       toggle.textContent = `Theme: ${theme}`;
     };
 
-    const storedTheme = localStorage.getItem(STORAGE_KEY);
-    if (storedTheme === 'dark' || storedTheme === 'light') applyTheme(storedTheme);
-    else applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+    if (toggle) {
+      const storedTheme = localStorage.getItem(STORAGE_KEY);
+      if (storedTheme === 'dark' || storedTheme === 'light') applyTheme(storedTheme);
+      else applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
 
-    toggle.addEventListener('click', () => {
-      const current = root.getAttribute('data-theme') || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem(STORAGE_KEY, next);
-    });
+      toggle.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme') || 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem(STORAGE_KEY, next);
+      });
+    }
+
+    if (!customElements.get('localization-form')) {
+      class LocalizationForm extends HTMLElement {
+        constructor() {
+          super();
+          this.elements = {
+            input: this.querySelector('input[name="language_code"], input[name="country_code"]'),
+            button: this.querySelector('button'),
+            panel: this.querySelector('ul')
+          };
+
+          if (!this.elements.button || !this.elements.panel || !this.elements.input) return;
+
+          this.elements.button.addEventListener('click', this.openSelector.bind(this));
+          this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+          this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+          this.querySelectorAll('a').forEach((item) => item.addEventListener('click', this.onItemClick.bind(this)));
+        }
+
+        hidePanel() {
+          this.elements.button.setAttribute('aria-expanded', 'false');
+          this.elements.panel.setAttribute('hidden', true);
+        }
+
+        onContainerKeyUp(event) {
+          if (event.code.toUpperCase() !== 'ESCAPE') return;
+          this.hidePanel();
+          this.elements.button.focus();
+        }
+
+        onItemClick(event) {
+          event.preventDefault();
+          const form = this.querySelector('form');
+          this.elements.input.value = event.currentTarget.dataset.value;
+          if (form) form.submit();
+        }
+
+        openSelector() {
+          this.elements.button.focus();
+          this.elements.panel.toggleAttribute('hidden');
+          this.elements.button.setAttribute(
+            'aria-expanded',
+            (this.elements.button.getAttribute('aria-expanded') === 'false').toString()
+          );
+        }
+
+        closeSelector(event) {
+          const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+          if (event.relatedTarget === null || shouldClose) {
+            this.hidePanel();
+          }
+        }
+      }
+
+      customElements.define('localization-form', LocalizationForm);
+    }
   })();
 </script>
 

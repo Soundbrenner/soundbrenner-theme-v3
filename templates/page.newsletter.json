@@ -1,0 +1,40 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "hero-card",
+      "settings": {
+        "kicker": "Newsletter",
+        "headline": "Stay in the loop"
+      }
+    },
+    "newsletter_text": {
+      "type": "text-section",
+      "blocks": {
+        "body_copy": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Sign up for our email newsletter at the bottom of this page.</p>",
+            "disable_link_color": false
+          }
+        }
+      },
+      "block_order": [
+        "body_copy"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "newsletter_text"
+  ]
+}
