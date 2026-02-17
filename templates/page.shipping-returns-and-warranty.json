@@ -1,0 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_top": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "background_image_desktop": "",
+        "background_image_mobile": "",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
+      }
+    },
+    "highlights": {
+      "type": "top-feature-highlights",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "title": ""
+      }
+    },
+    "accordion": {
+      "type": "accordion",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
+        "show_subtitle": true
+      }
+    },
+    "hero_bottom": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "background_image_desktop": "",
+        "background_image_mobile": "",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
+      }
+    }
+  },
+  "order": [
+    "hero_top",
+    "highlights",
+    "accordion",
+    "hero_bottom"
+  ]
+}
