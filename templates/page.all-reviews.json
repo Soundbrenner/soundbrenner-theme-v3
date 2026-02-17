@@ -13,10 +13,10 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
-        "background_image_desktop": "",
-        "background_image_mobile": "",
-        "kicker": "",
-        "headline": "",
+        "background_image_desktop": "shopify://shop_images/all-reviews-banner.jpg",
+        "background_image_mobile": "shopify://shop_images/all-reviews-banner_Mobile.jpg",
+        "kicker": "All reviews",
+        "headline": "What musicians are saying about Soundbrenner.",
         "subheadline": "",
         "show_button": false,
         "button_label": "",
@@ -24,9 +24,23 @@
         "icon_position": "none",
         "button_link": ""
       }
+    },
+    "177131069649277515": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_all_reviews_6hC3Jk": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/all-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_all_reviews_6hC3Jk"
+      ],
+      "settings": {}
     }
   },
   "order": [
-    "hero"
+    "hero",
+    "177131069649277515"
   ]
 }
