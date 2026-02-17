@@ -13,8 +13,6 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
-        "background_image_desktop": "",
-        "background_image_mobile": "",
         "kicker": "",
         "headline": "",
         "subheadline": "",
@@ -27,12 +25,72 @@
     },
     "highlights": {
       "type": "top-feature-highlights",
+      "blocks": {
+        "item_XhrLhe": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Highlight title",
+            "body": "<p>Highlight body copy.</p>"
+          }
+        },
+        "item_3b7Q9L": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Highlight title",
+            "body": "<p>Highlight body copy.</p>"
+          }
+        },
+        "item_i8WCRx": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Highlight title",
+            "body": "<p>Highlight body copy.</p>"
+          }
+        },
+        "item_UqRCpQ": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Highlight title",
+            "body": "<p>Highlight body copy.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_XhrLhe",
+        "item_3b7Q9L",
+        "item_i8WCRx",
+        "item_UqRCpQ"
+      ],
       "settings": {
         "title": ""
       }
     },
     "accordion": {
       "type": "accordion",
+      "blocks": {
+        "accordion_item_3dBtKD": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Question",
+            "answer": "<p>Answer.</p>"
+          }
+        },
+        "accordion_item_RhXpPr": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Question",
+            "answer": "<p>Answer.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_item_3dBtKD",
+        "accordion_item_RhXpPr"
+      ],
       "settings": {
         "use_custom_title": false,
         "custom_title": "Frequently asked questions",
@@ -43,8 +101,6 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
-        "background_image_desktop": "",
-        "background_image_mobile": "",
         "kicker": "",
         "headline": "",
         "subheadline": "",
