@@ -95,13 +95,13 @@
         "body_aVTdhi": {
           "type": "body",
           "settings": {
-            "text": "<p>Privacy policy</p>"
+            "text": "<p><a href=\"/pages/privacy-policy-the-metronome-app\" title=\"Privacy policy The Metronome app\">Privacy policy</a></p>"
           }
         },
         "body_dUBVd7": {
           "type": "body",
           "settings": {
-            "text": "<p>Terms of service</p>"
+            "text": "<p><a href=\"/pages/terms-of-service-the-metronome-app\" title=\"Terms of service The Metronome app\">Terms of service</a></p>"
           }
         }
       },
