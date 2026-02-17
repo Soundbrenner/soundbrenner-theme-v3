@@ -1,0 +1,221 @@
+<section class="sb-text-section" data-sb-reveal>
+  <div class="sb-text-section__content">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'header_large' %}
+          {% if block.settings.heading != blank %}
+            <h2 class="sb-text-section__header-large font-title weight-bold" data-sb-reveal-item {{ block.shopify_attributes }}>
+              {{ block.settings.heading }}
+            </h2>
+          {% endif %}
+
+        {% when 'body' %}
+          {% if block.settings.text != blank %}
+            <div class="sb-text-section__body font-body weight-regular rte" data-sb-reveal-item {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </div>
+          {% endif %}
+
+        {% when 'divider' %}
+          <div class="sb-text-section__divider-wrap" data-sb-reveal-item {{ block.shopify_attributes }}>
+            <hr class="sb-text-section__divider">
+          </div>
+
+        {% when 'button' %}
+          {% if block.settings.label != blank %}
+            <div class="sb-text-section__button-wrap" data-sb-reveal-item {{ block.shopify_attributes }}>
+              {% render 'radiant-button',
+                label: block.settings.label,
+                link: block.settings.link,
+                size: block.settings.button_size,
+                icon_position: block.settings.icon_position
+              %}
+            </div>
+          {% endif %}
+
+        {% when 'social_icons' %}
+          <div class="sb-text-section__social" data-sb-reveal-item {{ block.shopify_attributes }}>
+            <a class="sb-text-section__social-link" href="https://www.instagram.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              {{ 'icon-instagram.svg' | inline_asset_content }}
+            </a>
+            <a class="sb-text-section__social-link" href="https://www.facebook.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              {{ 'icon-facebook.svg' | inline_asset_content }}
+            </a>
+            <a class="sb-text-section__social-link" href="https://www.tiktok.com/@soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+              {{ 'icon-tiktok.svg' | inline_asset_content }}
+            </a>
+            <a class="sb-text-section__social-link" href="https://x.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="X">
+              {{ 'icon-x.svg' | inline_asset_content }}
+            </a>
+            <a class="sb-text-section__social-link" href="https://www.youtube.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              {{ 'icon-youtube.svg' | inline_asset_content }}
+            </a>
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-text-section {
+    width: 100%;
+  }
+
+  .sb-text-section__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-24);
+    width: 100%;
+  }
+
+  .sb-text-section__header-large {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-text-section__body {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .sb-text-section__body > * {
+    margin: 0;
+  }
+
+  .sb-text-section__body > * + * {
+    margin-top: var(--sb-space-24);
+  }
+
+  .sb-text-section__divider-wrap {
+    padding-block: var(--sb-space-24);
+  }
+
+  .sb-text-section__divider {
+    background: var(--sb-color-neutral-600);
+    border: 0;
+    height: 1px;
+    margin: 0;
+    width: 100%;
+  }
+
+  .sb-text-section__button-wrap {
+    padding-top: var(--sb-space-4);
+    width: fit-content;
+  }
+
+  .sb-text-section__social {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-space-24);
+  }
+
+  .sb-text-section__social-link {
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    line-height: 0;
+    text-decoration: none;
+  }
+
+  .sb-text-section__social-link svg {
+    display: block;
+    height: var(--sb-space-24);
+    width: auto;
+  }
+
+  .sb-text-section__social-link svg path:not([fill='none']),
+  .sb-text-section__social-link svg circle:not([fill='none']),
+  .sb-text-section__social-link svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Text section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "header_large",
+      "name": "Header large",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Header large"
+        }
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Body",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Body text.</p>"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": []
+    },
+    {
+      "type": "button",
+      "name": "Radiant button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Placeholder"
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button size",
+          "default": "large",
+          "options": [
+            { "value": "large", "label": "Large" },
+            { "value": "medium", "label": "Medium" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon position",
+          "default": "none",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "leading", "label": "Leading" },
+            { "value": "trailing", "label": "Trailing" }
+          ]
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "social_icons",
+      "name": "Social media icons",
+      "settings": []
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text section",
+      "blocks": [
+        {
+          "type": "body"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

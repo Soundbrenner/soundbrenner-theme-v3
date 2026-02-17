@@ -27,10 +27,19 @@
       }
     },
     "text": {
-      "type": "body-text",
-      "settings": {
-        "content": "<p>If you are a student, you get our best available offer - even better than any seasonal sale.</p><p>No matter which music major you are pursuing, our products are designed to support you every step of the way. Practice more efficiently, stay focused, and reach your musical goals with tools that grow with you - during your time on campus and beyond. Be ready for everything your studies and your musical journey bring.</p><p>Getting your student discount is simple.</p><ol><li>Submit your name, email address, and the university you are attending.</li><li>We will verify your information and send you a personal discount code by email.</li><li>Enter the code at checkout on our website to receive your student pricing.</li></ol>"
-      }
+      "type": "text-section",
+      "blocks": {
+        "body_main": {
+          "type": "body",
+          "settings": {
+            "text": "<p>If you are a student, you get our best available offer - even better than any seasonal sale.</p><p>No matter which music major you are pursuing, our products are designed to support you every step of the way. Practice more efficiently, stay focused, and reach your musical goals with tools that grow with you - during your time on campus and beyond. Be ready for everything your studies and your musical journey bring.</p><p>Getting your student discount is simple.</p><ol><li>Submit your name, email address, and the university you are attending.</li><li>We will verify your information and send you a personal discount code by email.</li><li>Enter the code at checkout on our website to receive your student pricing.</li></ol>"
+          }
+        }
+      },
+      "block_order": [
+        "body_main"
+      ],
+      "settings": {}
     },
     "contact_form": {
       "type": "contact-us-form",
