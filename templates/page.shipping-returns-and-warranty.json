@@ -86,7 +86,7 @@
           "type": "accordion_item",
           "settings": {
             "question": "Can I return Soundbrenner products if I change my mind?",
-            "answer": "<p>Yes! If you purchased an item from our web store but decide it's not for you, you can return it within 30 days of delivery for a refund. However, shipping fees will be deducted from your refund, even if your order qualified for free shipping. This helps balance the cost of returns, as there are additional expenses beyond shipping, such as restocking.<br/><br/>For full details, check out our <a href=\"/policies/refund-policy\" title=\"Refund Policy\">refund policy</a>.</p>"
+            "answer": "<p>Yes! If you purchased an item from our web store but decide it's not for you, you can return it within 30 days of delivery for a refund. However, shipping fees will be deducted from your refund, even if your order qualified for free shipping. This helps balance the cost of returns, as there are additional expenses beyond shipping, such as restocking. For full details, check out our <a href=\"/policies/refund-policy\" title=\"Refund Policy\">refund policy</a>.</p>"
           }
         },
         "accordion_item_cwxVmi": {
