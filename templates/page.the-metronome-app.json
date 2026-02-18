@@ -1,0 +1,125 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "trust_indicators": {
+      "type": "trust-indicators",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        },
+        "item_2": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        },
+        "item_3": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        },
+        "item_4": {
+          "type": "item",
+          "settings": {
+            "text": "<p>Trust indicator.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "settings": {
+        "title": "Trust indicators"
+      }
+    },
+    "large_feature_1": {
+      "type": "large-feature",
+      "settings": {
+        "media_position": "left",
+        "title_part_one": "Large feature",
+        "title_part_two": "Left",
+        "title_accent_color": "primary-500",
+        "body": "<p>Body copy goes here.</p>"
+      }
+    },
+    "large_feature_2": {
+      "type": "large-feature",
+      "settings": {
+        "media_position": "right",
+        "title_part_one": "Large feature",
+        "title_part_two": "Right",
+        "title_accent_color": "primary-500",
+        "body": "<p>Body copy goes here.</p>"
+      }
+    },
+    "large_feature_3": {
+      "type": "large-feature",
+      "settings": {
+        "media_position": "left",
+        "title_part_one": "Large feature",
+        "title_part_two": "Left",
+        "title_accent_color": "primary-500",
+        "body": "<p>Body copy goes here.</p>"
+      }
+    },
+    "large_feature_4": {
+      "type": "large-feature",
+      "settings": {
+        "media_position": "right",
+        "title_part_one": "Large feature",
+        "title_part_two": "Right",
+        "title_accent_color": "primary-500",
+        "body": "<p>Body copy goes here.</p>"
+      }
+    },
+    "large_feature_5": {
+      "type": "large-feature",
+      "settings": {
+        "media_position": "left",
+        "title_part_one": "Large feature",
+        "title_part_two": "Left",
+        "title_accent_color": "primary-500",
+        "body": "<p>Body copy goes here.</p>"
+      }
+    },
+    "hero_card_1": {
+      "type": "hero-card",
+      "settings": {
+        "kicker": "Hero card",
+        "headline": "Hero card one"
+      }
+    },
+    "hero_card_2": {
+      "type": "hero-card",
+      "settings": {
+        "kicker": "Hero card",
+        "headline": "Hero card two"
+      }
+    }
+  },
+  "order": [
+    "trust_indicators",
+    "large_feature_1",
+    "large_feature_2",
+    "large_feature_3",
+    "large_feature_4",
+    "large_feature_5",
+    "hero_card_1",
+    "hero_card_2"
+  ]
+}

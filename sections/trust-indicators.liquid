@@ -61,7 +61,7 @@
     flex-direction: column;
     max-width: 240px;
     text-align: center;
-    width: 100%;
+    width: min(100%, 240px);
   }
 
   .sb-trust-indicators__icon {
@@ -99,12 +99,19 @@
 
   @media (max-width: 749px) {
     .sb-trust-indicators__items {
-      gap: var(--sb-space-30);
+      display: grid;
+      gap: var(--sb-space-20);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      justify-items: center;
     }
 
     .sb-trust-indicators__item {
-      flex-basis: 100%;
-      max-width: 100%;
+      max-width: 240px;
+      width: 100%;
+    }
+
+    .sb-trust-indicators__item:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
     }
   }
 {% endstylesheet %}
