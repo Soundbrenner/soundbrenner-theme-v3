@@ -31,24 +31,28 @@
         "item_1": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Property_1_600000_monthly_users.svg",
             "text": "<p>Monthly active users</p>"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Property_1_90000000_wearable_hours_063c6320-553b-46f2-91a4-98f50fcb775a.svg",
             "text": "<p>Hours of practice improved</p>"
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Property_1_2014_year_founded.svg",
             "text": "<p>Year founded</p>"
           }
         },
         "item_4": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Property_1_NAMM_19c1b3cf-9d45-40a3-8132-5ad216b897b8.svg",
             "text": "<p>Best in Show</p>"
           }
         }
@@ -73,6 +77,7 @@
       "type": "large-feature",
       "settings": {
         "media_position": "left",
+        "media": "shopify://shop_images/Property_1_About_us_f472745e-8938-480c-adf6-8826965fd71c.jpg",
         "title_part_one": "Great musicians aren’t born.",
         "title_part_two": "They’re crafted.",
         "title_accent_color": "primary-500",
@@ -177,7 +182,7 @@
         "year_2026"
       ],
       "settings": {
-        "title": "Timeline"
+        "title": "Our journey"
       }
     },
     "hero_bottom": {
