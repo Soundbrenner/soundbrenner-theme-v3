@@ -9,35 +9,57 @@
  */
 {
   "sections": {
+    "hero_card_TeBW6V": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
+      }
+    },
     "trust_indicators": {
       "type": "trust-indicators",
       "blocks": {
+        "item_Tc3mNP": {
+          "type": "item",
+          "settings": {
+            "text": "<p>X.X stars, XK+ ratings</p>"
+          }
+        },
         "item_1": {
           "type": "item",
           "settings": {
-            "text": "<p>Trust indicator.</p>"
+            "text": "<p>Monthly active users</p>"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
-            "text": "<p>Trust indicator.</p>"
+            "text": "<p>Trusted by artists & music teachers</p>"
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
-            "text": "<p>Trust indicator.</p>"
+            "text": "<p>”The best metronome app”</p>"
           }
         },
         "item_4": {
           "type": "item",
           "settings": {
-            "text": "<p>Trust indicator.</p>"
+            "text": "<p>”Keeps you on the beat”</p>"
           }
         }
       },
       "block_order": [
+        "item_Tc3mNP",
         "item_1",
         "item_2",
         "item_3",
@@ -100,19 +122,34 @@
     "hero_card_1": {
       "type": "hero-card",
       "settings": {
+        "use_seasonal_hero_card": false,
         "kicker": "Hero card",
-        "headline": "Hero card one"
+        "headline": "Hero card one",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
       }
     },
     "hero_card_2": {
       "type": "hero-card",
       "settings": {
+        "use_seasonal_hero_card": false,
         "kicker": "Hero card",
-        "headline": "Hero card two"
+        "headline": "Hero card two",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
       }
     }
   },
   "order": [
+    "hero_card_TeBW6V",
     "trust_indicators",
     "large_feature_1",
     "large_feature_2",
