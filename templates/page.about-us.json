@@ -54,8 +54,8 @@
         "title": "Trust indicators"
       }
     },
-    "hero_vide": {
-      "type": "hero-vide",
+    "hero_video": {
+      "type": "hero-video",
       "settings": {
         "heading": "Watch our story"
       }
@@ -91,7 +91,7 @@
   "order": [
     "hero_top",
     "trust_indicators",
-    "hero_vide",
+    "hero_video",
     "large_feature_left",
     "large_feature_right",
     "hero_bottom"

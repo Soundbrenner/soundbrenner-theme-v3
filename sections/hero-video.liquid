@@ -1,26 +1,26 @@
-{% assign hero_vide_video = section.settings.youtube_url %}
-{% assign hero_vide_heading = section.settings.heading %}
+{% assign hero_video_video = section.settings.youtube_url %}
+{% assign hero_video_heading = section.settings.heading %}
 
-<section class="sb-hero-vide" data-sb-reveal>
-  <div class="sb-hero-vide__inner">
-    {% if hero_vide_heading != blank %}
-      <h2 class="sb-hero-vide__heading font-title weight-bold" data-sb-reveal-item>
-        {{ hero_vide_heading }}
+<section class="sb-hero-video" data-sb-reveal>
+  <div class="sb-hero-video__inner">
+    {% if hero_video_heading != blank %}
+      <h2 class="sb-hero-video__heading font-title weight-bold" data-sb-reveal-item>
+        {{ hero_video_heading }}
       </h2>
     {% endif %}
 
-    <div class="sb-hero-vide__frame-wrap" data-sb-reveal-item>
-      {% if hero_vide_video != blank and hero_vide_video.type == 'youtube' %}
+    <div class="sb-hero-video__frame-wrap" data-sb-reveal-item>
+      {% if hero_video_video != blank and hero_video_video.type == 'youtube' %}
         <iframe
-          class="sb-hero-vide__frame"
-          src="https://www.youtube.com/embed/{{ hero_vide_video.id }}"
-          title="{{ hero_vide_heading | default: 'Hero video' | escape }}"
+          class="sb-hero-video__frame"
+          src="https://www.youtube.com/embed/{{ hero_video_video.id }}"
+          title="{{ hero_video_heading | default: 'Hero video' | escape }}"
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
         ></iframe>
       {% else %}
-        <div class="sb-hero-vide__placeholder font-body weight-regular">
+        <div class="sb-hero-video__placeholder font-body weight-regular">
           Add a YouTube video URL in the section settings.
         </div>
       {% endif %}
@@ -29,37 +29,37 @@
 </section>
 
 {% stylesheet %}
-  .sb-hero-vide {
+  .sb-hero-video {
     width: 100%;
   }
 
-  .sb-hero-vide__inner {
+  .sb-hero-video__inner {
     margin-inline: auto;
     max-width: 800px;
     width: 100%;
   }
 
-  .sb-hero-vide__heading {
+  .sb-hero-video__heading {
     color: var(--sb-color-neutral-900);
     margin: 0 0 var(--sb-space-24);
     text-align: center;
   }
 
-  .sb-hero-vide__frame-wrap {
+  .sb-hero-video__frame-wrap {
     aspect-ratio: 16 / 9;
     border-radius: var(--sb-radius-card);
     overflow: hidden;
     width: 100%;
   }
 
-  .sb-hero-vide__frame {
+  .sb-hero-video__frame {
     border: 0;
     display: block;
     height: 100%;
     width: 100%;
   }
 
-  .sb-hero-vide__placeholder {
+  .sb-hero-video__placeholder {
     align-items: center;
     background: var(--sb-color-neutral-200);
     color: var(--sb-color-neutral-900);
@@ -74,7 +74,7 @@
 
 {% schema %}
 {
-  "name": "Hero vide",
+  "name": "Hero video",
   "settings": [
     {
       "type": "text",
@@ -92,7 +92,7 @@
   ],
   "presets": [
     {
-      "name": "Hero vide"
+      "name": "Hero video"
     }
   ]
 }

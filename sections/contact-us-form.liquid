@@ -82,7 +82,7 @@
 
       {% for block in section.blocks %}
         {% if block.type == 'subtitle' and block.settings.content != blank %}
-          <div class="sb-contact-form__subtitle-block font-body weight-regular rte" {{ block.shopify_attributes }}>
+          <div class="sb-contact-form__subtitle-block font-body weight-regular rte sb-flow-24" {{ block.shopify_attributes }}>
             {{ block.settings.content }}
           </div>
         {% endif %}
@@ -116,10 +116,6 @@
   .sb-contact-form__subtitle-block {
     color: var(--sb-color-neutral-800);
     grid-column: 1 / -1;
-    margin: 0;
-  }
-
-  .sb-contact-form__subtitle-block > * {
     margin: 0;
   }
 
