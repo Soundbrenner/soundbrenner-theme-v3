@@ -6,6 +6,7 @@
 {% assign sb_primary_font_bold_italic = settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' %}
 {% assign sb_display_font_regular = settings.type_display_font %}
 {% assign sb_display_font_bold = settings.type_display_font | font_modify: 'weight', 'bold' %}
+{% assign sb_display_font_family_downcase = settings.type_display_font.family | downcase %}
 
 {% style %}
   {% comment %}
@@ -89,6 +90,8 @@
     --font-size-callout: 1.25rem;
     --font-size-body: 1rem;
     --font-size-caption: 0.75rem;
+    --font-title-line-height:
+      {% if sb_display_font_family_downcase contains 'merriweather' %}1.35{% else %}1.25{% endif %};
 
     /* Semantic spacing scale (mobile defaults) */
     --sb-space-2: 1px;
@@ -378,7 +381,7 @@
   .font-title {
     font-family: var(--font-display--family);
     font-size: var(--font-size-title);
-    line-height: 1.2;
+    line-height: var(--font-title-line-height);
   }
 
   .font-callout {
