@@ -13,16 +13,17 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
-        "background_image_desktop": "",
-        "background_image_mobile": "",
-        "kicker": "Email verification",
-        "headline": "Email verification failed.",
+        "background_image_desktop": "shopify://shop_images/Property_1_404_77e221c0-0adc-463b-8ca8-a59d9093e83b.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_404_mobile.jpg",
+        "kicker": "Email verification failed",
+        "headline": "We couldn't verify your account.",
         "subheadline": "",
         "show_button": false,
         "button_label": "",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": ""
+        "button_link": "",
+        "enable_app_download_buttons": false
       }
     },
     "text": {
@@ -31,16 +32,17 @@
         "body_main": {
           "type": "body",
           "settings": {
-            "text": "<p>Body text.</p>"
+            "text": "<p>Something went wrong while trying to verify your email. Please request a new verification email. To do this, open our mobile app and go to ”Settings” → ”User profile” → ”Email”.</p><p>If the issue persists, our support team is happy to assist you. Feel free to contact us.</p>",
+            "disable_link_color": false
           }
         },
         "button_main": {
           "type": "button",
           "settings": {
-            "label": "Placeholder",
+            "label": "Contact us",
             "button_size": "large",
             "icon_position": "trailing",
-            "link": ""
+            "link": "shopify://pages/contact-us"
           }
         }
       },
