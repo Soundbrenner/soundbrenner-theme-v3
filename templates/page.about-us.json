@@ -13,8 +13,10 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_About_us.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_About_us_mobile.jpg",
         "kicker": "About us",
-        "headline": "Made for musicians",
+        "headline": "We're on a mission to make music practice addictive.",
         "subheadline": "",
         "show_button": false,
         "button_label": "",
@@ -29,25 +31,25 @@
         "item_1": {
           "type": "item",
           "settings": {
-            "text": "<p>Trusted by musicians worldwide.</p>"
+            "text": "<p>Monthly active users</p>"
           }
         },
         "item_2": {
           "type": "item",
           "settings": {
-            "text": "<p>Designed with precision and purpose.</p>"
+            "text": "<p>Hours of practice improved</p>"
           }
         },
         "item_3": {
           "type": "item",
           "settings": {
-            "text": "<p>Built for everyday practice.</p>"
+            "text": "<p>Year founded</p>"
           }
         },
         "item_4": {
           "type": "item",
           "settings": {
-            "text": "<p>Backed by real customer support.</p>"
+            "text": "<p>Best in Show</p>"
           }
         }
       },
@@ -58,14 +60,14 @@
         "item_4"
       ],
       "settings": {
-        "title": "Trust indicators"
+        "title": "Critically acclaimed"
       }
     },
     "hero_video": {
       "type": "hero-video",
       "settings": {
         "heading": "Watch our story",
-        "youtube_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        "youtube_url": "https://www.youtube.com/watch?v=4UaOtpFq51c"
       }
     },
     "large_feature_left": {
