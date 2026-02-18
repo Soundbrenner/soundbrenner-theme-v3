@@ -1899,7 +1899,60 @@
         };
 
         const addToCartButtons = root.querySelectorAll('[data-add-to-cart]');
+        const getFlyImageSource = (thumbnail) => {
+          if (!thumbnail) return '';
+          const mediaWrap = thumbnail.querySelector('.sb-product-thumbnail__media-wrap');
+          const activeMedia = thumbnail.querySelector(
+            '.sb-product-thumbnail__carousel-slide[aria-hidden="false"] .sb-product-thumbnail__media-item'
+          );
+
+          if (activeMedia) {
+            const tagName = (activeMedia.tagName || '').toLowerCase();
+            if (tagName === 'img') {
+              const src = activeMedia.currentSrc || activeMedia.getAttribute('src') || '';
+              if (src) return src;
+            }
+            if (tagName === 'video') {
+              const poster = activeMedia.getAttribute('poster') || '';
+              if (poster) return poster;
+            }
+          }
+
+          const primaryImage = mediaWrap ? (mediaWrap.dataset.primaryImage || '').trim() : '';
+          if (primaryImage) return primaryImage;
+
+          const defaultImage = mediaWrap ? (mediaWrap.dataset.defaultImage || '').trim() : '';
+          if (defaultImage) return defaultImage;
+
+          const fallbackImage = thumbnail.querySelector('.sb-product-thumbnail__media-item[src]');
+          return fallbackImage ? fallbackImage.getAttribute('src') || '' : '';
+        };
+
         addToCartButtons.forEach((button) => {
+          const isLargeButton = button.classList.contains('sb-product-thumbnail__add-to-cart-large');
+          const resetToDefault = () => {
+            const resetLabel = button.querySelector('[data-add-to-cart-label]');
+            const resetIcon = button.querySelector('.sb-product-thumbnail__add-to-cart-icon-image');
+            const defaultLabel = button.dataset.labelDefault || 'Add';
+            if (resetLabel) resetLabel.textContent = defaultLabel;
+            if (resetIcon && resetIcon.dataset.addIcon) resetIcon.setAttribute('src', resetIcon.dataset.addIcon);
+            button.classList.remove('is-added');
+            button.setAttribute('aria-label', defaultLabel);
+          };
+
+          const scheduleHoverButtonReset = () => {
+            if (isLargeButton) return;
+            const existingTimer = Number.parseInt(button.dataset.resetTimerId || '', 10);
+            if (Number.isFinite(existingTimer)) {
+              clearTimeout(existingTimer);
+            }
+            const timerId = window.setTimeout(() => {
+              delete button.dataset.resetTimerId;
+              resetToDefault();
+            }, 1400);
+            button.dataset.resetTimerId = `${timerId}`;
+          };
+
           button.addEventListener('click', async (event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -1917,19 +1970,7 @@
 
             try {
               const thumbnail = button.closest('.sb-product-thumbnail');
-              const activeSlideMedia = thumbnail
-                ? thumbnail.querySelector(
-                    '.sb-product-thumbnail__carousel-slide[aria-hidden="false"] .sb-product-thumbnail__media-item'
-                  )
-                : null;
-              const fallbackMedia = thumbnail
-                ? thumbnail.querySelector('.sb-product-thumbnail__media-item')
-                : null;
-              const mediaElement = activeSlideMedia || fallbackMedia;
-              const imageSrc =
-                mediaElement && mediaElement.tagName && mediaElement.tagName.toLowerCase() === 'img'
-                  ? mediaElement.currentSrc || mediaElement.getAttribute('src') || ''
-                  : '';
+              const imageSrc = getFlyImageSource(thumbnail);
 
               if (window.SBCart && typeof window.SBCart.add === 'function') {
                 await window.SBCart.add(variantId, {
@@ -1941,15 +1982,15 @@
                 await addToCartNative(variantId, 1);
               }
 
-              if (label) label.textContent = labelAdded;
-              if (icon && icon.dataset.checkIcon) icon.setAttribute('src', icon.dataset.checkIcon);
-              button.classList.add('is-added');
-              button.setAttribute('aria-label', labelAdded);
+              if (!isLargeButton) {
+                if (label) label.textContent = labelAdded;
+                if (icon && icon.dataset.checkIcon) icon.setAttribute('src', icon.dataset.checkIcon);
+                button.classList.add('is-added');
+                button.setAttribute('aria-label', labelAdded);
+                scheduleHoverButtonReset();
+              }
             } catch (error) {
-              if (label) label.textContent = labelDefault;
-              if (icon && icon.dataset.addIcon) icon.setAttribute('src', icon.dataset.addIcon);
-              button.classList.remove('is-added');
-              button.setAttribute('aria-label', labelDefault);
+              resetToDefault();
             } finally {
               button.classList.remove('is-loading');
             }
