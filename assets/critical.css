@@ -95,6 +95,11 @@ body {
   text-decoration: underline;
 }
 
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--sb-color-primary-700);
+  outline-offset: 2px;
+}
+
 ::selection {
   background: var(--sb-color-primary-500);
   color: var(--sb-color-always-white);
@@ -294,6 +299,18 @@ body .shopify-policy__body .rte > * + * {
 .sb-reveal--animate.is-inview .sb-button-radiant:hover,
 .sb-reveal--animate.is-inview .sb-button-radiant:focus-visible {
   transform: translateY(var(--sb-button-hover-lift));
+}
+
+/* Shared product thumbnail frame hover scale */
+.sb-product-thumbnail__media-wrap {
+  transform: scale(1);
+  transform-origin: center center;
+  transition: transform 220ms ease;
+}
+
+.sb-product-thumbnail__media-wrap:hover,
+.sb-product-thumbnail__media-wrap:focus-within {
+  transform: scale(1.015);
 }
 
 .sb-button-radiant:active {
@@ -1769,7 +1786,7 @@ button[aria-label='Modal close button']:focus-visible::after {
 #klaviyo-reviews-all .kl_reviews__stars_badge,
 .kl_reviews__lightbox__container .kl_reviews__stars_badge {
   display: inline-flex !important;
-  gap: var(--sb-space-4) !important;
+  gap: 4px !important;
 }
 
 /* Product-card rating inline star uses custom Klaviyo star symbol */
@@ -1798,7 +1815,7 @@ button[aria-label='Modal close button']:focus-visible::after {
 .klaviyo-star-rating-widget .kl_reviews__stars_badge {
   align-items: flex-start !important;
   display: inline-flex !important;
-  gap: var(--sb-space-4) !important;
+  gap: 4px !important;
   line-height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
