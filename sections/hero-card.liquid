@@ -62,6 +62,80 @@
           extra_class: 'sb-framing-card__button'
         %}
       {% endif %}
+
+      {% if section.settings.enable_app_download_buttons %}
+        <div class="sb-framing-card__app-downloads">
+          <div class="sb-framing-card__app-downloads-qr" aria-hidden="true">
+            <img
+              src="{{ 'app-download-qr-metronome-app.png' | asset_url }}"
+              alt=""
+              loading="lazy"
+              width="80"
+              height="80"
+            >
+          </div>
+
+          {% if section.settings.app_store_link != blank %}
+            <a class="sb-framing-card__app-download-link" href="{{ section.settings.app_store_link }}">
+              <img
+                class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--app-store"
+                src="{{ 'app-download-app-store.png' | asset_url }}"
+                alt="Download on the App Store"
+                loading="lazy"
+              >
+            </a>
+          {% else %}
+            <span class="sb-framing-card__app-download-link">
+              <img
+                class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--app-store"
+                src="{{ 'app-download-app-store.png' | asset_url }}"
+                alt="Download on the App Store"
+                loading="lazy"
+              >
+            </span>
+          {% endif %}
+
+          {% if section.settings.google_play_link != blank %}
+            <a class="sb-framing-card__app-download-link" href="{{ section.settings.google_play_link }}">
+              <img
+                class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--google-play"
+                src="{{ 'app-download-google-play.png' | asset_url }}"
+                alt="Get it on Google Play"
+                loading="lazy"
+              >
+            </a>
+          {% else %}
+            <span class="sb-framing-card__app-download-link">
+              <img
+                class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--google-play"
+                src="{{ 'app-download-google-play.png' | asset_url }}"
+                alt="Get it on Google Play"
+                loading="lazy"
+              >
+            </span>
+          {% endif %}
+
+          {% if section.settings.china_download_link != blank %}
+            <a class="sb-framing-card__app-download-link" href="{{ section.settings.china_download_link }}">
+              <img
+                class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--china"
+                src="{{ 'app-download-china.png' | asset_url }}"
+                alt="Download in China"
+                loading="lazy"
+              >
+            </a>
+          {% else %}
+            <span class="sb-framing-card__app-download-link">
+              <img
+                class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--china"
+                src="{{ 'app-download-china.png' | asset_url }}"
+                alt="Download in China"
+                loading="lazy"
+              >
+            </span>
+          {% endif %}
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -104,6 +178,84 @@
     margin-inline: auto;
     margin-top: var(--sb-space-4);
     width: fit-content;
+  }
+
+  .sb-framing-card__app-downloads {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-space-20);
+    justify-content: flex-start;
+    padding-top: var(--sb-space-4);
+    width: 100%;
+  }
+
+  .sb-framing-card__app-downloads-qr {
+    flex: 0 0 auto;
+    height: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    max-height: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    max-width: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    min-height: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    min-width: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    width: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+  }
+
+  .sb-framing-card__app-downloads-qr img {
+    display: block;
+    height: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    max-height: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    max-width: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    min-height: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    min-width: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+    object-fit: contain;
+    width: var(--sb-space-80, calc(var(--sb-space-16) * 5));
+  }
+
+  .sb-framing-card__app-download-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+    line-height: 0;
+    text-decoration: none;
+    transition: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+  }
+
+  .sb-framing-card__app-download-badge {
+    display: block;
+    height: var(--sb-space-36);
+    user-select: none;
+    width: auto;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+  }
+
+  .sb-framing-card__app-download-badge--app-store {
+    aspect-ratio: 108 / 36;
+  }
+
+  .sb-framing-card__app-download-badge--google-play {
+    aspect-ratio: 122 / 36;
+  }
+
+  .sb-framing-card__app-download-badge--china {
+    aspect-ratio: 122 / 36;
+  }
+
+  .sb-framing-card__app-download-link[href]:hover,
+  .sb-framing-card__app-download-link[href]:focus-visible {
+    opacity: 0.75;
+  }
+
+  @media (max-width: 749px) {
+    .sb-framing-card__app-downloads-qr {
+      display: none;
+    }
+
+    .sb-framing-card__app-downloads {
+      justify-content: center;
+    }
   }
 
   @media (min-width: 750px) {
@@ -206,6 +358,30 @@
       "id": "button_link",
       "label": "Button link",
       "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_app_download_buttons",
+      "label": "Enable app download buttons",
+      "default": false
+    },
+    {
+      "type": "url",
+      "id": "app_store_link",
+      "label": "App Store link",
+      "visible_if": "{{ section.settings.enable_app_download_buttons }}"
+    },
+    {
+      "type": "url",
+      "id": "google_play_link",
+      "label": "Google Play link",
+      "visible_if": "{{ section.settings.enable_app_download_buttons }}"
+    },
+    {
+      "type": "url",
+      "id": "china_download_link",
+      "label": "China download link",
+      "visible_if": "{{ section.settings.enable_app_download_buttons }}"
     }
   ],
   "presets": [

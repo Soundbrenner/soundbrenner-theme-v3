@@ -2,17 +2,9 @@
   {% assign trustpilot_entry = metaobjects.trustpilot.values | first %}
   {% assign metronome_rating_raw = trustpilot_entry.the_metronome_app_review_rating.value | default: trustpilot_entry.the_metronome_app_review_rating %}
   {% assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count %}
-  {% assign metronome_rating_number = metronome_rating_raw | plus: 0 %}
-  {% assign metronome_count_number = metronome_count_raw | remove: ',' | plus: 0 %}
-  {% assign metronome_rating_display = metronome_rating_number | round: 1 %}
-  {% if metronome_count_number >= 1000 %}
-    {% assign metronome_count_display = metronome_count_number | divided_by: 1000 | append: 'K+' %}
-  {% elsif metronome_count_number > 0 %}
-    {% assign metronome_count_display = metronome_count_number | append: '+' %}
-  {% else %}
-    {% assign metronome_count_display = '' %}
-  {% endif %}
-  {% if metronome_rating_number > 0 and metronome_count_display != blank %}
+  {% assign metronome_rating_display = metronome_rating_raw | strip %}
+  {% assign metronome_count_display = metronome_count_raw | strip %}
+  {% if metronome_rating_display != blank and metronome_count_display != blank %}
     {% assign metronome_summary = metronome_rating_display | append: ' rating, ' | append: metronome_count_display | append: ' reviews' %}
   {% else %}
     {% assign metronome_summary = '' %}
