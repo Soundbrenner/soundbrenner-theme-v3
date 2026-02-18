@@ -90,6 +90,7 @@
         "year_2014": {
           "type": "item",
           "settings": {
+            "image": "shopify://shop_images/Product_About_us_Order_1.jpg",
             "body": "<p><strong>2014.</strong> Soundbrenner began with a simple idea: a wearable, vibrating metronome. Our founders met in Berlin’s startup scene and built the first prototype by salvaging a vibration motor from an old flip phone and hand-soldering it into shape.</p>"
           }
         },
