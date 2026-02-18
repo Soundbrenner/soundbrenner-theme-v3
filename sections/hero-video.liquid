@@ -1,20 +1,13 @@
 {% assign hero_video_video = section.settings.youtube_url %}
-{% assign hero_video_heading = section.settings.heading %}
 
 <section class="sb-hero-video" data-sb-reveal>
   <div class="sb-hero-video__inner">
-    {% if hero_video_heading != blank %}
-      <h2 class="sb-hero-video__heading font-title weight-bold" data-sb-reveal-item>
-        {{ hero_video_heading }}
-      </h2>
-    {% endif %}
-
     <div class="sb-hero-video__frame-wrap" data-sb-reveal-item>
       {% if hero_video_video != blank and hero_video_video.type == 'youtube' %}
         <iframe
           class="sb-hero-video__frame"
           src="https://www.youtube.com/embed/{{ hero_video_video.id }}"
-          title="{{ hero_video_heading | default: 'Hero video' | escape }}"
+          title="Hero video"
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
@@ -37,12 +30,6 @@
     margin-inline: auto;
     max-width: 800px;
     width: 100%;
-  }
-
-  .sb-hero-video__heading {
-    color: var(--sb-color-neutral-900);
-    margin: 0 0 var(--sb-space-24);
-    text-align: center;
   }
 
   .sb-hero-video__frame-wrap {
@@ -76,12 +63,6 @@
 {
   "name": "Hero video",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Hero video"
-    },
     {
       "type": "video_url",
       "id": "youtube_url",
