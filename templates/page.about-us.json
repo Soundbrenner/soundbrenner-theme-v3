@@ -12,8 +12,15 @@
     "hero_top": {
       "type": "hero-card",
       "settings": {
+        "use_seasonal_hero_card": false,
         "kicker": "About us",
-        "headline": "Made for musicians"
+        "headline": "Made for musicians",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
       }
     },
     "trust_indicators": {
@@ -57,17 +64,18 @@
     "hero_video": {
       "type": "hero-video",
       "settings": {
-        "heading": "Watch our story"
+        "heading": "Watch our story",
+        "youtube_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
       }
     },
     "large_feature_left": {
       "type": "large-feature",
       "settings": {
         "media_position": "left",
-        "title_part_one": "Large feature",
-        "title_part_two": "Left",
+        "title_part_one": "Great musicians aren’t born.",
+        "title_part_two": "They’re crafted.",
         "title_accent_color": "primary-500",
-        "body": "<p>Body copy goes here.</p>"
+        "body": "<p>Before the world heard them, The Beatles played 1,200 shows in Hamburg. Mozart practiced for 10,000 hours before his first symphony. Practice is the only path to mastery.</p><p>At Soundbrenner, we build the ultimate tools to make your practice sessions more productive, more rewarding, and more frequent. From beginners to professionals, we’re here for every musician.</p>"
       }
     },
     "large_feature_right": {
@@ -83,8 +91,15 @@
     "hero_bottom": {
       "type": "hero-card",
       "settings": {
+        "use_seasonal_hero_card": true,
         "kicker": "About us",
-        "headline": "Join our journey"
+        "headline": "Join our journey",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
       }
     }
   },
