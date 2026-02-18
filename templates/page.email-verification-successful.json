@@ -13,16 +13,17 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
-        "background_image_desktop": "",
-        "background_image_mobile": "",
-        "kicker": "Email verification",
-        "headline": "Email verification successful.",
+        "background_image_desktop": "shopify://shop_images/Property_1_Team_00a9af18-a7b1-41d0-8926-d90faeeb206e.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Team_mobile.jpg",
+        "kicker": "Email verification successful",
+        "headline": "Your account is verified!",
         "subheadline": "",
         "show_button": false,
         "button_label": "",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": ""
+        "button_link": "",
+        "enable_app_download_buttons": false
       }
     },
     "text": {
@@ -31,21 +32,35 @@
         "body_main": {
           "type": "body",
           "settings": {
-            "text": "<p>Body text.</p>"
+            "text": "<p>Welcome to Soundbrenner! You’re one step closer to mastering your craft. Be sure to follow us on social media to keep up with the latest features and events. </p>",
+            "disable_link_color": false
+          }
+        },
+        "social_icons_V8zfmj": {
+          "type": "social_icons",
+          "settings": {}
+        },
+        "body_6WbEgg": {
+          "type": "body",
+          "settings": {
+            "text": "<p>Great practice starts with the right tools. We've been pouring our heart and soul into Soundbrenner for over 10 years, with the goal to create the best tools for musicians like you. Soundbrenner isn’t just an app - it’s a complete ecosystem of software and hardware designed to improve your practice and reach your musical goals.</p>",
+            "disable_link_color": false
           }
         },
         "button_main": {
           "type": "button",
           "settings": {
-            "label": "Placeholder",
+            "label": "Explore now",
             "button_size": "large",
             "icon_position": "trailing",
-            "link": ""
+            "link": "shopify://collections/wearables"
           }
         }
       },
       "block_order": [
         "body_main",
+        "social_icons_V8zfmj",
+        "body_6WbEgg",
         "button_main"
       ],
       "settings": {}
