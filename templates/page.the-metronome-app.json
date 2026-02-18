@@ -86,60 +86,65 @@
       "type": "large-feature",
       "settings": {
         "media_position": "left",
+        "media": "shopify://shop_images/Property_1_The_Metronome_1_296cb8aa-9830-4caf-9daa-90b210ec495c.jpg",
         "show_icon_and_kicker": true,
-        "kicker_text": "Kicker",
-        "title_part_one": "Large feature",
-        "title_part_two": "Left",
+        "kicker_text": "Metronome",
+        "title_part_one": "Upgrade your rhythm.",
+        "title_part_two": "Play with rock-solid timing.",
         "title_accent_color": "primary-500",
-        "body": "<p>Body copy goes here.</p>"
+        "body": ""
       }
     },
     "large_feature_2": {
       "type": "large-feature",
       "settings": {
         "media_position": "right",
+        "media": "shopify://shop_images/Property_1_The_Metronome_2.jpg",
         "show_icon_and_kicker": true,
-        "kicker_text": "Kicker",
-        "title_part_one": "Large feature",
-        "title_part_two": "Right",
+        "kicker_text": "Library",
+        "title_part_one": "Save songs and setlists.",
+        "title_part_two": "Skip the hassle.",
         "title_accent_color": "primary-500",
-        "body": "<p>Body copy goes here.</p>"
+        "body": ""
       }
     },
     "large_feature_3": {
       "type": "large-feature",
       "settings": {
         "media_position": "left",
+        "media": "shopify://shop_images/Property_1_The_Metronome_3.jpg",
         "show_icon_and_kicker": true,
-        "kicker_text": "Kicker",
-        "title_part_one": "Large feature",
-        "title_part_two": "Left",
+        "kicker_text": "Practice tracker",
+        "title_part_one": "Track your progress.",
+        "title_part_two": "Fuel your motivation.",
         "title_accent_color": "primary-500",
-        "body": "<p>Body copy goes here.</p>"
+        "body": ""
       }
     },
     "large_feature_4": {
       "type": "large-feature",
       "settings": {
         "media_position": "right",
+        "media": "shopify://shop_images/Property_1_The_Metronome_4.jpg",
         "show_icon_and_kicker": true,
-        "kicker_text": "Kicker",
-        "title_part_one": "Large feature",
-        "title_part_two": "Right",
+        "kicker_text": "Tuner",
+        "title_part_one": "Tune with precision.",
+        "title_part_two": "Always sound great.",
         "title_accent_color": "primary-500",
-        "body": "<p>Body copy goes here.</p>"
+        "body": ""
       }
     },
     "large_feature_5": {
       "type": "large-feature",
       "settings": {
         "media_position": "left",
+        "media": "shopify://shop_images/Property_1_The_Metronome_5.jpg",
         "show_icon_and_kicker": true,
-        "kicker_text": "Kicker",
-        "title_part_one": "Large feature",
-        "title_part_two": "Left",
+        "kicker_text": "Learn",
+        "title_part_one": "Learn from the best.",
+        "title_part_two": "Master your craft.",
         "title_accent_color": "primary-500",
-        "body": "<p>Body copy goes here.</p>"
+        "body": ""
       }
     },
     "hero_card_1": {
