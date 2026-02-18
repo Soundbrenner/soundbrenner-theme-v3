@@ -35,6 +35,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/Property_1_Ratings.svg",
+            "show_metronome_app_ratings": true,
             "text": "<p>X.X stars, XK+ ratings</p>"
           }
         },
@@ -42,6 +43,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/Property_1_600000_monthly_users.svg",
+            "show_metronome_app_ratings": false,
             "text": "<p>Monthly active users</p>"
           }
         },
@@ -49,6 +51,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/Property_1_Shield_icon_17d2931c-623f-4dec-9985-9d29b681038c.svg",
+            "show_metronome_app_ratings": false,
             "text": "<p>Trusted by artists & music teachers</p>"
           }
         },
@@ -56,6 +59,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/Property_1_Wired.svg",
+            "show_metronome_app_ratings": false,
             "text": "<p>”The best metronome app”</p>"
           }
         },
@@ -63,6 +67,7 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/Property_1_TechCrunch.svg",
+            "show_metronome_app_ratings": false,
             "text": "<p>”Keeps you on the beat”</p>"
           }
         }
