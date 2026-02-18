@@ -24,10 +24,7 @@
         "button_size": "large",
         "icon_position": "none",
         "button_link": "",
-        "enable_app_download_buttons": true,
-        "app_store_link": "",
-        "google_play_link": "",
-        "china_download_link": ""
+        "enable_app_download_buttons": true
       }
     },
     "trust_indicators": {
@@ -89,6 +86,8 @@
       "type": "large-feature",
       "settings": {
         "media_position": "left",
+        "show_icon_and_kicker": true,
+        "kicker_text": "Kicker",
         "title_part_one": "Large feature",
         "title_part_two": "Left",
         "title_accent_color": "primary-500",
@@ -99,6 +98,8 @@
       "type": "large-feature",
       "settings": {
         "media_position": "right",
+        "show_icon_and_kicker": true,
+        "kicker_text": "Kicker",
         "title_part_one": "Large feature",
         "title_part_two": "Right",
         "title_accent_color": "primary-500",
@@ -109,6 +110,8 @@
       "type": "large-feature",
       "settings": {
         "media_position": "left",
+        "show_icon_and_kicker": true,
+        "kicker_text": "Kicker",
         "title_part_one": "Large feature",
         "title_part_two": "Left",
         "title_accent_color": "primary-500",
@@ -119,6 +122,8 @@
       "type": "large-feature",
       "settings": {
         "media_position": "right",
+        "show_icon_and_kicker": true,
+        "kicker_text": "Kicker",
         "title_part_one": "Large feature",
         "title_part_two": "Right",
         "title_accent_color": "primary-500",
@@ -129,6 +134,8 @@
       "type": "large-feature",
       "settings": {
         "media_position": "left",
+        "show_icon_and_kicker": true,
+        "kicker_text": "Kicker",
         "title_part_one": "Large feature",
         "title_part_two": "Left",
         "title_accent_color": "primary-500",
@@ -142,17 +149,14 @@
         "background_image_desktop": "shopify://shop_images/Property_1_App_1_6ff69b0f-a787-456a-8986-2636d4ddafe0.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_App_1_mobile.jpg",
         "kicker": "The Metronome app",
-        "headline": "Make music practice addictive. Try it free.",
+        "headline": "Make music practice addictive.",
         "subheadline": "",
         "show_button": false,
         "button_label": "",
         "button_size": "large",
         "icon_position": "none",
         "button_link": "",
-        "enable_app_download_buttons": true,
-        "app_store_link": "",
-        "google_play_link": "",
-        "china_download_link": ""
+        "enable_app_download_buttons": true
       }
     },
     "hero_card_2": {
@@ -167,10 +171,7 @@
         "button_size": "large",
         "icon_position": "none",
         "button_link": "shopify://collections/wearables",
-        "enable_app_download_buttons": false,
-        "app_store_link": "",
-        "google_play_link": "",
-        "china_download_link": ""
+        "enable_app_download_buttons": false
       }
     }
   },

@@ -9,9 +9,9 @@
     {% for block in section.blocks %}
       {% assign icon_url = '' %}
       {% if block.settings.icon != blank %}
-        {% assign icon_url = block.settings.icon | image_url: width: 192 %}
+        {% assign icon_url = block.settings.icon | image_url: width: 48 %}
       {% else %}
-        {% assign icon_url = 'icon-top-feature-highlight-placeholder.svg' | asset_url %}
+        {% assign icon_url = 'icon-square-placeholder-padded.svg' | asset_url %}
       {% endif %}
 
       <article

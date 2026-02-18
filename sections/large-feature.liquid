@@ -38,6 +38,23 @@
     </div>
 
     <div class="sb-large-feature__content" data-sb-reveal-item>
+      {% if section.settings.show_icon_and_kicker %}
+        {% assign large_feature_kicker_text = section.settings.kicker_text | default: 'Kicker' %}
+        {% if section.settings.kicker_icon != blank %}
+          {% assign large_feature_kicker_icon_url = section.settings.kicker_icon | image_url: width: 16 %}
+        {% else %}
+          {% assign large_feature_kicker_icon_url = 'icon-square-placeholder.svg' | asset_url %}
+        {% endif %}
+        <div class="sb-large-feature__kicker-row">
+          <span
+            class="sb-large-feature__kicker-icon"
+            style="--sb-large-feature-kicker-icon-url: url('{{ large_feature_kicker_icon_url }}');"
+            aria-hidden="true"
+          ></span>
+          <p class="sb-large-feature__kicker-text font-body weight-regular">{{ large_feature_kicker_text }}</p>
+        </div>
+      {% endif %}
+
       {% if section.settings.title_part_one != blank or section.settings.title_part_two != blank %}
         <h2 class="sb-large-feature__title font-title weight-bold">
           {% if section.settings.title_part_one != blank %}
@@ -107,6 +124,34 @@
     grid-area: content;
     min-width: 0;
     width: 100%;
+  }
+
+  .sb-large-feature__kicker-row {
+    align-items: center;
+    color: var(--sb-color-neutral-800);
+    display: inline-flex;
+    gap: var(--sb-space-8);
+    margin-bottom: var(--sb-space-36);
+  }
+
+  .sb-large-feature__kicker-icon {
+    background: var(--sb-color-neutral-800);
+    display: inline-block;
+    height: var(--sb-space-16);
+    mask-image: var(--sb-large-feature-kicker-icon-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-image: var(--sb-large-feature-kicker-icon-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    width: var(--sb-space-16);
+  }
+
+  .sb-large-feature__kicker-text {
+    color: var(--sb-color-neutral-800);
+    margin: 0;
   }
 
   .sb-large-feature__title {
@@ -186,6 +231,26 @@
       "id": "media_video",
       "label": "Video",
       "info": "Target minimum 620x554 at 2x export (1240x1108). If both are set, Video is shown."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon_and_kicker",
+      "label": "Show icon and kicker",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "kicker_icon",
+      "label": "Kicker icon",
+      "info": "Target minimum 16x16. SVG recommended.",
+      "visible_if": "{{ section.settings.show_icon_and_kicker }}"
+    },
+    {
+      "type": "text",
+      "id": "kicker_text",
+      "label": "Kicker text",
+      "default": "Kicker",
+      "visible_if": "{{ section.settings.show_icon_and_kicker }}"
     },
     {
       "type": "text",

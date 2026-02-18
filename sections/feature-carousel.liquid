@@ -9,7 +9,8 @@
         {% assign item_image = block.settings.image %}
         {% assign item_video = block.settings.video %}
         {% if item_image != blank %}
-          {% assign item_image_url = item_image | image_url: width: 566 %}
+          {% assign item_image_request_width = item_image.width | at_most: 864 %}
+          {% assign item_image_url = item_image | image_url: width: item_image_request_width %}
         {% else %}
           {% assign item_image_url = 'feature-carousel-placeholder.jpg' | asset_url %}
         {% endif %}
@@ -25,7 +26,7 @@
                   autoplay: false,
                   loop: false,
                   muted: false,
-                  image_size: '566x',
+                  image_size: '864x',
                   preload: 'metadata'
               }}
             {% else %}
