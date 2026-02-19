@@ -98,9 +98,7 @@
       "block_order": [
         "collabs_application_page"
       ],
-      "settings": {
-        "include_margins": false
-      }
+      "settings": {}
     },
     "large_feature": {
       "type": "large-feature",
