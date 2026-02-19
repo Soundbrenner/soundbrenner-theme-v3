@@ -30,19 +30,19 @@
     "collection_1": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": ""
+        "collection": "music-tech"
       }
     },
     "collection_2": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": ""
+        "collection": "playtronica"
       }
     },
     "collection_3": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": ""
+        "collection": "merch"
       }
     }
   },
