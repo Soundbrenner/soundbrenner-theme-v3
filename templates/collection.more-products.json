@@ -36,7 +36,7 @@
     "collection_2": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "playtronica"
+        "collection": "playtronica-midi-instruments"
       }
     },
     "collection_3": {
