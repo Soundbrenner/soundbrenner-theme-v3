@@ -63,6 +63,7 @@
           {% endform %}
         </localization-form>
       {% endif %}
+
     </div>
 
     <div class="header__icons">
@@ -412,6 +413,7 @@
 
     const root = document.documentElement;
     const toggle = header.querySelector('[data-theme-toggle]');
+    const lockedTheme = root.getAttribute('data-theme-locked');
 
     const STORAGE_KEY = 'sb-theme-mode';
 
@@ -424,11 +426,16 @@
     };
 
     if (toggle) {
-      const storedTheme = localStorage.getItem(STORAGE_KEY);
-      if (storedTheme === 'dark' || storedTheme === 'light') applyTheme(storedTheme);
-      else applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+      if (lockedTheme === 'light' || lockedTheme === 'dark') {
+        applyTheme(lockedTheme);
+      } else {
+        const storedTheme = localStorage.getItem(STORAGE_KEY);
+        if (storedTheme === 'dark' || storedTheme === 'light') applyTheme(storedTheme);
+        else applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+      }
 
       toggle.addEventListener('click', () => {
+        if (lockedTheme === 'light' || lockedTheme === 'dark') return;
         const current = root.getAttribute('data-theme') || 'dark';
         const next = current === 'dark' ? 'light' : 'dark';
         applyTheme(next);

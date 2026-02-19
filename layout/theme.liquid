@@ -1,5 +1,25 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}" data-theme="{{ settings.theme_mode }}">
+{% liquid
+  assign sb_theme_mode = 'dark'
+  assign sb_theme_locked = false
+  if request.page_type == 'collection' and collection != blank
+    assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
+    if collection_settings_ref != blank
+      assign collection_light_theme = collection_settings_ref.light_theme.value | default: collection_settings_ref.light_theme
+      if collection_light_theme == true or collection_light_theme == 'true' or collection_light_theme == 1 or collection_light_theme == '1'
+        assign sb_theme_mode = 'light'
+        assign sb_theme_locked = true
+      endif
+    endif
+  endif
+%}
+<html
+  lang="{{ request.locale.iso_code }}"
+  data-theme="{{ sb_theme_mode }}"
+  {% if sb_theme_locked %}
+    data-theme-locked="light"
+  {% endif %}
+>
   <head>
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
