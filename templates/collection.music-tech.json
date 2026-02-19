@@ -14,14 +14,22 @@
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": true,
+        "background_image_desktop": "shopify://shop_images/Property_1_Music_tech_96b60d81-d830-4f3f-ad17-e3eb1eb01a45.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Music_tech_mobile.jpg",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
         "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
         "enable_app_download_buttons": false
       }
     },
     "products": {
       "type": "collection-product-grid",
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [
