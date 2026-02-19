@@ -312,6 +312,27 @@ body .shopify-policy__body .rte > * + * {
   transform: scale(1.015);
 }
 
+/* Keep video edges from showing default black compositor background */
+.sb-product-thumbnail__video.sb-product-thumbnail__media-item,
+video.sb-product-main__media-asset {
+  background: var(--sb-color-neutral-100);
+  display: block;
+}
+
+/* Safari: prevent thin dark edge artifacts on autoplay gallery videos */
+@supports (-webkit-touch-callout: none) {
+  .sb-product-thumbnail__video.sb-product-thumbnail__media-item,
+  video.sb-product-main__media-asset {
+    border: 0;
+    outline: 0;
+    box-shadow: none;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1.002);
+    transform: translateZ(0) scale(1.002);
+  }
+}
+
 .sb-button-radiant:active {
   transform: translateY(0);
 }
@@ -1807,8 +1828,9 @@ button[aria-label='Modal close button']:focus-visible::after {
   color: var(--sb-color-neutral-900) !important;
   display: inline-flex !important;
   gap: var(--sb-space-12) !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   padding: 0 !important;
+  text-align: left !important;
 }
 
 .klaviyo-star-rating-widget .kl_reviews__stars_badge {
@@ -1823,8 +1845,18 @@ button[aria-label='Modal close button']:focus-visible::after {
 .klaviyo-star-rating-widget .kl_reviews__stars_badge svg {
   height: var(--sb-space-20) !important;
   margin: 0 !important;
+  opacity: 1 !important;
   padding: 0 !important;
   width: var(--sb-space-20) !important;
+}
+
+#klaviyo-reviews-all .kl_reviews__stars_badge:hover svg,
+#klaviyo-reviews-all .kl_reviews__stars_badge:focus-within svg,
+.kl_reviews__lightbox__container .kl_reviews__stars_badge:hover svg,
+.kl_reviews__lightbox__container .kl_reviews__stars_badge:focus-within svg,
+.klaviyo-star-rating-widget .kl_reviews__stars_badge:hover svg,
+.klaviyo-star-rating-widget .kl_reviews__stars_badge:focus-within svg {
+  opacity: 0.75 !important;
 }
 
 .klaviyo-star-rating-widget .kl_reviews__star--fill {
@@ -1843,10 +1875,11 @@ button[aria-label='Modal close button']:focus-visible::after {
   font-family: var(--font-primary--family) !important;
   font-size: var(--font-size-body) !important;
   font-weight: 600 !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   line-height: 1.35 !important;
   margin: 0 !important;
   padding: 0 !important;
+  text-align: left !important;
 }
 
 .klaviyo-star-rating-widget .sb-klaviyo-average-rating {

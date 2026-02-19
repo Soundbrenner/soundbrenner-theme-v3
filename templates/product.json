@@ -11,10 +11,6 @@
   "sections": {
     "main": {
       "type": "product",
-      "settings": {}
-    },
-    "177134236017eea145": {
-      "type": "apps",
       "blocks": {
         "klaviyo_reviews_average_rating_8ejwMT": {
           "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
@@ -35,7 +31,6 @@
     }
   },
   "order": [
-    "main",
-    "177134236017eea145"
+    "main"
   ]
 }

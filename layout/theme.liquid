@@ -11,6 +11,15 @@
         assign sb_theme_locked = true
       endif
     endif
+  elsif request.page_type == 'product' and product != blank
+    assign product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
+    if product_settings_ref != blank
+      assign product_light_theme = product_settings_ref.light_theme.value | default: product_settings_ref.light_theme
+      if product_light_theme == true or product_light_theme == 'true' or product_light_theme == 1 or product_light_theme == '1'
+        assign sb_theme_mode = 'light'
+        assign sb_theme_locked = true
+      endif
+    endif
   endif
 %}
 <html
