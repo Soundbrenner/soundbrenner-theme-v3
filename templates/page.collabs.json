@@ -1,0 +1,111 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "kicker": "Collabs",
+        "headline": "Join the Soundbrenner community",
+        "subheadline": "",
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
+        "enable_app_download_buttons": false
+      }
+    },
+    "top_feature_highlights": {
+      "type": "top-feature-highlights",
+      "blocks": {
+        "item_1": {
+          "type": "item",
+          "settings": {
+            "gradient_value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+            "title": "Highlight title",
+            "body": "<p>Highlight body copy.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_1"
+      ],
+      "settings": {
+        "title": "Top feature highlights"
+      }
+    },
+    "collabs_app": {
+      "type": "apps",
+      "blocks": {
+        "collabs_application_page": {
+          "type": "shopify://apps/collabs/blocks/application-page/54758706-9f25-4fa9-a553-64720a4c998b",
+          "settings": {
+            "heading": "Join the Soundbrenner community",
+            "show_square_logo": true,
+            "show_partnership_info": false,
+            "button_text": "Apply now",
+            "number_of_images": "4",
+            "logo_position": "above",
+            "corner_style": "rounded",
+            "button_background_color": "#00b59c",
+            "button_label_color": "#ffffff",
+            "link_color": "#2c6ecb"
+          }
+        }
+      },
+      "block_order": [
+        "collabs_application_page"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "large_feature": {
+      "type": "large-feature",
+      "settings": {
+        "media_position": "left",
+        "show_icon_and_kicker": false,
+        "title_part_one": "Title.",
+        "title_part_two": "Title 2.",
+        "title_accent_color": "primary-500",
+        "body": "<p>Body copy goes here.</p>"
+      }
+    },
+    "accordion": {
+      "type": "accordion",
+      "blocks": {
+        "accordion_item_1": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Question",
+            "answer": "<p>Answer.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_item_1"
+      ],
+      "settings": {
+        "use_custom_title": false,
+        "custom_title": "Frequently asked questions",
+        "show_subtitle": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "top_feature_highlights",
+    "collabs_app",
+    "large_feature",
+    "accordion"
+  ]
+}
