@@ -14,6 +14,8 @@
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": true,
+        "background_image_desktop": "shopify://shop_images/Property_1_In-ear_monitors_004bcccf-097c-45d9-821d-9c0aa4586182.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_In-ear_monitors_mobile.jpg",
         "kicker": "",
         "headline": "",
         "subheadline": "",
