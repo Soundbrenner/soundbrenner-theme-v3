@@ -9,80 +9,12 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "hero-card",
-      "settings": {
-        "use_seasonal_hero_card": false,
-        "use_resource_title_description": false,
-        "kicker": "",
-        "headline": "",
-        "subheadline": "",
-        "show_button": false,
-        "button_label": "Placeholder",
-        "button_size": "large",
-        "icon_position": "none",
-        "button_link": "",
-        "enable_app_download_buttons": false
-      }
-    },
-    "collection_1": {
-      "type": "collection-combo-grid",
-      "settings": {
-        "collection": ""
-      }
-    },
-    "collection_2": {
-      "type": "collection-combo-grid",
-      "settings": {
-        "collection": ""
-      }
-    },
-    "collection_3": {
-      "type": "collection-combo-grid",
-      "settings": {
-        "collection": ""
-      }
-    },
-    "collection_4": {
-      "type": "collection-combo-grid",
-      "settings": {
-        "collection": ""
-      }
-    },
-    "collection_5": {
-      "type": "collection-combo-grid",
-      "settings": {
-        "collection": ""
-      }
-    },
-    "collection_6": {
-      "type": "collection-combo-grid",
-      "settings": {
-        "collection": ""
-      }
-    },
-    "collection_7": {
-      "type": "collection-combo-grid",
-      "settings": {
-        "collection": ""
-      }
-    },
-    "collection_8": {
-      "type": "collection-combo-grid",
-      "settings": {
-        "collection": ""
-      }
+    "main": {
+      "type": "list-collections-redirect",
+      "settings": {}
     }
   },
   "order": [
-    "hero",
-    "collection_1",
-    "collection_2",
-    "collection_3",
-    "collection_4",
-    "collection_5",
-    "collection_6",
-    "collection_7",
-    "collection_8"
+    "main"
   ]
 }

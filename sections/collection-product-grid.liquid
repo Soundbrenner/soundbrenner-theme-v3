@@ -1,4 +1,4 @@
-{% paginate collection.products by 48 %}
+{% paginate collection.products by 250 %}
   {% liquid
     assign collection_testimonial_ref = collection.metafields.custom.collection_testimonial.value | default: collection.metafields.custom.collection_testimonial
     assign collection_testimonial_text = blank
@@ -21,7 +21,7 @@
               image: collection_testimonial_image
             %}
           </article>
-        {% else %}
+        {% endif %}
         {% liquid
           assign product_rating = 0
           assign product_reviews_count = 0
@@ -234,7 +234,6 @@
             show_compare_add_to_cart_large: false
           %}
         </article>
-        {% endif %}
       {% endfor %}
     </div>
 

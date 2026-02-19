@@ -23,7 +23,7 @@
     </header>
 
     <div class="sb-collection-products__grid" data-sb-reveal-item>
-      {% for product in source_collection.products limit: 48 %}
+      {% for product in source_collection.products limit: 250 %}
         {% if forloop.index == 4 and collection_testimonial_ref != blank %}
           <article class="sb-collection-products__item sb-collection-products__item--testimonial">
             {% render 'collection-testimonial',
@@ -32,7 +32,7 @@
               image: collection_testimonial_image
             %}
           </article>
-        {% else %}
+        {% endif %}
         {% liquid
           assign product_rating = 0
           assign product_reviews_count = 0
@@ -245,7 +245,6 @@
             show_compare_add_to_cart_large: false
           %}
         </article>
-        {% endif %}
       {% endfor %}
     </div>
   </section>
@@ -265,6 +264,7 @@
 
   .sb-collection-combo__title {
     color: var(--sb-color-neutral-900);
+    font-family: var(--sb-font-primary);
     margin: 0;
   }
 
