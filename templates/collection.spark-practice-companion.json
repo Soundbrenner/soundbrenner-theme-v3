@@ -14,14 +14,22 @@
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": true,
+        "background_image_desktop": "shopify://shop_images/Property_1_Spark_91a753b7-05f9-4ad9-8258-9d46021b0968.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Spark_mobile_1d3f4d3e-c02f-420e-8a20-8f83091a37b3.jpg",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
         "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
         "enable_app_download_buttons": false
       }
     },
     "products": {
       "type": "collection-product-grid",
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [
