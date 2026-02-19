@@ -14,7 +14,16 @@
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": true,
+        "background_image_desktop": "shopify://shop_images/Property_1_More_gear.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_More_gear_mobile.jpg",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
         "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
         "enable_app_download_buttons": false
       }
     },
