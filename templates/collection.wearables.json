@@ -14,26 +14,35 @@
       "settings": {
         "use_seasonal_hero_card": false,
         "use_resource_title_description": true,
+        "background_image_desktop": "shopify://shop_images/Property_1_Wearables_cb79bb95-93ba-4129-8d23-311423a6f1af.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Wearables_mobile.jpg",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
         "show_button": false,
+        "button_label": "Placeholder",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "",
         "enable_app_download_buttons": false
       }
     },
     "collection_1": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": ""
+        "collection": "pulse-vibrating-metronome"
       }
     },
     "collection_2": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": ""
+        "collection": "core-2-practice-companion"
       }
     },
     "collection_3": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": ""
+        "collection": "spark-practice-companion"
       }
     }
   },
