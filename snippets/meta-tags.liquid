@@ -7,6 +7,7 @@
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
   assign og_description = page_description | default: shop.description | default: shop.name
+  assign og_image = page_image
 
   if request.page_type == 'product'
     assign og_type = 'product'
@@ -14,6 +15,13 @@
     assign og_type = 'article'
   elsif request.page_type == 'password'
     assign og_url = request.origin
+  endif
+
+  if request.page_type == 'page' and page != blank
+    assign page_social_media_image = page.metafields.custom.social_media_image.value | default: page.metafields.custom.social_media_image
+    if page_social_media_image != blank
+      assign og_image = page_social_media_image
+    endif
   endif
 %}
 
@@ -38,22 +46,22 @@
   content="{{ og_description | escape }}"
 >
 
-{%- if page_image -%}
+{%- if og_image -%}
   <meta
     property="og:image"
-    content="http:{{ page_image | image_url }}"
+    content="http:{{ og_image | image_url }}"
   >
   <meta
     property="og:image:secure_url"
-    content="https:{{ page_image | image_url }}"
+    content="https:{{ og_image | image_url }}"
   >
   <meta
     property="og:image:width"
-    content="{{ page_image.width }}"
+    content="{{ og_image.width }}"
   >
   <meta
     property="og:image:height"
-    content="{{ page_image.height }}"
+    content="{{ og_image.height }}"
   >
 {%- endif -%}
 
@@ -84,6 +92,12 @@
   name="twitter:description"
   content="{{ og_description | escape }}"
 >
+{%- if og_image -%}
+  <meta
+    name="twitter:image"
+    content="https:{{ og_image | image_url }}"
+  >
+{%- endif -%}
 
 <title>
   {{ page_title }}

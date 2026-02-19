@@ -48,11 +48,7 @@
             assign compare_rating = rating_value.rating | default: rating_value | plus: 0
           endif
 
-          if compare_product.metafields.reviews.rating_count.value != blank
-            assign compare_reviews_count = compare_product.metafields.reviews.rating_count.value | plus: 0
-          elsif compare_product.metafields.reviews.rating_count != blank
-            assign compare_reviews_count = compare_product.metafields.reviews.rating_count | plus: 0
-          endif
+          assign compare_reviews_count = compare_product.metafields.reviews.rating_count.value | default: 0 | plus: 0 | round: 0
 
           assign selected_variant = compare_product.selected_or_first_available_variant
           assign compare_price_text = ''
@@ -266,16 +262,20 @@
                 {% liquid
                   assign variant_rating = 0
                   assign variant_reviews_count = 0
+                  assign variant_hide_reviews = false
 
                   if variant_product.metafields.reviews.rating.value != blank
                     assign variant_rating_value = variant_product.metafields.reviews.rating.value
                     assign variant_rating = variant_rating_value.rating | default: variant_rating_value | plus: 0
                   endif
 
-                  if variant_product.metafields.reviews.rating_count.value != blank
-                    assign variant_reviews_count = variant_product.metafields.reviews.rating_count.value | plus: 0
-                  elsif variant_product.metafields.reviews.rating_count != blank
-                    assign variant_reviews_count = variant_product.metafields.reviews.rating_count | plus: 0
+                  assign variant_reviews_count = variant_product.metafields.reviews.rating_count.value | default: 0 | plus: 0 | round: 0
+                  assign variant_product_settings_ref = variant_product.metafields.custom.sbv2_product_settings.value | default: variant_product.metafields.custom.sbv2_product_settings
+                  if variant_product_settings_ref != blank
+                    assign variant_hide_reviews_value = variant_product_settings_ref.hide_reviews.value | default: variant_product_settings_ref.hide_reviews
+                    if variant_hide_reviews_value == true or variant_hide_reviews_value == 'true' or variant_hide_reviews_value == 1 or variant_hide_reviews_value == '1'
+                      assign variant_hide_reviews = true
+                    endif
                   endif
 
                   assign variant_selected_variant = variant_product.selected_or_first_available_variant
@@ -289,7 +289,6 @@
                     endif
                   endif
 
-                  assign variant_product_settings_ref = variant_product.metafields.custom.sbv2_product_settings.value | default: variant_product.metafields.custom.sbv2_product_settings
                   if variant_product_settings_ref != blank
                     assign variant_compare_points = variant_product_settings_ref.compare_table_compare_points.value | default: variant_product_settings_ref.compare_table_compare_points
                     if variant_compare_points != blank
@@ -598,6 +597,7 @@
                     swatch_3_gallery: variant_swatch_3_gallery,
                     swatch_4_gallery: variant_swatch_4_gallery,
                     selected_swatch: 1,
+                    hide_reviews: variant_hide_reviews,
                     show_add_to_cart: true,
                     show_compare_add_to_cart_large: true,
                     compare_info_text: variant_compare_info_text

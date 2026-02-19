@@ -9,12 +9,24 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "collections",
-      "settings": {}
+    "hero": {
+      "type": "hero-card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_resource_title_description": true,
+        "show_button": false,
+        "enable_app_download_buttons": false
+      }
+    },
+    "products": {
+      "type": "collection-product-grid",
+      "settings": {
+        "products_per_page": 24
+      }
     }
   },
   "order": [
-    "main"
+    "hero",
+    "products"
   ]
 }

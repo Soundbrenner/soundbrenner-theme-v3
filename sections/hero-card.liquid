@@ -1,6 +1,7 @@
 {% assign hero_card_fallback_image_desktop = 'hero-card-placeholder-desktop.jpg' | asset_url %}
 {% assign hero_card_fallback_image_mobile = 'hero-card-placeholder-mobile.jpg' | asset_url %}
 {% assign hero_card_use_seasonal = section.settings.use_seasonal_hero_card %}
+{% assign hero_card_use_resource_copy = section.settings.use_resource_title_description %}
 {% assign hero_card_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353' %}
 {% assign hero_card_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse' %}
 {% assign hero_card_china_download_link = 'https://files.soundbrenner.com/downloads/TheMetronome.apk' %}
@@ -17,6 +18,27 @@
     {% assign hero_card_show_button = true %}
   {% else %}
     {% assign hero_card_show_button = false %}
+  {% endif %}
+{% elsif hero_card_use_resource_copy %}
+  {% assign hero_card_source_image_desktop = section.settings.background_image_desktop %}
+  {% assign hero_card_source_image_mobile = section.settings.background_image_mobile %}
+  {% assign hero_card_subheadline = section.settings.subheadline %}
+  {% assign hero_card_button_label = section.settings.button_label %}
+  {% assign hero_card_button_link = section.settings.button_link %}
+  {% assign hero_card_show_button = section.settings.show_button %}
+  {% if hero_card_show_button and hero_card_button_label == blank %}
+    {% assign hero_card_button_label = 'Placeholder' %}
+  {% endif %}
+
+  {% if collection != blank %}
+    {% assign hero_card_kicker = collection.title %}
+    {% assign hero_card_headline = collection.description | strip_html %}
+  {% elsif page != blank %}
+    {% assign hero_card_kicker = page.title %}
+    {% assign hero_card_headline = page.content | strip_html %}
+  {% else %}
+    {% assign hero_card_kicker = section.settings.kicker %}
+    {% assign hero_card_headline = section.settings.headline %}
   {% endif %}
 {% else %}
   {% assign hero_card_source_image_desktop = section.settings.background_image_desktop %}
@@ -260,6 +282,13 @@
       "default": false
     },
     {
+      "type": "checkbox",
+      "id": "use_resource_title_description",
+      "label": "Title and description from Shopify page CMS",
+      "default": false,
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+    },
+    {
       "type": "image_picker",
       "id": "background_image_desktop",
       "label": "Background image desktop",
@@ -277,13 +306,13 @@
       "type": "text",
       "id": "kicker",
       "label": "Kicker",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false }}"
     },
     {
       "type": "textarea",
       "id": "headline",
       "label": "Headline",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false }}"
     },
     {
       "type": "textarea",

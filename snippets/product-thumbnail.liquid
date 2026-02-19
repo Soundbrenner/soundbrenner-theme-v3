@@ -20,11 +20,33 @@
     assign thumbnail_url = product_url
   endif
 
-  assign thumbnail_reviews_count_number = reviews_count_number | default: reviews_count | plus: 0
+  assign thumbnail_reviews_count_number = reviews_count_number | default: 0 | plus: 0 | round: 0
   if thumbnail_reviews_count_number < 0
     assign thumbnail_reviews_count_number = 0
   endif
+  assign thumbnail_reviews_count_text = thumbnail_reviews_count_number | append: ''
+  assign thumbnail_reviews_count_chars = thumbnail_reviews_count_text | split: ''
+  capture thumbnail_reviews_count_formatted
+    for review_count_char in thumbnail_reviews_count_chars
+      echo review_count_char
+      assign remaining_chars = forloop.length | minus: forloop.index
+      assign should_add_separator = false
+      if remaining_chars > 0
+        assign remainder = remaining_chars | modulo: 3
+        if remainder == 0
+          assign should_add_separator = true
+        endif
+      endif
+      if should_add_separator
+        echo ','
+      endif
+    endfor
+  endcapture
   assign thumbnail_rating = rating | default: 0 | plus: 0
+  assign thumbnail_hide_reviews = hide_reviews | default: false
+  if thumbnail_hide_reviews == 'true' or thumbnail_hide_reviews == 1 or thumbnail_hide_reviews == '1'
+    assign thumbnail_hide_reviews = true
+  endif
   assign selected_swatch_value = selected_swatch | default: 1 | plus: 0
   assign thumbnail_has_swatches_input = false
   if swatch_1 != blank or swatch_2 != blank or swatch_3 != blank or swatch_4 != blank
@@ -96,7 +118,7 @@
       assign thumbnail_gallery_count = 1
     endif
 
-    if selected_variant != blank and thumbnail_has_swatches_input
+    if selected_variant != blank
       assign variant_gallery_images = selected_variant.metafields.custom.images.value | default: selected_variant.metafields.custom.images
       if variant_gallery_images != blank
         for variant_gallery_image in variant_gallery_images
@@ -297,33 +319,35 @@
 
   <a class="sb-product-thumbnail__name font-body weight-bold" href="{{ thumbnail_url }}">{{ thumbnail_name }}</a>
 
-  <div class="sb-product-thumbnail__rating-row">
-    <div
-      class="sb-product-thumbnail__stars"
-      role="img"
-      aria-label="{{ thumbnail_rating }} out of 5 stars"
-      style="padding-bottom: var(--sb-space-4);"
-    >
-      {% for i in (1..5) %}
-        {% assign step = i | minus: 1 %}
-        {% assign fill_ratio = thumbnail_rating | minus: step %}
-        {% if fill_ratio >= 1 %}
-          {% assign fill_percent = 100 %}
-        {% elsif fill_ratio <= 0 %}
-          {% assign fill_percent = 0 %}
-        {% else %}
-          {% assign fill_percent = fill_ratio | times: 100 | round %}
-        {% endif %}
-        <span
-          class="sb-product-thumbnail__star"
-          style="--sb-star-fill: {{ fill_percent }}%; --sb-star-icon-url: url('{{ thumbnail_star_icon_url }}');"
-        ></span>
-      {% endfor %}
+  {% unless thumbnail_hide_reviews %}
+    <div class="sb-product-thumbnail__rating-row">
+      <div
+        class="sb-product-thumbnail__stars"
+        role="img"
+        aria-label="{{ thumbnail_rating }} out of 5 stars"
+        style="padding-bottom: var(--sb-space-4);"
+      >
+        {% for i in (1..5) %}
+          {% assign step = i | minus: 1 %}
+          {% assign fill_ratio = thumbnail_rating | minus: step %}
+          {% if fill_ratio >= 1 %}
+            {% assign fill_percent = 100 %}
+          {% elsif fill_ratio <= 0 %}
+            {% assign fill_percent = 0 %}
+          {% else %}
+            {% assign fill_percent = fill_ratio | times: 100 | round %}
+          {% endif %}
+          <span
+            class="sb-product-thumbnail__star"
+            style="--sb-star-fill: {{ fill_percent }}%; --sb-star-icon-url: url('{{ thumbnail_star_icon_url }}');"
+          ></span>
+        {% endfor %}
+      </div>
+      <p class="sb-product-thumbnail__reviews font-body weight-regular">
+        {{ thumbnail_reviews_count_formatted }} reviews
+      </p>
     </div>
-    <p class="sb-product-thumbnail__reviews font-body weight-regular" data-review-count="{{ thumbnail_reviews_count_number }}">
-      {{ thumbnail_reviews_count_number }} reviews
-    </p>
-  </div>
+  {% endunless %}
 
   <div class="sb-product-thumbnail__price-row">
     {% if thumbnail_compare_price != blank %}
