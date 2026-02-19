@@ -1,0 +1,54 @@
+{% liquid
+  assign testimonial_quote = '&rdquo;'
+  assign testimonial_text = text | default: ''
+  assign testimonial_name = name | default: ''
+  assign testimonial_image = image
+
+  assign testimonial_image_max_width = 900
+  if testimonial_image != blank and testimonial_image.width != blank and testimonial_image.width < testimonial_image_max_width
+    assign testimonial_image_max_width = testimonial_image.width
+  endif
+
+  assign testimonial_image_2x_width = 600
+  if testimonial_image_2x_width > testimonial_image_max_width
+    assign testimonial_image_2x_width = testimonial_image_max_width
+  endif
+
+  assign testimonial_image_1x_width = 300
+  if testimonial_image_1x_width > testimonial_image_max_width
+    assign testimonial_image_1x_width = testimonial_image_max_width
+  endif
+
+  assign testimonial_image_sizes = '(min-width: 750px) calc((100vw - (var(--sb-space-24) * 3)) / 4), calc((100vw - var(--sb-space-24)) / 2)'
+%}
+
+<article class="sb-collection-testimonial">
+  {% if testimonial_image != blank %}
+    <div class="sb-collection-testimonial__media">
+      <img
+        class="sb-collection-testimonial__image"
+        src="{{ testimonial_image | image_url: width: testimonial_image_max_width }}"
+        srcset="
+          {{ testimonial_image | image_url: width: testimonial_image_1x_width }} {{ testimonial_image_1x_width }}w,
+          {{ testimonial_image | image_url: width: testimonial_image_2x_width }} {{ testimonial_image_2x_width }}w,
+          {{ testimonial_image | image_url: width: testimonial_image_max_width }} {{ testimonial_image_max_width }}w
+        "
+        sizes="{{ testimonial_image_sizes }}"
+        alt="{{ testimonial_name | escape }}"
+        loading="lazy"
+        width="{{ testimonial_image_max_width }}"
+        height="{{ testimonial_image.height }}"
+      >
+    </div>
+  {% endif %}
+
+  <div class="sb-collection-testimonial__content">
+    <p class="sb-collection-testimonial__quote font-callout weight-bold">{{ testimonial_quote }}</p>
+    {% if testimonial_text != blank %}
+      <p class="sb-collection-testimonial__text font-caption weight-semibold">{{ testimonial_text }}</p>
+    {% endif %}
+    {% if testimonial_name != blank %}
+      <p class="sb-collection-testimonial__name font-caption weight-regular">{{ testimonial_name }}</p>
+    {% endif %}
+  </div>
+</article>

@@ -1,11 +1,20 @@
 {% liquid
   assign source_collection = section.settings.collection
+  assign collection_testimonial_ref = source_collection.metafields.custom.collection_testimonial.value | default: source_collection.metafields.custom.collection_testimonial
+  assign collection_testimonial_text = blank
+  assign collection_testimonial_name = blank
+  assign collection_testimonial_image = blank
+  if collection_testimonial_ref != blank
+    assign collection_testimonial_text = collection_testimonial_ref.testimonial.value | default: collection_testimonial_ref.testimonial
+    assign collection_testimonial_name = collection_testimonial_ref.name.value | default: collection_testimonial_ref.name
+    assign collection_testimonial_image = collection_testimonial_ref.image.value | default: collection_testimonial_ref.image
+  endif
 %}
 
 {% if source_collection != blank %}
   <section class="sb-collection-products sb-collection-combo" data-sb-reveal>
     <header class="sb-collection-combo__header" data-sb-reveal-item>
-      <h2 class="sb-collection-combo__title font-callout weight-bold">{{ source_collection.title }}</h2>
+      <h2 class="sb-collection-combo__title font-title weight-bold">{{ source_collection.title }}</h2>
       {% if source_collection.description != blank %}
         <div class="sb-collection-combo__description font-body weight-semibold rte">
           {{ source_collection.description }}
@@ -15,6 +24,15 @@
 
     <div class="sb-collection-products__grid" data-sb-reveal-item>
       {% for product in source_collection.products limit: section.settings.products_limit %}
+        {% if forloop.index == 4 and collection_testimonial_ref != blank %}
+          <article class="sb-collection-products__item sb-collection-products__item--testimonial">
+            {% render 'collection-testimonial',
+              text: collection_testimonial_text,
+              name: collection_testimonial_name,
+              image: collection_testimonial_image
+            %}
+          </article>
+        {% else %}
         {% liquid
           assign product_rating = 0
           assign product_reviews_count = 0
@@ -196,7 +214,7 @@
           endfor
         %}
 
-        <article class="sb-collection-products__item" data-sb-reveal-item>
+        <article class="sb-collection-products__item">
           {% render 'product-thumbnail',
             product: product,
             product_name: product.title,
@@ -227,6 +245,7 @@
             show_compare_add_to_cart_large: false
           %}
         </article>
+        {% endif %}
       {% endfor %}
     </div>
   </section>
@@ -238,6 +257,9 @@
   }
 
   .sb-collection-combo__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-16);
     margin-bottom: var(--sb-space-36);
   }
 
@@ -248,7 +270,7 @@
 
   .sb-collection-combo__description {
     color: var(--sb-color-neutral-900);
-    margin-top: var(--sb-space-16);
+    margin-top: 0;
   }
 
   .sb-collection-combo__description > *:first-child {
@@ -262,9 +284,10 @@
   .sb-collection-products__grid {
     display: grid;
     column-gap: var(--sb-space-24);
-    row-gap: var(--sb-space-36);
+    row-gap: var(--sb-space-36) !important;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
+    align-items: stretch !important;
   }
 
   .sb-collection-products__item,
@@ -273,7 +296,65 @@
     width: 100%;
   }
 
+  .sb-collection-products__item {
+    align-items: stretch;
+    display: flex;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .sb-product-thumbnail,
+  .sb-collection-testimonial {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    align-self: stretch !important;
+  }
+
+  .sb-collection-testimonial {
+    border-radius: var(--sb-space-24);
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sb-collection-testimonial__media {
+    background: var(--sb-color-neutral-100);
+    inset: 0;
+    position: absolute;
+  }
+
+  .sb-collection-testimonial__image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-collection-testimonial__content {
+    align-self: stretch;
+    color: var(--sb-color-always-white);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-8);
+    margin-top: auto;
+    padding: var(--sb-space-20);
+    position: relative;
+    z-index: 1;
+  }
+
+  .sb-collection-testimonial__quote,
+  .sb-collection-testimonial__text,
+  .sb-collection-testimonial__name {
+    margin: 0;
+  }
+
   .sb-product-thumbnail__media-wrap {
+    margin: 0 !important;
+    padding: 0 !important;
     position: relative;
   }
 
@@ -1312,7 +1393,7 @@
 
 {% schema %}
 {
-  "name": "Collection combo grid",
+  "name": "Nested collection grid",
   "settings": [
     {
       "type": "collection",
@@ -1331,7 +1412,7 @@
   ],
   "presets": [
     {
-      "name": "Collection combo grid"
+      "name": "Nested collection grid"
     }
   ]
 }
