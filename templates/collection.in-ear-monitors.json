@@ -28,15 +28,13 @@
     "wave": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "wave-in-ear-monitors",
-        "products_limit": 24
+        "collection": "wave-in-ear-monitors"
       }
     },
     "wave_pro": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "wave-pro-in-ear-monitors",
-        "products_limit": 24
+        "collection": "wave-pro-in-ear-monitors"
       }
     }
   },

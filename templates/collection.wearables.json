@@ -21,22 +21,19 @@
     "collection_1": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_2": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_3": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     }
   },

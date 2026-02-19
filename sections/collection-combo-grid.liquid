@@ -23,7 +23,7 @@
     </header>
 
     <div class="sb-collection-products__grid" data-sb-reveal-item>
-      {% for product in source_collection.products limit: section.settings.products_limit %}
+      {% for product in source_collection.products limit: 48 %}
         {% if forloop.index == 4 and collection_testimonial_ref != blank %}
           <article class="sb-collection-products__item sb-collection-products__item--testimonial">
             {% render 'collection-testimonial',
@@ -1399,15 +1399,6 @@
       "type": "collection",
       "id": "collection",
       "label": "Collection"
-    },
-    {
-      "type": "range",
-      "id": "products_limit",
-      "label": "Products to show",
-      "min": 8,
-      "max": 48,
-      "step": 4,
-      "default": 24
     }
   ],
   "presets": [

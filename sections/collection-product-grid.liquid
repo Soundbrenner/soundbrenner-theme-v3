@@ -1,4 +1,4 @@
-{% paginate collection.products by section.settings.products_per_page %}
+{% paginate collection.products by 48 %}
   {% liquid
     assign collection_testimonial_ref = collection.metafields.custom.collection_testimonial.value | default: collection.metafields.custom.collection_testimonial
     assign collection_testimonial_text = blank
@@ -1365,15 +1365,6 @@
 {
   "name": "Collection grid",
   "settings": [
-    {
-      "type": "range",
-      "id": "products_per_page",
-      "label": "Products per page",
-      "min": 8,
-      "max": 48,
-      "step": 4,
-      "default": 24
-    }
   ],
   "presets": [
     {

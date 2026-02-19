@@ -21,57 +21,49 @@
     "collection_1": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_2": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_3": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_4": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_5": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_6": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_7": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     },
     "collection_8": {
       "type": "collection-combo-grid",
       "settings": {
-        "collection": "",
-        "products_limit": 24
+        "collection": ""
       }
     }
   },
