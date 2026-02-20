@@ -80,12 +80,6 @@
       ],
       "settings": {}
     },
-    "often_bought_together": {
-      "type": "often-bought-together",
-      "settings": {
-        "title": "Often bought together"
-      }
-    },
     "expert_testimonials_carousel": {
       "type": "expert-testimonials",
       "settings": {
@@ -97,6 +91,12 @@
       "type": "product-footer-card",
       "settings": {
         "use_product_metaobjects": true
+      }
+    },
+    "often_bought_together": {
+      "type": "often-bought-together",
+      "settings": {
+        "title": "Often bought together"
       }
     }
   },
