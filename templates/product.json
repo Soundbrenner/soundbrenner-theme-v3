@@ -45,10 +45,6 @@
         "popular_add_ons_pdp_main": {
           "type": "popular_add_ons",
           "settings": {}
-        },
-        "klaviyo_reviews_product_reviews_j9C7M7": {
-          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
-          "settings": {}
         }
       },
       "block_order": [
@@ -59,7 +55,25 @@
         "video_stories_pdp_main",
         "in_the_box_pdp_main",
         "description_pdp_main",
-        "popular_add_ons_pdp_main",
+        "popular_add_ons_pdp_main"
+      ],
+      "settings": {}
+    },
+    "reviews_heading": {
+      "type": "reviews-heading",
+      "settings": {
+        "heading": "Real reviews by real musicians"
+      }
+    },
+    "product_reviews": {
+      "type": "product-reviews",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_j9C7M7": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
         "klaviyo_reviews_product_reviews_j9C7M7"
       ],
       "settings": {}
@@ -73,6 +87,8 @@
   },
   "order": [
     "main",
+    "reviews_heading",
+    "product_reviews",
     "often_bought_together"
   ]
 }

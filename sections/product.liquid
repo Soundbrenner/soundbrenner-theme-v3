@@ -4,7 +4,6 @@
   assign product_tagline = blank
   assign product_tagline_html = blank
   assign product_has_tagline_override = false
-  assign product_reviews_title = 'Real reviews by real musicians'
   assign product_variant_explainer_body = blank
   assign product_hide_reviews = false
   assign product_hide_purchase_guarantees = false
@@ -49,10 +48,6 @@
       assign product_has_tagline_override = true
     endif
     assign product_variant_explainer_body = product_settings_ref.variant_explainer_box_body.value | default: product_settings_ref.variant_explainer_box_body
-    assign product_reviews_title_setting = product_settings_ref.reviews_title.value | default: product_settings_ref.reviews_title
-    if product_reviews_title_setting != blank
-      assign product_reviews_title = product_reviews_title_setting
-    endif
     assign product_hide_reviews_value = product_settings_ref.hide_reviews.value | default: product_settings_ref.hide_reviews
     if product_hide_reviews_value == true or product_hide_reviews_value == 'true' or product_hide_reviews_value == 1 or product_hide_reviews_value == '1'
       assign product_hide_reviews = true
@@ -1663,30 +1658,6 @@
   {% endif %}
 </section>
 
-{% unless product_hide_reviews %}
-  <section class="sb-product-main__reviews" data-sb-reveal>
-    {% render 'reviews-title',
-      title: product_reviews_title,
-      class_name: 'sb-product-main__reviews-title font-title weight-bold',
-      reveal_item: true
-    %}
-    {% for block in section.blocks %}
-      {% liquid
-        assign is_product_reviews_block = false
-        assign block_identifier = block.type | append: ' ' | append: block.id | downcase
-        if block_identifier contains 'product-reviews' or block_identifier contains 'product_reviews' or block_identifier contains 'product reviews' or block_identifier contains 'productreviews'
-          assign is_product_reviews_block = true
-        endif
-      %}
-      {% if is_product_reviews_block %}
-        <div class="sb-product-main__reviews-block" data-sb-reveal-item>
-          {% render block %}
-        </div>
-      {% endif %}
-    {% endfor %}
-  </section>
-{% endunless %}
-
 {% stylesheet %}
   .sb-product-main {
     --sb-product-gallery-mobile-size: calc((var(--sb-space-128) * 2) + var(--sb-space-4));
@@ -2753,17 +2724,6 @@
 
   .sb-product-main__dynamic-checkout :where(.shopify-payment-button, .shopify-payment-button__button) {
     width: 100%;
-  }
-
-  .sb-product-main__reviews {
-    margin-top: var(--sb-space-96);
-    width: 100%;
-  }
-
-  .sb-product-main__reviews-title {
-    color: var(--sb-color-neutral-900);
-    margin: 0 0 var(--sb-space-48);
-    text-align: center;
   }
 
   @media (min-width: 750px) {
