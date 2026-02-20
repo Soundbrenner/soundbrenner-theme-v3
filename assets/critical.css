@@ -156,6 +156,18 @@ body {
   margin-top: var(--sb-space-96) !important;
 }
 
+/*
+  Reviews heading exception:
+  keep incoming section spacing as-is, but after reviews heading use 48 top padding on the following section content.
+*/
+.shopify-section[id*='template--']:has(> .sb-reviews-heading) + .shopify-section[id*='template--'] {
+  margin-top: 0 !important;
+}
+
+.shopify-section[id*='template--']:has(> .sb-reviews-heading) + .shopify-section[id*='template--'] > * {
+  padding-top: var(--sb-space-48);
+}
+
 /* Shared layout utilities */
 .sb-content-width {
   margin: 0 auto;

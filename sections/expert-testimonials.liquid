@@ -317,7 +317,8 @@
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Expert testimonials"
+      "default": "Expert testimonials",
+      "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
     }
   ],
   "blocks": [
@@ -329,25 +330,29 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Target minimum 283x283 at 3x export (849x849)."
+          "info": "Target minimum 283x283 at 3x export (849x849).",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
         },
         {
           "type": "text",
           "id": "name",
           "label": "Name",
-          "default": "Name"
+          "default": "Name",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
         },
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Title"
+          "default": "Title",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
         },
         {
           "type": "textarea",
           "id": "quote",
           "label": "Quote",
-          "default": "\"Quote\""
+          "default": "”Quote”",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
         }
       ]
     }

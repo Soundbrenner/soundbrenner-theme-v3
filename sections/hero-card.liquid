@@ -2,11 +2,28 @@
 {% assign hero_card_fallback_image_mobile = 'hero-card-placeholder-mobile.jpg' | asset_url %}
 {% assign hero_card_use_seasonal = section.settings.use_seasonal_hero_card %}
 {% assign hero_card_use_resource_copy = section.settings.use_resource_title_description %}
+{% assign hero_card_use_product_metaobjects = section.settings.use_product_page_metaobjects %}
+{% assign hero_card_product_mode = false %}
+{% assign hero_card_hide_section = false %}
+{% assign hero_card_selected_variant = blank %}
 {% assign hero_card_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353' %}
 {% assign hero_card_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse' %}
 {% assign hero_card_china_download_link = 'https://files.soundbrenner.com/downloads/TheMetronome.apk' %}
 
-{% if hero_card_use_seasonal %}
+{% if request.page_type == 'product' and product != blank and hero_card_use_product_metaobjects %}
+  {% assign hero_card_footer_ref = product.metafields.custom.sbv2_footer_card.value | default: product.metafields.custom.sbv2_footer_card %}
+  {% if hero_card_footer_ref != blank %}
+    {% assign hero_card_product_mode = true %}
+    {% assign hero_card_selected_variant = product.selected_or_first_available_variant %}
+    {% assign hero_card_source_image_desktop = hero_card_footer_ref.background_image_desktop.value | default: hero_card_footer_ref.background_image_desktop %}
+    {% assign hero_card_source_image_mobile = hero_card_footer_ref.background_image_mobile.value | default: hero_card_footer_ref.background_image_mobile %}
+    {% assign hero_card_headline = 'Not happy? Get your money back!' %}
+    {% assign hero_card_subheadline = 'Test risk free with 30-day money-back guarantee.' %}
+    {% assign hero_card_show_button = true %}
+  {% else %}
+    {% assign hero_card_hide_section = true %}
+  {% endif %}
+{% elsif hero_card_use_seasonal %}
   {% assign hero_card_source_image_desktop = settings.seasonal_hero_image_desktop %}
   {% assign hero_card_source_image_mobile = settings.seasonal_hero_image_mobile %}
   {% assign hero_card_kicker = settings.seasonal_hero_kicker %}
@@ -61,39 +78,87 @@
   {% assign hero_card_mobile_image = hero_card_fallback_image_mobile %}
 {% endif %}
 {% if hero_card_source_image_desktop != blank %}
-  {% assign hero_card_desktop_image = hero_card_source_image_desktop | image_url: width: 2480 %}
+  {% assign hero_card_desktop_request_width = hero_card_source_image_desktop.width | default: 2480 | at_most: 2480 %}
+  {% assign hero_card_desktop_image = hero_card_source_image_desktop | image_url: width: hero_card_desktop_request_width %}
 {% else %}
   {% assign hero_card_desktop_image = hero_card_fallback_image_desktop %}
 {% endif %}
 
-<div class="sb-hero-card-section" data-sb-reveal>
-  <div
-    class="sb-framing-card"
-    data-sb-reveal-item
-    style="--sb-hero-card-bg-mobile: url('{{ hero_card_mobile_image }}'); --sb-hero-card-bg-desktop: url('{{ hero_card_desktop_image }}');"
-  >
-    <div class="sb-framing-card__content">
-      {% if hero_card_kicker != blank %}
-        <p class="sb-framing-card__kicker font-body weight-semibold">{{ hero_card_kicker }}</p>
+{% if hero_card_hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <div class="sb-hero-card-section" data-sb-reveal>
+    <div
+      class="sb-framing-card{% if hero_card_product_mode %} sb-framing-card--product-mode{% endif %}"
+      data-sb-reveal-item
+      {% if hero_card_product_mode %}
+        data-hero-card-product-mode
+        data-product-id="{{ product.id }}"
+        data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
+        data-initial-variant-id="{{ hero_card_selected_variant.id }}"
+        data-initial-price="{{ hero_card_selected_variant.price | default: 0 }}"
+        data-initial-compare-price="{{ hero_card_selected_variant.compare_at_price | default: 0 }}"
       {% endif %}
-      {% if hero_card_headline != blank %}
-        <h2 class="sb-framing-card__headline font-title weight-bold">{{ hero_card_headline }}</h2>
-      {% endif %}
-      {% if hero_card_subheadline != blank %}
-        <p class="sb-framing-card__subheadline font-body weight-semibold">{{ hero_card_subheadline }}</p>
-      {% endif %}
-      {% if hero_card_show_button %}
-        {% render 'radiant-button',
-          label: hero_card_button_label,
-          link: hero_card_button_link,
-          size: section.settings.button_size,
-          icon_position: section.settings.icon_position,
-          extra_class: 'sb-framing-card__button'
-        %}
-      {% endif %}
+      style="--sb-hero-card-bg-mobile: url('{{ hero_card_mobile_image }}'); --sb-hero-card-bg-desktop: url('{{ hero_card_desktop_image }}');"
+    >
+      <div class="sb-framing-card__content">
+        {% if hero_card_kicker != blank %}
+          <p class="sb-framing-card__kicker font-body weight-semibold">{{ hero_card_kicker }}</p>
+        {% endif %}
+        {% if hero_card_headline != blank %}
+          <h2 class="sb-framing-card__headline font-title weight-bold">{{ hero_card_headline }}</h2>
+        {% endif %}
+        {% if hero_card_subheadline != blank %}
+          <p class="sb-framing-card__subheadline font-body weight-semibold">{{ hero_card_subheadline }}</p>
+        {% endif %}
+        {% if hero_card_show_button %}
+          {% if hero_card_product_mode %}
+            <form method="post" action="/cart/add" class="sb-framing-card__product-form" data-hero-card-product-form>
+              <input type="hidden" name="id" value="{{ hero_card_selected_variant.id }}" data-hero-card-variant-id>
+              <button
+                type="submit"
+                class="sb-framing-card__product-button sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold"
+                aria-label="Add to cart"
+                data-hero-card-submit
+              >
+                <span class="sb-framing-card__product-button-icon" aria-hidden="true">
+                  <img
+                    class="sb-framing-card__product-button-icon-image"
+                    src="{{ 'icon-add-to-cart.svg' | asset_url }}"
+                    alt=""
+                    width="16"
+                    height="16"
+                  >
+                </span>
+                <span class="sb-framing-card__product-button-copy">
+                  <span class="sb-framing-card__product-button-label" data-hero-card-button-label>Add to cart</span>
+                  <span class="sb-framing-card__product-button-prices">
+                    <span class="sb-framing-card__product-button-price sb-framing-card__product-button-price--compare" data-hero-card-compare-price></span>
+                    <span class="sb-framing-card__product-button-price sb-framing-card__product-button-price--current" data-hero-card-current-price></span>
+                  </span>
+                </span>
+              </button>
+            </form>
+          {% else %}
+            {% render 'radiant-button',
+              label: hero_card_button_label,
+              link: hero_card_button_link,
+              size: section.settings.button_size,
+              icon_position: section.settings.icon_position,
+              extra_class: 'sb-framing-card__button'
+            %}
+          {% endif %}
+        {% endif %}
 
-      {% if section.settings.enable_app_download_buttons %}
-        <div class="sb-framing-card__app-downloads">
+        {% if section.settings.enable_app_download_buttons and hero_card_product_mode == false %}
+          <div class="sb-framing-card__app-downloads">
           <div class="sb-framing-card__app-downloads-qr" aria-hidden="true">
             <img
               src="{{ 'app-download-qr-metronome-app.png' | asset_url }}"
@@ -130,11 +195,12 @@
               loading="lazy"
             >
           </a>
-        </div>
-      {% endif %}
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
-</div>
+{% endif %}
 
 {% stylesheet %}
   .sb-framing-card {
@@ -174,6 +240,55 @@
     margin-inline: auto;
     margin-top: var(--sb-space-4);
     width: fit-content;
+  }
+
+  .sb-framing-card__product-form {
+    margin-top: var(--sb-space-4);
+    width: 100%;
+  }
+
+  .sb-framing-card__product-button {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sb-framing-card__product-button-icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    width: var(--sb-space-16);
+  }
+
+  .sb-framing-card__product-button-icon-image {
+    display: block;
+    height: var(--sb-space-16);
+    width: var(--sb-space-16);
+  }
+
+  .sb-framing-card__product-button-copy {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--sb-space-4);
+    justify-content: center;
+  }
+
+  .sb-framing-card__product-button-prices {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--sb-space-4);
+  }
+
+  .sb-framing-card__product-button-price {
+    line-height: 1;
+  }
+
+  .sb-framing-card__product-button-price--compare {
+    color: var(--sb-color-always-white);
+    text-decoration: line-through;
+  }
+
+  .sb-framing-card__product-button-price--compare[hidden] {
+    display: none;
   }
 
   .sb-framing-card__app-downloads {
@@ -268,8 +383,109 @@
     .sb-framing-card__button {
       margin-inline: 0;
     }
+
+    .sb-framing-card__product-button {
+      justify-content: flex-start;
+      width: fit-content;
+    }
+
+    .sb-framing-card__product-button-copy {
+      justify-content: flex-start;
+    }
   }
 {% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    const cards = Array.from(document.querySelectorAll('[data-hero-card-product-mode]'));
+    if (!cards.length) return;
+
+    cards.forEach((card) => {
+      if (card.dataset.heroCardInit === 'true') return;
+      card.dataset.heroCardInit = 'true';
+
+      const variantIdInput = card.querySelector('[data-hero-card-variant-id]');
+      const currentPriceElement = card.querySelector('[data-hero-card-current-price]');
+      const comparePriceElement = card.querySelector('[data-hero-card-compare-price]');
+      const form = card.querySelector('[data-hero-card-product-form]');
+      const submitButton = card.querySelector('[data-hero-card-submit]');
+      const buttonLabel = card.querySelector('[data-hero-card-button-label]');
+      const currencyCode = card.dataset.currency || 'USD';
+      const productId = card.dataset.productId || '';
+      if (!variantIdInput || !currentPriceElement || !comparePriceElement || !form || !submitButton || !buttonLabel) return;
+
+      const formatter = new Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency: currencyCode,
+      });
+
+      const formatMoney = (centsValue) => {
+        const amount = Number(centsValue) || 0;
+        return formatter.format(amount / 100);
+      };
+
+      const applyVariant = (variant) => {
+        if (!variant || !variant.id) return;
+        variantIdInput.value = `${variant.id}`;
+        currentPriceElement.textContent = formatMoney(variant.price);
+
+        const hasCompare = Number(variant.compare_at_price) > Number(variant.price);
+        if (hasCompare) {
+          comparePriceElement.textContent = formatMoney(variant.compare_at_price);
+          comparePriceElement.hidden = false;
+        } else {
+          comparePriceElement.textContent = '';
+          comparePriceElement.hidden = true;
+        }
+      };
+
+      applyVariant({
+        id: Number(card.dataset.initialVariantId || '0'),
+        price: Number(card.dataset.initialPrice || '0'),
+        compare_at_price: Number(card.dataset.initialComparePrice || '0'),
+      });
+
+      document.addEventListener('variant:update', (event) => {
+        const variant = event?.detail?.resource;
+        const eventProductId = event?.detail?.data?.productId;
+        if (!variant || `${eventProductId || ''}` !== `${productId}`) return;
+        applyVariant(variant);
+      });
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const variantId = Number(variantIdInput.value || '0');
+        if (!variantId) return;
+
+        submitButton.disabled = true;
+        const originalLabel = buttonLabel.textContent;
+        buttonLabel.textContent = 'Adding...';
+
+        try {
+          if (window.SBCart && typeof window.SBCart.add === 'function') {
+            await window.SBCart.add(variantId, {
+              sourceId: `hero-card-${variantId}`,
+              sourceData: {
+                source: 'hero-card',
+              },
+            });
+          } else {
+            throw new Error('SBCart unavailable');
+          }
+
+          buttonLabel.textContent = 'Added';
+          window.setTimeout(() => {
+            buttonLabel.textContent = originalLabel;
+            submitButton.disabled = false;
+          }, 1200);
+        } catch (_) {
+          buttonLabel.textContent = originalLabel;
+          submitButton.disabled = false;
+        }
+      });
+    });
+  })();
+{% endjavascript %}
 
 {% schema %}
 {
@@ -289,50 +505,57 @@
       "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
+      "type": "checkbox",
+      "id": "use_product_page_metaobjects",
+      "label": "Use product page metaobjects",
+      "default": false,
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+    },
+    {
       "type": "image_picker",
       "id": "background_image_desktop",
       "label": "Background image desktop",
       "info": "Target minimum 1240x380 at 2x export (2480x760).",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "image_picker",
       "id": "background_image_mobile",
       "label": "Background image mobile",
       "info": "Target minimum 402x380 at 3x export (1206x1140).",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "text",
       "id": "kicker",
       "label": "Kicker",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "textarea",
       "id": "headline",
       "label": "Headline",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "textarea",
       "id": "subheadline",
       "label": "Subheadline",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "checkbox",
       "id": "show_button",
       "label": "Show button",
       "default": false,
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
       "default": "Placeholder",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "select",
@@ -343,7 +566,7 @@
         { "value": "large", "label": "Large" },
         { "value": "medium", "label": "Medium" }
       ],
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "select",
@@ -355,19 +578,20 @@
         { "value": "leading", "label": "Leading" },
         { "value": "trailing", "label": "Trailing" }
       ],
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "url",
       "id": "button_link",
       "label": "Button link",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "checkbox",
       "id": "enable_app_download_buttons",
       "label": "Enable app download buttons",
-      "default": false
+      "default": false,
+      "visible_if": "{{ section.settings.use_product_page_metaobjects == false }}"
     }
   ],
   "presets": [

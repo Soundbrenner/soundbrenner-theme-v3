@@ -89,14 +89,16 @@
     "expert_testimonials_carousel": {
       "type": "expert-testimonials",
       "settings": {
-        "use_product_metaobjects": true,
-        "title": "Expert testimonials"
+        "use_product_metaobjects": true
       }
     },
     "product_footer_card": {
-      "type": "product-footer-card",
+      "type": "hero-card",
       "settings": {
-        "use_product_metaobjects": true
+        "use_seasonal_hero_card": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": true,
+        "enable_app_download_buttons": false
       }
     }
   },
