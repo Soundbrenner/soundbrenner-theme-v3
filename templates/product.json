@@ -57,7 +57,9 @@
         "description_pdp_main",
         "popular_add_ons_pdp_main"
       ],
-      "settings": {}
+      "settings": {
+        "add_to_cart_icon": "cart"
+      }
     },
     "reviews_heading": {
       "type": "reviews-heading",
@@ -65,18 +67,44 @@
         "heading": "Real reviews by real musicians"
       }
     },
-    "product_reviews": {
-      "type": "product-reviews",
+    "177155579933e4f180": {
+      "type": "_blocks",
       "blocks": {
-        "klaviyo_reviews_product_reviews_j9C7M7": {
+        "klaviyo_reviews_product_reviews_QJXNBz": {
           "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
           "settings": {}
         }
       },
       "block_order": [
-        "klaviyo_reviews_product_reviews_j9C7M7"
+        "klaviyo_reviews_product_reviews_QJXNBz"
       ],
-      "settings": {}
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     },
     "often_bought_together": {
       "type": "often-bought-together",
@@ -88,7 +116,7 @@
   "order": [
     "main",
     "reviews_heading",
-    "product_reviews",
+    "177155579933e4f180",
     "often_bought_together"
   ]
 }
