@@ -1,10 +1,32 @@
-<section class="sb-reviews-heading" data-sb-reveal>
-  {% render 'reviews-title',
-    title: section.settings.heading,
-    class_name: 'sb-reviews-heading__title font-title weight-bold',
-    reveal_item: true
-  %}
-</section>
+{% liquid
+  assign reviews_heading_text = section.settings.heading
+  assign hide_reviews_heading = false
+
+  if request.page_type == 'product' and product != blank
+    assign product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
+    if product_settings_ref != blank
+      assign hide_reviews_value = product_settings_ref.hide_reviews.value | default: product_settings_ref.hide_reviews
+      if hide_reviews_value == true or hide_reviews_value == 'true' or hide_reviews_value == 1 or hide_reviews_value == '1'
+        assign hide_reviews_heading = true
+      endif
+
+      assign reviews_title_value = product_settings_ref.reviews_title.value | default: product_settings_ref.reviews_title
+      if reviews_title_value != blank
+        assign reviews_heading_text = reviews_title_value
+      endif
+    endif
+  endif
+%}
+
+{% unless hide_reviews_heading %}
+  <section class="sb-reviews-heading" data-sb-reveal>
+    {% render 'reviews-title',
+      title: reviews_heading_text,
+      class_name: 'sb-reviews-heading__title font-title weight-bold',
+      reveal_item: true
+    %}
+  </section>
+{% endunless %}
 
 {% stylesheet %}
   .sb-reviews-heading {
