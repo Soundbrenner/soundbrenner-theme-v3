@@ -147,6 +147,15 @@ body {
   margin-top: var(--sb-space-96);
 }
 
+/*
+  Root-cause fix:
+  template sections are not always immediately adjacent (apps/scripts can sit between wrappers),
+  so adjacent-only spacing can be skipped. Apply rhythm across all later template sections.
+*/
+.shopify-section[id*='template--'] ~ .shopify-section[id*='template--'] {
+  margin-top: var(--sb-space-96) !important;
+}
+
 /* Shared layout utilities */
 .sb-content-width {
   margin: 0 auto;
@@ -332,8 +341,12 @@ video.sb-product-main__media-asset {
     box-shadow: none;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    -webkit-transform: translateZ(0) scale(1.004);
-    transform: translateZ(0) scale(1.004);
+    margin: calc(var(--sb-space-2) * -1);
+    width: calc(100% + (var(--sb-space-2) * 2));
+    height: calc(100% + (var(--sb-space-2) * 2));
+    object-fit: cover;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 }
 
@@ -935,24 +948,6 @@ video.sb-product-main__media-asset {
 
 #klaviyo-reviews-all .kl_reviews__review__image_row + .kl_reviews__review__product_card {
   margin-top: var(--sb-space-24) !important;
-}
-
-/* Keep expected spacing around reviews heading on PDP */
-.shopify-section:has(> .sb-product-main) + .shopify-section:has(> .sb-reviews-heading) {
-  margin-top: var(--sb-space-96) !important;
-}
-
-.shopify-section[id*='__main'] + .shopify-section[id*='__reviews_heading'] {
-  margin-top: var(--sb-space-96) !important;
-}
-
-/* Hard fallback for templates where section wrapper margins are neutralized */
-.shopify-section[id*='__main'] + .shopify-section[id*='__reviews_heading'] > .sb-reviews-heading {
-  padding-top: var(--sb-space-96) !important;
-}
-
-.shopify-section:has(.sb-reviews-heading) + .shopify-section {
-  margin-top: var(--sb-space-48);
 }
 
 /* Keep a consistent 96 gap before footer across section and section-group layouts */

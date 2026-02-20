@@ -118,6 +118,12 @@
         "use_product_metaobjects": true,
         "title": "Expert testimonials"
       }
+    },
+    "product_footer_card": {
+      "type": "product-footer-card",
+      "settings": {
+        "use_product_metaobjects": true
+      }
     }
   },
   "order": [
@@ -125,6 +131,7 @@
     "reviews_heading",
     "177155579933e4f180",
     "often_bought_together",
-    "expert_testimonials_carousel"
+    "expert_testimonials_carousel",
+    "product_footer_card"
   ]
 }
