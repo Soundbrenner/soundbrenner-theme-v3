@@ -40,6 +40,7 @@
   assign product_usps_ref = product.metafields.custom.product_usps
   assign product_usps_root = product_usps_ref.value | default: product_usps_ref.reference | default: product_usps_ref
   assign add_to_cart_icon_type = section.settings.add_to_cart_icon | default: 'cart'
+  assign product_module_block_types = '|media_gallery|variant_explainer_box|delivery_explainer_box|video_stories|in_the_box|description|popular_add_ons|'
 
   if product_settings_ref != blank
     assign product_tagline = product_settings_ref.tagline.value | default: product_settings_ref.tagline
@@ -411,7 +412,8 @@
                           muted: true,
                           controls: false,
                           playsinline: true,
-                          preload: 'metadata'
+                          preload: 'metadata',
+                          image_size: '1440x'
                       }}
                     {% else %}
                       {{ media | media_tag: class: 'sb-product-main__media-asset' }}
@@ -430,19 +432,22 @@
         {% unless product_hide_reviews %}
           <div class="sb-product-main__rating" data-sb-reveal-item>
             {% for block in section.blocks %}
-              {% if block.type contains 'shopify://apps/' %}
-                {% liquid
-                  assign is_product_reviews_block = false
-                  assign block_identifier = block.type | append: ' ' | append: block.id | downcase
-                  if block_identifier contains 'product-reviews' or block_identifier contains 'product_reviews'
-                    assign is_product_reviews_block = true
-                  endif
-                %}
-                {% unless is_product_reviews_block %}
-                  {% render block %}
-                  {% break %}
-                {% endunless %}
-              {% endif %}
+              {% liquid
+                assign is_product_reviews_block = false
+                assign block_identifier = block.type | append: ' ' | append: block.id | downcase
+                if block_identifier contains 'product-reviews' or block_identifier contains 'product_reviews' or block_identifier contains 'product reviews' or block_identifier contains 'productreviews'
+                  assign is_product_reviews_block = true
+                endif
+                assign block_type_token = '|' | append: block.type | append: '|'
+                assign is_module_block = false
+                if product_module_block_types contains block_type_token
+                  assign is_module_block = true
+                endif
+              %}
+              {% unless is_product_reviews_block or is_module_block %}
+                {% render block %}
+                {% break %}
+              {% endunless %}
             {% endfor %}
           </div>
         {% endunless %}
@@ -1660,25 +1665,23 @@
 
 {% unless product_hide_reviews %}
   <section class="sb-product-main__reviews" data-sb-reveal>
-    {% if product_reviews_title != blank %}
-      <h2 class="sb-product-main__reviews-title font-title weight-bold" data-sb-reveal-item>
-        {{ product_reviews_title }}
-      </h2>
-    {% endif %}
+    {% render 'reviews-title',
+      title: product_reviews_title,
+      class_name: 'sb-product-main__reviews-title font-title weight-bold',
+      reveal_item: true
+    %}
     {% for block in section.blocks %}
-      {% if block.type contains 'shopify://apps/' %}
-        {% liquid
-          assign is_product_reviews_block = false
-          assign block_identifier = block.type | append: ' ' | append: block.id | downcase
-          if block_identifier contains 'product-reviews' or block_identifier contains 'product_reviews'
-            assign is_product_reviews_block = true
-          endif
-        %}
-        {% if is_product_reviews_block %}
-          <div class="sb-product-main__reviews-block" data-sb-reveal-item>
-            {% render block %}
-          </div>
-        {% endif %}
+      {% liquid
+        assign is_product_reviews_block = false
+        assign block_identifier = block.type | append: ' ' | append: block.id | downcase
+        if block_identifier contains 'product-reviews' or block_identifier contains 'product_reviews' or block_identifier contains 'product reviews' or block_identifier contains 'productreviews'
+          assign is_product_reviews_block = true
+        endif
+      %}
+      {% if is_product_reviews_block %}
+        <div class="sb-product-main__reviews-block" data-sb-reveal-item>
+          {% render block %}
+        </div>
       {% endif %}
     {% endfor %}
   </section>
@@ -2403,7 +2406,7 @@
   }
 
   .sb-product-main__description-accordion-item {
-    margin-top: var(--sb-space-20);
+    margin-top: calc(var(--sb-space-20) - var(--sb-space-36));
     width: 100%;
   }
 
@@ -3327,6 +3330,27 @@
           }
         };
 
+        const findAddonVariantByOptions = (optionsSnapshot, { allowNonColorFallback = false } = {}) => {
+          if (!Array.isArray(optionsSnapshot) || !optionsSnapshot.length) return null;
+
+          const exactMatch = addonVariants.find((variant) => {
+            if (!Array.isArray(variant.options) || variant.options.length !== optionsSnapshot.length) return false;
+            return variant.options.every((optionValue, index) => optionValue === optionsSnapshot[index]);
+          });
+          if (exactMatch) return exactMatch;
+
+          if (!allowNonColorFallback) return null;
+
+          return addonVariants.find((variant) => {
+            if (!Array.isArray(variant.options) || !variant.available) return false;
+            return nonColorGroups.every((nonColorGroup) => {
+              const nonColorIndex = getGroupOptionIndex(nonColorGroup);
+              if (nonColorIndex < 0) return true;
+              return variant.options[nonColorIndex] === optionsSnapshot[nonColorIndex];
+            });
+          });
+        };
+
         optionGroups.forEach((group) => {
           const optionIndex = getGroupOptionIndex(group);
           if (optionIndex < 0) return;
@@ -3350,49 +3374,34 @@
                 updateColorAvailability();
               }
 
-              let matchedVariant = addonVariants.find((variant) => {
-                if (!Array.isArray(variant.options) || variant.options.length !== selectedOptions.length) return false;
-                return variant.options.every((optionValue, index) => optionValue === selectedOptions[index]);
+              const matchedVariant = findAddonVariantByOptions(selectedOptions, {
+                allowNonColorFallback: group.dataset.addonOptionType !== 'color',
               });
-
-              if (!matchedVariant && group.dataset.addonOptionType !== 'color') {
-                matchedVariant = addonVariants.find((variant) => {
-                  if (!Array.isArray(variant.options) || !variant.available) return false;
-                  return nonColorGroups.every((nonColorGroup) => {
-                    const nonColorIndex = getGroupOptionIndex(nonColorGroup);
-                    if (nonColorIndex < 0) return true;
-                    return variant.options[nonColorIndex] === selectedOptions[nonColorIndex];
-                  });
-                });
-              }
 
               if (matchedVariant) {
                 applyAddonVariant(matchedVariant);
               }
               });
 
-              if (group.dataset.addonOptionType === 'color') {
-                button.addEventListener('mouseenter', () => {
-                  if (button.hidden) return;
-                  warmAddonImagePool();
-                  const hoveredValue = button.dataset.addonOptionValue || '';
-                  if (!hoveredValue) return;
-                  const previewOptions = [...selectedOptions];
-                  previewOptions[optionIndex] = hoveredValue;
-                  const previewVariant = addonVariants.find((variant) => {
-                    if (!Array.isArray(variant.options) || variant.options.length !== previewOptions.length) return false;
-                    return variant.options.every((optionValue, index) => optionValue === previewOptions[index]);
-                  });
-                  const previewUrl = previewVariant ? addonMediaMap?.[`${previewVariant.id}`] : '';
-                  previewBaseImageUrl = previewUrl || '';
-                  applyAddonImageState();
+              button.addEventListener('mouseenter', () => {
+                if (button.hidden) return;
+                warmAddonImagePool();
+                const hoveredValue = button.dataset.addonOptionValue || '';
+                if (!hoveredValue) return;
+                const previewOptions = [...selectedOptions];
+                previewOptions[optionIndex] = hoveredValue;
+                const previewVariant = findAddonVariantByOptions(previewOptions, {
+                  allowNonColorFallback: group.dataset.addonOptionType !== 'color',
                 });
+                const previewUrl = previewVariant ? addonMediaMap?.[`${previewVariant.id}`] : '';
+                previewBaseImageUrl = previewUrl || '';
+                applyAddonImageState();
+              });
 
-                button.addEventListener('mouseleave', () => {
-                  previewBaseImageUrl = '';
-                  applyAddonImageState();
-                });
-              }
+              button.addEventListener('mouseleave', () => {
+                previewBaseImageUrl = '';
+                applyAddonImageState();
+              });
             });
           });
 

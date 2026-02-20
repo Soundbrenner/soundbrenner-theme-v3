@@ -1,0 +1,10 @@
+{% liquid
+  assign reviews_title_text = title | default: heading
+  assign reviews_title_class = class_name | default: 'font-title weight-bold'
+%}
+
+{% if reviews_title_text != blank %}
+  <h2 class="{{ reviews_title_class }}"{% if reveal_item %} data-sb-reveal-item{% endif %}>
+    {{ reviews_title_text }}
+  </h2>
+{% endif %}

@@ -1,9 +1,9 @@
 <section class="sb-reviews-heading" data-sb-reveal>
-  {% if section.settings.heading != blank %}
-    <h2 class="sb-reviews-heading__title font-title weight-bold" data-sb-reveal-item>
-      {{ section.settings.heading }}
-    </h2>
-  {% endif %}
+  {% render 'reviews-title',
+    title: section.settings.heading,
+    class_name: 'sb-reviews-heading__title font-title weight-bold',
+    reveal_item: true
+  %}
 </section>
 
 {% stylesheet %}
