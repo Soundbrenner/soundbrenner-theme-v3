@@ -111,12 +111,20 @@
       "settings": {
         "title": "Often bought together"
       }
+    },
+    "expert_testimonials_carousel": {
+      "type": "expert-testimonials",
+      "settings": {
+        "use_product_metaobjects": true,
+        "title": "Expert testimonials"
+      }
     }
   },
   "order": [
     "main",
     "reviews_heading",
     "177155579933e4f180",
-    "often_bought_together"
+    "often_bought_together",
+    "expert_testimonials_carousel"
   ]
 }

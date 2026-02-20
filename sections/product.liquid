@@ -356,19 +356,17 @@
                   {% assign media_token_parts = media_token_clean | split: '::' %}
                   {% assign media_token_type = media_token_parts[0] %}
                   {% assign media_token_source = media_token_parts[1] %}
-                  {% assign media_token_poster = media_token_parts[2] %}
-                  <div class="sb-product-main__media-item" data-sb-reveal-item>
+                  <div class="sb-product-main__media-item{% if media_token_type == 'video' %} sb-product-main__media-item--video{% endif %}" data-sb-reveal-item>
                     {% if media_token_type == 'video' %}
                       <video
-                        class="sb-product-main__media-asset"
+                        class="sb-product-main__media-asset sb-product-main__media-asset--video"
+                        data-gallery-video
+                        style="background: var(--sb-color-neutral-200);"
                         autoplay
                         loop
                         muted
                         playsinline
                         preload="metadata"
-                        {% if media_token_poster != blank %}
-                          poster="{{ media_token_poster }}"
-                        {% endif %}
                         src="{{ media_token_source }}"
                       ></video>
                     {% else %}
@@ -386,7 +384,7 @@
               {% endfor %}
             {% else %}
               {% for media in product.media %}
-                <div class="sb-product-main__media-item" data-sb-reveal-item>
+                <div class="sb-product-main__media-item{% if media.media_type == 'video' %} sb-product-main__media-item--video{% endif %}" data-sb-reveal-item>
                   {% case media.media_type %}
                     {% when 'image' %}
                       {{
@@ -401,14 +399,14 @@
                       {{
                         media
                         | video_tag:
-                          class: 'sb-product-main__media-asset',
+                          class: 'sb-product-main__media-asset sb-product-main__media-asset--video',
+                          style: 'background: var(--sb-color-neutral-200);',
                           autoplay: true,
                           loop: true,
                           muted: true,
                           controls: false,
                           playsinline: true,
-                          preload: 'metadata',
-                          image_size: '1440x'
+                          preload: 'metadata'
                       }}
                     {% else %}
                       {{ media | media_tag: class: 'sb-product-main__media-asset' }}
@@ -1013,13 +1011,13 @@
               <ul class="sb-product-main__purchase-guarantees-list" aria-label="Purchase guarantees">
                 <li class="sb-product-main__purchase-guarantee-item">
                   <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
-                    <img src="{{ 'icon-purchase-guarantee-featured.svg' | asset_url }}" alt="" width="24" height="24">
+                    {{ 'icon-purchase-guarantee-featured.svg' | inline_asset_content }}
                   </span>
                   <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">Free shipping over XX</span>
                 </li>
                 <li class="sb-product-main__purchase-guarantee-item">
                   <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
-                    <img src="{{ 'icon-purchase-guarantee-shipping.svg' | asset_url }}" alt="" width="24" height="24">
+                    {{ 'icon-purchase-guarantee-shipping.svg' | inline_asset_content }}
                   </span>
                   <span class="sb-product-main__purchase-guarantee-text font-body weight-regular"
                     >X-X days delivery in XX</span
@@ -1027,7 +1025,7 @@
                 </li>
                 <li class="sb-product-main__purchase-guarantee-item">
                   <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
-                    <img src="{{ 'icon-purchase-guarantee-account-balance.svg' | asset_url }}" alt="" width="24" height="24">
+                    {{ 'icon-purchase-guarantee-account-balance.svg' | inline_asset_content }}
                   </span>
                   <span class="sb-product-main__purchase-guarantee-text font-body weight-regular"
                     >All taxes &amp; duties included in price</span
@@ -1035,25 +1033,25 @@
                 </li>
                 <li class="sb-product-main__purchase-guarantee-item">
                   <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
-                    <img src="{{ 'icon-purchase-guarantee-autorenew.svg' | asset_url }}" alt="" width="24" height="24">
+                    {{ 'icon-purchase-guarantee-autorenew.svg' | inline_asset_content }}
                   </span>
                   <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">30-day money-back guarantee</span>
                 </li>
                 <li class="sb-product-main__purchase-guarantee-item">
                   <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
-                    <img src="{{ 'icon-purchase-guarantee-verified-user.svg' | asset_url }}" alt="" width="24" height="24">
+                    {{ 'icon-purchase-guarantee-verified-user.svg' | inline_asset_content }}
                   </span>
                   <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">1-year warranty</span>
                 </li>
                 {% if show_shop_pay_guarantee %}
                   <li class="sb-product-main__purchase-guarantee-item sb-product-main__purchase-guarantee-item--shop-pay">
                     <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
-                    <img src="{{ 'icon-purchase-guarantee-pie-chart.svg' | asset_url }}" alt="" width="24" height="24">
-                  </span>
-                  <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">
-                    Shop Pay installments from&nbsp;<span data-product-monthly-price>{{ current_variant.price | times: 0.01 | divided_by: 4.0 | round | times: 100 | money_without_trailing_zeros }}</span>
-                  </span>
-                </li>
+                      {{ 'icon-purchase-guarantee-pie-chart.svg' | inline_asset_content }}
+                    </span>
+                    <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">
+                      Shop Pay installments from&nbsp;<span data-product-monthly-price>{{ current_variant.price | times: 0.01 | divided_by: 4.0 | round | times: 100 | money_without_trailing_zeros }}</span>
+                    </span>
+                  </li>
                 {% endif %}
               </ul>
             </div>
@@ -1699,6 +1697,19 @@
     width: 100%;
   }
 
+  .sb-product-main__media-item--video {
+    background: var(--sb-color-neutral-200);
+  }
+
+  .sb-product-main__media-item--video .sb-product-main__media-asset--video {
+    background: var(--sb-color-neutral-200);
+    opacity: 0;
+  }
+
+  .sb-product-main__media-item--video.is-video-ready .sb-product-main__media-asset--video {
+    opacity: 1;
+  }
+
   .sb-product-main__info-column {
     align-items: flex-start;
     display: flex;
@@ -2118,11 +2129,18 @@
   }
 
   .sb-product-main__purchase-guarantee-icon :is(img, svg) {
+    color: var(--sb-color-neutral-900);
     display: block;
     height: 100%;
     -webkit-user-select: none;
     user-select: none;
     width: 100%;
+  }
+
+  .sb-product-main__purchase-guarantee-icon svg path:not([fill='none']),
+  .sb-product-main__purchase-guarantee-icon svg circle:not([fill='none']),
+  .sb-product-main__purchase-guarantee-icon svg rect:not([fill='none']) {
+    fill: currentColor;
   }
 
   .sb-product-main__purchase-guarantee-text {
@@ -2378,6 +2396,7 @@
   .sb-product-main__in-the-box-image {
     aspect-ratio: 1 / 1;
     border-radius: var(--sb-space-12);
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     display: block;
     height: auto;
     object-fit: cover;
@@ -2391,7 +2410,9 @@
   }
 
   .sb-product-main__in-the-box-divider {
+    border: 0;
     border-top: 1px solid var(--sb-color-neutral-600);
+    height: 0;
     margin-top: var(--sb-space-20);
     width: 100%;
   }
@@ -2498,10 +2519,10 @@
   }
 
   .sb-product-main__description-accordion-divider {
-    background: var(--sb-color-neutral-600);
     border: 0;
+    border-top: 1px solid var(--sb-color-neutral-600);
     display: block;
-    height: 1px;
+    height: 0;
     margin: var(--sb-space-20) 0 0;
     width: 100%;
   }
@@ -3012,6 +3033,38 @@
         return moneyFormatter.format(amount / 100);
       };
 
+      const initGalleryVideos = () => {
+        if (!mediaGrid) return;
+        const videos = Array.from(mediaGrid.querySelectorAll('video.sb-product-main__media-asset--video'));
+        if (!videos.length) return;
+
+        videos.forEach((video) => {
+          const mediaItem = video.closest('.sb-product-main__media-item--video');
+          if (!mediaItem) return;
+          if (video.dataset.galleryVideoInit === 'true') return;
+          video.dataset.galleryVideoInit = 'true';
+          mediaItem.classList.remove('is-video-ready');
+
+          const markReady = () => {
+            mediaItem.classList.add('is-video-ready');
+          };
+
+          video.addEventListener('loadeddata', markReady, { once: true });
+          video.addEventListener('canplay', markReady, { once: true });
+          video.addEventListener('playing', markReady, { once: true });
+          video.addEventListener('error', markReady, { once: true });
+
+          if (video.readyState >= 2) {
+            markReady();
+          }
+
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {});
+          }
+        });
+      };
+
       const renderMediaGallery = (tokens) => {
         if (!mediaGrid || !Array.isArray(tokens)) return;
         const normalizedTokens = tokens
@@ -3024,12 +3077,10 @@
             const parts = token.split('::');
             const type = parts[0] || '';
             const source = parts[1] || '';
-            const poster = parts[2] || '';
             if (!source) return '';
 
             if (type === 'video') {
-              const posterAttribute = poster ? ` poster=\"${escapeHtml(poster)}\"` : '';
-              return `<div class=\"sb-product-main__media-item\" data-sb-reveal-item><video class=\"sb-product-main__media-asset\" autoplay loop muted playsinline preload=\"metadata\"${posterAttribute} src=\"${escapeHtml(source)}\"></video></div>`;
+              return `<div class=\"sb-product-main__media-item sb-product-main__media-item--video\" data-sb-reveal-item><video class=\"sb-product-main__media-asset sb-product-main__media-asset--video\" data-gallery-video style=\"background: var(--sb-color-neutral-200);\" autoplay loop muted playsinline preload=\"metadata\" src=\"${escapeHtml(source)}\"></video></div>`;
             }
 
             return `<div class=\"sb-product-main__media-item\" data-sb-reveal-item><img class=\"sb-product-main__media-asset\" src=\"${escapeHtml(source)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\"></div>`;
@@ -3038,6 +3089,7 @@
 
         if (nextMarkup) {
           mediaGrid.innerHTML = nextMarkup;
+          initGalleryVideos();
         }
       };
 
@@ -3765,6 +3817,8 @@
           renderInTheBoxByVariantId(currentVariantId);
         }
       }
+
+      initGalleryVideos();
 
       const addonItems = Array.from(root.querySelectorAll('[data-addon-item]'));
       addonItems.forEach((item) => initAddonItem(item));

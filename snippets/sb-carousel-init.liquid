@@ -1,0 +1,195 @@
+<script>
+  (() => {
+    const initCarousels = (scope = document) => {
+      const roots = scope.querySelectorAll('[data-sb-carousel]');
+      if (!roots.length) return;
+
+      roots.forEach((root) => {
+        if (root.dataset.sbCarouselInit === 'true') return;
+        root.dataset.sbCarouselInit = 'true';
+
+        const viewport = root.querySelector('[data-sb-carousel-viewport]');
+        const track = root.querySelector('[data-sb-carousel-track]');
+        const prev = root.querySelector('[data-sb-carousel-prev]');
+        const next = root.querySelector('[data-sb-carousel-next]');
+
+        if (!viewport || !track || !prev || !next) return;
+
+        const px = (value) => {
+          const n = Number.parseFloat(value || '0');
+          return Number.isFinite(n) ? n : 0;
+        };
+
+        const pageMargin = () => {
+          const styles = getComputedStyle(document.documentElement);
+          const desktop = window.matchMedia('(min-width: 750px)').matches;
+          const token = desktop ? '--page-margin-desktop' : '--page-margin-mobile';
+          return px(styles.getPropertyValue(token)) || px(styles.getPropertyValue('--page-margin')) || 16;
+        };
+        const pageWidth = () => px(getComputedStyle(document.documentElement).getPropertyValue('--page-width')) || 1240;
+        const contentWidth = () => Math.max(1, Math.min(pageWidth(), window.innerWidth - (pageMargin() * 2)));
+        const nativeExtraScroll = () => Math.max(0, viewport.clientWidth - contentWidth());
+        const applyNativeExtraScroll = () => {
+          track.style.paddingRight = `${nativeExtraScroll()}px`;
+        };
+
+        const items = () => track.querySelectorAll('[data-sb-carousel-item]');
+        const itemsSpan = () => {
+          const list = items();
+          if (!list.length) return 0;
+          const first = list[0];
+          const last = list[list.length - 1];
+          const firstLeft = first.offsetLeft;
+          const lastRight = last.offsetLeft + last.getBoundingClientRect().width;
+          return Math.max(0, lastRight - firstLeft);
+        };
+        const desiredMaxScroll = () => Math.max(0, itemsSpan() - contentWidth());
+        const currentMaxScroll = () => {
+          const desired = desiredMaxScroll();
+          const native = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+          return Math.max(0, Math.min(native, desired));
+        };
+
+        const scrollEpsilon = 2;
+
+        const getSnapPoints = (max) => {
+          const list = items();
+          if (!list.length) return [0, max];
+
+          const firstLeft = list[0].offsetLeft;
+          const points = Array.from(list).map((item) => item.offsetLeft - firstLeft);
+          points.push(max);
+
+          const normalized = points
+            .map((point) => Math.max(0, Math.min(max, point)))
+            .map((point) => Number(point.toFixed(2)));
+
+          return Array.from(new Set(normalized)).sort((a, b) => a - b);
+        };
+
+        const getNextSnap = (current, max) => {
+          const points = getSnapPoints(max);
+          for (const point of points) {
+            if (point > current + scrollEpsilon) return point;
+          }
+          return max;
+        };
+
+        const getPrevSnap = (current, max) => {
+          const points = getSnapPoints(max);
+          for (let i = points.length - 1; i >= 0; i -= 1) {
+            if (points[i] < current - scrollEpsilon) return points[i];
+          }
+          return 0;
+        };
+
+        const setBleed = () => {
+          const bleed = Math.max(pageMargin(), (window.innerWidth - contentWidth()) / 2);
+          root.style.setProperty('--sb-carousel-bleed-inline', `${Math.max(0, bleed)}px`);
+        };
+
+        const syncState = () => {
+          setBleed();
+          applyNativeExtraScroll();
+          track.style.transform = '';
+
+          const max = currentMaxScroll();
+          const overflowing = max > 1;
+          root.classList.toggle('is-overflowing', overflowing);
+          root.classList.toggle('is-not-overflowing', !overflowing);
+
+          if (!overflowing) {
+            if (Math.abs(viewport.scrollLeft) > scrollEpsilon) viewport.scrollLeft = 0;
+            prev.disabled = true;
+            next.disabled = true;
+            return;
+          }
+
+          if (viewport.scrollLeft > max - scrollEpsilon) viewport.scrollLeft = max;
+          if (viewport.scrollLeft < scrollEpsilon) viewport.scrollLeft = 0;
+
+          prev.disabled = viewport.scrollLeft <= scrollEpsilon;
+          next.disabled = viewport.scrollLeft >= max - scrollEpsilon;
+        };
+
+        const scrollToOffset = (value) => {
+          applyNativeExtraScroll();
+          const max = currentMaxScroll();
+          let clamped = Math.max(0, Math.min(value, max));
+          if (clamped < scrollEpsilon) clamped = 0;
+          if (clamped > max - scrollEpsilon) clamped = max;
+          viewport.scrollTo({ left: clamped, behavior: 'smooth' });
+        };
+
+        prev.addEventListener('click', () => {
+          const max = currentMaxScroll();
+          scrollToOffset(getPrevSnap(viewport.scrollLeft, max));
+        });
+
+        next.addEventListener('click', () => {
+          const max = currentMaxScroll();
+          scrollToOffset(getNextSnap(viewport.scrollLeft, max));
+        });
+
+        viewport.addEventListener(
+          'scroll',
+          () => {
+            window.requestAnimationFrame(syncState);
+          },
+          { passive: true }
+        );
+
+        viewport.addEventListener(
+          'wheel',
+          (event) => {
+            if (!root.classList.contains('is-overflowing')) return;
+
+            const horizontalDelta = event.deltaX;
+            if (Math.abs(horizontalDelta) < 1) return;
+
+            event.preventDefault();
+            const max = currentMaxScroll();
+            let nextOffset = Math.max(0, Math.min(viewport.scrollLeft + horizontalDelta, max));
+            if (nextOffset < scrollEpsilon) nextOffset = 0;
+            if (nextOffset > max - scrollEpsilon) nextOffset = max;
+            viewport.scrollLeft = nextOffset;
+          },
+          { passive: false }
+        );
+
+        if ('ResizeObserver' in window) {
+          const observer = new ResizeObserver(() => syncState());
+          observer.observe(viewport);
+          observer.observe(track);
+        }
+
+        track.querySelectorAll('img').forEach((img) => {
+          if (!img.complete) {
+            img.addEventListener('load', syncState, { once: true });
+            img.addEventListener('error', syncState, { once: true });
+          }
+        });
+
+        window.addEventListener('load', syncState);
+        window.addEventListener('resize', syncState);
+        syncState();
+        window.requestAnimationFrame(syncState);
+        window.setTimeout(syncState, 120);
+        window.setTimeout(syncState, 360);
+      });
+    };
+
+    window.SBInitCarousel = initCarousels;
+
+    if (window.__sbCarouselScriptLoaded) {
+      initCarousels(document);
+      return;
+    }
+
+    window.__sbCarouselScriptLoaded = true;
+    initCarousels(document);
+    document.addEventListener('shopify:section:load', (event) => {
+      initCarousels(event.target);
+    });
+  })();
+</script>

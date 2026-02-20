@@ -1,0 +1,378 @@
+{% liquid
+  assign use_product_metaobjects = section.settings.use_product_metaobjects
+  assign uses_product_metaobjects = false
+  assign section_title = section.settings.title
+  assign section_items = blank
+  assign hide_section = false
+
+  if request.page_type == 'product' and product != blank and use_product_metaobjects
+    assign product_testimonials_ref = product.metafields.custom.sbv2_expert_testimonials_carousel.value | default: product.metafields.custom.sbv2_expert_testimonials_carousel
+
+    if product_testimonials_ref != blank
+      assign uses_product_metaobjects = true
+
+      assign product_title_value = product_testimonials_ref.title.value | default: product_testimonials_ref.title
+      if product_title_value != blank
+        assign section_title = product_title_value
+      endif
+
+      assign section_items = product_testimonials_ref.items.value | default: product_testimonials_ref.items
+
+      if section_items == blank
+        assign hide_section = true
+      endif
+    else
+      assign hide_section = true
+    endif
+  endif
+
+  if uses_product_metaobjects == false and section.blocks.size == 0
+    assign hide_section = true
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section class="sb-expert-testimonials-carousel" data-sb-carousel data-sb-reveal>
+    {% if section_title != blank %}
+      <h2 class="sb-expert-testimonials-carousel__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
+    {% endif %}
+
+    <div class="sb-expert-testimonials-carousel__viewport" data-sb-carousel-viewport>
+      <div class="sb-expert-testimonials-carousel__track" data-sb-carousel-track>
+        {% if uses_product_metaobjects %}
+          {% for item in section_items %}
+            {% liquid
+              assign expert_image = item.image.value | default: item.image
+              assign expert_name = item.name.value | default: item.name
+              assign expert_title = item.title.value | default: item.title
+              assign expert_quote = item.quote.value | default: item.quote
+
+              assign expert_image_url = ''
+              if expert_image != blank
+                assign expert_image_request_width = 849
+                if expert_image.width != blank
+                  assign expert_image_request_width = expert_image.width | at_most: 849
+                endif
+                assign expert_image_url = expert_image | image_url: width: expert_image_request_width
+                assign expert_image_url_prefix = expert_image_url | slice: 0, 7
+                assign expert_image_url_prefix_slash = expert_image_url | slice: 0, 8
+                if expert_image_url_prefix == 'files/'
+                  assign expert_image_url = '/cdn/shop/' | append: expert_image_url
+                elsif expert_image_url_prefix_slash == '/files/'
+                  assign expert_image_url = '/cdn/shop' | append: expert_image_url
+                endif
+              endif
+            %}
+
+            <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item data-sb-reveal-item>
+              <div class="sb-expert-testimonials-carousel__media">
+                {% if expert_image_url != blank %}
+                  <img
+                    src="{{ expert_image_url }}"
+                    alt="{{ expert_name | default: expert_title | default: expert_quote | escape }}"
+                    loading="lazy"
+                    width="283"
+                    height="283"
+                  >
+                {% else %}
+                  <div class="sb-expert-testimonials-carousel__media-placeholder" aria-hidden="true"></div>
+                {% endif %}
+              </div>
+
+              {% if expert_name != blank %}
+                <p class="sb-expert-testimonials-carousel__name font-callout weight-bold">{{ expert_name }}</p>
+              {% endif %}
+              {% if expert_title != blank %}
+                <p class="sb-expert-testimonials-carousel__role font-body weight-regular">{{ expert_title }}</p>
+              {% endif %}
+              {% if expert_quote != blank %}
+                <p class="sb-expert-testimonials-carousel__quote font-body weight-regular">{{ expert_quote }}</p>
+              {% endif %}
+            </article>
+          {% endfor %}
+        {% else %}
+          {% for block in section.blocks %}
+            {% liquid
+              assign expert_image = block.settings.image
+              assign expert_name = block.settings.name
+              assign expert_title = block.settings.title
+              assign expert_quote = block.settings.quote
+
+              assign expert_image_url = ''
+              if expert_image != blank
+                assign expert_image_request_width = expert_image.width | at_most: 849
+                assign expert_image_url = expert_image | image_url: width: expert_image_request_width
+              endif
+            %}
+
+            <article class="sb-expert-testimonials-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>
+              <div class="sb-expert-testimonials-carousel__media">
+                {% if expert_image_url != blank %}
+                  <img
+                    src="{{ expert_image_url }}"
+                    alt="{{ expert_name | default: expert_title | default: expert_quote | escape }}"
+                    loading="lazy"
+                    width="283"
+                    height="283"
+                  >
+                {% else %}
+                  <div class="sb-expert-testimonials-carousel__media-placeholder" aria-hidden="true"></div>
+                {% endif %}
+              </div>
+
+              {% if expert_name != blank %}
+                <p class="sb-expert-testimonials-carousel__name font-callout weight-bold">{{ expert_name }}</p>
+              {% endif %}
+              {% if expert_title != blank %}
+                <p class="sb-expert-testimonials-carousel__role font-body weight-regular">{{ expert_title }}</p>
+              {% endif %}
+              {% if expert_quote != blank %}
+                <p class="sb-expert-testimonials-carousel__quote font-body weight-regular">{{ expert_quote }}</p>
+              {% endif %}
+            </article>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="sb-expert-testimonials-carousel__controls" data-sb-carousel-controls>
+      <button type="button" class="sb-expert-testimonials-carousel__arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+        <span class="sb-expert-testimonials-carousel__arrow-icon sb-expert-testimonials-carousel__arrow-icon--left" aria-hidden="true">
+          {{ 'icon-carousel-arrow-left-filled.svg' | inline_asset_content }}
+        </span>
+      </button>
+
+      <button type="button" class="sb-expert-testimonials-carousel__arrow" data-sb-carousel-next aria-label="Next" disabled>
+        <span class="sb-expert-testimonials-carousel__arrow-icon sb-expert-testimonials-carousel__arrow-icon--right" aria-hidden="true">
+          {{ 'icon-carousel-arrow-left-filled.svg' | inline_asset_content }}
+        </span>
+      </button>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .sb-expert-testimonials-carousel {
+    --sb-carousel-gap: var(--sb-space-36);
+    --sb-carousel-bleed-inline: var(--page-margin);
+    width: 100%;
+  }
+
+  .sb-expert-testimonials-carousel__title {
+    color: var(--sb-color-neutral-900);
+    margin: 0 0 var(--sb-space-48);
+    text-align: center;
+  }
+
+  .sb-expert-testimonials-carousel__viewport {
+    margin-left: calc(-1 * var(--sb-carousel-bleed-inline));
+    margin-right: calc(-1 * var(--sb-carousel-bleed-inline));
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-left: var(--sb-carousel-bleed-inline);
+    padding-right: var(--sb-carousel-bleed-inline);
+    scrollbar-width: none;
+    width: calc(100% + (var(--sb-carousel-bleed-inline) * 2));
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sb-expert-testimonials-carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sb-expert-testimonials-carousel__track {
+    display: flex;
+    gap: var(--sb-carousel-gap);
+    padding: 0;
+    width: max-content;
+  }
+
+  .sb-expert-testimonials-carousel__item {
+    flex: 0 0 283px;
+    max-width: 283px;
+    min-width: 283px;
+  }
+
+  .sb-expert-testimonials-carousel__media {
+    border-radius: var(--sb-space-24);
+    height: 283px;
+    overflow: hidden;
+    width: 283px;
+  }
+
+  .sb-expert-testimonials-carousel__media img,
+  .sb-expert-testimonials-carousel__media-placeholder {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-expert-testimonials-carousel__media-placeholder {
+    background: var(--sb-color-neutral-200);
+  }
+
+  .sb-expert-testimonials-carousel__name {
+    color: var(--sb-color-neutral-900);
+    font-family: var(--font-primary--family);
+    margin: var(--sb-space-24) 0 0;
+  }
+
+  .sb-expert-testimonials-carousel__role {
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-12) 0 0;
+  }
+
+  .sb-expert-testimonials-carousel__quote {
+    color: var(--sb-color-neutral-900);
+    font-style: italic;
+    margin: var(--sb-space-12) 0 0;
+  }
+
+  .sb-expert-testimonials-carousel__controls {
+    align-items: center;
+    display: none;
+    gap: var(--sb-space-16);
+    justify-content: flex-end;
+    margin: var(--sb-space-48) 0 0;
+  }
+
+  .sb-expert-testimonials-carousel.is-overflowing .sb-expert-testimonials-carousel__controls {
+    display: flex;
+  }
+
+  .sb-expert-testimonials-carousel__arrow {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    height: var(--sb-space-48);
+    justify-content: center;
+    padding: 0;
+    width: var(--sb-space-48);
+  }
+
+  .sb-expert-testimonials-carousel__arrow[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .sb-expert-testimonials-carousel__arrow-icon {
+    display: inline-flex;
+    height: var(--sb-space-48);
+    width: var(--sb-space-48);
+  }
+
+  .sb-expert-testimonials-carousel__arrow-icon--right {
+    transform: scaleX(-1);
+  }
+
+  .sb-expert-testimonials-carousel__arrow-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-expert-testimonials-carousel__arrow-icon svg path:first-child {
+    fill: var(--sb-color-neutral-200);
+  }
+
+  .sb-expert-testimonials-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-neutral-800);
+  }
+
+  .sb-expert-testimonials-carousel__arrow:hover:not([disabled]) .sb-expert-testimonials-carousel__arrow-icon svg path:last-child,
+  .sb-expert-testimonials-carousel__arrow:focus-visible:not([disabled]) .sb-expert-testimonials-carousel__arrow-icon svg path:last-child {
+    fill: var(--sb-color-primary-500);
+  }
+
+  .sb-expert-testimonials-carousel.is-not-overflowing .sb-expert-testimonials-carousel__track {
+    margin-inline: auto;
+  }
+{% endstylesheet %}
+
+{% render 'sb-carousel-init' %}
+
+{% schema %}
+{
+  "name": "Expert testimonials",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_product_metaobjects",
+      "label": "Use product page metaobjects",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Expert testimonials"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Target minimum 283x283 at 3x export (849x849)."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Name"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "\"Quote\""
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Expert testimonials",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        },
+        {
+          "type": "item"
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}
