@@ -914,7 +914,11 @@ video.sb-product-main__media-asset {
   margin-top: var(--sb-space-24) !important;
 }
 
-/* Keep a medium section gap between reviews heading and widget */
+/* Keep expected spacing around reviews heading on PDP */
+.shopify-section:has(.sb-product-main) + .shopify-section:has(.sb-reviews-heading) {
+  margin-top: var(--sb-space-96);
+}
+
 .shopify-section:has(.sb-reviews-heading) + .shopify-section {
   margin-top: var(--sb-space-48);
 }

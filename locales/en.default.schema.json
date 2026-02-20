@@ -49,7 +49,37 @@
     "text_style": "Text style",
     "text": "Text"
   },
+  "names": {
+    "section": "Section"
+  },
+  "content": {
+    "layout": "Layout",
+    "size": "Size",
+    "appearance": "Appearance",
+    "padding": "Padding"
+  },
+  "settings": {
+    "direction": "Direction",
+    "alignment": "Alignment",
+    "position": "Position",
+    "gap": "Gap",
+    "width": "Width",
+    "height": "Height",
+    "color_scheme": "Color scheme",
+    "background_media": "Background media",
+    "borders": "Borders",
+    "border_radius": "Border radius",
+    "background_overlay": "Background overlay",
+    "top": "Top",
+    "bottom": "Bottom"
+  },
   "options": {
+    "vertical": "Vertical",
+    "left": "Left",
+    "center": "Center",
+    "page": "Page",
+    "auto": "Auto",
+    "none": "None",
     "alignment": {
       "left": "Left",
       "center": "Center",
@@ -71,6 +101,6 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
-    },
+    }
   }
 }

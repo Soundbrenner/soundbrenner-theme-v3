@@ -17,6 +17,19 @@
     "mobile_page_margin": 16,
     "background_color": "#FFFFFF",
     "foreground_color": "#333333",
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#FFFFFF",
+          "background_gradient": "",
+          "text": "#000000",
+          "button": "#00B59C",
+          "button_label": "#FFFFFF",
+          "secondary_button_label": "#000000",
+          "shadow": "#000000"
+        }
+      }
+    },
     "input_corner_radius": 4,
     "seasonal_hero_image_desktop": "shopify://shop_images/Property_1_Valentine_s_Day_Sale_373634bf-b192-4924-829b-7bd67ca9e28b.jpg",
     "seasonal_hero_image_mobile": "shopify://shop_images/Property_1_Valentine_s_Day_Sale_mobile_024ca7f0-b014-4642-a7fa-c6131d2e30f2.jpg",
