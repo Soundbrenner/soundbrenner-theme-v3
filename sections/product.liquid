@@ -356,8 +356,20 @@
                   {% assign media_token_parts = media_token_clean | split: '::' %}
                   {% assign media_token_type = media_token_parts[0] %}
                   {% assign media_token_source = media_token_parts[1] %}
+                  {% assign media_token_poster = media_token_parts[2] %}
                   <div class="sb-product-main__media-item{% if media_token_type == 'video' %} sb-product-main__media-item--video{% endif %}" data-sb-reveal-item>
                     {% if media_token_type == 'video' %}
+                      {% if media_token_poster != blank %}
+                        <img
+                          class="sb-product-main__media-video-poster"
+                          data-gallery-video-poster
+                          src="{{ media_token_poster | escape }}"
+                          alt="{{ product.title | escape }}"
+                          loading="lazy"
+                          width="720"
+                          height="720"
+                        >
+                      {% endif %}
                       <video
                         class="sb-product-main__media-asset sb-product-main__media-asset--video"
                         data-gallery-video
@@ -367,6 +379,9 @@
                         muted
                         playsinline
                         preload="metadata"
+                        {% if media_token_poster != blank %}
+                          poster="{{ media_token_poster | escape }}"
+                        {% endif %}
                         src="{{ media_token_source }}"
                       ></video>
                     {% else %}
@@ -396,6 +411,20 @@
                           sizes: '(min-width: 990px) 720px, 100vw'
                       }}
                     {% when 'video' %}
+                      {% assign media_video_poster = blank %}
+                      {% if media.preview_image != blank %}
+                        {% assign media_video_poster = media.preview_image | image_url: width: 1440 %}
+                        <img
+                          class="sb-product-main__media-video-poster"
+                          data-gallery-video-poster
+                          src="{{ media_video_poster | escape }}"
+                          alt="{{ product.title | escape }}"
+                          loading="lazy"
+                          width="1440"
+                          height="1440"
+                          sizes="(min-width: 990px) 720px, 100vw"
+                        >
+                      {% endif %}
                       {{
                         media
                         | video_tag:
@@ -406,6 +435,7 @@
                           muted: true,
                           controls: false,
                           playsinline: true,
+                          poster: media_video_poster,
                           preload: 'metadata'
                       }}
                     {% else %}
@@ -1687,6 +1717,7 @@
     box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     aspect-ratio: 1 / 1;
     overflow: hidden;
+    position: relative;
     width: 100%;
   }
 
@@ -1697,6 +1728,17 @@
     width: 100%;
   }
 
+  .sb-product-main__media-video-poster {
+    height: 100%;
+    left: 0;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+  }
+
   .sb-product-main__media-item--video {
     background: var(--sb-color-neutral-200);
   }
@@ -1704,10 +1746,16 @@
   .sb-product-main__media-item--video .sb-product-main__media-asset--video {
     background: var(--sb-color-neutral-200);
     opacity: 0;
+    position: relative;
+    z-index: 2;
   }
 
   .sb-product-main__media-item--video.is-video-ready .sb-product-main__media-asset--video {
     opacity: 1;
+  }
+
+  .sb-product-main__media-item--video.is-video-ready .sb-product-main__media-video-poster {
+    display: none;
   }
 
   .sb-product-main__info-column {
@@ -3049,12 +3097,11 @@
             mediaItem.classList.add('is-video-ready');
           };
 
-          video.addEventListener('loadeddata', markReady, { once: true });
-          video.addEventListener('canplay', markReady, { once: true });
           video.addEventListener('playing', markReady, { once: true });
+          video.addEventListener('timeupdate', markReady, { once: true });
           video.addEventListener('error', markReady, { once: true });
 
-          if (video.readyState >= 2) {
+          if (video.readyState >= 2 && !video.paused) {
             markReady();
           }
 
@@ -3077,10 +3124,15 @@
             const parts = token.split('::');
             const type = parts[0] || '';
             const source = parts[1] || '';
+            const poster = parts[2] || '';
             if (!source) return '';
 
             if (type === 'video') {
-              return `<div class=\"sb-product-main__media-item sb-product-main__media-item--video\" data-sb-reveal-item><video class=\"sb-product-main__media-asset sb-product-main__media-asset--video\" data-gallery-video style=\"background: var(--sb-color-neutral-200);\" autoplay loop muted playsinline preload=\"metadata\" src=\"${escapeHtml(source)}\"></video></div>`;
+              const posterMarkup = poster
+                ? `<img class=\"sb-product-main__media-video-poster\" data-gallery-video-poster src=\"${escapeHtml(poster)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\">`
+                : '';
+              const posterAttribute = poster ? ` poster=\"${escapeHtml(poster)}\"` : '';
+              return `<div class=\"sb-product-main__media-item sb-product-main__media-item--video\" data-sb-reveal-item>${posterMarkup}<video class=\"sb-product-main__media-asset sb-product-main__media-asset--video\" data-gallery-video style=\"background: var(--sb-color-neutral-200);\" autoplay loop muted playsinline preload=\"metadata\"${posterAttribute} src=\"${escapeHtml(source)}\"></video></div>`;
             }
 
             return `<div class=\"sb-product-main__media-item\" data-sb-reveal-item><img class=\"sb-product-main__media-asset\" src=\"${escapeHtml(source)}\" alt=\"${escapeHtml(productTitle)}\" loading=\"lazy\" width=\"720\" height=\"720\"></div>`;
