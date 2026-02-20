@@ -80,12 +80,6 @@
       ],
       "settings": {}
     },
-    "often_bought_together": {
-      "type": "often-bought-together",
-      "settings": {
-        "title": "Often bought together"
-      }
-    },
     "expert_testimonials_carousel": {
       "type": "expert-testimonials",
       "settings": {
@@ -99,6 +93,12 @@
         "use_resource_title_description": false,
         "use_product_page_metaobjects": true,
         "enable_app_download_buttons": false
+      }
+    },
+    "often_bought_together": {
+      "type": "often-bought-together",
+      "settings": {
+        "title": "Often bought together"
       }
     }
   },
