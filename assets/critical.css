@@ -2765,7 +2765,7 @@ button[aria-label='Modal close button']:focus-visible::after {
   font-family: var(--font-primary--family) !important;
   font-size: var(--font-size-caption) !important;
   font-weight: 700 !important;
-  gap: var(--sb-space-6) !important;
+  gap: var(--sb-space-8) !important;
   height: var(--sb-space-48) !important;
   justify-content: center !important;
   line-height: 1 !important;
@@ -2831,13 +2831,13 @@ button[aria-label='Modal close button']:focus-visible::after {
 }
 
 .shopify-block.collabs-page .collabs-page__cta-main::after {
-  background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath fill='%23FFFFFF' d='M10.899 32.445a1.667 1.667 0 0 1 0-2.357L24.72 16.267H12.5a1.667 1.667 0 1 1 0-3.334h16.25A1.667 1.667 0 0 1 30.417 14.6v16.25a1.667 1.667 0 0 1-3.334 0V18.624L13.256 32.445a1.667 1.667 0 0 1-2.357 0Z'/%3E%3C/svg%3E") !important;
+  background: center / contain no-repeat url("arrow-reduced-padding.svg") !important;
   content: '' !important;
   display: inline-block !important;
   flex: 0 0 auto !important;
-  height: var(--sb-space-20) !important;
-  margin-left: var(--sb-space-8) !important;
-  width: var(--sb-space-20) !important;
+  height: var(--sb-space-16) !important;
+  margin-left: 0 !important;
+  width: var(--sb-space-16) !important;
 }
 
 /* Collabs strict overrides for page section key: collabs_app */
@@ -2870,7 +2870,7 @@ button[aria-label='Modal close button']:focus-visible::after {
 }
 
 .shopify-section[id*="__collabs_app"] .shopify-block.collabs-page .collabs-page__cta-main::after {
-  background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath fill='%23FFFFFF' d='M10.899 32.445a1.667 1.667 0 0 1 0-2.357L24.72 16.267H12.5a1.667 1.667 0 1 1 0-3.334h16.25A1.667 1.667 0 0 1 30.417 14.6v16.25a1.667 1.667 0 0 1-3.334 0V18.624L13.256 32.445a1.667 1.667 0 0 1-2.357 0Z'/%3E%3C/svg%3E") !important;
+  background: center / contain no-repeat url("arrow-reduced-padding.svg") !important;
 }
 
 .shopify-section[id*="__collabs_app"] .shopify-block.collabs-page .collabs-page__cta-main,

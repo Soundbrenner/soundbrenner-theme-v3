@@ -530,6 +530,7 @@
                     </span>
                   </summary>
                   <ul class="menu-drawer__menu menu-drawer__menu--childlist" role="list">
+                    {% assign drawer_submenu_animation_index = 0 %}
                     {% for block in section.blocks %}
                       {% liquid
                         assign drawer_block_type_key = block.type
@@ -662,8 +663,9 @@
                         if drawer_image != blank
                           assign drawer_card_image_url = drawer_image | image_url: width: 502
                         endif
+                        assign drawer_submenu_animation_index = drawer_submenu_animation_index | plus: 1
                       %}
-                      <li class="menu-drawer__submenu-item menu-drawer__submenu-animated-element" style="--menu-drawer-animation-index: {{ forloop.index }};">
+                      <li class="menu-drawer__submenu-item menu-drawer__submenu-animated-element" style="--menu-drawer-animation-index: {{ drawer_submenu_animation_index }};">
                         {% unless drawer_hide_primary_tile %}
                           <a class="menu-drawer__submenu-card{% if drawer_is_app %} menu-drawer__submenu-card--app{% endif %}{% if drawer_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_badge_type }}{% endif %}" href="{{ drawer_card_link }}">
                             <span class="menu-drawer__submenu-media" aria-hidden="true">
@@ -1594,7 +1596,7 @@
     flex-direction: column;
     height: 100dvh;
     left: 0;
-    max-width: 500px;
+    max-width: min(500px, calc(100vw - 16px));
     opacity: 0;
     overflow: hidden;
     overscroll-behavior: contain;
@@ -1607,7 +1609,7 @@
       visibility var(--sb-drawer-animation-speed) ease,
       opacity var(--sb-drawer-animation-speed) ease;
     visibility: hidden;
-    width: min(100vw, 500px);
+    width: min(500px, calc(100vw - 16px));
     box-shadow: 0 var(--sb-space-4) var(--sb-space-20) 0 var(--sb-color-always-black-25);
     z-index: 79;
     -webkit-overflow-scrolling: touch;
@@ -1839,6 +1841,7 @@
     border-radius: 12px;
     color: var(--sb-color-neutral-900);
     display: flex;
+    flex-wrap: nowrap;
     gap: var(--sb-space-24);
     justify-content: center;
     margin: var(--sb-space-20);
@@ -1849,6 +1852,7 @@
     align-items: flex-end;
     color: inherit;
     display: inline-flex;
+    flex: 0 0 auto;
     text-decoration: none;
   }
 
@@ -1897,6 +1901,17 @@
   .menu-drawer__trustpilot-link--text:hover,
   .menu-drawer__trustpilot-link--text:focus-visible {
     text-decoration: underline;
+  }
+
+  .menu-drawer__trustpilot.is-stacked {
+    align-items: center;
+    flex-direction: column;
+    gap: var(--sb-space-16);
+  }
+
+  .menu-drawer__trustpilot.is-stacked .menu-drawer__trustpilot-link {
+    align-items: center;
+    justify-content: center;
   }
 
   .menu-drawer__review {
@@ -2021,7 +2036,7 @@
   }
 
   .menu-drawer__submenu-card {
-    align-items: stretch;
+    align-items: center;
     background: var(--sb-color-neutral-100);
     border-radius: 12px;
     color: var(--sb-color-neutral-900);
@@ -2031,6 +2046,9 @@
     overflow: visible;
     position: relative;
     text-decoration: none;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 220ms ease;
   }
 
   .menu-drawer__submenu-card--app {
@@ -2047,16 +2065,18 @@
 
   .menu-drawer__submenu-card:hover,
   .menu-drawer__submenu-card:focus-visible {
-    background: var(--sb-color-neutral-300);
     color: var(--sb-color-neutral-900);
+    transform: scale(1.015);
   }
 
   .menu-drawer__submenu-media {
+    align-items: center;
     border-bottom-left-radius: 12px;
     border-top-left-radius: 12px;
-    display: block;
+    display: flex;
     flex: 0 0 var(--sb-space-128);
     height: var(--sb-space-128);
+    justify-content: center;
     overflow: hidden;
     position: relative;
     width: var(--sb-space-128);
@@ -2212,13 +2232,16 @@
     min-height: var(--sb-space-48);
     padding: 0 var(--sb-space-20);
     text-decoration: none;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 220ms ease;
     width: calc(100% - var(--sb-space-128));
   }
 
   .menu-drawer__submenu-secondary:hover,
   .menu-drawer__submenu-secondary:focus-visible {
-    background: var(--sb-color-neutral-300);
     color: var(--sb-color-neutral-900);
+    transform: scale(1.015);
   }
 
   .menu-drawer__submenu-store {
@@ -2475,6 +2498,9 @@
     const mobileMenuReviewDate = mobileMenuReview
       ? mobileMenuReview.querySelector('[data-mobile-menu-review-date]')
       : null;
+    const mobileMenuTrustpilot = mobileMenuDrawer
+      ? mobileMenuDrawer.querySelector('.menu-drawer__trustpilot')
+      : null;
     let mobileMenuCloseTimer = null;
     const mobileMenuPreloadedSources = new Set();
     const primaryMenuPreloadedSources = new Set();
@@ -2610,6 +2636,31 @@
         preloadPrimaryMenuImages();
       }, 180);
     };
+    const updateMobileMenuTrustpilotLayout = () => {
+      if (!mobileMenuTrustpilot) return;
+
+      mobileMenuTrustpilot.classList.remove('is-stacked');
+      if (isDesktopViewport()) return;
+
+      const trustpilotLinks = Array.from(mobileMenuTrustpilot.querySelectorAll('.menu-drawer__trustpilot-link'));
+      if (trustpilotLinks.length <= 1) return;
+
+      const trustpilotGapValue = parseFloat(
+        window.getComputedStyle(mobileMenuTrustpilot).columnGap
+          || window.getComputedStyle(mobileMenuTrustpilot).gap
+          || '0'
+      ) || 0;
+
+      const totalLinksWidth = trustpilotLinks.reduce(
+        (sum, linkElement) => sum + linkElement.getBoundingClientRect().width,
+        0
+      );
+      const requiredWidth = totalLinksWidth + trustpilotGapValue * (trustpilotLinks.length - 1);
+      const availableWidth = Math.max(0, mobileMenuTrustpilot.clientWidth - 32);
+      if (requiredWidth > availableWidth) {
+        mobileMenuTrustpilot.classList.add('is-stacked');
+      }
+    };
     const getReviewMonthAndYear = () => {
       const now = new Date();
       const previousMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
@@ -2695,6 +2746,7 @@
       mobileMenuToggle.setAttribute('aria-expanded', 'true');
       scheduleMobileMenuPreload();
       mobileMenuDrawer.classList.add('menu-open');
+      window.requestAnimationFrame(updateMobileMenuTrustpilotLayout);
       document.body.classList.add('is-mobile-menu-open');
       syncPageScrollLock();
     };
@@ -2748,6 +2800,7 @@
           }
 
           scheduleMobileMenuPreload();
+          window.requestAnimationFrame(updateMobileMenuTrustpilotLayout);
         },
         { passive: true }
       );
@@ -2762,6 +2815,7 @@
       document.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
       document.addEventListener('wheel', preventBackgroundScroll, { passive: false });
       scheduleMobileMenuPreload();
+      window.requestAnimationFrame(updateMobileMenuTrustpilotLayout);
     }
 
     const countdownRoot = header.querySelector('[data-announcement-countdown]');

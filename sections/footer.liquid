@@ -275,25 +275,38 @@
 
   .sb-footer__newsletter-klaviyo {
     margin-top: calc(var(--sb-space-20) - var(--sb-space-16));
+    overflow: visible !important;
+    position: relative !important;
     width: 100%;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form {
-    background-color: var(--sb-color-neutral-600) !important;
+    background-color: var(--sb-color-neutral-500) !important;
     border-radius: 999px !important;
-    overflow: hidden !important;
+    overflow: visible !important;
+    position: relative !important;
     box-shadow:
       0 1px 0 0 var(--sb-color-always-white-25),
       0 4px 4px 0 var(--sb-color-always-black-25) inset !important;
   }
 
+  .sb-footer__newsletter-klaviyo .klaviyo-form:hover,
+  .sb-footer__newsletter-klaviyo .klaviyo-form:active,
+  .sb-footer__newsletter-klaviyo .klaviyo-form:focus-within {
+    background-color: var(--sb-color-neutral-600) !important;
+  }
+
   .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-row'] {
     align-items: stretch !important;
+    overflow: visible !important;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:first-child {
     flex: 1 1 auto !important;
+    overflow: visible !important;
     padding: 0 !important;
+    position: relative !important;
+    z-index: 1 !important;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:first-child > div {
@@ -306,17 +319,21 @@
   .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child {
     margin: 0 !important;
     padding: var(--sb-space-6) var(--sb-space-6) var(--sb-space-6) 0 !important;
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 3 !important;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form button {
     align-items: center !important;
     background-color: var(--sb-color-primary-500) !important;
-    background-image: url('{{ 'icon-arrow-medium-transparent-padding-32.svg' | asset_url }}') !important;
+    background-image: url('{{ 'arrow-reduced-padding.svg' | asset_url }}') !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: var(--sb-space-16) var(--sb-space-16) !important;
     border: 1px solid var(--sb-color-primary-500) !important;
     border-radius: 999px !important;
+    box-sizing: border-box !important;
     box-shadow:
       0 -10px 20px 0 var(--sb-color-primary-500-25),
       0 0 0 1px var(--sb-color-primary-700) inset,
@@ -344,6 +361,8 @@
     min-width: calc(var(--sb-space-16) * 3) !important;
     width: calc(var(--sb-space-16) * 3) !important;
     max-width: calc(var(--sb-space-16) * 3) !important;
+    overflow: visible !important;
+    z-index: 4 !important;
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form button::before {
@@ -395,7 +414,7 @@
       0 0 0 1px var(--sb-color-primary-700) inset,
       0 -20px 20px 0 var(--sb-color-always-white-50) inset,
       0 2px 1px 0 var(--sb-color-always-white-50) inset !important;
-    transform: translateY(-1px);
+    transform: translateY(var(--sb-button-hover-lift, -2px));
   }
 
   .sb-footer__newsletter-klaviyo .klaviyo-form button:active {
@@ -641,18 +660,21 @@
       const firstComponent = root.querySelector('[data-testid="form-component"]:first-child');
       const firstComponentInner = firstComponent ? firstComponent.querySelector('div') : null;
       const lastComponent = root.querySelector('[data-testid="form-component"]:last-child');
-      const iconUrl = {{ 'icon-arrow-medium-transparent-padding-32.svg' | asset_url | json }};
+      const iconUrl = {{ 'arrow-reduced-padding.svg' | asset_url | json }};
       if (!form || !input || !button) return;
 
       button.classList.add('sb-button-radiant', 'sb-button-radiant--medium');
       button.setAttribute('aria-label', {{ section.settings.newsletter_button_label | json }});
 
       setImportant(form, 'border-radius', '999px');
-      setImportant(form, 'overflow', 'hidden');
+      setImportant(form, 'overflow', 'visible');
 
       if (firstComponent) {
         setImportant(firstComponent, 'padding', '0');
         setImportant(firstComponent, 'flex', '1 1 auto');
+        setImportant(firstComponent, 'overflow', 'visible');
+        setImportant(firstComponent, 'position', 'relative');
+        setImportant(firstComponent, 'z-index', '1');
       }
       if (firstComponentInner) {
         setImportant(firstComponentInner, 'height', '100%');
@@ -663,6 +685,9 @@
       if (lastComponent) {
         setImportant(lastComponent, 'padding', 'var(--sb-space-6) var(--sb-space-6) var(--sb-space-6) 0');
         setImportant(lastComponent, 'margin', '0');
+        setImportant(lastComponent, 'overflow', 'visible');
+        setImportant(lastComponent, 'position', 'relative');
+        setImportant(lastComponent, 'z-index', '3');
       }
 
       setImportant(input, 'height', 'var(--sb-space-48)');
@@ -683,6 +708,9 @@
       setImportant(button, 'min-width', 'calc(var(--sb-space-16) * 3)');
       setImportant(button, 'padding-left', 'var(--sb-space-16)');
       setImportant(button, 'padding-right', 'var(--sb-space-16)');
+      setImportant(button, 'box-sizing', 'border-box');
+      setImportant(button, 'overflow', 'visible');
+      setImportant(button, 'z-index', '4');
       setImportant(button, 'line-height', '0');
       setImportant(button, 'font-size', '0');
       setImportant(button, 'color', 'transparent');
