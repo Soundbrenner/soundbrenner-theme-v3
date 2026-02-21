@@ -118,9 +118,9 @@
             "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Playtronica_f98ae1eb-f6c7-441b-87ec-d7775efaf9b1.jpg",
             "related_product_1": "playtron-midi-instrument",
-            "related_product_1_hide": false,
+            "related_product_1_hide": true,
             "related_product_2": "touchme-midi-instrument",
-            "related_product_2_hide": false,
+            "related_product_2_hide": true,
             "related_product_3": "",
             "related_product_3_hide": false
           }
