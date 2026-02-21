@@ -17,97 +17,205 @@
         "iem_card_1": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 1,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "Wave in-ear monitors 1",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/in-ear-monitors"
+            "card_link": "shopify://collections/in-ear-monitors",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "iem_card_2": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 1,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "Wave in-ear monitors 2",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/in-ear-monitors"
+            "card_link": "shopify://collections/in-ear-monitors",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "iem_card_3": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 1,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "Wave in-ear monitors 3",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/in-ear-monitors"
+            "card_link": "shopify://collections/in-ear-monitors",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "wearables_card_1": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 2,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "Wearables 1",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/wearables"
+            "card_link": "shopify://collections/wearables",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "wearables_card_2": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 2,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "Wearables 2",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/wearables"
+            "card_link": "shopify://collections/wearables",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "wearables_card_3": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 2,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "Wearables 3",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/wearables"
+            "card_link": "shopify://collections/wearables",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "wearables_card_4": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 2,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "Wearables 4",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/wearables"
+            "card_link": "shopify://collections/wearables",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "earplugs_card_1": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 3,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "Earplugs 1",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/earplugs"
+            "card_link": "shopify://collections/earplugs",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "more_products_card_1": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 4,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "More products 1",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/all"
+            "card_link": "shopify://collections/all",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "more_products_card_2": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 4,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "More products 2",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/all"
+            "card_link": "shopify://collections/all",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "more_products_card_3": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 4,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "More products 3",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/all"
+            "card_link": "shopify://collections/all",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         },
         "more_products_card_4": {
           "type": "mega_menu_card",
           "settings": {
+            "menu_item_index": 4,
+            "card_mode": "standard",
+            "product": "",
+            "collection": "",
+            "page": "",
             "title": "More products 4",
             "body": "Placeholder card. Replace this content in Header settings.",
-            "card_link": "shopify://collections/all"
+            "card_link": "shopify://collections/all",
+            "submenu": "",
+            "app_rating_label": "4.8 stars on app stores",
+            "app_store_url": "",
+            "google_play_url": ""
           }
         }
       },
