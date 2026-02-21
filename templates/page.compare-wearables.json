@@ -1,15 +1,31 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero_card_main": {
       "type": "hero-card",
       "settings": {
-        "use_resource_title_description": true,
         "use_seasonal_hero_card": false,
+        "use_resource_title_description": true,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_Compare_de123224-9bcb-462d-ae7a-5304c9d26668.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_Compare_mobile.jpg",
+        "kicker": "",
+        "headline": "",
+        "subheadline": "",
         "show_button": false,
         "button_label": "",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": ""
+        "button_link": "",
+        "enable_app_download_buttons": false
       }
     },
     "compare": {
@@ -19,5 +35,8 @@
       }
     }
   },
-  "order": ["hero_card_main", "compare"]
+  "order": [
+    "hero_card_main",
+    "compare"
+  ]
 }
