@@ -223,10 +223,6 @@
                         assign card_image_url = blank
                         if card_image != blank
                           assign card_image_url = card_image | image_url: width: 584
-                        elsif card_product != blank and card_product.featured_image != blank
-                          assign card_image_url = card_product.featured_image | image_url: width: 584
-                        elsif card_collection != blank and card_collection.featured_image != blank
-                          assign card_image_url = card_collection.featured_image | image_url: width: 584
                         endif
 
                         assign card_badge_label = blank
@@ -1912,26 +1908,22 @@
               "value": "page",
               "label": "Page"
             }
-          ],
-          "visible_if": "{{ block.settings.app_mode == false }}"
+          ]
         },
         {
           "type": "product",
           "id": "product",
-          "label": "Product",
-          "visible_if": "{{ block.settings.app_mode == false and block.settings.source_type == 'product' }}"
+          "label": "Product"
         },
         {
           "type": "collection",
           "id": "collection",
-          "label": "Collection",
-          "visible_if": "{{ block.settings.app_mode == false and block.settings.source_type == 'collection' }}"
+          "label": "Collection"
         },
         {
           "type": "page",
           "id": "page",
-          "label": "Page",
-          "visible_if": "{{ block.settings.app_mode == false and block.settings.source_type == 'page' }}"
+          "label": "Page"
         },
         {
           "type": "image_picker",
@@ -1942,38 +1934,32 @@
         {
           "type": "text",
           "id": "link_1_label",
-          "label": "Link 1 label",
-          "visible_if": "{{ block.settings.app_mode == false }}"
+          "label": "Link 1 label"
         },
         {
           "type": "url",
           "id": "link_1_url",
-          "label": "Link 1 destination",
-          "visible_if": "{{ block.settings.app_mode == false }}"
+          "label": "Link 1 destination"
         },
         {
           "type": "text",
           "id": "link_2_label",
-          "label": "Link 2 label",
-          "visible_if": "{{ block.settings.app_mode == false }}"
+          "label": "Link 2 label"
         },
         {
           "type": "url",
           "id": "link_2_url",
-          "label": "Link 2 destination",
-          "visible_if": "{{ block.settings.app_mode == false }}"
+          "label": "Link 2 destination"
         },
         {
           "type": "text",
           "id": "link_3_label",
-          "label": "Link 3 label",
-          "visible_if": "{{ block.settings.app_mode == false }}"
+          "label": "Link 3 label"
         },
         {
           "type": "url",
           "id": "link_3_url",
-          "label": "Link 3 destination",
-          "visible_if": "{{ block.settings.app_mode == false }}"
+          "label": "Link 3 destination"
         }
       ]
     }
