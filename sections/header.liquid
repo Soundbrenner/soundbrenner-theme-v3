@@ -173,34 +173,50 @@
                         if block_menu_index != link_index
                           continue
                         endif
-                        assign card_product = block.settings.product
-                        assign card_collection = block.settings.collection
-                        assign card_page = block.settings.page
+                        assign app_mode = block.settings.app_mode
+                        assign source_type = block.settings.source_type | default: 'product'
+                        assign card_product = blank
+                        assign card_collection = blank
+                        assign card_page = blank
+                        if app_mode != true
+                          case source_type
+                            when 'product'
+                              assign card_product = block.settings.product
+                            when 'collection'
+                              assign card_collection = block.settings.collection
+                            when 'page'
+                              assign card_page = block.settings.page
+                          endcase
+                        endif
                         assign card_image = block.settings.image
-                        assign card_title = block.settings.title | strip
-                        assign card_body = block.settings.body | strip
-                        assign card_mode = block.settings.card_mode
-                        assign card_link = block.settings.card_link
-                        assign card_rating_label = block.settings.app_rating_label | strip
-                        assign card_submenu = block.settings.submenu
+                        assign card_title = blank
+                        assign card_body = blank
+                        assign card_link = blank
+                        assign card_rating_label = '4.8 stars on app stores'
 
-                        if card_link == blank
+                        if app_mode == true
+                          assign card_link = routes.root_url | append: 'pages/the-app'
+                          assign card_title = 'The app'
+                          assign card_body = 'Download for iOS and Android'
+                        else
                           if card_product != blank
                             assign card_link = card_product.url
+                            assign card_title = card_product.title
+                            assign product_settings_ref = card_product.metafields.custom.sbv2_product_settings.value | default: card_product.metafields.custom.sbv2_product_settings
+                            if product_settings_ref != blank
+                              assign card_body = product_settings_ref.tagline.value | default: product_settings_ref.tagline
+                            endif
+                            if card_body == blank and card_product.description != blank
+                              assign card_body = card_product.description | strip_html
+                            endif
                           elsif card_collection != blank
                             assign card_link = card_collection.url
+                            assign card_title = card_collection.title
+                            assign card_body = card_collection.description | strip_html
                           elsif card_page != blank
                             assign card_link = card_page.url
-                          endif
-                        endif
-
-                        if card_title == blank
-                          if card_product != blank
-                            assign card_title = card_product.title
-                          elsif card_collection != blank
-                            assign card_title = card_collection.title
-                          elsif card_page != blank
                             assign card_title = card_page.title
+                            assign card_body = card_page.content | strip_html
                           endif
                         endif
 
@@ -266,36 +282,32 @@
                           <a class="header__mega-card-title-link" href="{{ card_link | default: '#' }}">{{ card_title | default: link.title }}</a>
                         </p>
 
-                        {% if card_mode == 'app' %}
+                        {% if app_mode == true %}
                           <div class="header__mega-card-app">
                             <p class="header__mega-card-rating font-body weight-regular">
                               <span class="header__mega-card-stars" aria-hidden="true">★★★★★</span>
-                              <span>{{ card_rating_label | default: '4.8 stars on app stores' }}</span>
+                              <span>{{ card_rating_label }}</span>
                             </p>
 
                             <div class="header__mega-card-app-links">
-                              {% if block.settings.app_store_url != blank %}
-                                <a href="{{ block.settings.app_store_url }}" aria-label="Download on the App Store">
-                                  <img
-                                    src="{{ 'app-download-app-store.png' | asset_url }}"
-                                    alt="Download on the App Store"
-                                    loading="lazy"
-                                    width="120"
-                                    height="36"
-                                  >
-                                </a>
-                              {% endif %}
-                              {% if block.settings.google_play_url != blank %}
-                                <a href="{{ block.settings.google_play_url }}" aria-label="Get it on Google Play">
-                                  <img
-                                    src="{{ 'app-download-google-play.png' | asset_url }}"
-                                    alt="Get it on Google Play"
-                                    loading="lazy"
-                                    width="120"
-                                    height="36"
-                                  >
-                                </a>
-                              {% endif %}
+                              <a href="{{ card_link }}" aria-label="Download on the App Store">
+                                <img
+                                  src="{{ 'app-download-app-store.png' | asset_url }}"
+                                  alt="Download on the App Store"
+                                  loading="lazy"
+                                  width="120"
+                                  height="36"
+                                >
+                              </a>
+                              <a href="{{ card_link }}" aria-label="Get it on Google Play">
+                                <img
+                                  src="{{ 'app-download-google-play.png' | asset_url }}"
+                                  alt="Get it on Google Play"
+                                  loading="lazy"
+                                  width="120"
+                                  height="36"
+                                >
+                              </a>
                             </div>
                           </div>
                         {% else %}
@@ -303,13 +315,34 @@
                             <p class="header__mega-card-body font-body weight-regular">{{ card_body }}</p>
                           {% endif %}
 
-                          {% if card_submenu != blank and card_submenu.links.size > 0 %}
+                          {% assign has_card_links = false %}
+                          {% if block.settings.link_1_label != blank and block.settings.link_1_url != blank %}
+                            {% assign has_card_links = true %}
+                          {% endif %}
+                          {% if block.settings.link_2_label != blank and block.settings.link_2_url != blank %}
+                            {% assign has_card_links = true %}
+                          {% endif %}
+                          {% if block.settings.link_3_label != blank and block.settings.link_3_url != blank %}
+                            {% assign has_card_links = true %}
+                          {% endif %}
+
+                          {% if has_card_links %}
                             <ul class="header__mega-card-links font-body weight-semibold" role="list">
-                              {% for submenu_link in card_submenu.links limit: 3 %}
+                              {% if block.settings.link_1_label != blank and block.settings.link_1_url != blank %}
                                 <li>
-                                  <a href="{{ submenu_link.url }}">{{ submenu_link.title }}</a>
+                                  <a href="{{ block.settings.link_1_url }}">{{ block.settings.link_1_label }}</a>
                                 </li>
-                              {% endfor %}
+                              {% endif %}
+                              {% if block.settings.link_2_label != blank and block.settings.link_2_url != blank %}
+                                <li>
+                                  <a href="{{ block.settings.link_2_url }}">{{ block.settings.link_2_label }}</a>
+                                </li>
+                              {% endif %}
+                              {% if block.settings.link_3_label != blank and block.settings.link_3_url != blank %}
+                                <li>
+                                  <a href="{{ block.settings.link_3_url }}">{{ block.settings.link_3_label }}</a>
+                                </li>
+                              {% endif %}
                             </ul>
                           {% endif %}
                         {% endif %}
@@ -1822,46 +1855,83 @@
       "type": "mega_menu_card",
       "name": "Mega menu card",
       "settings": [
-    {
-      "type": "range",
-      "id": "menu_item_index",
-      "label": "Menu item index",
-      "min": 1,
-      "max": 8,
-      "step": 1,
-      "default": 1,
-      "info": "Assign this card to a top-level menu item by position: 1 is first, 2 is second, and so on."
+        {
+          "type": "select",
+          "id": "menu_item_index",
+          "label": "Menu item index",
+          "default": "1",
+          "options": [
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            },
+            {
+              "value": "5",
+              "label": "5"
+            },
+            {
+              "value": "6",
+              "label": "6"
+            }
+          ],
+          "info": "Assign this card to a top-level menu item by position."
+        },
+        {
+          "type": "checkbox",
+          "id": "app_mode",
+          "label": "App mode",
+          "default": false
         },
         {
           "type": "select",
-          "id": "card_mode",
-          "label": "Card mode",
-          "default": "standard",
+          "id": "source_type",
+          "label": "Source type",
+          "default": "product",
           "options": [
             {
-              "value": "standard",
-              "label": "Standard"
+              "value": "product",
+              "label": "Product"
             },
             {
-              "value": "app",
-              "label": "App"
+              "value": "collection",
+              "label": "Collection"
+            },
+            {
+              "value": "page",
+              "label": "Page"
             }
-          ]
+          ],
+          "visible_if": "{{ block.settings.app_mode == false }}"
         },
         {
           "type": "product",
           "id": "product",
-          "label": "Product"
+          "label": "Product",
+          "visible_if": "{{ block.settings.app_mode == false and block.settings.source_type == 'product' }}"
         },
         {
           "type": "collection",
           "id": "collection",
-          "label": "Collection"
+          "label": "Collection",
+          "visible_if": "{{ block.settings.app_mode == false and block.settings.source_type == 'collection' }}"
         },
         {
           "type": "page",
           "id": "page",
-          "label": "Page"
+          "label": "Page",
+          "visible_if": "{{ block.settings.app_mode == false and block.settings.source_type == 'page' }}"
         },
         {
           "type": "image_picker",
@@ -1871,41 +1941,39 @@
         },
         {
           "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Wave in-ear monitors"
-        },
-        {
-          "type": "textarea",
-          "id": "body",
-          "label": "Description",
-          "default": "Placeholder card. Replace this content in Header settings."
+          "id": "link_1_label",
+          "label": "Link 1 label",
+          "visible_if": "{{ block.settings.app_mode == false }}"
         },
         {
           "type": "url",
-          "id": "card_link",
-          "label": "Card link"
-        },
-        {
-          "type": "link_list",
-          "id": "submenu",
-          "label": "Submenu links"
+          "id": "link_1_url",
+          "label": "Link 1 destination",
+          "visible_if": "{{ block.settings.app_mode == false }}"
         },
         {
           "type": "text",
-          "id": "app_rating_label",
-          "label": "App rating label",
-          "default": "4.8 stars on app stores"
+          "id": "link_2_label",
+          "label": "Link 2 label",
+          "visible_if": "{{ block.settings.app_mode == false }}"
         },
         {
           "type": "url",
-          "id": "app_store_url",
-          "label": "App Store link"
+          "id": "link_2_url",
+          "label": "Link 2 destination",
+          "visible_if": "{{ block.settings.app_mode == false }}"
+        },
+        {
+          "type": "text",
+          "id": "link_3_label",
+          "label": "Link 3 label",
+          "visible_if": "{{ block.settings.app_mode == false }}"
         },
         {
           "type": "url",
-          "id": "google_play_url",
-          "label": "Google Play link"
+          "id": "link_3_url",
+          "label": "Link 3 destination",
+          "visible_if": "{{ block.settings.app_mode == false }}"
         }
       ]
     }
@@ -1918,9 +1986,8 @@
         {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_index": 1,
-            "title": "Wave in-ear monitors",
-            "body": "Placeholder card. Replace this content in Header settings."
+            "menu_item_index": "1",
+            "source_type": "product"
           }
         }
       ]
