@@ -583,9 +583,9 @@
                             assign drawer_related_product_1_image = block.settings.related_product_1_image
                             assign drawer_related_product_2_image = block.settings.related_product_2_image
                             assign drawer_related_product_3_image = block.settings.related_product_3_image
-                            assign drawer_related_product_1_hide_on_mobile = block.settings.related_product_1_show_on_mobile | default: false
-                            assign drawer_related_product_2_hide_on_mobile = block.settings.related_product_2_show_on_mobile | default: false
-                            assign drawer_related_product_3_hide_on_mobile = block.settings.related_product_3_show_on_mobile | default: false
+                            assign drawer_related_product_1_hide_on_mobile = block.settings.related_product_1_hide | default: false
+                            assign drawer_related_product_2_hide_on_mobile = block.settings.related_product_2_hide | default: false
+                            assign drawer_related_product_3_hide_on_mobile = block.settings.related_product_3_hide | default: false
                           when 'primary_item_page'
                             assign drawer_card_page = block.settings.page
                           when 'primary_item_app'
@@ -875,7 +875,7 @@
           aria-label="Trustpilot logo link"
         >
           <span class="menu-drawer__trustpilot-logo" aria-hidden="true">
-            {{ 'trustpilot-logo-multicolor.svg' | inline_asset_content }}
+            {{ 'logo-trustpilot-multicolor.svg' | inline_asset_content }}
           </span>
         </a>
         <a
@@ -925,19 +925,19 @@
 
       <div class="menu-drawer__social menu-drawer__animated-element" style="--menu-drawer-animation-index: 9;" aria-label="Social links">
         <a class="menu-drawer__social-link" href="https://www.instagram.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-          {{ 'icon-instagram.svg' | inline_asset_content }}
+          {{ 'social-media-instagram.svg' | inline_asset_content }}
         </a>
         <a class="menu-drawer__social-link" href="https://www.facebook.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-          {{ 'icon-facebook.svg' | inline_asset_content }}
+          {{ 'social-media-facebook.svg' | inline_asset_content }}
         </a>
         <a class="menu-drawer__social-link" href="https://www.tiktok.com/@soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-          {{ 'icon-tiktok.svg' | inline_asset_content }}
+          {{ 'social-media-tiktok.svg' | inline_asset_content }}
         </a>
         <a class="menu-drawer__social-link" href="https://x.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="X">
-          {{ 'icon-x.svg' | inline_asset_content }}
+          {{ 'social-media-x.svg' | inline_asset_content }}
         </a>
         <a class="menu-drawer__social-link" href="https://www.youtube.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-          {{ 'icon-youtube.svg' | inline_asset_content }}
+          {{ 'social-media-youtube.svg' | inline_asset_content }}
         </a>
       </div>
     </nav>
@@ -1669,7 +1669,13 @@
     color: var(--sb-color-neutral-900);
     display: inline-flex;
     height: var(--sb-drawer-close-size);
+    transition: color 140ms ease;
     width: var(--sb-drawer-close-size);
+  }
+
+  .menu-drawer__close-button:hover .menu-drawer__close-icon,
+  .menu-drawer__close-button:focus-visible .menu-drawer__close-icon {
+    color: var(--sb-color-primary-500);
   }
 
   .menu-drawer__close-icon svg {
@@ -3707,7 +3713,7 @@
         },
         {
           "type": "checkbox",
-          "id": "related_product_1_show_on_mobile",
+          "id": "related_product_1_hide",
           "label": "Hide linked product 1 on mobile",
           "default": false
         },
@@ -3724,7 +3730,7 @@
         },
         {
           "type": "checkbox",
-          "id": "related_product_2_show_on_mobile",
+          "id": "related_product_2_hide",
           "label": "Hide linked product 2 on mobile",
           "default": false
         },
@@ -3741,7 +3747,7 @@
         },
         {
           "type": "checkbox",
-          "id": "related_product_3_show_on_mobile",
+          "id": "related_product_3_hide",
           "label": "Hide linked product 3 on mobile",
           "default": false
         }

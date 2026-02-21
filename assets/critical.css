@@ -901,9 +901,9 @@ video.sb-product-main__media-asset {
   display: inline-block;
   flex: 0 0 var(--sb-space-16);
   height: var(--sb-space-16);
-  mask: center / contain no-repeat url("icon-store-badge.svg");
+  mask: center / contain no-repeat url("icon-klaviyo-cart.svg");
   width: var(--sb-space-16);
-  -webkit-mask: center / contain no-repeat url("icon-store-badge.svg");
+  -webkit-mask: center / contain no-repeat url("icon-klaviyo-cart.svg");
 }
 
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__review_item > div > svg[width='100'][height='22'] {
@@ -1037,10 +1037,11 @@ video.sb-product-main__media-asset {
   display: inline-block;
   height: var(--sb-space-16);
   margin-left: var(--sb-space-8);
-  mask: center / contain no-repeat url("icon-chevron-down.svg");
+  mask: center / contain no-repeat url("icon-chevron.svg");
   pointer-events: none;
+  transform: rotate(90deg);
   width: var(--sb-space-16);
-  -webkit-mask: center / contain no-repeat url("icon-chevron-down.svg");
+  -webkit-mask: center / contain no-repeat url("icon-chevron.svg");
 }
 
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__filter_info {
@@ -1438,9 +1439,9 @@ video.sb-product-main__media-asset {
   display: inline-block;
   flex: 0 0 var(--sb-space-16);
   height: var(--sb-space-16);
-  mask: center / contain no-repeat url("icon-store-badge.svg");
+  mask: center / contain no-repeat url("icon-klaviyo-cart.svg");
   width: var(--sb-space-16);
-  -webkit-mask: center / contain no-repeat url("icon-store-badge.svg");
+  -webkit-mask: center / contain no-repeat url("icon-klaviyo-cart.svg");
 }
 
 /* Replace lightbox close icon with theme asset */
@@ -1782,9 +1783,9 @@ video.sb-product-main__media-asset {
   content: '';
   display: inline-block;
   height: var(--sb-space-16);
-  mask: center / contain no-repeat url("icon-chevron-right.svg");
+  mask: center / contain no-repeat url("icon-chevron.svg");
   width: var(--sb-space-16);
-  -webkit-mask: center / contain no-repeat url("icon-chevron-right.svg");
+  -webkit-mask: center / contain no-repeat url("icon-chevron.svg");
 }
 
 /* Exact spacing between summary block and filter pills */

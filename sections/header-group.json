@@ -101,13 +101,13 @@
             "image": "shopify://shop_images/Property_1_Stomp_foot_pedal_dd22d772-417a-485e-8aa1-589baced61dd.jpg",
             "related_product_1": "stomp-foot-pedal",
             "related_product_1_image": "shopify://shop_images/Property_1_Stomp_foot_pedal_dd22d772-417a-485e-8aa1-589baced61dd.jpg",
-            "related_product_1_show_on_mobile": false,
+            "related_product_1_hide": false,
             "related_product_2": "flow-microphone",
             "related_product_2_image": "shopify://shop_images/Property_1_Flow_microphone_b7dacb29-b98c-4a3b-93f2-121b0cf6f4b9.jpg",
-            "related_product_2_show_on_mobile": false,
+            "related_product_2_hide": false,
             "related_product_3": "genki-wave-midi-ring",
             "related_product_3_image": "shopify://shop_images/Property_1_Genki_Wave_4a8c55aa-0c6d-40aa-b3ec-7b887cf609c5.jpg",
-            "related_product_3_show_on_mobile": false
+            "related_product_3_hide": false
           }
         },
         "primary_item_collection_MWaXRa": {
@@ -118,11 +118,11 @@
             "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Playtronica_f98ae1eb-f6c7-441b-87ec-d7775efaf9b1.jpg",
             "related_product_1": "playtron-midi-instrument",
-            "related_product_1_show_on_mobile": true,
+            "related_product_1_hide": true,
             "related_product_2": "touchme-midi-instrument",
-            "related_product_2_show_on_mobile": true,
+            "related_product_2_hide": true,
             "related_product_3": "",
-            "related_product_3_show_on_mobile": false
+            "related_product_3_hide": false
           }
         },
         "primary_item_collection_NMFWmf": {
@@ -133,11 +133,11 @@
             "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Merch_cc4909a6-b4d9-4817-ae79-27a8d4cbb0bf.jpg",
             "related_product_1": "gift-card",
-            "related_product_1_show_on_mobile": false,
+            "related_product_1_hide": false,
             "related_product_2": "",
-            "related_product_2_show_on_mobile": false,
+            "related_product_2_hide": false,
             "related_product_3": "",
-            "related_product_3_show_on_mobile": false
+            "related_product_3_hide": false
           }
         }
       },

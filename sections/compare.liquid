@@ -8,7 +8,7 @@
     endif
     assign compare_products = compare_table.products.value | default: compare_table.products
   endif
-  assign compare_chevron_icon_url = 'icon-chevron-down.svg' | asset_url
+  assign compare_chevron_icon_url = 'icon-chevron.svg' | asset_url
   assign compare_add_to_cart_icon_url = 'icon-add-to-cart.svg' | asset_url
   assign compare_check_icon_url = 'icon-check.svg' | asset_url
 %}
@@ -767,6 +767,7 @@
     display: block;
     height: 100%;
     mask: center / contain no-repeat var(--sb-compare-chevron-url);
+    transform: rotate(90deg);
     width: 100%;
     -webkit-mask: center / contain no-repeat var(--sb-compare-chevron-url);
   }
