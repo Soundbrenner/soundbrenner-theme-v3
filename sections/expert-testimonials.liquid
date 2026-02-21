@@ -5,20 +5,24 @@
   assign section_items = blank
   assign hide_section = false
 
-  if request.page_type == 'product' and product != blank and use_product_metaobjects
-    assign product_testimonials_ref = product.metafields.custom.sbv2_expert_testimonials_carousel.value | default: product.metafields.custom.sbv2_expert_testimonials_carousel
+  if use_product_metaobjects
+    if request.page_type == 'product' and product != blank
+      assign product_testimonials_ref = product.metafields.custom.sbv2_expert_testimonials_carousel.value | default: product.metafields.custom.sbv2_expert_testimonials_carousel
 
-    if product_testimonials_ref != blank
-      assign uses_product_metaobjects = true
+      if product_testimonials_ref != blank
+        assign uses_product_metaobjects = true
 
-      assign product_title_value = product_testimonials_ref.title.value | default: product_testimonials_ref.title
-      if product_title_value != blank
-        assign section_title = product_title_value
-      endif
+        assign product_title_value = product_testimonials_ref.title.value | default: product_testimonials_ref.title
+        if product_title_value != blank
+          assign section_title = product_title_value
+        endif
 
-      assign section_items = product_testimonials_ref.items.value | default: product_testimonials_ref.items
+        assign section_items = product_testimonials_ref.items.value | default: product_testimonials_ref.items
 
-      if section_items == blank
+        if section_items == blank
+          assign hide_section = true
+        endif
+      else
         assign hide_section = true
       endif
     else
@@ -26,7 +30,7 @@
     endif
   endif
 
-  if uses_product_metaobjects == false and section.blocks.size == 0
+  if use_product_metaobjects == false and section.blocks.size == 0
     assign hide_section = true
   endif
 %}
@@ -203,7 +207,7 @@
   }
 
   .sb-expert-testimonials-carousel__media {
-    border-radius: var(--sb-space-24);
+    border-radius: 24px;
     height: 283px;
     overflow: hidden;
     width: 283px;
@@ -311,7 +315,7 @@
       "type": "checkbox",
       "id": "use_product_metaobjects",
       "label": "Use product page metaobjects",
-      "default": true
+      "default": false
     },
     {
       "type": "text",

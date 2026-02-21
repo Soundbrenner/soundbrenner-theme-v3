@@ -9,17 +9,23 @@
 {% assign hero_card_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353' %}
 {% assign hero_card_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse' %}
 {% assign hero_card_china_download_link = 'https://files.soundbrenner.com/downloads/TheMetronome.apk' %}
+{% assign seasonal_sale_name = settings.seasonal_sale_name | strip %}
+{% assign seasonal_sale_token = '{{ Seasonal sale name }}' %}
 
-{% if request.page_type == 'product' and product != blank and hero_card_use_product_metaobjects %}
-  {% assign hero_card_footer_ref = product.metafields.custom.sbv2_footer_card.value | default: product.metafields.custom.sbv2_footer_card %}
-  {% if hero_card_footer_ref != blank %}
-    {% assign hero_card_product_mode = true %}
-    {% assign hero_card_selected_variant = product.selected_or_first_available_variant %}
-    {% assign hero_card_source_image_desktop = hero_card_footer_ref.background_image_desktop.value | default: hero_card_footer_ref.background_image_desktop %}
-    {% assign hero_card_source_image_mobile = hero_card_footer_ref.background_image_mobile.value | default: hero_card_footer_ref.background_image_mobile %}
-    {% assign hero_card_headline = 'Not happy? Get your money back!' %}
-    {% assign hero_card_subheadline = 'Test risk free with 30-day money-back guarantee.' %}
-    {% assign hero_card_show_button = true %}
+{% if hero_card_use_product_metaobjects %}
+  {% if request.page_type == 'product' and product != blank %}
+    {% assign hero_card_footer_ref = product.metafields.custom.sbv2_footer_card.value | default: product.metafields.custom.sbv2_footer_card %}
+    {% if hero_card_footer_ref != blank %}
+      {% assign hero_card_product_mode = true %}
+      {% assign hero_card_selected_variant = product.selected_or_first_available_variant %}
+      {% assign hero_card_source_image_desktop = hero_card_footer_ref.background_image_desktop.value | default: hero_card_footer_ref.background_image_desktop %}
+      {% assign hero_card_source_image_mobile = hero_card_footer_ref.background_image_mobile.value | default: hero_card_footer_ref.background_image_mobile %}
+      {% assign hero_card_headline = 'Not happy? Get your money back!' %}
+      {% assign hero_card_subheadline = 'Test risk free with 30-day money-back guarantee.' %}
+      {% assign hero_card_show_button = true %}
+    {% else %}
+      {% assign hero_card_hide_section = true %}
+    {% endif %}
   {% else %}
     {% assign hero_card_hide_section = true %}
   {% endif %}
@@ -31,6 +37,10 @@
   {% assign hero_card_subheadline = settings.seasonal_hero_subheadline %}
   {% assign hero_card_button_label = settings.seasonal_hero_button_label %}
   {% assign hero_card_button_link = settings.seasonal_hero_button_link %}
+  {% assign hero_card_kicker = hero_card_kicker | replace: seasonal_sale_token, seasonal_sale_name %}
+  {% assign hero_card_headline = hero_card_headline | replace: seasonal_sale_token, seasonal_sale_name %}
+  {% assign hero_card_subheadline = hero_card_subheadline | replace: seasonal_sale_token, seasonal_sale_name %}
+  {% assign hero_card_button_label = hero_card_button_label | replace: seasonal_sale_token, seasonal_sale_name %}
   {% if hero_card_button_label != blank %}
     {% assign hero_card_show_button = true %}
   {% else %}
@@ -212,7 +222,7 @@
     background-position: var(--sb-hero-bg-focus-mobile) center;
     background-repeat: no-repeat;
     background-size: cover;
-    border-radius: var(--sb-radius-card);
+    border-radius: 24px;
     display: flex;
     height: 380px;
     padding-block: var(--sb-space-64);

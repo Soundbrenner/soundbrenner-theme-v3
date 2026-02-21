@@ -30,8 +30,6 @@
   {% endif %}
 >
   <head>
-    {% render 'shogun-optimizer' %}
-
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
@@ -63,6 +61,16 @@
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
+
+    <script>
+      (() => {
+        const url = new URL(window.location.href);
+        if (!url.searchParams.has('preview_theme_id')) return;
+        if (url.searchParams.get('shg') === 'false') return;
+        url.searchParams.set('shg', 'false');
+        window.location.replace(url.toString());
+      })();
+    </script>
 
     {{ content_for_header }}
   </head>
@@ -125,7 +133,736 @@
     </script>
     <script>
       (() => {
-        const rootSelector = '#klaviyo-reviews-all';
+        const ThemeEvents = {
+          variantSelected: 'variant:selected',
+          variantUpdate: 'variant:update',
+        };
+
+        const IGNORE_SOURCES = new Set([
+          'product-thumbnail-swatch-hover',
+          'product-thumbnail-swatch-focus',
+        ]);
+
+        const getSelectedSwatch = (row) =>
+          row.querySelector('.sb-product-thumbnail__swatch.is-selected') || row.querySelector('.sb-product-thumbnail__swatch');
+
+        const normalizeBaseUrl = (href) => {
+          const raw = String(href || '').trim();
+          if (!raw || raw.startsWith('#') || raw.toLowerCase().startsWith('javascript:')) return raw;
+
+          try {
+            const url = new URL(raw, window.location.origin);
+            const isProductPath = url.pathname.includes('/products/');
+            if (isProductPath) {
+              // Keep product links canonical; swatch selection appends variant explicitly.
+              url.search = '';
+            } else {
+              url.searchParams.delete('variant');
+              Array.from(url.searchParams.keys()).forEach((key) => {
+                if (key.startsWith('pr_')) url.searchParams.delete(key);
+              });
+            }
+            if (url.origin === window.location.origin) {
+              return `${url.pathname}${url.search}${url.hash}`;
+            }
+            return url.toString();
+          } catch (_) {
+            return raw;
+          }
+        };
+
+        const buildVariantUrl = (baseHref, variantId) => {
+          const normalizedBase = normalizeBaseUrl(baseHref);
+          if (!normalizedBase || normalizedBase.startsWith('#') || normalizedBase.toLowerCase().startsWith('javascript:')) {
+            return normalizedBase;
+          }
+
+          try {
+            const url = new URL(normalizedBase, window.location.origin);
+            const normalizedVariantId = String(variantId || '').trim();
+            if (normalizedVariantId) {
+              url.searchParams.set('variant', normalizedVariantId);
+            }
+            if (url.origin === window.location.origin) {
+              return `${url.pathname}${url.search}${url.hash}`;
+            }
+            return url.toString();
+          } catch (_) {
+            return normalizedBase;
+          }
+        };
+
+        const syncThumbnailPurchaseState = (button) => {
+          if (!(button instanceof HTMLElement)) return;
+          const thumbnail = button.closest('.sb-product-thumbnail');
+          if (!thumbnail) return;
+
+          const nextVariantId =
+            String(button.dataset.thumbnailVariantId || '').trim() ||
+            String(thumbnail.dataset.thumbnailVariantId || '').trim() ||
+            String(thumbnail.querySelector('[data-add-to-cart]')?.dataset.variantId || '').trim();
+
+          if (nextVariantId) {
+            thumbnail.dataset.thumbnailVariantId = nextVariantId;
+            thumbnail.querySelectorAll('[data-add-to-cart]').forEach((addButton) => {
+              addButton.dataset.variantId = nextVariantId;
+            });
+          }
+
+          const priceRow = thumbnail.querySelector('[data-thumbnail-price-row]');
+          const currentPriceElement = thumbnail.querySelector('[data-thumbnail-price-current]');
+          const comparePriceElement = thumbnail.querySelector('[data-thumbnail-price-compare]');
+          const nextCurrentPrice = String(button.dataset.thumbnailPrice || '').trim();
+          const nextComparePrice = String(button.dataset.thumbnailComparePrice || '').trim();
+
+          if (currentPriceElement) {
+            if (nextCurrentPrice) {
+              currentPriceElement.textContent = nextCurrentPrice;
+              currentPriceElement.hidden = false;
+            } else {
+              currentPriceElement.textContent = '';
+              currentPriceElement.hidden = true;
+            }
+          }
+
+          if (comparePriceElement) {
+            if (nextComparePrice) {
+              comparePriceElement.textContent = nextComparePrice;
+              comparePriceElement.hidden = false;
+            } else {
+              comparePriceElement.textContent = '';
+              comparePriceElement.hidden = true;
+            }
+          }
+
+          if (priceRow) {
+            const hasVisiblePrice =
+              (currentPriceElement && !currentPriceElement.hidden) ||
+              (comparePriceElement && !comparePriceElement.hidden);
+            priceRow.hidden = !hasVisiblePrice;
+          }
+
+          const linkNodes = thumbnail.querySelectorAll('[data-thumbnail-link]');
+          linkNodes.forEach((linkNode) => {
+            const fallbackBase = thumbnail.dataset.thumbnailBaseUrl || linkNode.getAttribute('href') || '';
+            const existingBase = linkNode.dataset.thumbnailBaseUrl || fallbackBase;
+            const normalizedBase = normalizeBaseUrl(existingBase);
+            linkNode.dataset.thumbnailBaseUrl = normalizedBase;
+            const nextHref = buildVariantUrl(normalizedBase, nextVariantId);
+            if (nextHref) linkNode.setAttribute('href', nextHref);
+          });
+
+          thumbnail.dispatchEvent(
+            new CustomEvent('sb:thumbnail-purchase-state', {
+              bubbles: true,
+              detail: {
+                variantId: nextVariantId,
+              },
+            })
+          );
+        };
+
+        const dispatchSwatchVariantEvents = (button, sourceId) => {
+          if (!(button instanceof HTMLElement)) return;
+          const thumbnail = button.closest('.sb-product-thumbnail');
+          if (!thumbnail) return;
+
+          const variantId =
+            String(button.dataset.thumbnailVariantId || '').trim() ||
+            String(thumbnail.dataset.thumbnailVariantId || '').trim() ||
+            String(thumbnail.querySelector('[data-add-to-cart]')?.dataset.variantId || '').trim();
+
+          const selectedDetail = {
+            resource: { id: `${variantId}` },
+            sourceId,
+          };
+
+          button.dispatchEvent(
+            new CustomEvent(ThemeEvents.variantSelected, {
+              bubbles: true,
+              detail: selectedDetail,
+            })
+          );
+
+          button.dispatchEvent(
+            new CustomEvent(ThemeEvents.variantUpdate, {
+              bubbles: true,
+              detail: {
+                ...selectedDetail,
+                data: {
+                  swatchButton: button,
+                },
+              },
+            })
+          );
+        };
+
+        const initSwatchInteractionScope = (scope = document) => {
+          if (!(scope instanceof Element || scope instanceof Document)) return;
+
+          scope.querySelectorAll('.sb-product-thumbnail__swatches').forEach((row) => {
+            if (row.dataset.sbSwatchInteractionsInitialized === 'true') return;
+
+            const swatches = Array.from(row.querySelectorAll('.sb-product-thumbnail__swatch'));
+            if (!swatches.length) return;
+
+            row.dataset.sbSwatchInteractionsInitialized = 'true';
+
+            const getSelectedInRow = () => getSelectedSwatch(row);
+
+            swatches.forEach((swatchButton) => {
+              swatchButton.addEventListener('mouseenter', () => {
+                dispatchSwatchVariantEvents(swatchButton, 'product-thumbnail-swatch-hover');
+              });
+
+              swatchButton.addEventListener('focusin', () => {
+                dispatchSwatchVariantEvents(swatchButton, 'product-thumbnail-swatch-focus');
+              });
+            });
+
+            row.addEventListener('mouseleave', () => {
+              const selectedSwatch = getSelectedInRow();
+              if (!selectedSwatch) return;
+              dispatchSwatchVariantEvents(selectedSwatch, 'product-thumbnail-swatch-reset');
+            });
+
+            row.addEventListener('focusout', (event) => {
+              const nextFocusedElement = event.relatedTarget;
+              if (nextFocusedElement && row.contains(nextFocusedElement)) return;
+              const selectedSwatch = getSelectedInRow();
+              if (!selectedSwatch) return;
+              dispatchSwatchVariantEvents(selectedSwatch, 'product-thumbnail-swatch-reset');
+            });
+
+            row.addEventListener('click', (event) => {
+              const swatchButton =
+                event.target instanceof HTMLElement && event.target.closest('.sb-product-thumbnail__swatch');
+              if (!swatchButton || !row.contains(swatchButton)) return;
+
+              swatches.forEach((item) => item.classList.remove('is-selected'));
+              swatchButton.classList.add('is-selected');
+
+              syncThumbnailPurchaseState(swatchButton);
+              dispatchSwatchVariantEvents(swatchButton, 'product-thumbnail-swatch-select');
+            });
+
+            const initialSwatch = getSelectedInRow();
+            if (!initialSwatch) return;
+            syncThumbnailPurchaseState(initialSwatch);
+            dispatchSwatchVariantEvents(initialSwatch, 'product-thumbnail-swatch-initial');
+          });
+        };
+
+        const parseGalleryToken = (token) => {
+          const raw = String(token || '').trim();
+          if (!raw) return null;
+          const parts = raw.split('::');
+          if (parts.length > 1) {
+            const type = parts[0] === 'video' ? 'video' : 'image';
+            const src = String(parts[1] || '').trim();
+            const poster = String(parts[2] || '').trim();
+            if (!src) return null;
+            return { type, src, poster };
+          }
+
+          const lowerRaw = raw.toLowerCase();
+          if (lowerRaw.includes('.mp4') || lowerRaw.includes('.webm') || lowerRaw.includes('.m3u8')) {
+            return { type: 'video', src: raw, poster: '' };
+          }
+          return { type: 'image', src: raw, poster: '' };
+        };
+
+        const toGalleryToken = (item) => {
+          if (!item || !item.src) return '';
+          if (item.type === 'video') return item.poster ? `video::${item.src}::${item.poster}` : `video::${item.src}`;
+          return `image::${item.src}`;
+        };
+
+        const getMediaLink = (mediaWrap) => mediaWrap.querySelector('.sb-product-thumbnail__media');
+        const getCarouselTrack = (mediaWrap) => mediaWrap.querySelector('.sb-product-thumbnail__carousel-track');
+        const getCarouselSlides = (mediaWrap) => Array.from(mediaWrap.querySelectorAll('.sb-product-thumbnail__carousel-slide'));
+
+        const getGalleryItems = (mediaWrap) =>
+          Array.from(mediaWrap.querySelectorAll('.sb-product-thumbnail__gallery-image-source'))
+            .map((node) => parseGalleryToken(node.dataset.galleryImage || ''))
+            .filter(Boolean);
+
+        const setGalleryItems = (mediaWrap, galleryValue) => {
+          const parsedItems = Array.isArray(galleryValue)
+            ? galleryValue.filter((item) => item && item.src)
+            : String(galleryValue || '')
+                .split('||')
+                .map((item) => parseGalleryToken(item))
+                .filter(Boolean);
+
+          let sourcesContainer = mediaWrap.querySelector('.sb-product-thumbnail__gallery-sources');
+          if (!sourcesContainer) {
+            sourcesContainer = document.createElement('div');
+            sourcesContainer.className = 'sb-product-thumbnail__gallery-sources';
+            sourcesContainer.setAttribute('aria-hidden', 'true');
+            mediaWrap.appendChild(sourcesContainer);
+          }
+
+          sourcesContainer.innerHTML = '';
+          parsedItems.forEach((item) => {
+            const sourceNode = document.createElement('span');
+            sourceNode.className = 'sb-product-thumbnail__gallery-image-source';
+            sourceNode.dataset.galleryImage = toGalleryToken(item);
+            sourcesContainer.appendChild(sourceNode);
+          });
+
+          return parsedItems;
+        };
+
+        const mediaLoadPromiseCache = new Map();
+        const ensureMediaReady = (item) => {
+          if (!item || !item.src) return Promise.resolve();
+          if (mediaLoadPromiseCache.has(item.src)) return mediaLoadPromiseCache.get(item.src);
+
+          const mediaReadyPromise = new Promise((resolve) => {
+            if (item.type === 'video') {
+              const video = document.createElement('video');
+              const done = () => resolve();
+              video.preload = 'auto';
+              video.muted = true;
+              video.playsInline = true;
+              video.src = item.src;
+              if (item.poster) video.poster = item.poster;
+              video.addEventListener('loadeddata', done, { once: true });
+              video.addEventListener('canplay', done, { once: true });
+              video.addEventListener('error', done, { once: true });
+              video.load();
+              return;
+            }
+
+            const image = new Image();
+            const done = () => resolve();
+            image.decoding = 'async';
+            image.onload = done;
+            image.onerror = done;
+            image.src = item.src;
+            if (image.complete) resolve();
+          });
+
+          mediaLoadPromiseCache.set(item.src, mediaReadyPromise);
+          return mediaReadyPromise;
+        };
+
+        const preloadMediaItem = (item) => {
+          void ensureMediaReady(item);
+        };
+
+        const ensureDefaultMediaData = (mediaWrap) => {
+          const mediaLink = getMediaLink(mediaWrap);
+          if (!mediaLink) return;
+
+          const currentImage = mediaLink.querySelector('.sb-product-thumbnail__media-item');
+          const sourceItems = getGalleryItems(mediaWrap);
+
+          if (!mediaWrap.dataset.defaultImage) {
+            mediaWrap.dataset.defaultImage =
+              (sourceItems[0] && sourceItems[0].src) ||
+              (currentImage ? currentImage.currentSrc || currentImage.getAttribute('src') || '' : '');
+          }
+
+          if (!mediaWrap.dataset.primaryImage) {
+            mediaWrap.dataset.primaryImage = mediaWrap.dataset.defaultImage || '';
+          }
+
+          if (typeof mediaWrap.dataset.defaultHoverImage === 'undefined') {
+            mediaWrap.dataset.defaultHoverImage = mediaWrap.dataset.hoverImage || '';
+          }
+
+          if (typeof mediaWrap.dataset.isHovering === 'undefined') {
+            mediaWrap.dataset.isHovering = 'false';
+          }
+        };
+
+        const normalizeGalleryItems = (mediaWrap) => {
+          ensureDefaultMediaData(mediaWrap);
+          const sourceItems = getGalleryItems(mediaWrap);
+          const primaryImage = String(mediaWrap.dataset.primaryImage || mediaWrap.dataset.defaultImage || '').trim();
+
+          let items = sourceItems.slice();
+          if (primaryImage) {
+            if (!items.length) {
+              items = [{ type: 'image', src: primaryImage, poster: '' }];
+            } else {
+              items[0] = { type: 'image', src: primaryImage, poster: '' };
+            }
+          }
+
+          if (!items.length) {
+            const fallbackImage = String(mediaWrap.dataset.defaultImage || '').trim();
+            if (fallbackImage) items = [{ type: 'image', src: fallbackImage, poster: '' }];
+          }
+
+          return items;
+        };
+
+        const updateNavButtonsVisibility = (mediaWrap, count) => {
+          const slideCount = Number.isFinite(count) ? count : getCarouselSlides(mediaWrap).length;
+          mediaWrap.querySelectorAll('[data-gallery-nav]').forEach((navButton) => {
+            navButton.style.display = slideCount > 1 ? '' : 'none';
+          });
+        };
+
+        const createMediaElement = (mediaItem, referenceElement, loading = 'lazy') => {
+          if (!mediaItem || !mediaItem.src) return null;
+          const baseClassName = 'sb-product-thumbnail__media-item';
+
+          if (mediaItem.type === 'video') {
+            const video = document.createElement('video');
+            video.className = `${baseClassName} sb-product-thumbnail__video`;
+            video.autoplay = true;
+            video.controls = false;
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+            video.preload = 'auto';
+            video.src = mediaItem.src;
+            video.setAttribute('autoplay', '');
+            video.setAttribute('muted', '');
+            video.setAttribute('loop', '');
+            video.setAttribute('playsinline', '');
+            if (mediaItem.poster) video.poster = mediaItem.poster;
+            return video;
+          }
+
+          const image = document.createElement('img');
+          image.className = `${baseClassName} sb-product-thumbnail__image`;
+          image.loading = loading;
+          image.decoding = 'async';
+          image.src = mediaItem.src;
+          image.alt = referenceElement?.getAttribute('aria-label') || referenceElement?.getAttribute('title') || '';
+          return image;
+        };
+
+        const pauseInactiveVideos = (mediaWrap, activeIndex) => {
+          getCarouselSlides(mediaWrap).forEach((slide, index) => {
+            const video = slide.querySelector('video');
+            if (!video || index === activeIndex) return;
+            try {
+              video.pause();
+            } catch (_) {}
+          });
+        };
+
+        const getCurrentIndex = (mediaWrap) => {
+          const slideCount = getCarouselSlides(mediaWrap).length;
+          if (!slideCount) return 0;
+
+          let currentIndex = Number.parseInt(mediaWrap.dataset.galleryIndex || '0', 10);
+          if (!Number.isFinite(currentIndex)) currentIndex = 0;
+          if (currentIndex < 0 || currentIndex >= slideCount) currentIndex = 0;
+          return currentIndex;
+        };
+
+        const setFirstSlideImage = (mediaWrap, nextSource) => {
+          if (!nextSource) return;
+          const firstSlide = getCarouselSlides(mediaWrap)[0];
+          if (!firstSlide) return;
+
+          const currentMedia = firstSlide.querySelector('.sb-product-thumbnail__media-item');
+          if (!currentMedia) return;
+
+          const currentSrc = currentMedia.currentSrc || currentMedia.getAttribute('src') || '';
+          if (currentMedia.tagName.toLowerCase() === 'img' && currentSrc === nextSource) return;
+
+          const token = String((Number(mediaWrap.dataset.firstSlideSwapToken || '0') || 0) + 1);
+          mediaWrap.dataset.firstSlideSwapToken = token;
+
+          const preload = new Image();
+          preload.decoding = 'async';
+          preload.src = nextSource;
+
+          const apply = () => {
+            if (mediaWrap.dataset.firstSlideSwapToken !== token) return;
+            if (currentMedia.tagName.toLowerCase() === 'img') {
+              currentMedia.setAttribute('src', nextSource);
+              currentMedia.removeAttribute('srcset');
+            } else {
+              const replacement = document.createElement('img');
+              replacement.className = 'sb-product-thumbnail__media-item sb-product-thumbnail__image';
+              replacement.loading = 'eager';
+              replacement.decoding = 'async';
+              replacement.src = nextSource;
+              replacement.alt = currentMedia.getAttribute('aria-label') || '';
+              currentMedia.replaceWith(replacement);
+            }
+          };
+
+          if (preload.complete) {
+            apply();
+          } else {
+            preload.addEventListener('load', apply, { once: true });
+          }
+        };
+
+        const syncFirstSlideForState = (mediaWrap) => {
+          if (getCurrentIndex(mediaWrap) !== 0) return;
+
+          const hoverImage = String(mediaWrap.dataset.hoverImage || '').trim();
+          const primaryImage = String(mediaWrap.dataset.primaryImage || mediaWrap.dataset.defaultImage || '').trim();
+          const shouldUseHover = mediaWrap.dataset.isHovering === 'true' && hoverImage;
+          const targetImage = shouldUseHover ? hoverImage : primaryImage;
+          if (!targetImage) return;
+
+          setFirstSlideImage(mediaWrap, targetImage);
+        };
+
+        const selectSlide = (mediaWrap, requestedIndex, { instant = false } = {}) => {
+          const track = getCarouselTrack(mediaWrap);
+          const slides = getCarouselSlides(mediaWrap);
+          if (!track || !slides.length) return 0;
+
+          let index = Number.parseInt(`${requestedIndex}`, 10);
+          if (!Number.isFinite(index)) index = 0;
+          index = (index + slides.length) % slides.length;
+
+          track.classList.toggle('is-instant', instant);
+          track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
+          mediaWrap.dataset.galleryIndex = String(index);
+
+          slides.forEach((slide, slideIndex) => {
+            slide.setAttribute('aria-hidden', `${slideIndex !== index}`);
+          });
+
+          pauseInactiveVideos(mediaWrap, index);
+          const activeVideo = slides[index].querySelector('video');
+          if (activeVideo) {
+            const playPromise = activeVideo.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+              playPromise.catch(() => {});
+            }
+          }
+
+          syncFirstSlideForState(mediaWrap);
+
+          const galleryItems = getGalleryItems(mediaWrap);
+          if (galleryItems.length > 1) {
+            preloadMediaItem(galleryItems[(index + 1) % galleryItems.length]);
+            preloadMediaItem(galleryItems[(index - 1 + galleryItems.length) % galleryItems.length]);
+          }
+
+          return index;
+        };
+
+        const renderCarousel = (mediaWrap, { preferredIndex = 0, instant = true } = {}) => {
+          const mediaLink = getMediaLink(mediaWrap);
+          if (!mediaLink) return;
+
+          const normalizedItems = normalizeGalleryItems(mediaWrap);
+          if (!normalizedItems.length) return;
+
+          setGalleryItems(mediaWrap, normalizedItems);
+
+          mediaLink
+            .querySelectorAll(
+              ':scope > .sb-product-thumbnail__media-item, :scope > .sb-product-thumbnail__image-placeholder, :scope > .sb-product-thumbnail__carousel'
+            )
+            .forEach((node) => node.remove());
+
+          const carousel = document.createElement('div');
+          carousel.className = 'sb-product-thumbnail__carousel';
+
+          const track = document.createElement('div');
+          track.className = 'sb-product-thumbnail__carousel-track';
+
+          normalizedItems.forEach((item, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'sb-product-thumbnail__carousel-slide';
+            slide.setAttribute('aria-hidden', `${index !== 0}`);
+            const mediaElement = createMediaElement(item, mediaLink, index === 0 ? 'eager' : 'lazy');
+            if (mediaElement) slide.appendChild(mediaElement);
+            track.appendChild(slide);
+          });
+
+          carousel.appendChild(track);
+          mediaLink.appendChild(carousel);
+
+          updateNavButtonsVisibility(mediaWrap, normalizedItems.length);
+          selectSlide(mediaWrap, preferredIndex, { instant });
+          preloadMediaItem(normalizedItems[0]);
+          preloadMediaItem(normalizedItems[1]);
+
+          const hoverImage = String(mediaWrap.dataset.hoverImage || '').trim();
+          if (hoverImage) preloadMediaItem({ type: 'image', src: hoverImage, poster: '' });
+        };
+
+        const preloadGallery = (mediaWrap) => {
+          getGalleryItems(mediaWrap).forEach((item) => preloadMediaItem(item));
+          const hoverImage = String(mediaWrap.dataset.hoverImage || '').trim();
+          if (hoverImage) preloadMediaItem({ type: 'image', src: hoverImage, poster: '' });
+        };
+
+        const initThumbnailMediaScope = (scope = document, options = {}) => {
+          if (!(scope instanceof Element || scope instanceof Document)) return;
+          const { initSwatchInteractions = true } = options;
+          if (initSwatchInteractions) {
+            initSwatchInteractionScope(scope);
+          }
+
+          scope.querySelectorAll('.sb-product-thumbnail__media-wrap').forEach((mediaWrap) => {
+            if (mediaWrap.dataset.sbThumbnailMediaInitialized === 'true') return;
+            mediaWrap.dataset.sbThumbnailMediaInitialized = 'true';
+
+            ensureDefaultMediaData(mediaWrap);
+            renderCarousel(mediaWrap, { preferredIndex: getCurrentIndex(mediaWrap), instant: true });
+
+            mediaWrap.addEventListener('mouseenter', () => {
+              mediaWrap.dataset.isHovering = 'true';
+              preloadGallery(mediaWrap);
+              syncFirstSlideForState(mediaWrap);
+            });
+
+            mediaWrap.addEventListener('mouseleave', () => {
+              mediaWrap.dataset.isHovering = 'false';
+              syncFirstSlideForState(mediaWrap);
+            });
+
+            mediaWrap.addEventListener('focusin', () => {
+              preloadGallery(mediaWrap);
+            });
+          });
+
+          scope.querySelectorAll('.sb-product-thumbnail__swatches').forEach((row) => {
+            if (row.dataset.sbThumbnailMediaRowInitialized === 'true') return;
+            row.dataset.sbThumbnailMediaRowInitialized = 'true';
+
+            const applySwatchImage = async (button, sourceId = '') => {
+              if (!button) return;
+
+              const nextImage = String(button.dataset.thumbnailImage || '').trim();
+              const nextHoverImage = String(button.dataset.thumbnailHoverImage || '').trim();
+              const nextGallery = String(button.dataset.thumbnailGallery || '').trim();
+              const thumbnail = button.closest('.sb-product-thumbnail');
+              const mediaWrap = thumbnail ? thumbnail.querySelector('.sb-product-thumbnail__media-wrap') : null;
+              if (!mediaWrap) return;
+              const swatchSwapToken = String((Number(mediaWrap.dataset.swatchSwapToken || '0') || 0) + 1);
+              mediaWrap.dataset.swatchSwapToken = swatchSwapToken;
+
+              if (nextImage) {
+                mediaWrap.dataset.primaryImage = nextImage;
+              }
+              mediaWrap.dataset.hoverImage = nextHoverImage || mediaWrap.dataset.defaultHoverImage || '';
+
+              const isPreviewSource =
+                sourceId === 'product-thumbnail-swatch-hover' || sourceId === 'product-thumbnail-swatch-focus';
+
+              if (isPreviewSource) {
+                if (nextImage) {
+                  await ensureMediaReady({ type: 'image', src: nextImage, poster: '' });
+                  if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
+                  mediaWrap.dataset.galleryIndex = '0';
+                  setFirstSlideImage(mediaWrap, nextImage);
+                } else {
+                  syncFirstSlideForState(mediaWrap);
+                }
+                return;
+              }
+
+              const galleryPayload = nextGallery || (nextImage ? `image::${nextImage}` : '');
+              if (galleryPayload) {
+                setGalleryItems(mediaWrap, galleryPayload);
+              }
+
+              const normalizedItems = normalizeGalleryItems(mediaWrap);
+              await ensureMediaReady(normalizedItems[0]);
+              if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
+
+              mediaWrap.dataset.galleryIndex = '0';
+              renderCarousel(mediaWrap, { preferredIndex: 0, instant: true });
+              preloadGallery(mediaWrap);
+              syncFirstSlideForState(mediaWrap);
+            };
+
+            row.addEventListener(ThemeEvents.variantUpdate, (event) => {
+              const swatchButton = event?.detail?.data?.swatchButton;
+              if (!(swatchButton instanceof HTMLElement)) return;
+              if (!row.contains(swatchButton)) return;
+              applySwatchImage(swatchButton, String(event?.detail?.sourceId || ''));
+            });
+          });
+
+          scope.querySelectorAll('[data-gallery-nav]').forEach((button) => {
+            if (button.dataset.sbThumbnailGalleryNavInitialized === 'true') return;
+            button.dataset.sbThumbnailGalleryNavInitialized = 'true';
+
+            button.addEventListener('click', async (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+
+              const direction = Number.parseInt(button.dataset.galleryNav || '0', 10);
+              if (!direction) return;
+
+              const mediaWrap = button.closest('.sb-product-thumbnail__media-wrap');
+              if (!mediaWrap || mediaWrap.dataset.galleryAnimating === 'true') return;
+
+              const slides = getCarouselSlides(mediaWrap);
+              if (slides.length < 2) return;
+
+              const currentIndex = getCurrentIndex(mediaWrap);
+              const nextIndex = (currentIndex + direction + slides.length) % slides.length;
+              const galleryItems = getGalleryItems(mediaWrap);
+              const navigationToken = String((Number(mediaWrap.dataset.galleryNavigationToken || '0') || 0) + 1);
+              mediaWrap.dataset.galleryNavigationToken = navigationToken;
+              mediaWrap.dataset.galleryAnimating = 'true';
+              await ensureMediaReady(galleryItems[nextIndex]);
+              if (mediaWrap.dataset.galleryNavigationToken !== navigationToken) {
+                mediaWrap.dataset.galleryAnimating = 'false';
+                return;
+              }
+              selectSlide(mediaWrap, nextIndex, { instant: false });
+
+              const track = getCarouselTrack(mediaWrap);
+              let cleared = false;
+              const clearAnimating = () => {
+                if (cleared) return;
+                cleared = true;
+                mediaWrap.dataset.galleryAnimating = 'false';
+              };
+
+              if (track) {
+                track.addEventListener('transitionend', clearAnimating, { once: true });
+                setTimeout(clearAnimating, 220);
+              } else {
+                clearAnimating();
+              }
+            });
+          });
+        };
+
+        document.addEventListener(ThemeEvents.variantUpdate, (event) => {
+          const sourceId = String(event?.detail?.sourceId || '');
+          if (IGNORE_SOURCES.has(sourceId)) return;
+
+          const swatchFromDetail = event?.detail?.data?.swatchButton;
+          const swatchFromTarget =
+            event.target instanceof HTMLElement && event.target.closest('.sb-product-thumbnail__swatch');
+          const button = swatchFromDetail instanceof HTMLElement ? swatchFromDetail : swatchFromTarget;
+          if (!button) return;
+          syncThumbnailPurchaseState(button);
+        });
+
+        window.SBProductThumbnail = {
+          ThemeEvents,
+          dispatchSwatchVariantEvents,
+          getSelectedSwatch,
+          initSwatchInteractionScope,
+          initThumbnailMediaScope,
+          syncThumbnailPurchaseState,
+        };
+
+        initThumbnailMediaScope(document, { initSwatchInteractions: true });
+        document.addEventListener('shopify:section:load', (event) => {
+          initThumbnailMediaScope(event.target, { initSwatchInteractions: true });
+        });
+      })();
+    </script>
+    <script>
+      (() => {
+        const rootSelector = '#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper';
         const countPattern = /\b(\d{4,})(?=\s+reviews\b)/g;
         const klaviyoStarPath =
           'M3.825 19.5L5.45 12.475L0 7.75L7.2 7.125L10 0.5L12.8 7.125L20 7.75L14.55 12.475L16.175 19.5L10 15.775L3.825 19.5Z';
@@ -138,6 +875,85 @@
           stars.forEach((star) => {
             if (star.getAttribute('d') === klaviyoStarPath) return;
             star.setAttribute('d', klaviyoStarPath);
+          });
+        };
+
+        const normalizeRangeSvgs = (scope = document) => {
+          const rangeSvgs = scope.querySelectorAll(
+            '.kl_reviews__summary__custom_question--range [role="img"] svg, .kl_reviews__custom_question_answer [role="img"] svg'
+          );
+          rangeSvgs.forEach((svg) => {
+            svg.setAttribute('preserveAspectRatio', 'none');
+          });
+
+          const rangeRects = scope.querySelectorAll(
+            '.kl_reviews__summary__custom_question--range [role="img"] svg rect, .kl_reviews__custom_question_answer [role="img"] svg rect'
+          );
+          rangeRects.forEach((rect) => {
+            rect.setAttribute('height', '6');
+            rect.setAttribute('y', '2');
+            rect.setAttribute('rx', '3');
+          });
+
+          const rangeCircles = scope.querySelectorAll(
+            '.kl_reviews__summary__custom_question--range [role="img"] svg circle, .kl_reviews__custom_question_answer [role="img"] svg circle'
+          );
+          rangeCircles.forEach((circle) => {
+            circle.setAttribute('r', '5');
+            circle.setAttribute('stroke', 'none');
+          });
+        };
+
+        const updateSelectPillState = (select) => {
+          const pill = select.closest('.kl_reviews__filters__pill');
+          if (!pill) return;
+          const defaultValue = select.dataset.sbDefaultValue ?? (select.options[0]?.value ?? '');
+          const isActive = select.value !== defaultValue;
+          pill.classList.toggle('sb-kl-filter-active', isActive);
+        };
+
+        const normalizeFilterSelects = (scope = document) => {
+          const selects = scope.querySelectorAll('.kl_reviews__filters__pill select');
+          selects.forEach((select) => {
+            const firstOption = select.options[0];
+            if (select.id === 'kl_reviews__filter_reviews_variant' && firstOption && !firstOption.hasAttribute('value')) {
+              firstOption.value = '0';
+            }
+
+            if (!select.dataset.sbUserChanged) {
+              const selectedOption = select.options[select.selectedIndex];
+              const initialDefault = selectedOption ? selectedOption.value : select.value;
+              select.dataset.sbDefaultValue = initialDefault ?? '';
+            }
+
+            updateSelectPillState(select);
+
+            if (!select.dataset.sbFilterBound) {
+              const markInteracted = (event) => {
+                if (event.type === 'keydown') {
+                  const key = event.key;
+                  if (!['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(key)) return;
+                }
+                select.dataset.sbInteracted = 'true';
+              };
+
+              const onSelectChange = () => {
+                if (select.id === 'kl_reviews__filter_reviews_variant' && select.selectedIndex === 0 && select.value !== '0') {
+                  select.value = '0';
+                }
+                if (select.dataset.sbInteracted === 'true') {
+                  select.dataset.sbUserChanged = 'true';
+                }
+                select.dataset.sbInteracted = 'false';
+                requestAnimationFrame(() => updateSelectPillState(select));
+              };
+
+              select.addEventListener('pointerdown', markInteracted);
+              select.addEventListener('keydown', markInteracted);
+              select.addEventListener('change', onSelectChange);
+              select.addEventListener('input', onSelectChange);
+              select.dataset.sbFilterBound = 'true';
+            }
           });
         };
 
@@ -191,6 +1007,30 @@
 
             if (nextText !== currentText) {
               target.textContent = nextText;
+            }
+          });
+
+          const filterInfoCounts = root.querySelectorAll('.kl_reviews__filter_info > span:first-child');
+          filterInfoCounts.forEach((target) => {
+            const currentText = target.textContent;
+            if (!currentText) return;
+
+            const nextText = currentText.replace(/\b(\d+)(?=\s+reviews?\b)/i, (_, digits) =>
+              numberFormatter.format(Number(digits))
+            );
+
+            if (nextText !== currentText) {
+              target.textContent = nextText;
+            }
+          });
+
+          const tabCountLabels = root.querySelectorAll('.kl_reviews__list__tab small');
+          tabCountLabels.forEach((target) => {
+            const raw = (target.textContent || '').replace(/[^\d]/g, '');
+            if (!raw) return;
+            const formatted = numberFormatter.format(Number(raw));
+            if (formatted !== target.textContent) {
+              target.textContent = formatted;
             }
           });
 
@@ -264,7 +1104,10 @@
           });
 
           applyCustomStarPaths(root);
+          normalizeRangeSvgs(root);
+          normalizeFilterSelects(root);
         };
+
 
         const observeAndFormat = (root) => {
           if (formattingObserver) return;
@@ -288,6 +1131,8 @@
           if (widgetObserver) return;
 
           applyCustomStarPaths(document);
+          normalizeRangeSvgs(document);
+          normalizeFilterSelects(document);
           formatStarRatingWidgets(document);
 
           let isQueued = false;
@@ -297,6 +1142,8 @@
             requestAnimationFrame(() => {
               isQueued = false;
               applyCustomStarPaths(document);
+              normalizeRangeSvgs(document);
+              normalizeFilterSelects(document);
               formatStarRatingWidgets(document);
             });
           });

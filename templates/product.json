@@ -9,6 +9,12 @@
  */
 {
   "sections": {
+    "top_feature_highlights": {
+      "type": "top-feature-highlights",
+      "settings": {
+        "use_product_metaobjects": true
+      }
+    },
     "main": {
       "type": "product",
       "blocks": {
@@ -103,6 +109,7 @@
     }
   },
   "order": [
+    "top_feature_highlights",
     "main",
     "reviews_heading",
     "177155579933e4f180",

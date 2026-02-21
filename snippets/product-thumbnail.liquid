@@ -19,6 +19,8 @@
   if product_url != blank
     assign thumbnail_url = product_url
   endif
+  assign thumbnail_url_parts = thumbnail_url | split: '?'
+  assign thumbnail_url = thumbnail_url_parts | first
 
   assign thumbnail_reviews_count_number = reviews_count_number | default: 0 | plus: 0 | round: 0
   if thumbnail_reviews_count_number < 0
@@ -233,13 +235,13 @@
   endif
 %}
 
-<article class="sb-product-thumbnail" data-thumbnail-variant-id="{{ thumbnail_variant_id }}">
+<article class="sb-product-thumbnail" data-thumbnail-variant-id="{{ thumbnail_variant_id }}" data-thumbnail-base-url="{{ thumbnail_url }}">
   <div
     class="sb-product-thumbnail__media-wrap"
     data-gallery-index="0"
     {% if thumbnail_hover_image_url != blank %}data-hover-image="{{ thumbnail_hover_image_url }}"{% endif %}
   >
-    <a class="sb-product-thumbnail__media" href="{{ thumbnail_url }}">
+    <a class="sb-product-thumbnail__media" href="{{ thumbnail_url }}" data-thumbnail-link data-thumbnail-base-url="{{ thumbnail_url }}">
       {% if thumbnail_badge_label != blank %}
         <span class="sb-product-thumbnail__badge sb-product-thumbnail__badge--{{ thumbnail_badge_type }} font-caption weight-semibold">
           {{ thumbnail_badge_label }}
@@ -317,7 +319,7 @@
     {% endif %}
   </div>
 
-  <a class="sb-product-thumbnail__name font-body weight-bold" href="{{ thumbnail_url }}">{{ thumbnail_name }}</a>
+  <a class="sb-product-thumbnail__name font-body weight-bold" href="{{ thumbnail_url }}" data-thumbnail-link data-thumbnail-base-url="{{ thumbnail_url }}">{{ thumbnail_name }}</a>
 
   {% unless thumbnail_hide_reviews %}
     <div class="sb-product-thumbnail__rating-row">
@@ -349,17 +351,13 @@
     </div>
   {% endunless %}
 
-  <div class="sb-product-thumbnail__price-row">
-    {% if thumbnail_compare_price != blank %}
-      <p class="sb-product-thumbnail__price sb-product-thumbnail__price--compare font-body weight-regular">
-        {{ thumbnail_compare_price }}
-      </p>
-    {% endif %}
-    {% if thumbnail_price != blank %}
-      <p class="sb-product-thumbnail__price sb-product-thumbnail__price--current font-body weight-regular">
-        {{ thumbnail_price }}
-      </p>
-    {% endif %}
+  <div class="sb-product-thumbnail__price-row" data-thumbnail-price-row{% if thumbnail_price == blank and thumbnail_compare_price == blank %} hidden{% endif %}>
+    <p class="sb-product-thumbnail__price sb-product-thumbnail__price--compare font-body weight-regular" data-thumbnail-price-compare{% if thumbnail_compare_price == blank %} hidden{% endif %}>
+      {{ thumbnail_compare_price }}
+    </p>
+    <p class="sb-product-thumbnail__price sb-product-thumbnail__price--current font-body weight-regular" data-thumbnail-price-current{% if thumbnail_price == blank %} hidden{% endif %}>
+      {{ thumbnail_price }}
+    </p>
   </div>
 
   {% assign has_swatches = false %}
@@ -377,6 +375,9 @@
         data-thumbnail-image="{{ swatch_1_image }}"
         data-thumbnail-hover-image="{{ swatch_1_hover_image }}"
         data-thumbnail-gallery="{{ swatch_1_gallery }}"
+        data-thumbnail-variant-id="{{ swatch_1_variant_id | default: thumbnail_variant_id }}"
+        data-thumbnail-price="{{ swatch_1_price_text | default: thumbnail_price }}"
+        data-thumbnail-compare-price="{{ swatch_1_compare_price_text }}"
         aria-label="Color 1"
       >
         <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
@@ -390,6 +391,9 @@
         data-thumbnail-image="{{ swatch_2_image }}"
         data-thumbnail-hover-image="{{ swatch_2_hover_image }}"
         data-thumbnail-gallery="{{ swatch_2_gallery }}"
+        data-thumbnail-variant-id="{{ swatch_2_variant_id | default: thumbnail_variant_id }}"
+        data-thumbnail-price="{{ swatch_2_price_text | default: thumbnail_price }}"
+        data-thumbnail-compare-price="{{ swatch_2_compare_price_text }}"
         aria-label="Color 2"
       >
         <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
@@ -403,6 +407,9 @@
         data-thumbnail-image="{{ swatch_3_image }}"
         data-thumbnail-hover-image="{{ swatch_3_hover_image }}"
         data-thumbnail-gallery="{{ swatch_3_gallery }}"
+        data-thumbnail-variant-id="{{ swatch_3_variant_id | default: thumbnail_variant_id }}"
+        data-thumbnail-price="{{ swatch_3_price_text | default: thumbnail_price }}"
+        data-thumbnail-compare-price="{{ swatch_3_compare_price_text }}"
         aria-label="Color 3"
       >
         <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
@@ -416,6 +423,9 @@
         data-thumbnail-image="{{ swatch_4_image }}"
         data-thumbnail-hover-image="{{ swatch_4_hover_image }}"
         data-thumbnail-gallery="{{ swatch_4_gallery }}"
+        data-thumbnail-variant-id="{{ swatch_4_variant_id | default: thumbnail_variant_id }}"
+        data-thumbnail-price="{{ swatch_4_price_text | default: thumbnail_price }}"
+        data-thumbnail-compare-price="{{ swatch_4_compare_price_text }}"
         aria-label="Color 4"
       >
         <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>

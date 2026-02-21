@@ -10,87 +10,443 @@
   }
 </script>
 
-<header class="header full-width">
-  <div class="header__inner">
-    <h2 class="header__title">
-      {{ shop.name | link_to: routes.root_url }}
-    </h2>
+{% liquid
+  assign seasonal_sale_name = settings.seasonal_sale_name | strip
+  assign announcement_text = settings.seasonal_announcement_copy | strip
+  assign announcement_text = announcement_text | replace: '{{ Seasonal sale name }}', seasonal_sale_name
+  assign show_announcement = false
+  if announcement_text != blank
+    assign show_announcement = true
+  endif
+  assign sale_end_date = settings.seasonal_sale_end_date | strip
+  assign show_announcement_countdown = false
+  if show_announcement and sale_end_date != blank
+    assign show_announcement_countdown = true
+  endif
+  assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
+  assign announcement_emoji_asset = 'emoji-sale-new-year.png'
 
-    <div class="header__menu">
-      {% for link in section.settings.menu.links %}
-        {{ link.title | link_to: link.url }}
-      {% endfor %}
+  case announcement_gradient
+    when 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-new-year.png'
+    when 'linear-gradient(90deg, #F3C1DE 0%, #C77CA5 33%, #C77CA5 66%, #F3C1DE 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-valentines-day.png'
+    when 'linear-gradient(90deg, #A4CF83 0%, #768E57 33%, #768E57 66%, #A4CF83 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-spring.png'
+    when 'linear-gradient(90deg, #B19CD9 0%, #7B5EA7 33%, #7B5EA7 66%, #B19CD9 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-easter.png'
+    when 'linear-gradient(90deg, #9CBDCD 0%, #F08835 33%, #F08835 66%, #9CBDCD 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-summer.png'
+    when 'linear-gradient(90deg, #E6A53C 0%, #1E4F8F 33%, #1E4F8F 66%, #E6A53C 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-back-to-school.png'
+    when 'linear-gradient(90deg, #1F3937 0%, #57522A 33%, #E58C56 66%, #6F351F 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-fall.png'
+    when 'linear-gradient(90deg, #2F173A 0%, #D84418 33%, #D84418 66%, #2F173A 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-halloween.png'
+    when 'linear-gradient(90deg, #8759F1 0%, #023CFB 33%, #8759F1 66%, #023CFB 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-bfcm.png'
+    when 'linear-gradient(90deg, #B49F76 0%, #C32B2E 33%, #C32B2E 66%, #B49F76 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-holiday.png'
+    when 'linear-gradient(90deg, var(--sb-color-primary-500) 0%, var(--sb-color-primary-700) 33%, var(--sb-color-primary-700) 66%, var(--sb-color-primary-500) 100%)'
+      assign announcement_emoji_asset = 'emoji-sale-anniversary.png'
+  endcase
+%}
 
-      {% if localization.available_languages.size > 1 %}
-        <localization-form class="header__localization">
-          {% form 'localization', class: 'header__language-form', id: 'HeaderLanguageForm' %}
-            <div class="header__language-disclosure">
-              <input type="hidden" name="return_to" value="{{ request.path }}">
-              <button
-                type="button"
-                class="header__language-button"
-                aria-expanded="false"
-                aria-controls="HeaderLanguageList"
-              >
-                {{ localization.language.endonym_name | capitalize }}
-                <span aria-hidden="true">▾</span>
-              </button>
+<header
+  class="header full-width{% if show_announcement %} has-announcement{% endif %}"
+  {% if show_announcement %}
+    style="--sb-announcement-background: {{ announcement_gradient }};"
+  {% endif %}
+>
+  {% if show_announcement %}
+    <div class="header__announcement">
+      <div class="header__announcement-top">
+        <span class="header__announcement-emoji" aria-hidden="true">
+          <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
+        </span>
+        <p class="header__announcement-text font-caption weight-semibold">{{ announcement_text | escape | newline_to_br }}</p>
+        <span class="header__announcement-emoji" aria-hidden="true">
+          <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
+        </span>
+      </div>
 
-              <ul id="HeaderLanguageList" role="list" class="header__language-list" hidden>
-                {% for language in localization.available_languages %}
-                  <li class="header__language-item" tabindex="-1">
-                    <a
-                      href="#"
-                      {% if language.iso_code == localization.language.iso_code %}
-                        aria-current="true"
-                      {% endif %}
-                      hreflang="{{ language.iso_code }}"
-                      lang="{{ language.iso_code }}"
-                      data-value="{{ language.iso_code }}"
-                    >
-                      {{ language.endonym_name | capitalize }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-
-              <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
-            </div>
-
-            <noscript>
-              <select name="language_code" class="header__language-select" aria-label="Language">
-                {% for language in localization.available_languages %}
-                  <option
-                    value="{{ language.iso_code }}"
-                    {% if language.iso_code == localization.language.iso_code %}
-                      selected
-                    {% endif %}
-                  >
-                    {{ language.endonym_name | capitalize }}
-                  </option>
-                {% endfor %}
-              </select>
-              <button type="submit" class="header__language-submit">Update</button>
-            </noscript>
-          {% endform %}
-        </localization-form>
+      {% if show_announcement_countdown %}
+        <div class="header__announcement-countdown" data-announcement-countdown data-sale-end-date="{{ sale_end_date | escape }}">
+          <div class="header__announcement-countdown-group">
+            <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>00</span>
+            <span class="header__announcement-countdown-label font-caption2 weight-semibold">days</span>
+          </div>
+          <div class="header__announcement-countdown-group">
+            <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-hours>00</span>
+            <span class="header__announcement-countdown-label font-caption2 weight-semibold">hours</span>
+          </div>
+          <div class="header__announcement-countdown-group">
+            <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-mins>00</span>
+            <span class="header__announcement-countdown-label font-caption2 weight-semibold">mins</span>
+          </div>
+          <div class="header__announcement-countdown-group">
+            <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-secs>00</span>
+            <span class="header__announcement-countdown-label font-caption2 weight-semibold">secs</span>
+          </div>
+        </div>
       {% endif %}
+    </div>
+  {% endif %}
 
+  <div class="header__inner">
+    <div class="header__icons header__icons--left">
+      <a class="header__icon-link header__icon-link--search" href="{{ routes.search_url }}" aria-label="Search">
+        <span class="header__icon-asset" aria-hidden="true">
+          {{ 'icon-search.svg' | inline_asset_content }}
+        </span>
+      </a>
+      <a class="header__icon-link header__icon-link--search" href="{{ routes.search_url }}" aria-label="Search">
+        <span class="header__icon-asset" aria-hidden="true">
+          {{ 'icon-search.svg' | inline_asset_content }}
+        </span>
+      </a>
     </div>
 
-    <div class="header__icons">
-      <button type="button" class="header__theme-toggle" data-theme-toggle>
-        Theme
-      </button>
+    <a class="header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      <span class="header__brand-logo" aria-hidden="true">
+        {{ 'logo-soundbrenner-wordmark.svg' | inline_asset_content }}
+      </span>
+    </a>
 
-      {% if shop.customer_accounts_enabled %}
-        {{ 'icon-account.svg' | inline_asset_content | link_to: routes.account_url }}
+    <nav class="header__menu" aria-label="Primary">
+      {% if section.settings.menu != blank and section.settings.menu.links.size > 0 %}
+        {% for link in section.settings.menu.links %}
+          {% liquid
+            assign link_handle = link.title | handleize
+            assign link_path = link.url | split: '?' | first
+            assign is_active_link = false
+            if link.current or request.path == link_path
+              assign is_active_link = true
+            endif
+
+            assign has_mega_group = false
+            assign has_mega_cards = false
+
+            for block in section.blocks
+              if block.type == 'mega_menu_group'
+                assign group_handle = block.settings.menu_item_handle | strip | handleize
+                if group_handle == link_handle
+                  assign has_mega_group = true
+                endif
+              endif
+            endfor
+
+            for block in section.blocks
+              if block.type == 'mega_menu_card'
+                assign card_handle = block.settings.menu_item_handle | strip | handleize
+                if card_handle == link_handle
+                  assign has_mega_cards = true
+                endif
+              endif
+            endfor
+
+            assign show_placeholder_menu = false
+            if link_handle == 'in-ear-monitors' and has_mega_cards == false
+              assign show_placeholder_menu = true
+            endif
+
+            assign has_dropdown = false
+            if has_mega_group and has_mega_cards
+              assign has_dropdown = true
+            elsif show_placeholder_menu
+              assign has_dropdown = true
+            endif
+          %}
+
+          <div class="header__menu-item{% if has_dropdown %} has-dropdown{% endif %}">
+            <a
+              class="header__menu-link font-caption weight-regular{% if is_active_link %} is-active{% endif %}"
+              href="{{ link.url }}"
+            >
+              {{ link.title }}
+            </a>
+
+            {% if has_dropdown %}
+              <div class="header__mega-menu" aria-label="{{ link.title | escape }}">
+                <div class="header__mega-menu-panel">
+                  <div class="header__mega-menu-grid">
+                    {% assign rendered_cards = 0 %}
+
+                    {% for block in section.blocks %}
+                      {% liquid
+                        if block.type != 'mega_menu_card'
+                          continue
+                        endif
+
+                        assign block_handle = block.settings.menu_item_handle | strip | handleize
+                        if block_handle != link_handle
+                          continue
+                        endif
+
+                        assign rendered_cards = rendered_cards | plus: 1
+                        assign card_product = block.settings.product
+                        assign card_collection = block.settings.collection
+                        assign card_page = block.settings.page
+                        assign card_image = block.settings.image
+                        assign card_title = block.settings.title | strip
+                        assign card_body = block.settings.body | strip
+                        assign card_mode = block.settings.card_mode
+                        assign card_link = block.settings.card_link
+                        assign card_rating_label = block.settings.app_rating_label | strip
+                        assign card_submenu = block.settings.submenu
+
+                        if card_link == blank
+                          if card_product != blank
+                            assign card_link = card_product.url
+                          elsif card_collection != blank
+                            assign card_link = card_collection.url
+                          elsif card_page != blank
+                            assign card_link = card_page.url
+                          endif
+                        endif
+
+                        if card_title == blank
+                          if card_product != blank
+                            assign card_title = card_product.title
+                          elsif card_collection != blank
+                            assign card_title = card_collection.title
+                          elsif card_page != blank
+                            assign card_title = card_page.title
+                          endif
+                        endif
+
+                        assign card_image_url = blank
+                        if card_image != blank
+                          assign card_image_url = card_image | image_url: width: 584
+                        elsif card_product != blank and card_product.featured_image != blank
+                          assign card_image_url = card_product.featured_image | image_url: width: 584
+                        elsif card_collection != blank and card_collection.featured_image != blank
+                          assign card_image_url = card_collection.featured_image | image_url: width: 584
+                        endif
+
+                        assign card_badge_label = blank
+                        assign card_badge_type = blank
+                        if card_product != blank and card_product.tags != blank
+                          for product_tag in card_product.tags
+                            assign product_tag_downcase = product_tag | downcase
+                            if product_tag_downcase == 'bestseller'
+                              assign card_badge_label = 'Bestseller'
+                              assign card_badge_type = 'bestseller'
+                              break
+                            endif
+                            if product_tag_downcase == 'new'
+                              assign card_badge_label = 'New'
+                              assign card_badge_type = 'new'
+                            endif
+                          endfor
+                        endif
+                      %}
+
+                      <article class="header__mega-card" {{ block.shopify_attributes }}>
+                        <a class="header__mega-card-media" href="{{ card_link | default: '#' }}">
+                          {% if card_badge_label != blank %}
+                            <span class="header__mega-card-badge header__mega-card-badge--{{ card_badge_type }} font-caption weight-semibold">
+                              {{ card_badge_label }}
+                            </span>
+                          {% endif %}
+
+                          {% if card_image_url != blank %}
+                            <img
+                              class="header__mega-card-image"
+                              src="{{ card_image_url }}"
+                              alt="{{ card_title | default: link.title | escape }}"
+                              loading="lazy"
+                              decoding="async"
+                              width="584"
+                              height="584"
+                            >
+                          {% else %}
+                            <span class="header__mega-card-image-placeholder font-caption weight-semibold">Image</span>
+                          {% endif %}
+                        </a>
+
+                        <a class="header__mega-card-title font-callout weight-bold" href="{{ card_link | default: '#' }}">
+                          {{ card_title | default: link.title }}
+                        </a>
+
+                        {% if card_mode == 'app' %}
+                          <div class="header__mega-card-app">
+                            <p class="header__mega-card-rating font-body weight-regular">
+                              <span class="header__mega-card-stars" aria-hidden="true">★★★★★</span>
+                              <span>{{ card_rating_label | default: '4.8 stars on app stores' }}</span>
+                            </p>
+
+                            <div class="header__mega-card-app-links">
+                              {% if block.settings.app_store_url != blank %}
+                                <a href="{{ block.settings.app_store_url }}" aria-label="Download on the App Store">
+                                  <img
+                                    src="{{ 'app-download-app-store.png' | asset_url }}"
+                                    alt="Download on the App Store"
+                                    loading="lazy"
+                                    width="120"
+                                    height="36"
+                                  >
+                                </a>
+                              {% endif %}
+                              {% if block.settings.google_play_url != blank %}
+                                <a href="{{ block.settings.google_play_url }}" aria-label="Get it on Google Play">
+                                  <img
+                                    src="{{ 'app-download-google-play.png' | asset_url }}"
+                                    alt="Get it on Google Play"
+                                    loading="lazy"
+                                    width="120"
+                                    height="36"
+                                  >
+                                </a>
+                              {% endif %}
+                            </div>
+                          </div>
+                        {% else %}
+                          {% if card_body != blank %}
+                            <p class="header__mega-card-body font-body weight-regular">{{ card_body }}</p>
+                          {% endif %}
+
+                          {% if card_submenu != blank and card_submenu.links.size > 0 %}
+                            <ul class="header__mega-card-links font-body weight-semibold" role="list">
+                              {% for submenu_link in card_submenu.links limit: 3 %}
+                                <li>
+                                  <a href="{{ submenu_link.url }}">{{ submenu_link.title }}</a>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                        {% endif %}
+                      </article>
+                    {% endfor %}
+
+                    {% if rendered_cards == 0 and show_placeholder_menu %}
+                      {% liquid
+                        assign placeholder_product = all_products['wave-in-ear-monitors']
+                        if placeholder_product == blank
+                          assign placeholder_product = all_products['wave']
+                        endif
+                        assign placeholder_collection = collections['wave-in-ear-monitors']
+                        assign placeholder_collection_url = routes.root_url | append: 'collections/wave-in-ear-monitors'
+                        if placeholder_collection != blank
+                          assign placeholder_collection_url = placeholder_collection.url
+                        endif
+                        assign placeholder_link = placeholder_collection_url
+                        assign placeholder_image_url = blank
+                        if placeholder_product != blank and placeholder_product.featured_image != blank
+                          assign placeholder_image_url = placeholder_product.featured_image | image_url: width: 584
+                          assign placeholder_link = placeholder_product.url
+                        endif
+                      %}
+                      <article class="header__mega-card header__mega-card--placeholder">
+                        <a class="header__mega-card-media" href="{{ placeholder_link }}">
+                          {% if placeholder_image_url != blank %}
+                            <img
+                              class="header__mega-card-image"
+                              src="{{ placeholder_image_url }}"
+                              alt="Wave in-ear monitors"
+                              loading="lazy"
+                              decoding="async"
+                              width="584"
+                              height="584"
+                            >
+                          {% else %}
+                            <span class="header__mega-card-image-placeholder font-caption weight-semibold">Wave</span>
+                          {% endif %}
+                        </a>
+
+                        <a class="header__mega-card-title font-callout weight-bold" href="{{ placeholder_link }}">
+                          Wave in-ear monitors
+                        </a>
+                        <p class="header__mega-card-body font-body weight-regular">Placeholder dropdown card. Replace in Header block settings.</p>
+                        <ul class="header__mega-card-links font-body weight-semibold" role="list">
+                          <li><a href="{{ placeholder_collection_url }}">Accessories</a></li>
+                        </ul>
+                      </article>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        {% liquid
+          assign placeholder_product = all_products['wave-in-ear-monitors']
+          if placeholder_product == blank
+            assign placeholder_product = all_products['wave']
+          endif
+          assign placeholder_collection = collections['wave-in-ear-monitors']
+          assign placeholder_collection_url = routes.root_url | append: 'collections/wave-in-ear-monitors'
+          if placeholder_collection != blank
+            assign placeholder_collection_url = placeholder_collection.url
+          endif
+          assign placeholder_link = placeholder_collection_url
+          assign placeholder_image_url = blank
+          if placeholder_product != blank and placeholder_product.featured_image != blank
+            assign placeholder_image_url = placeholder_product.featured_image | image_url: width: 584
+            assign placeholder_link = placeholder_product.url
+          endif
+        %}
+
+        <div class="header__menu-item has-dropdown">
+          <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}collections/in-ear-monitors">In-ear monitors</a>
+          <div class="header__mega-menu" aria-label="In-ear monitors">
+            <div class="header__mega-menu-panel">
+              <div class="header__mega-menu-grid">
+                <article class="header__mega-card header__mega-card--placeholder">
+                  <a class="header__mega-card-media" href="{{ placeholder_link }}">
+                    {% if placeholder_image_url != blank %}
+                      <img
+                        class="header__mega-card-image"
+                        src="{{ placeholder_image_url }}"
+                        alt="Wave in-ear monitors"
+                        loading="lazy"
+                        decoding="async"
+                        width="584"
+                        height="584"
+                      >
+                    {% else %}
+                      <span class="header__mega-card-image-placeholder font-caption weight-semibold">Wave</span>
+                    {% endif %}
+                  </a>
+                  <a class="header__mega-card-title font-callout weight-bold" href="{{ placeholder_link }}">Wave in-ear monitors</a>
+                  <p class="header__mega-card-body font-body weight-regular">Placeholder dropdown card. Add menu blocks in Header settings.</p>
+                  <ul class="header__mega-card-links font-body weight-semibold" role="list">
+                    <li><a href="{{ placeholder_collection_url }}">Accessories</a></li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}collections/wearables">Wearables</a>
+        <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}collections/earplugs">Earplugs</a>
+        <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}collections/all">More products</a>
+        <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}pages/support">Support</a>
       {% endif %}
+    </nav>
 
-      <a href="{{ routes.cart_url }}" data-header-cart-link>
+    <div class="header__icons header__icons--right">
+      <a
+        class="header__icon-link header__icon-link--search header__icon-link--desktop-only"
+        href="{{ routes.search_url }}"
+        aria-label="Search"
+      >
+        <span class="header__icon-asset" aria-hidden="true">
+          {{ 'icon-search.svg' | inline_asset_content }}
+        </span>
+      </a>
+      <a class="header__icon-link header__icon-link--search" href="{{ routes.search_url }}" aria-label="Search">
+        <span class="header__icon-asset" aria-hidden="true">
+          {{ 'icon-search.svg' | inline_asset_content }}
+        </span>
+      </a>
+
+      <a class="header__icon-link header__icon-link--cart" href="{{ routes.cart_url }}" data-header-cart-link aria-label="Cart">
         <sup data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</sup>
-
-        {{ 'icon-cart.svg' | inline_asset_content }}
+        <span class="header__icon-asset" aria-hidden="true">
+          {{ 'icon-add-to-cart.svg' | inline_asset_content }}
+        </span>
       </a>
     </div>
   </div>
@@ -114,10 +470,57 @@
   </aside>
 </div>
 
+<div class="header__debug-tools" aria-label="Debug controls">
+  <button type="button" class="header__debug-button font-caption weight-regular" data-theme-toggle aria-label="Theme">
+    Theme
+  </button>
+
+  {% if localization.available_languages.size > 1 %}
+    <localization-form class="header__debug-localization">
+      {% form 'localization', class: 'header__debug-language-form', id: 'HeaderDebugLanguageForm' %}
+        <div class="header__debug-language-disclosure">
+          <input type="hidden" name="return_to" value="{{ request.path }}">
+          <button
+            type="button"
+            class="header__debug-button header__debug-button--language font-caption weight-regular"
+            aria-expanded="false"
+            aria-controls="HeaderDebugLanguageList"
+          >
+            {{ localization.language.iso_code | upcase }}
+          </button>
+
+          <ul id="HeaderDebugLanguageList" role="list" class="header__debug-language-list" hidden>
+            {% for language in localization.available_languages %}
+              <li class="header__debug-language-item" tabindex="-1">
+                <a
+                  href="#"
+                  {% if language.iso_code == localization.language.iso_code %}
+                    aria-current="true"
+                  {% endif %}
+                  hreflang="{{ language.iso_code }}"
+                  lang="{{ language.iso_code }}"
+                  data-value="{{ language.iso_code }}"
+                >
+                  {{ language.iso_code | upcase }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+
+          <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+        </div>
+      {% endform %}
+    </localization-form>
+  {% endif %}
+</div>
+
 {% stylesheet %}
   .header {
-    --sb-header-height: 5rem;
+    --sb-header-height: calc(var(--sb-space-48) + var(--sb-space-12));
+    --sb-announcement-min-height: 0px;
+    --sb-announcement-row-gap: 6px;
     background-color: var(--sb-color-neutral-200);
+    border-bottom: 1px solid var(--sb-color-neutral-600);
     left: 0;
     position: fixed;
     right: 0;
@@ -127,17 +530,112 @@
     z-index: 50;
   }
 
+  .header.has-announcement {
+    --sb-announcement-min-height: 42px;
+  }
+
+  .header__announcement {
+    align-items: center;
+    background: var(--sb-announcement-background, var(--sb-gradient-default-1));
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-announcement-row-gap);
+    justify-content: center;
+    min-height: var(--sb-announcement-min-height);
+    padding: var(--sb-space-8) var(--page-margin, 16px);
+    width: 100%;
+  }
+
+  .header__announcement-top {
+    align-items: center;
+    column-gap: var(--sb-space-16);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .header__announcement-emoji {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: var(--sb-space-20);
+    justify-content: center;
+    overflow: hidden;
+    width: var(--sb-space-20);
+  }
+
+  .header__announcement-emoji:first-child {
+    justify-self: end;
+  }
+
+  .header__announcement-emoji:last-child {
+    justify-self: start;
+  }
+
+  .header__announcement-emoji img {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .header__announcement-text {
+    color: var(--sb-color-always-white);
+    margin: 0;
+    max-width: 100%;
+    min-width: 0;
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .header__announcement-countdown {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-space-12);
+    justify-content: center;
+    width: 100%;
+  }
+
+  .header__announcement-countdown-group {
+    align-items: center;
+    color: var(--sb-color-always-white);
+    display: inline-flex;
+    gap: var(--sb-space-6);
+  }
+
+  .header__announcement-countdown-value {
+    align-items: center;
+    background: var(--sb-color-always-black-25);
+    box-sizing: border-box;
+    border-radius: 4px;
+    display: inline-flex;
+    font-variant-numeric: tabular-nums;
+    justify-content: center;
+    line-height: 1;
+    min-width: var(--sb-space-24);
+    padding: var(--sb-space-2);
+    text-align: center;
+    width: var(--sb-space-24);
+  }
+
+  .header__announcement-countdown-label {
+    color: var(--sb-color-always-white);
+    line-height: 1;
+  }
+
   .header.is-hidden {
     transform: translateY(-100%);
   }
 
   .header__inner {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
+    display: flex;
     height: var(--sb-header-height);
+    justify-content: space-between;
     margin-inline: auto;
     max-width: var(--page-width, 1240px);
+    position: relative;
     width: min(
       var(--page-width, 1240px),
       calc(100% - (var(--page-margin, 16px) * 2))
@@ -145,16 +643,276 @@
   }
 
   .header a {
+    text-decoration: none;
+  }
+
+  .header__brand {
+    align-items: center;
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .header__brand:hover,
+  .header__brand:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__brand-logo {
+    display: inline-flex;
+    height: var(--sb-space-36);
+    width: auto;
+  }
+
+  .header__brand-logo svg {
+    display: block;
+    height: 100%;
+    width: auto;
+  }
+
+  .header__menu {
+    align-items: center;
+    display: flex;
+    gap: var(--sb-space-24);
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+
+  .header__menu-item {
+    align-items: center;
+    display: inline-flex;
+  }
+
+  .header__menu-link {
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    min-height: var(--sb-space-36);
+    position: relative;
+    z-index: 2;
+  }
+
+  .header__menu-link:hover,
+  .header__menu-link:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__menu-link.is-active {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__mega-menu {
+    left: 50%;
+    min-width: calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24));
+    opacity: 0;
+    padding-top: var(--sb-space-16);
+    pointer-events: none;
+    position: absolute;
+    top: 100%;
+    transform: translate(-50%, var(--sb-space-12));
+    visibility: hidden;
+    width: min(
+      var(--page-width, 1240px),
+      calc(100vw - (var(--page-margin, 16px) * 2))
+    );
+    z-index: 60;
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms linear;
+  }
+
+  .header__menu-item.has-dropdown:hover > .header__mega-menu,
+  .header__menu-item.has-dropdown:focus-within > .header__mega-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+    visibility: visible;
+  }
+
+  .header__mega-menu-panel {
+    background: var(--sb-color-neutral-200);
+    border-radius: var(--sb-space-24);
+    padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-48);
+  }
+
+  .header__mega-menu-grid {
+    display: grid;
+    gap: var(--sb-space-36);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .header__mega-card {
+    min-width: 0;
+  }
+
+  .header__mega-card-media {
+    border-radius: var(--sb-space-24);
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
+    display: block;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .header__mega-card-image {
+    aspect-ratio: 1 / 1;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .header__mega-card-image-placeholder {
+    align-items: center;
+    aspect-ratio: 1 / 1;
+    background: var(--sb-color-neutral-300);
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .header__mega-card-badge {
+    border-radius: var(--sb-space-12);
+    color: var(--sb-color-always-white);
+    left: var(--sb-space-16);
+    padding: var(--sb-space-8) var(--sb-space-12);
+    position: absolute;
+    top: var(--sb-space-16);
+    z-index: 1;
+  }
+
+  .header__mega-card-badge--bestseller {
+    background: var(--sb-color-red-500);
+  }
+
+  .header__mega-card-badge--new {
+    background: var(--sb-color-primary-500);
+  }
+
+  .header__mega-card-title {
+    color: var(--sb-color-neutral-900);
+    display: block;
+    margin-top: var(--sb-space-20);
+  }
+
+  .header__mega-card-title:hover,
+  .header__mega-card-title:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__mega-card-body {
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-12) 0 0;
+  }
+
+  .header__mega-card-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-12);
+    list-style: none;
+    margin: var(--sb-space-20) 0 0;
+    padding: 0;
+  }
+
+  .header__mega-card-links a {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .header__mega-card-links a:hover,
+  .header__mega-card-links a:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__mega-card-app {
+    margin-top: var(--sb-space-12);
+  }
+
+  .header__mega-card-rating {
+    align-items: center;
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    gap: var(--sb-space-8);
+    margin: 0;
+  }
+
+  .header__mega-card-stars {
+    color: var(--sb-color-neutral-900);
+    letter-spacing: var(--sb-space-2);
+    line-height: 1;
+  }
+
+  .header__mega-card-app-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-space-12);
+    margin-top: var(--sb-space-20);
+  }
+
+  .header__mega-card-app-links a {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .header__mega-card-app-links img {
+    display: block;
+    height: auto;
+    width: calc(var(--sb-space-96) + var(--sb-space-24));
+  }
+
+  .header__icons {
+    align-items: center;
+    display: flex;
+    gap: var(--sb-space-24);
+    margin-left: auto;
+  }
+
+  .header__icons--left {
+    display: none;
+    margin-left: 0;
+  }
+
+  .header__icon-link {
+    align-items: center;
+    color: var(--sb-color-neutral-900);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    line-height: 0;
     position: relative;
     text-decoration: none;
-    color: var(--color-foreground);
+  }
+
+  .header__icon-link:hover,
+  .header__icon-link:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__icon-asset {
+    align-items: center;
+    display: inline-flex;
+    height: 16px;
+    justify-content: center;
+    width: 16px;
+  }
+
+  .header__icon-asset svg,
+  .header__icon-asset img {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .header__icon-link--search svg [fill] {
+    fill: currentColor;
+  }
+
+  .header__icon-link--cart svg [fill] {
+    fill: currentColor;
   }
 
   .header [data-header-cart-link] {
     align-items: center;
-    cursor: pointer;
     display: inline-flex;
-    justify-content: center;
   }
 
   .header [data-header-cart-link]:hover,
@@ -163,79 +921,40 @@
   }
 
   .header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
+    color: currentColor;
+    left: calc(100% - var(--sb-space-2));
     max-width: var(--page-margin);
-  }
-
-  .header svg {
-    width: 2rem;
-  }
-
-  .header .header__menu,
-  .header .header__icons {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .header .header__language-form,
-  .header .header__localization {
-    margin: 0;
-    position: relative;
-  }
-
-  .header .header__language-select,
-  .header .header__language-button {
-    background: transparent;
-    border: 1px solid var(--sb-color-neutral-600);
-    border-radius: var(--sb-radius-pill);
-    color: var(--sb-color-neutral-900);
-    cursor: pointer;
-    font: inherit;
-    min-height: var(--sb-space-36);
-    padding-block: 0;
-    padding-inline: var(--sb-space-12) var(--sb-space-28);
-  }
-
-  .header .header__language-list {
-    background: var(--sb-color-neutral-100);
-    border: 1px solid var(--sb-color-neutral-600);
-    border-radius: var(--sb-radius-16);
-    list-style: none;
-    margin: var(--sb-space-8) 0 0;
-    min-width: 100%;
-    padding: var(--sb-space-8);
     position: absolute;
-    right: 0;
-    top: 100%;
-    z-index: 60;
+    overflow: hidden;
+    top: calc(var(--sb-space-2) * -1);
   }
 
-  .header .header__language-item a {
-    border-radius: var(--sb-radius-pill);
-    display: block;
-    padding: var(--sb-space-8) var(--sb-space-12);
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  @media screen and (max-width: 989px) {
+    .header__inner {
+      justify-content: space-between;
+    }
 
-  .header .header__language-item a:hover {
-    background: var(--sb-color-neutral-200);
-  }
+    .header__brand {
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
 
-  .header .header__language-submit {
-    margin-left: var(--sb-space-8);
-  }
+    .header__menu {
+      display: none;
+    }
 
-  .header .header__theme-toggle {
-    background: transparent;
-    border: 1px solid var(--sb-color-neutral-600);
-    border-radius: var(--sb-radius-pill);
-    color: var(--sb-color-neutral-900);
-    cursor: pointer;
-    font: inherit;
-    padding: 0.375rem 0.75rem;
+    .header__mega-menu {
+      display: none;
+    }
+
+    .header__icons--left {
+      display: flex;
+    }
+
+    .header__icons--right .header__icon-link--desktop-only {
+      display: none;
+    }
   }
 
   .header .header__cart-drawer-action,
@@ -243,7 +962,7 @@
     align-items: center;
     background: transparent;
     border: 1px solid var(--sb-color-neutral-600);
-    border-radius: var(--sb-radius-pill);
+    border-radius: 999px;
     color: var(--sb-color-neutral-900);
     cursor: pointer;
     display: inline-flex;
@@ -355,7 +1074,87 @@
   }
 
   .shopify-section:has(> .header) {
-    min-height: 5rem;
+    min-height: calc(var(--sb-header-height) + var(--sb-announcement-min-height, 0px));
+  }
+
+  .header__debug-tools {
+    align-items: center;
+    background: var(--sb-color-neutral-100);
+    border: 1px solid var(--sb-color-neutral-600);
+    border-radius: 999px;
+    bottom: var(--sb-space-8);
+    display: inline-flex;
+    gap: var(--sb-space-4);
+    padding: var(--sb-space-2);
+    position: fixed;
+    right: var(--sb-space-8);
+    z-index: 95;
+  }
+
+  .header__debug-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    color: var(--sb-color-neutral-800);
+    cursor: pointer;
+    display: inline-flex;
+    height: var(--sb-space-24);
+    justify-content: center;
+    line-height: 1;
+    padding-inline: var(--sb-space-8);
+    white-space: nowrap;
+  }
+
+  .header__debug-button:hover,
+  .header__debug-button:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__debug-button[disabled] {
+    cursor: default;
+    opacity: 0.75;
+  }
+
+  .header__debug-localization,
+  .header__debug-language-form {
+    margin: 0;
+  }
+
+  .header__debug-language-disclosure {
+    position: relative;
+  }
+
+  .header__debug-language-list {
+    background: var(--sb-color-neutral-100);
+    border: 1px solid var(--sb-color-neutral-600);
+    border-radius: var(--sb-space-12);
+    bottom: calc(100% + var(--sb-space-4));
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-2);
+    list-style: none;
+    margin: 0;
+    min-width: var(--sb-space-96);
+    padding: var(--sb-space-4);
+    position: absolute;
+    right: 0;
+    z-index: 96;
+  }
+
+  .header__debug-language-item a {
+    border-radius: 999px;
+    color: var(--sb-color-neutral-800);
+    display: block;
+    line-height: 1;
+    padding: var(--sb-space-6) var(--sb-space-8);
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .header__debug-language-item a:hover,
+  .header__debug-language-item a:focus-visible {
+    color: var(--sb-color-primary-500);
   }
 {% endstylesheet %}
 
@@ -364,6 +1163,44 @@
     const header = document.querySelector('.header');
     if (!header || header.dataset.headerInit === 'true') return;
     header.dataset.headerInit = 'true';
+
+    const countdownRoot = header.querySelector('[data-announcement-countdown]');
+    if (countdownRoot) {
+      const endDateValue = countdownRoot.getAttribute('data-sale-end-date') || '';
+      const endTimestamp = Date.parse(endDateValue);
+      const daysValue = countdownRoot.querySelector('[data-countdown-days]');
+      const hoursValue = countdownRoot.querySelector('[data-countdown-hours]');
+      const minsValue = countdownRoot.querySelector('[data-countdown-mins]');
+      const secsValue = countdownRoot.querySelector('[data-countdown-secs]');
+
+      if (!Number.isFinite(endTimestamp) || !daysValue || !hoursValue || !minsValue || !secsValue) {
+        countdownRoot.setAttribute('hidden', '');
+      } else {
+        const formatCountdownValue = (value) => `${Math.min(99, Math.max(0, value))}`.padStart(2, '0');
+        let countdownTimer = null;
+
+        const updateCountdown = () => {
+          const remainingSeconds = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
+          const days = Math.floor(remainingSeconds / 86400);
+          const hours = Math.floor((remainingSeconds % 86400) / 3600);
+          const mins = Math.floor((remainingSeconds % 3600) / 60);
+          const secs = remainingSeconds % 60;
+
+          daysValue.textContent = formatCountdownValue(days);
+          hoursValue.textContent = formatCountdownValue(hours);
+          minsValue.textContent = formatCountdownValue(mins);
+          secsValue.textContent = formatCountdownValue(secs);
+
+          if (remainingSeconds <= 0 && countdownTimer) {
+            window.clearInterval(countdownTimer);
+            countdownTimer = null;
+          }
+        };
+
+        updateCountdown();
+        countdownTimer = window.setInterval(updateCountdown, 1000);
+      }
+    }
 
     const getWindowY = () => window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
     let lastY = getWindowY();
@@ -375,8 +1212,35 @@
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
     const headerHeight = () => header.getBoundingClientRect().height || 0;
+    const headerSection = header.closest('.shopify-section');
+    const syncHeaderSectionMinHeight = () => {
+      if (!headerSection) return;
+      headerSection.style.minHeight = `${headerHeight()}px`;
+    };
     const applyOffset = () => {
       header.style.transform = `translateY(${-hiddenOffset}px)`;
+    };
+    const captureHeaderState = () => ({
+      hiddenOffset,
+      topExitMode,
+      upwardTravel
+    });
+    const restoreHeaderState = (state) => {
+      if (!state || typeof state !== 'object') return;
+      const nextOffset = Number.parseFloat(`${state.hiddenOffset}`);
+      hiddenOffset = clamp(Number.isFinite(nextOffset) ? nextOffset : 0, 0, headerHeight());
+      topExitMode = typeof state.topExitMode === 'boolean'
+        ? state.topExitMode
+        : hiddenOffset < headerHeight();
+      upwardTravel = 0;
+      applyOffset();
+      lastY = getWindowY();
+    };
+
+    window.SBHeaderNav = {
+      ...(window.SBHeaderNav || {}),
+      captureState: captureHeaderState,
+      restoreState: restoreHeaderState
     };
 
     const sync = (currentY, { force = false } = {}) => {
@@ -420,21 +1284,36 @@
     };
 
     window.addEventListener('scroll', onWindowScroll, { passive: true });
-    window.addEventListener('resize', () => sync(getWindowY(), { force: true }), { passive: true });
-    window.requestAnimationFrame(() => sync(getWindowY(), { force: true }));
+    window.addEventListener(
+      'resize',
+      () => {
+        sync(getWindowY(), { force: true });
+        syncHeaderSectionMinHeight();
+      },
+      { passive: true }
+    );
+    window.requestAnimationFrame(() => {
+      sync(getWindowY(), { force: true });
+      syncHeaderSectionMinHeight();
+    });
+    window.setTimeout(syncHeaderSectionMinHeight, 300);
 
     const root = document.documentElement;
-    const toggle = header.querySelector('[data-theme-toggle]');
+    const toggle = document.querySelector('[data-theme-toggle]');
     const lockedTheme = root.getAttribute('data-theme-locked');
 
     const STORAGE_KEY = 'sb-theme-mode';
+    const formatThemeLabel = (theme) => (theme === 'light' ? 'Light' : 'Dark');
 
     const applyTheme = (theme) => {
-      if (!toggle) return;
       if (theme !== 'dark' && theme !== 'light') return;
       root.setAttribute('data-theme', theme);
+      if (!toggle) return;
       toggle.setAttribute('data-theme-current', theme);
-      toggle.textContent = `Theme: ${theme}`;
+      const themeLabel = formatThemeLabel(theme);
+      toggle.textContent = themeLabel;
+      toggle.setAttribute('aria-label', `Theme: ${themeLabel}`);
+      toggle.disabled = lockedTheme === 'light' || lockedTheme === 'dark';
     };
 
     if (toggle) {
@@ -778,6 +1657,131 @@
       "type": "link_list",
       "id": "menu",
       "label": "t:labels.menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu_group",
+      "name": "Mega menu group",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item_handle",
+          "label": "Menu item handle",
+          "default": "in-ear-monitors",
+          "info": "Match this to the top-level menu item title handle."
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_card",
+      "name": "Mega menu card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item_handle",
+          "label": "Menu item handle",
+          "default": "in-ear-monitors",
+          "info": "Match this to the top-level menu item title handle."
+        },
+        {
+          "type": "select",
+          "id": "card_mode",
+          "label": "Card mode",
+          "default": "standard",
+          "options": [
+            {
+              "value": "standard",
+              "label": "Standard"
+            },
+            {
+              "value": "app",
+              "label": "App"
+            }
+          ]
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Page"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Target minimum 584x584 at 1x export (584x584)."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Wave in-ear monitors"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Description",
+          "default": "Placeholder card. Replace this content in Header settings."
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Card link"
+        },
+        {
+          "type": "link_list",
+          "id": "submenu",
+          "label": "Submenu links"
+        },
+        {
+          "type": "text",
+          "id": "app_rating_label",
+          "label": "App rating label",
+          "default": "4.8 stars on app stores"
+        },
+        {
+          "type": "url",
+          "id": "app_store_url",
+          "label": "App Store link"
+        },
+        {
+          "type": "url",
+          "id": "google_play_url",
+          "label": "Google Play link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 32,
+  "presets": [
+    {
+      "name": "t:general.header",
+      "blocks": [
+        {
+          "type": "mega_menu_group",
+          "settings": {
+            "menu_item_handle": "in-ear-monitors"
+          }
+        },
+        {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "in-ear-monitors",
+            "title": "Wave in-ear monitors",
+            "body": "Placeholder card. Replace this content in Header settings."
+          }
+        }
+      ]
     }
   ]
 }

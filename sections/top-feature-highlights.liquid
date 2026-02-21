@@ -1,42 +1,156 @@
-<section class="sb-top-feature-highlights" id="sb-top-feature-highlights-{{ section.id }}" data-sb-reveal>
-  {% if section.settings.title != blank %}
-    <h2 class="sb-top-feature-highlights__title font-title weight-bold" data-sb-reveal-item>
-      {{ section.settings.title }}
-    </h2>
-  {% endif %}
+{% liquid
+  assign use_product_metaobjects = section.settings.use_product_metaobjects
+  assign uses_product_metaobjects = false
+  assign hide_section = false
+  assign section_title = section.settings.title
+  assign highlight_items = blank
 
-  <div class="sb-top-feature-highlights__items">
-    {% for block in section.blocks %}
-      {% assign icon_url = '' %}
-      {% if block.settings.icon != blank %}
-        {% assign icon_url = block.settings.icon | image_url: width: 48 %}
+  if use_product_metaobjects
+    if request.page_type == 'product' and product != blank
+      assign product_usps_ref = product.metafields.custom.product_usps
+      assign product_usps_root = product_usps_ref.value | default: product_usps_ref.reference | default: product_usps_ref
+
+      if product_usps_root != blank
+        assign uses_product_metaobjects = true
+        assign section_title = product_usps_root.title.value | default: product_usps_root.title | default: section_title
+
+        assign highlight_items = product_usps_root.items.value | default: product_usps_root.items.references | default: product_usps_root.items
+
+        if highlight_items == blank
+          assign hide_section = true
+        endif
+      else
+        assign hide_section = true
+      endif
+    else
+      assign hide_section = true
+    endif
+  endif
+
+  if use_product_metaobjects == false and section.blocks.size == 0
+    assign hide_section = true
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  <section class="sb-top-feature-highlights" id="sb-top-feature-highlights-{{ section.id }}" data-sb-reveal>
+    {% if section_title != blank %}
+      <h2 class="sb-top-feature-highlights__title font-title weight-bold" data-sb-reveal-item>
+        {{ section_title }}
+      </h2>
+    {% endif %}
+
+    <div class="sb-top-feature-highlights__items">
+      {% if uses_product_metaobjects %}
+        {% if highlight_items != blank %}
+          {% for usp_item in highlight_items %}
+            {% liquid
+              assign usp_entry = usp_item.value | default: usp_item.reference.value | default: usp_item.reference | default: usp_item
+              assign usp_icon = usp_entry.usp_icon_image.value | default: usp_entry.usp_icon_image
+              assign usp_title = usp_entry.usp_title.value | default: usp_entry.usp_title
+              assign usp_text = usp_entry.usp_text | metafield_tag
+              if usp_text == blank
+                assign usp_text = usp_entry.usp_text.value | default: usp_entry.usp_text
+              endif
+
+              assign usp_gradient_ref = usp_entry.gradient.value | default: usp_entry.gradient.reference | default: usp_entry.gradient
+              assign usp_gradient_key = usp_gradient_ref.gradient.value | default: usp_gradient_ref.gradient | default: usp_entry.gradient.value | default: usp_entry.gradient
+              assign usp_gradient_key = usp_gradient_key | downcase | strip
+              assign usp_gradient = 'var(--sb-color-neutral-900)'
+
+              case usp_gradient_key
+                when 'gradient 1', 'default 1', 'gradient1', 'default1'
+                  assign usp_gradient = 'var(--sb-gradient-default-1)'
+                when 'gradient 2', 'default 2', 'gradient2', 'default2'
+                  assign usp_gradient = 'var(--sb-gradient-default-2)'
+                when 'gradient 3', 'default 3', 'gradient3', 'default3'
+                  assign usp_gradient = 'var(--sb-gradient-default-3)'
+                when 'gradient 4', 'default 4', 'gradient4', 'default4'
+                  assign usp_gradient = 'var(--sb-gradient-default-4)'
+                when 'gradient 5', 'default 5', 'gradient5', 'default5'
+                  assign usp_gradient = 'var(--sb-gradient-default-5)'
+                when 'spark 1', 'spark1'
+                  assign usp_gradient = 'var(--sb-gradient-spark-1)'
+                when 'spark 2', 'spark2'
+                  assign usp_gradient = 'var(--sb-gradient-spark-2)'
+                when 'spark 3', 'spark3'
+                  assign usp_gradient = 'var(--sb-gradient-spark-3)'
+                when 'spark 4', 'spark4'
+                  assign usp_gradient = 'var(--sb-gradient-spark-4)'
+                when 'spark 5', 'spark5'
+                  assign usp_gradient = 'var(--sb-gradient-spark-5)'
+              endcase
+            %}
+
+            {% if usp_title != blank %}
+              {% assign icon_url = 'icon-square-placeholder-padded.svg' | asset_url %}
+              {% if usp_icon != blank %}
+                {% assign icon_url = usp_icon | image_url: width: 48 %}
+              {% endif %}
+
+              <article
+                class="sb-top-feature-highlights__item"
+                style="--sb-highlight-gradient: {{ usp_gradient }}; --sb-highlight-mask-url: url('{{ icon_url }}');"
+                data-sb-reveal-item
+              >
+                <div class="sb-top-feature-highlights__icon" aria-hidden="true">
+                  <span class="sb-top-feature-highlights__icon-glyph"></span>
+                </div>
+
+                <h3 class="sb-top-feature-highlights__item-title font-body weight-bold">{{ usp_title }}</h3>
+
+                {% if usp_text != blank %}
+                  <div class="sb-top-feature-highlights__item-body font-body weight-regular rte">
+                    {{ usp_text }}
+                  </div>
+                {% endif %}
+              </article>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
       {% else %}
-        {% assign icon_url = 'icon-square-placeholder-padded.svg' | asset_url %}
+        {% for block in section.blocks %}
+          {% assign icon_url = '' %}
+          {% if block.settings.icon != blank %}
+            {% assign icon_url = block.settings.icon | image_url: width: 48 %}
+          {% else %}
+            {% assign icon_url = 'icon-square-placeholder-padded.svg' | asset_url %}
+          {% endif %}
+
+          <article
+            class="sb-top-feature-highlights__item"
+            style="--sb-highlight-gradient: {{ block.settings.gradient_value }}; --sb-highlight-mask-url: url('{{ icon_url }}');"
+            data-sb-reveal-item
+            {{ block.shopify_attributes }}
+          >
+            <div class="sb-top-feature-highlights__icon" aria-hidden="true">
+              <span class="sb-top-feature-highlights__icon-glyph"></span>
+            </div>
+
+            {% if block.settings.title != blank %}
+              <h3 class="sb-top-feature-highlights__item-title font-body weight-bold">{{ block.settings.title }}</h3>
+            {% endif %}
+
+            {% if block.settings.body != blank %}
+              <div class="sb-top-feature-highlights__item-body font-body weight-regular rte">
+                {{ block.settings.body }}
+              </div>
+            {% endif %}
+          </article>
+        {% endfor %}
       {% endif %}
-
-      <article
-        class="sb-top-feature-highlights__item"
-        style="--sb-highlight-gradient: {{ block.settings.gradient_value }}; --sb-highlight-mask-url: url('{{ icon_url }}');"
-        data-sb-reveal-item
-        {{ block.shopify_attributes }}
-      >
-        <div class="sb-top-feature-highlights__icon" aria-hidden="true">
-          <span class="sb-top-feature-highlights__icon-glyph"></span>
-        </div>
-
-        {% if block.settings.title != blank %}
-          <h3 class="sb-top-feature-highlights__item-title font-body weight-bold">{{ block.settings.title }}</h3>
-        {% endif %}
-
-        {% if block.settings.body != blank %}
-          <div class="sb-top-feature-highlights__item-body font-body weight-regular rte">
-            {{ block.settings.body }}
-          </div>
-        {% endif %}
-      </article>
-    {% endfor %}
-  </div>
-</section>
+    </div>
+  </section>
+{% endif %}
 
 {% stylesheet %}
   .sb-top-feature-highlights {
@@ -134,10 +248,17 @@
   "name": "Top feature highlights",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "use_product_metaobjects",
+      "label": "Use product page metaobjects",
+      "default": false
+    },
+    {
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Top feature highlights"
+      "default": "Top feature highlights",
+      "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
     }
   ],
   "blocks": [
@@ -149,13 +270,15 @@
           "type": "image_picker",
           "id": "icon",
           "label": "Icon",
-          "info": "Target minimum 48x48. White SVG files only."
+          "info": "Target minimum 48x48. White SVG files only.",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
         },
         {
           "type": "select",
           "id": "gradient_value",
           "label": "Gradient",
           "default": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}",
           "options": [
             {
               "value": "linear-gradient(135deg, #FF0739 0%, #8E3BFF 100%)",
@@ -203,13 +326,15 @@
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Highlight title"
+          "default": "Highlight title",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
         },
         {
           "type": "richtext",
           "id": "body",
           "label": "Body",
-          "default": "<p>Highlight body copy.</p>"
+          "default": "<p>Highlight body copy.</p>",
+          "visible_if": "{{ section.settings.use_product_metaobjects == false }}"
         }
       ]
     }

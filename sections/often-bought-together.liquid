@@ -47,6 +47,35 @@
               assign selected_variant = recommended_product.selected_or_first_available_variant
               assign product_price_text = ''
               assign product_compare_price_text = ''
+              assign swatch_1 = blank
+              assign swatch_2 = blank
+              assign swatch_3 = blank
+              assign swatch_4 = blank
+              assign swatch_1_image = blank
+              assign swatch_2_image = blank
+              assign swatch_3_image = blank
+              assign swatch_4_image = blank
+              assign swatch_1_hover_image = blank
+              assign swatch_2_hover_image = blank
+              assign swatch_3_hover_image = blank
+              assign swatch_4_hover_image = blank
+              assign swatch_1_gallery = blank
+              assign swatch_2_gallery = blank
+              assign swatch_3_gallery = blank
+              assign swatch_4_gallery = blank
+              assign swatch_1_variant_id = blank
+              assign swatch_2_variant_id = blank
+              assign swatch_3_variant_id = blank
+              assign swatch_4_variant_id = blank
+              assign swatch_1_price_text = blank
+              assign swatch_2_price_text = blank
+              assign swatch_3_price_text = blank
+              assign swatch_4_price_text = blank
+              assign swatch_1_compare_price_text = blank
+              assign swatch_2_compare_price_text = blank
+              assign swatch_3_compare_price_text = blank
+              assign swatch_4_compare_price_text = blank
+              assign swatch_index = 0
 
               if recommended_product.metafields.reviews.rating.value != blank
                 assign rating_value = recommended_product.metafields.reviews.rating.value
@@ -69,6 +98,184 @@
                   assign product_compare_price_text = selected_variant.compare_at_price | money
                 endif
               endif
+
+              for option in recommended_product.options_with_values
+                assign option_name_downcase = option.name | downcase
+                if option_name_downcase contains 'color' or option_name_downcase contains 'colour'
+                  for option_value in option.values
+                    assign option_swatch_color = option_value.swatch.color | default: option_value.name
+                    assign option_swatch_image = blank
+                    assign option_swatch_hover_image = blank
+                    assign option_swatch_gallery = blank
+                    assign option_swatch_variant_id = blank
+                    assign option_swatch_price_text = blank
+                    assign option_swatch_compare_price_text = blank
+
+                    if option_value.swatch.image != blank
+                      assign option_swatch_image = option_value.swatch.image | image_url: width: 584
+                    endif
+
+                    for product_variant in recommended_product.variants
+                      assign variant_color_value = blank
+                      case option.position
+                        when 1
+                          assign variant_color_value = product_variant.option1
+                        when 2
+                          assign variant_color_value = product_variant.option2
+                        when 3
+                          assign variant_color_value = product_variant.option3
+                      endcase
+
+                      if variant_color_value == option_value.name
+                        assign option_swatch_variant_id = product_variant.id
+                        assign option_swatch_price_text = product_variant.price | money
+                        if product_variant.compare_at_price > product_variant.price
+                          assign option_swatch_compare_price_text = product_variant.compare_at_price | money
+                        else
+                          assign option_swatch_compare_price_text = blank
+                        endif
+                        break
+                      endif
+                    endfor
+
+                    if option_swatch_image == blank
+                      for product_variant in recommended_product.variants
+                        assign variant_color_value = blank
+                        case option.position
+                          when 1
+                            assign variant_color_value = product_variant.option1
+                          when 2
+                            assign variant_color_value = product_variant.option2
+                          when 3
+                            assign variant_color_value = product_variant.option3
+                        endcase
+
+                        if variant_color_value == option_value.name and product_variant.featured_image != blank
+                          assign option_swatch_image = product_variant.featured_image | image_url: width: 584
+                          assign option_swatch_gallery = 'image::' | append: option_swatch_image
+                          assign option_swatch_variant_id = product_variant.id
+                          assign option_swatch_price_text = product_variant.price | money
+                          if product_variant.compare_at_price > product_variant.price
+                            assign option_swatch_compare_price_text = product_variant.compare_at_price | money
+                          else
+                            assign option_swatch_compare_price_text = blank
+                          endif
+
+                          assign option_variant_hover_photo = product_variant.metafields.custom.sbv2_hover_photo.value | default: product_variant.metafields.custom.sbv2_hover_photo
+                          if option_variant_hover_photo != blank
+                            assign option_swatch_hover_image = option_variant_hover_photo | image_url: width: 584
+                          endif
+
+                          assign option_variant_gallery_images = product_variant.metafields.custom.images.value | default: product_variant.metafields.custom.images
+                          if option_variant_gallery_images != blank
+                            for option_variant_gallery_image in option_variant_gallery_images
+                              assign option_variant_gallery_media = option_variant_gallery_image.value | default: option_variant_gallery_image
+                              assign option_variant_gallery_type = option_variant_gallery_media.media_type | default: 'image'
+                              assign option_variant_gallery_image_url = blank
+                              assign option_variant_gallery_video_url = blank
+                              assign option_variant_gallery_poster_url = blank
+
+                              if option_variant_gallery_type == 'video'
+                                if option_variant_gallery_media.sources != blank
+                                  for option_variant_video_source in option_variant_gallery_media.sources
+                                    assign option_variant_gallery_video_url = option_variant_video_source.url | default: option_variant_video_source.src
+                                    if option_variant_gallery_video_url != blank
+                                      break
+                                    endif
+                                  endfor
+                                endif
+                                if option_variant_gallery_media.preview_image != blank
+                                  assign option_variant_gallery_poster_url = option_variant_gallery_media.preview_image | image_url: width: 584
+                                endif
+                              else
+                                if option_variant_gallery_media.preview_image != blank
+                                  assign option_variant_gallery_image_url = option_variant_gallery_media.preview_image | image_url: width: 584
+                                elsif option_variant_gallery_media != blank
+                                  assign option_variant_gallery_image_url = option_variant_gallery_media | image_url: width: 584
+                                endif
+                              endif
+
+                              assign option_variant_gallery_token = blank
+                              if option_variant_gallery_video_url != blank
+                                assign option_variant_gallery_token = 'video::' | append: option_variant_gallery_video_url
+                                if option_variant_gallery_poster_url != blank
+                                  assign option_variant_gallery_token = option_variant_gallery_token | append: '::' | append: option_variant_gallery_poster_url
+                                endif
+                              elsif option_variant_gallery_image_url != blank and option_variant_gallery_image_url != option_swatch_image
+                                assign option_variant_gallery_token = 'image::' | append: option_variant_gallery_image_url
+                              endif
+
+                              if option_variant_gallery_token != blank
+                                assign option_swatch_gallery = option_swatch_gallery | append: '||' | append: option_variant_gallery_token
+                              endif
+                            endfor
+                          endif
+                          break
+                        endif
+                      endfor
+                    endif
+
+                    if option_swatch_hover_image == blank
+                      for product_variant in recommended_product.variants
+                        assign variant_color_value = blank
+                        case option.position
+                          when 1
+                            assign variant_color_value = product_variant.option1
+                          when 2
+                            assign variant_color_value = product_variant.option2
+                          when 3
+                            assign variant_color_value = product_variant.option3
+                        endcase
+                        if variant_color_value == option_value.name
+                          assign option_variant_hover_photo = product_variant.metafields.custom.sbv2_hover_photo.value | default: product_variant.metafields.custom.sbv2_hover_photo
+                          if option_variant_hover_photo != blank
+                            assign option_swatch_hover_image = option_variant_hover_photo | image_url: width: 584
+                            break
+                          endif
+                        endif
+                      endfor
+                    endif
+
+                    if option_swatch_color != blank and swatch_index < 4
+                      assign swatch_index = swatch_index | plus: 1
+                      case swatch_index
+                        when 1
+                          assign swatch_1 = option_swatch_color
+                          assign swatch_1_image = option_swatch_image
+                          assign swatch_1_hover_image = option_swatch_hover_image
+                          assign swatch_1_gallery = option_swatch_gallery
+                          assign swatch_1_variant_id = option_swatch_variant_id
+                          assign swatch_1_price_text = option_swatch_price_text
+                          assign swatch_1_compare_price_text = option_swatch_compare_price_text
+                        when 2
+                          assign swatch_2 = option_swatch_color
+                          assign swatch_2_image = option_swatch_image
+                          assign swatch_2_hover_image = option_swatch_hover_image
+                          assign swatch_2_gallery = option_swatch_gallery
+                          assign swatch_2_variant_id = option_swatch_variant_id
+                          assign swatch_2_price_text = option_swatch_price_text
+                          assign swatch_2_compare_price_text = option_swatch_compare_price_text
+                        when 3
+                          assign swatch_3 = option_swatch_color
+                          assign swatch_3_image = option_swatch_image
+                          assign swatch_3_hover_image = option_swatch_hover_image
+                          assign swatch_3_gallery = option_swatch_gallery
+                          assign swatch_3_variant_id = option_swatch_variant_id
+                          assign swatch_3_price_text = option_swatch_price_text
+                          assign swatch_3_compare_price_text = option_swatch_compare_price_text
+                        when 4
+                          assign swatch_4 = option_swatch_color
+                          assign swatch_4_image = option_swatch_image
+                          assign swatch_4_hover_image = option_swatch_hover_image
+                          assign swatch_4_gallery = option_swatch_gallery
+                          assign swatch_4_variant_id = option_swatch_variant_id
+                          assign swatch_4_price_text = option_swatch_price_text
+                          assign swatch_4_compare_price_text = option_swatch_compare_price_text
+                      endcase
+                    endif
+                  endfor
+                endif
+              endfor
             %}
 
             <article class="sb-often-bought-together__item">
@@ -79,6 +286,35 @@
                 reviews_count_number: product_reviews_count,
                 compare_price_text: product_compare_price_text,
                 price_text: product_price_text,
+                swatch_1: swatch_1,
+                swatch_2: swatch_2,
+                swatch_3: swatch_3,
+                swatch_4: swatch_4,
+                swatch_1_image: swatch_1_image,
+                swatch_2_image: swatch_2_image,
+                swatch_3_image: swatch_3_image,
+                swatch_4_image: swatch_4_image,
+                swatch_1_hover_image: swatch_1_hover_image,
+                swatch_2_hover_image: swatch_2_hover_image,
+                swatch_3_hover_image: swatch_3_hover_image,
+                swatch_4_hover_image: swatch_4_hover_image,
+                swatch_1_gallery: swatch_1_gallery,
+                swatch_2_gallery: swatch_2_gallery,
+                swatch_3_gallery: swatch_3_gallery,
+                swatch_4_gallery: swatch_4_gallery,
+                swatch_1_variant_id: swatch_1_variant_id,
+                swatch_2_variant_id: swatch_2_variant_id,
+                swatch_3_variant_id: swatch_3_variant_id,
+                swatch_4_variant_id: swatch_4_variant_id,
+                swatch_1_price_text: swatch_1_price_text,
+                swatch_2_price_text: swatch_2_price_text,
+                swatch_3_price_text: swatch_3_price_text,
+                swatch_4_price_text: swatch_4_price_text,
+                swatch_1_compare_price_text: swatch_1_compare_price_text,
+                swatch_2_compare_price_text: swatch_2_compare_price_text,
+                swatch_3_compare_price_text: swatch_3_compare_price_text,
+                swatch_4_compare_price_text: swatch_4_compare_price_text,
+                selected_swatch: 1,
                 hide_reviews: product_hide_reviews,
                 show_add_to_cart: true,
                 show_compare_add_to_cart_large: false
@@ -498,6 +734,7 @@
     const initOftenBoughtTogetherThumbnails = (scope = document) => {
       const roots = scope.querySelectorAll('.sb-often-bought-together');
       if (!roots.length) return;
+      const variantUpdateEvent = window.SBProductThumbnail?.ThemeEvents?.variantUpdate || 'variant:update';
 
       const parseGalleryToken = (token) => {
         const raw = (token || '').trim();
@@ -517,7 +754,7 @@
         return { type: 'image', src: raw, poster: '' };
       };
 
-      const buildMediaNode = (item) => {
+      const buildMediaNode = (item, loading = 'lazy') => {
         if (!item || !item.src) return null;
         const baseClassName = 'sb-product-thumbnail__media-item';
         if (item.type === 'video') {
@@ -535,51 +772,202 @@
         const image = document.createElement('img');
         image.className = `${baseClassName} sb-product-thumbnail__image`;
         image.src = item.src;
-        image.loading = 'lazy';
+        image.loading = loading;
+        image.decoding = 'async';
         return image;
       };
 
+      const getSourceItems = (mediaWrap) => {
+        const fromSources = Array.from(mediaWrap.querySelectorAll('.sb-product-thumbnail__gallery-image-source'))
+          .map((node) => parseGalleryToken(node.dataset.galleryImage || ''))
+          .filter(Boolean);
+        if (fromSources.length) return fromSources;
+
+        const mediaItem = mediaWrap.querySelector('.sb-product-thumbnail__media-item');
+        if (mediaItem instanceof HTMLVideoElement) {
+          return [{ type: 'video', src: mediaItem.currentSrc || mediaItem.src || '', poster: mediaItem.poster || '' }].filter((item) => item.src);
+        }
+        if (mediaItem instanceof HTMLImageElement && mediaItem.src) {
+          return [{ type: 'image', src: mediaItem.src, poster: '' }];
+        }
+        return [];
+      };
+
+      const updateSlide = (mediaWrap, nextIndex) => {
+        const track = mediaWrap.querySelector('.sb-product-thumbnail__carousel-track');
+        if (!track) return;
+        const slides = Array.from(track.children);
+        const total = slides.length;
+        if (!total) return;
+        const wrapped = ((nextIndex % total) + total) % total;
+        track.style.transform = `translate3d(${-wrapped * 100}%, 0, 0)`;
+        slides.forEach((slide, idx) => slide.setAttribute('aria-hidden', idx === wrapped ? 'false' : 'true'));
+        mediaWrap.dataset.galleryIndex = `${wrapped}`;
+      };
+
+      const renderMediaFromSources = (mediaWrap, sourceItems) => {
+        const mediaLink = mediaWrap.querySelector('.sb-product-thumbnail__media');
+        if (!mediaLink) return;
+
+        const normalizedItems = sourceItems.filter((item) => item && item.src);
+        if (!normalizedItems.length) return;
+
+        mediaLink
+          .querySelectorAll(':scope > .sb-product-thumbnail__media-item, :scope > .sb-product-thumbnail__carousel, :scope > .sb-product-thumbnail__image-placeholder')
+          .forEach((node) => node.remove());
+
+        if (normalizedItems.length > 1) {
+          const carousel = document.createElement('div');
+          carousel.className = 'sb-product-thumbnail__carousel';
+          const track = document.createElement('div');
+          track.className = 'sb-product-thumbnail__carousel-track is-instant';
+          carousel.appendChild(track);
+
+          normalizedItems.forEach((item, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'sb-product-thumbnail__carousel-slide';
+            slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
+            const node = buildMediaNode(item, index === 0 ? 'eager' : 'lazy');
+            if (node) slide.appendChild(node);
+            track.appendChild(slide);
+          });
+
+          mediaLink.appendChild(carousel);
+          mediaWrap.dataset.galleryIndex = '0';
+          updateSlide(mediaWrap, 0);
+          requestAnimationFrame(() => track.classList.remove('is-instant'));
+        } else {
+          const node = buildMediaNode(normalizedItems[0], 'eager');
+          if (node) mediaLink.appendChild(node);
+          mediaWrap.dataset.galleryIndex = '0';
+        }
+
+        mediaWrap.querySelectorAll('[data-gallery-nav]').forEach((button) => {
+          button.hidden = normalizedItems.length < 2;
+        });
+      };
+
+      const mediaLoadPromiseCache = new Map();
+      const ensureMediaReady = (item) => {
+        if (!item || !item.src) return Promise.resolve();
+        if (mediaLoadPromiseCache.has(item.src)) return mediaLoadPromiseCache.get(item.src);
+
+        const mediaReadyPromise = new Promise((resolve) => {
+          if (item.type === 'video') {
+            const video = document.createElement('video');
+            const done = () => resolve();
+            video.preload = 'auto';
+            video.muted = true;
+            video.playsInline = true;
+            video.src = item.src;
+            if (item.poster) video.poster = item.poster;
+            video.addEventListener('loadeddata', done, { once: true });
+            video.addEventListener('canplay', done, { once: true });
+            video.addEventListener('error', done, { once: true });
+            video.load();
+            return;
+          }
+
+          const image = new Image();
+          const done = () => resolve();
+          image.decoding = 'async';
+          image.onload = done;
+          image.onerror = done;
+          image.src = item.src;
+          if (image.complete) resolve();
+        });
+
+        mediaLoadPromiseCache.set(item.src, mediaReadyPromise);
+        return mediaReadyPromise;
+      };
+
+      const setFirstSlideImage = (mediaWrap, nextSource) => {
+        const nextSrc = String(nextSource || '').trim();
+        if (!nextSrc) return;
+        const mediaLink = mediaWrap.querySelector('.sb-product-thumbnail__media');
+        if (!mediaLink) return;
+
+        const firstSlide = mediaLink.querySelector('.sb-product-thumbnail__carousel-slide');
+        const standaloneMedia = mediaLink.querySelector(':scope > .sb-product-thumbnail__media-item');
+        const currentMedia = firstSlide
+          ? firstSlide.querySelector('.sb-product-thumbnail__media-item')
+          : standaloneMedia;
+        if (!currentMedia) return;
+
+        const currentSrc = currentMedia.currentSrc || currentMedia.getAttribute('src') || '';
+        if (currentMedia.tagName.toLowerCase() === 'img' && currentSrc === nextSrc) return;
+
+        const token = String((Number(mediaWrap.dataset.firstSlideSwapToken || '0') || 0) + 1);
+        mediaWrap.dataset.firstSlideSwapToken = token;
+        const applyIfCurrent = (callback) => {
+          if (mediaWrap.dataset.firstSlideSwapToken !== token) return;
+          callback();
+        };
+
+        const preload = new Image();
+        preload.decoding = 'async';
+        preload.src = nextSrc;
+
+        const apply = () => {
+          applyIfCurrent(() => {
+            if (currentMedia.tagName.toLowerCase() === 'img') {
+              currentMedia.setAttribute('src', nextSrc);
+              currentMedia.removeAttribute('srcset');
+              currentMedia.setAttribute('loading', 'eager');
+            } else {
+              const replacement = document.createElement('img');
+              replacement.className = 'sb-product-thumbnail__media-item sb-product-thumbnail__image';
+              replacement.loading = 'eager';
+              replacement.decoding = 'async';
+              replacement.src = nextSrc;
+              replacement.alt = currentMedia.getAttribute('aria-label') || '';
+              currentMedia.replaceWith(replacement);
+            }
+          });
+        };
+
+        if (preload.complete) {
+          apply();
+        } else {
+          preload.addEventListener('load', apply, { once: true });
+        }
+      };
+
+      const setGallerySources = (mediaWrap, sourceItems) => {
+        let sourcesContainer = mediaWrap.querySelector('.sb-product-thumbnail__gallery-sources');
+        if (!sourcesContainer) {
+          sourcesContainer = document.createElement('div');
+          sourcesContainer.className = 'sb-product-thumbnail__gallery-sources';
+          sourcesContainer.setAttribute('aria-hidden', 'true');
+          mediaWrap.appendChild(sourcesContainer);
+        }
+
+        sourcesContainer.innerHTML = '';
+        sourceItems.forEach((item) => {
+          if (!item || !item.src) return;
+          const sourceNode = document.createElement('span');
+          sourceNode.className = 'sb-product-thumbnail__gallery-image-source';
+          const token =
+            item.type === 'video'
+              ? `video::${item.src}${item.poster ? `::${item.poster}` : ''}`
+              : `image::${item.src}`;
+          sourceNode.dataset.galleryImage = token;
+          sourcesContainer.appendChild(sourceNode);
+        });
+      };
+
       roots.forEach((root) => {
-        root.querySelectorAll('.sb-product-thumbnail__media-wrap').forEach((mediaWrap) => {
-          const mediaLink = mediaWrap.querySelector('.sb-product-thumbnail__media');
-          if (!mediaLink) return;
+        if (root.dataset.sbObtThumbnailsInitialized === 'true') return;
+        root.dataset.sbObtThumbnailsInitialized = 'true';
 
-          const sourceItems = Array.from(mediaWrap.querySelectorAll('.sb-product-thumbnail__gallery-image-source'))
-            .map((node) => parseGalleryToken(node.dataset.galleryImage || ''))
-            .filter(Boolean);
+        if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
+          window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
+        } else {
+          root.querySelectorAll('.sb-product-thumbnail__media-wrap').forEach((mediaWrap) => {
+            renderMediaFromSources(mediaWrap, getSourceItems(mediaWrap));
 
-          if (sourceItems.length > 1) {
-            const existing = mediaLink.querySelector('.sb-product-thumbnail__media-item');
-            if (existing) {
-              const carousel = document.createElement('div');
-              carousel.className = 'sb-product-thumbnail__carousel';
-              const track = document.createElement('div');
-              track.className = 'sb-product-thumbnail__carousel-track';
-              carousel.appendChild(track);
-
-              sourceItems.forEach((item, index) => {
-                const slide = document.createElement('div');
-                slide.className = 'sb-product-thumbnail__carousel-slide';
-                slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
-                const node = buildMediaNode(item);
-                if (node) slide.appendChild(node);
-                track.appendChild(slide);
-              });
-
-              existing.remove();
-              mediaLink.appendChild(carousel);
-              mediaWrap.dataset.galleryIndex = '0';
-
-              const updateSlide = (nextIndex) => {
-                const slides = Array.from(track.children);
-                const total = slides.length;
-                if (!total) return;
-                const wrapped = ((nextIndex % total) + total) % total;
-                track.style.transform = `translate3d(${-wrapped * 100}%, 0, 0)`;
-                slides.forEach((slide, idx) => slide.setAttribute('aria-hidden', idx === wrapped ? 'false' : 'true'));
-                mediaWrap.dataset.galleryIndex = `${wrapped}`;
-              };
-
+            if (mediaWrap.dataset.galleryNavBound !== 'true') {
+              mediaWrap.dataset.galleryNavBound = 'true';
               mediaWrap.querySelectorAll('[data-gallery-nav]').forEach((button) => {
                 button.addEventListener('click', (event) => {
                   event.preventDefault();
@@ -587,12 +975,63 @@
                   const delta = Number.parseInt(button.dataset.galleryNav || '0', 10);
                   if (!Number.isFinite(delta) || delta === 0) return;
                   const currentIndex = Number.parseInt(mediaWrap.dataset.galleryIndex || '0', 10) || 0;
-                  updateSlide(currentIndex + delta);
+                  updateSlide(mediaWrap, currentIndex + delta);
                 });
               });
             }
+          });
+
+          root.querySelectorAll('.sb-product-thumbnail__swatches').forEach((row) => {
+            const applySwatchMedia = async (swatchButton, sourceId = '') => {
+              if (!swatchButton) return;
+              const thumbnail = row.closest('.sb-product-thumbnail');
+              if (!thumbnail) return;
+              const mediaWrap = thumbnail.querySelector('.sb-product-thumbnail__media-wrap');
+              if (!mediaWrap) return;
+              const swatchSwapToken = String((Number(mediaWrap.dataset.swatchSwapToken || '0') || 0) + 1);
+              mediaWrap.dataset.swatchSwapToken = swatchSwapToken;
+
+              const nextImage = (swatchButton.dataset.thumbnailImage || '').trim();
+              const nextGallery = (swatchButton.dataset.thumbnailGallery || '').trim();
+              const isPreviewSource =
+                sourceId === 'product-thumbnail-swatch-hover' || sourceId === 'product-thumbnail-swatch-focus';
+
+              if (isPreviewSource) {
+                if (!nextImage) return;
+                await ensureMediaReady({ type: 'image', src: nextImage, poster: '' });
+                if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
+                setFirstSlideImage(mediaWrap, nextImage);
+                return;
+              }
+
+              let nextSourceItems = nextGallery
+                .split('||')
+                .map((token) => parseGalleryToken(token))
+                .filter(Boolean);
+
+              if (!nextSourceItems.length && nextImage) {
+                nextSourceItems = [{ type: 'image', src: nextImage, poster: '' }];
+              }
+
+              if (!nextSourceItems.length) return;
+              await ensureMediaReady(nextSourceItems[0]);
+              if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
+              setGallerySources(mediaWrap, nextSourceItems);
+              renderMediaFromSources(mediaWrap, nextSourceItems);
+            };
+
+            row.addEventListener(variantUpdateEvent, (event) => {
+              const swatchButton = event?.detail?.data?.swatchButton;
+              if (!(swatchButton instanceof HTMLElement)) return;
+              if (!row.contains(swatchButton)) return;
+              applySwatchMedia(swatchButton, String(event?.detail?.sourceId || ''));
+            });
+          });
+
+          if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initSwatchInteractionScope === 'function') {
+            window.SBProductThumbnail.initSwatchInteractionScope(root);
           }
-        });
+        }
 
         root.querySelectorAll('[data-add-to-cart]').forEach((button) => {
           const resetToDefault = () => {

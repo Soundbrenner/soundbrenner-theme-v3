@@ -90,6 +90,7 @@
     --font-size-callout: 1.25rem;
     --font-size-body: 1rem;
     --font-size-caption: 0.75rem;
+    --font-size-caption-2: 0.625rem;
     --font-title-line-height:
       {% if sb_display_font_family_downcase contains 'merriweather' %}1.35{% else %}1.25{% endif %};
 
@@ -266,6 +267,7 @@
       --font-size-callout: 1.5rem;
       --font-size-body: 1.125rem;
       --font-size-caption: 0.875rem;
+      --font-size-caption-2: 0.75rem;
 
       /* Semantic spacing scale (desktop + tablet) */
       --sb-space-2: 2px;
@@ -440,6 +442,12 @@
   .font-caption {
     font-family: var(--font-primary--family);
     font-size: var(--font-size-caption);
+    line-height: 1.35;
+  }
+
+  .font-caption2 {
+    font-family: var(--font-primary--family);
+    font-size: var(--font-size-caption-2);
     line-height: 1.35;
   }
 
