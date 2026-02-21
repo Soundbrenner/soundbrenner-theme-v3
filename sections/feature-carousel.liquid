@@ -12,7 +12,7 @@
           {% assign item_image_request_width = item_image.width | at_most: 864 %}
           {% assign item_image_url = item_image | image_url: width: item_image_request_width %}
         {% else %}
-          {% assign item_image_url = 'feature-carousel-placeholder.jpg' | asset_url %}
+          {% assign item_image_url = 'placeholder-feature-carousel.jpg' | asset_url %}
         {% endif %}
 
         <article class="sb-feature-carousel__item" data-sb-carousel-item data-sb-reveal-item {{ block.shopify_attributes }}>

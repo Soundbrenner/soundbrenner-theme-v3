@@ -34,41 +34,6 @@
   else
     assign trustpilot_rating_text = 'X.X out of 5'
   endif
-  assign review_month_number = 'now' | date: '%m' | plus: 0
-  assign review_year_number = 'now' | date: '%Y' | plus: 0
-  if review_month_number == 1
-    assign review_month_number = 12
-    assign review_year_number = review_year_number | minus: 1
-  else
-    assign review_month_number = review_month_number | minus: 1
-  endif
-  case review_month_number
-    when 1
-      assign review_month_label = 'Jan'
-    when 2
-      assign review_month_label = 'Feb'
-    when 3
-      assign review_month_label = 'Mar'
-    when 4
-      assign review_month_label = 'Apr'
-    when 5
-      assign review_month_label = 'May'
-    when 6
-      assign review_month_label = 'Jun'
-    when 7
-      assign review_month_label = 'Jul'
-    when 8
-      assign review_month_label = 'Aug'
-    when 9
-      assign review_month_label = 'Sep'
-    when 10
-      assign review_month_label = 'Oct'
-    when 11
-      assign review_month_label = 'Nov'
-    else
-      assign review_month_label = 'Dec'
-  endcase
-  assign review_date_text = '8 ' | append: review_month_label | append: ', ' | append: review_year_number
   assign metronome_rating_raw = trustpilot_entry.the_metronome_app_review_rating.value | default: trustpilot_entry.the_metronome_app_review_rating
   assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count
   assign metronome_rating_display = metronome_rating_raw | strip
@@ -183,21 +148,21 @@
               assign is_active_link = true
             endif
 
-            assign has_mega_cards = false
+            assign has_primary_cards = false
             assign dropdown_card_count = 0
 
             for block in section.blocks
               if block.type == 'primary_item_product' or block.type == 'primary_item_collection' or block.type == 'primary_item_page' or block.type == 'primary_item_app'
                 assign card_menu_index = block.settings.menu_item_index | plus: 0
                 if card_menu_index == link_index
-                  assign has_mega_cards = true
+                  assign has_primary_cards = true
                   assign dropdown_card_count = dropdown_card_count | plus: 1
                 endif
               endif
             endfor
 
             assign has_dropdown = false
-            if has_mega_cards
+            if has_primary_cards
               assign has_dropdown = true
             endif
 
@@ -213,14 +178,16 @@
             </a>
 
             {% if has_dropdown %}
-              <div class="header__mega-menu" aria-label="{{ link.title | escape }}" style="--sb-mega-columns: {{ dropdown_card_count }};">
-                <div class="header__mega-menu-panel">
-                  <div class="header__mega-menu-panel-inner">
-                  <a class="header__mega-menu-title font-title weight-bold" href="{{ link.url }}">{{ link.title }}</a>
-                  <div class="header__mega-menu-grid">
+              <div class="header__primary-menu" aria-label="{{ link.title | escape }}" style="--sb-primary-columns: {{ dropdown_card_count }};">
+                <div class="header__primary-menu-panel">
+                  <div class="header__primary-menu-panel-inner">
+                  <a class="header__primary-menu-title font-title weight-bold" href="{{ link.url }}">{{ link.title }}</a>
+                  <div class="header__primary-menu-grid">
                     {% for block in section.blocks %}
                       {% liquid
-                        if block.type != 'primary_item_product' and block.type != 'primary_item_collection' and block.type != 'primary_item_page' and block.type != 'primary_item_app'
+                        assign block_type_key = block.type
+
+                        if block_type_key != 'primary_item_product' and block_type_key != 'primary_item_collection' and block_type_key != 'primary_item_page' and block_type_key != 'primary_item_app'
                           continue
                         endif
 
@@ -234,7 +201,7 @@
                         assign card_page = blank
                         assign hide_on_mobile = false
 
-                        case block.type
+                        case block_type_key
                           when 'primary_item_product'
                             assign card_product = block.settings.product
                           when 'primary_item_collection'
@@ -314,17 +281,17 @@
                         endif
                       %}
 
-                      <article class="header__mega-card" data-hide-on-mobile="{{ hide_on_mobile }}" {{ block.shopify_attributes }}>
-                        <a class="header__mega-card-media" href="{{ card_link | default: '#' }}">
+                      <article class="header__primary-card" data-hide-on-mobile="{{ hide_on_mobile }}" {{ block.shopify_attributes }}>
+                        <a class="header__primary-card-media" href="{{ card_link | default: '#' }}">
                           {% if card_badge_label != blank %}
-                            <span class="header__mega-card-badge header__mega-card-badge--{{ card_badge_type }} font-caption weight-semibold">
+                            <span class="header__primary-card-badge header__primary-card-badge--{{ card_badge_type }} font-caption weight-semibold">
                               {{ card_badge_label }}
                             </span>
                           {% endif %}
 
                           {% if card_image_url != blank %}
                             <img
-                              class="header__mega-card-image"
+                              class="header__primary-card-image"
                               src="{{ card_image_url }}"
                               alt="{{ card_title | default: link.title | escape }}"
                               loading="eager"
@@ -335,8 +302,8 @@
                             >
                           {% else %}
                             <img
-                              class="header__mega-card-image"
-                              src="{{ 'mega-menu-item-placeholder.jpg' | asset_url }}"
+                              class="header__primary-card-image"
+                              src="{{ 'placeholder-primary-navigation-item.jpg' | asset_url }}"
                               alt="{{ card_title | default: link.title | escape }}"
                               loading="eager"
                               fetchpriority="low"
@@ -347,14 +314,14 @@
                           {% endif %}
                         </a>
 
-                        <p class="header__mega-card-title font-callout weight-bold">
-                          <a class="header__mega-card-title-link" href="{{ card_link | default: '#' }}">{{ card_title | default: link.title }}</a>
+                        <p class="header__primary-card-title font-callout weight-bold">
+                          <a class="header__primary-card-title-link" href="{{ card_link | default: '#' }}">{{ card_title | default: link.title }}</a>
                         </p>
 
                         {% if app_mode == true %}
-                          <div class="header__mega-card-app">
-                            <p class="header__mega-card-rating font-body weight-semibold">
-                              <span class="header__mega-card-stars" aria-hidden="true">
+                          <div class="header__primary-card-app">
+                            <p class="header__primary-card-rating font-body weight-semibold">
+                              <span class="header__primary-card-stars" aria-hidden="true">
                                 {% for star_index in (1..5) %}
                                   {% assign prior_stars = star_index | minus: 1 %}
                                   {% assign star_fill = 0 %}
@@ -363,14 +330,14 @@
                                   {% elsif card_rating_value > prior_stars %}
                                     {% assign star_fill = card_rating_value | minus: prior_stars | times: 100 | round %}
                                   {% endif %}
-                                  <span class="header__mega-card-star" style="--sb-star-fill: {{ star_fill }}%; --sb-star-icon-url: url('{{ card_star_icon_url }}');"></span>
+                                  <span class="header__primary-card-star" style="--sb-star-fill: {{ star_fill }}%; --sb-star-icon-url: url('{{ card_star_icon_url }}');"></span>
                                 {% endfor %}
                               </span>
                               <span>{{ card_rating_display }}</span>
                             </p>
-                            <p class="header__mega-card-rating-count font-body weight-regular">{{ card_rating_count_display }} ratings</p>
+                            <p class="header__primary-card-rating-count font-body weight-regular">{{ card_rating_count_display }} ratings</p>
 
-                            <div class="header__mega-card-app-links">
+                            <div class="header__primary-card-app-links">
                               <a href="{{ card_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
                                 <img
                                   src="{{ 'app-download-app-store.png' | asset_url }}"
@@ -393,10 +360,10 @@
                           </div>
                         {% else %}
                           {% if card_body != blank %}
-                            <p class="header__mega-card-body font-body weight-regular">{{ card_body }}</p>
+                            <p class="header__primary-card-body font-body weight-regular">{{ card_body }}</p>
                           {% endif %}
 
-                          {% if block.type == 'primary_item_product' %}
+                          {% if block_type_key == 'primary_item_product' %}
                             {% assign accessories_collection = block.settings.accessories_collection %}
                             {% if accessories_collection == blank and card_product != blank and card_product.collections != blank %}
                               {% for candidate_collection in card_product.collections %}
@@ -412,13 +379,13 @@
                               {% endif %}
                             {% endif %}
                             {% if accessories_collection != blank %}
-                              <ul class="header__mega-card-links font-body weight-semibold" role="list">
+                              <ul class="header__primary-card-links font-body weight-semibold" role="list">
                                 <li>
                                   <a href="{{ accessories_collection.url }}">Accessories</a>
                                 </li>
                               </ul>
                             {% endif %}
-                          {% elsif block.type == 'primary_item_collection' %}
+                          {% elsif block_type_key == 'primary_item_collection' %}
                             {% assign linked_product_1 = block.settings.related_product_1 %}
                             {% assign linked_product_2 = block.settings.related_product_2 %}
                             {% assign linked_product_3 = block.settings.related_product_3 %}
@@ -427,7 +394,7 @@
                               {% assign has_card_links = true %}
                             {% endif %}
                             {% if has_card_links %}
-                              <ul class="header__mega-card-links font-body weight-semibold" role="list">
+                              <ul class="header__primary-card-links font-body weight-semibold" role="list">
                                 {% if linked_product_1 != blank %}
                                   {% assign linked_product_1_settings = linked_product_1.metafields.custom.sbv2_product_settings.value | default: linked_product_1.metafields.custom.sbv2_product_settings %}
                                   {% assign linked_product_1_tagline = blank %}
@@ -530,11 +497,8 @@
       aria-label="Close menu"
       data-mobile-menu-close
     >
-      <span class="menu-drawer__close-icon-circle" aria-hidden="true">
-        {{ 'icon-cancel-circle.svg' | inline_asset_content }}
-      </span>
-      <span class="menu-drawer__close-icon-x" aria-hidden="true">
-        {{ 'icon-cancel-x.svg' | inline_asset_content }}
+      <span class="menu-drawer__close-icon" aria-hidden="true">
+        {{ 'icon-cancel.svg' | inline_asset_content }}
       </span>
     </button>
     <nav class="menu-drawer__navigation" aria-label="Primary navigation">
@@ -568,7 +532,9 @@
                   <ul class="menu-drawer__menu menu-drawer__menu--childlist" role="list">
                     {% for block in section.blocks %}
                       {% liquid
-                        if block.type != 'primary_item_product' and block.type != 'primary_item_collection' and block.type != 'primary_item_page' and block.type != 'primary_item_app'
+                        assign drawer_block_type_key = block.type
+
+                        if drawer_block_type_key != 'primary_item_product' and drawer_block_type_key != 'primary_item_collection' and drawer_block_type_key != 'primary_item_page' and drawer_block_type_key != 'primary_item_app'
                           continue
                         endif
 
@@ -605,7 +571,7 @@
                         assign drawer_related_product_2_hide_on_mobile = false
                         assign drawer_related_product_3_hide_on_mobile = false
 
-                        case block.type
+                        case drawer_block_type_key
                           when 'primary_item_product'
                             assign drawer_card_product = block.settings.product
                           when 'primary_item_collection'
@@ -714,7 +680,7 @@
                               {% else %}
                                 <img
                                   class="menu-drawer__submenu-image"
-                                  src="{{ 'mega-menu-item-placeholder.jpg' | asset_url }}"
+                                  src="{{ 'placeholder-primary-navigation-item.jpg' | asset_url }}"
                                   alt=""
                                   loading="lazy"
                                   decoding="async"
@@ -832,7 +798,7 @@
                               {% else %}
                                 <img
                                   class="menu-drawer__submenu-image"
-                                  src="{{ 'mega-menu-item-placeholder.jpg' | asset_url }}"
+                                  src="{{ 'placeholder-primary-navigation-item.jpg' | asset_url }}"
                                   alt=""
                                   loading="lazy"
                                   decoding="async"
@@ -934,9 +900,9 @@
         </a>
       </div>
 
-      <div class="menu-drawer__review menu-drawer__animated-element" style="--menu-drawer-animation-index: 8;">
+      <div class="menu-drawer__review menu-drawer__animated-element" style="--menu-drawer-animation-index: 8;" data-mobile-menu-review>
         <div class="menu-drawer__review-row">
-          <span class="menu-drawer__review-name font-caption weight-semibold">Wesley G.</span>
+          <span class="menu-drawer__review-name font-caption weight-semibold" data-mobile-menu-review-name>Wesley G.</span>
           <span class="menu-drawer__review-verified font-caption weight-semibold">
             <span class="menu-drawer__review-verified-icon" aria-hidden="true">
               {{ 'icon-verified-badge.svg' | inline_asset_content }}
@@ -951,10 +917,10 @@
             <span class="menu-drawer__review-star"></span>
           </span>
         </div>
-        <p class="menu-drawer__review-text font-caption weight-regular">
+        <p class="menu-drawer__review-text font-caption weight-regular" data-mobile-menu-review-text>
           I have the in-ear monitors and the Pulse. They work exactly as promised. Shipping was good and without bad surprises. Thank you Soundbrenner!
         </p>
-        <p class="menu-drawer__review-date font-caption weight-regular">{{ review_date_text }}</p>
+        <p class="menu-drawer__review-date font-caption weight-regular" data-mobile-menu-review-date>8 Jan, 2026</p>
       </div>
 
       <div class="menu-drawer__social menu-drawer__animated-element" style="--menu-drawer-animation-index: 9;" aria-label="Social links">
@@ -983,10 +949,10 @@
     data-mobile-menu-close
   ></button>
 </div>
-<div class="header__mega-backdrop header__mega-backdrop--top" data-header-mega-backdrop="top" aria-hidden="true"></div>
+<div class="header__primary-backdrop header__primary-backdrop--top" data-header-primary-backdrop="top" aria-hidden="true"></div>
 <div
-  class="header__mega-backdrop header__mega-backdrop--bottom"
-  data-header-mega-backdrop="bottom"
+  class="header__primary-backdrop header__primary-backdrop--bottom"
+  data-header-primary-backdrop="bottom"
   aria-hidden="true"
 ></div>
 
@@ -1218,19 +1184,19 @@
     color: var(--sb-color-primary-500);
   }
 
-  .header__mega-menu {
-    --sb-mega-max-width: min(
+  .header__primary-menu {
+    --sb-primary-max-width: min(
       calc(100vw - (var(--page-margin, 16px) * 2)),
       var(--page-width, 1240px)
     );
-    --sb-mega-card-width: calc(
+    --sb-primary-card-width: calc(
       (
-        var(--sb-mega-max-width)
+        var(--sb-primary-max-width)
         - (var(--sb-space-36) * 3)
         - (var(--sb-space-64) * 2)
       ) / 4
     );
-    --sb-mega-min-width: calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24));
+    --sb-primary-min-width: calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24));
     left: 50%;
     border-radius: var(--sb-space-24);
     display: grid;
@@ -1239,12 +1205,12 @@
     position: absolute;
     top: calc(100% + var(--sb-space-16) + ((var(--sb-header-height) - var(--sb-space-36)) / 2));
     transform: translate(-50%, 0);
-    min-width: min(var(--sb-mega-max-width), var(--sb-mega-min-width));
+    min-width: min(var(--sb-primary-max-width), var(--sb-primary-min-width));
     width: min(
-      var(--sb-mega-max-width),
+      var(--sb-primary-max-width),
       calc(
-        (var(--sb-mega-card-width) * var(--sb-mega-columns, 4))
-        + (var(--sb-space-36) * (var(--sb-mega-columns, 4) - 1))
+        (var(--sb-primary-card-width) * var(--sb-primary-columns, 4))
+        + (var(--sb-space-36) * (var(--sb-primary-columns, 4) - 1))
         + (var(--sb-space-64) * 2)
       )
     );
@@ -1253,23 +1219,23 @@
     transition: grid-template-rows 460ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .header__menu-item.has-dropdown.is-open > .header__mega-menu {
+  .header__menu-item.has-dropdown.is-open > .header__primary-menu {
     grid-template-rows: 1fr;
     pointer-events: auto;
   }
 
-  .header.is-mega-switching .header__menu-item.has-dropdown:not(.is-open) > .header__mega-menu {
+  .header.is-primary-switching .header__menu-item.has-dropdown:not(.is-open) > .header__primary-menu {
     transition-duration: 0s;
     transition-delay: 0s;
     grid-template-rows: 0fr;
   }
 
-  .header.is-mega-switching .header__menu-item.has-dropdown.is-open > .header__mega-menu {
+  .header.is-primary-switching .header__menu-item.has-dropdown.is-open > .header__primary-menu {
     grid-template-rows: 1fr;
     transition: width 460ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .header__mega-menu-panel {
+  .header__primary-menu-panel {
     background: var(--sb-color-neutral-200);
     border-radius: var(--sb-space-24);
     box-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-50, rgba(0, 0, 0, 0.5));
@@ -1280,19 +1246,19 @@
     z-index: 1;
   }
 
-  .header__mega-menu-panel-inner {
+  .header__primary-menu-panel-inner {
     padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-48);
   }
 
-  .header__mega-menu-grid {
+  .header__primary-menu-grid {
     display: grid;
     margin-top: var(--sb-space-36);
     gap: var(--sb-space-36);
-    grid-template-columns: repeat(var(--sb-mega-columns, 4), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--sb-primary-columns, 4), minmax(0, 1fr));
     justify-content: center;
   }
 
-  .header__mega-menu-title {
+  .header__primary-menu-title {
     align-items: center;
     color: var(--sb-color-neutral-900);
     display: flex;
@@ -1302,18 +1268,18 @@
     width: fit-content;
   }
 
-  .header__mega-menu-title:hover,
-  .header__mega-menu-title:focus-visible {
+  .header__primary-menu-title:hover,
+  .header__primary-menu-title:focus-visible {
     color: var(--sb-color-primary-500);
   }
 
-  .header__mega-card {
+  .header__primary-card {
     min-width: 0;
-    width: min(100%, var(--sb-mega-card-width));
+    width: min(100%, var(--sb-primary-card-width));
     justify-self: center;
   }
 
-  .header__mega-card-media {
+  .header__primary-card-media {
     border-radius: var(--sb-space-24);
     display: block;
     overflow: hidden;
@@ -1323,7 +1289,7 @@
     transition: transform 220ms ease;
   }
 
-  .header__mega-card-image {
+  .header__primary-card-image {
     aspect-ratio: 1 / 1;
     display: block;
     height: auto;
@@ -1331,12 +1297,12 @@
     width: 100%;
   }
 
-  .header__mega-card-media:hover,
-  .header__mega-card-media:focus-visible {
+  .header__primary-card-media:hover,
+  .header__primary-card-media:focus-visible {
     transform: scale(1.015);
   }
 
-  .header__mega-card-badge {
+  .header__primary-card-badge {
     border-radius: var(--sb-space-12);
     color: var(--sb-color-always-white);
     left: var(--sb-space-16);
@@ -1346,35 +1312,35 @@
     z-index: 1;
   }
 
-  .header__mega-card-badge--bestseller {
+  .header__primary-card-badge--bestseller {
     background: var(--sb-color-red-500);
   }
 
-  .header__mega-card-badge--new {
+  .header__primary-card-badge--new {
     background: var(--sb-color-primary-500);
   }
 
-  .header__mega-card-title {
+  .header__primary-card-title {
     margin: var(--sb-space-20) 0 0;
   }
 
-  .header__mega-card-title-link {
+  .header__primary-card-title-link {
     color: var(--sb-color-neutral-900);
     overflow-wrap: normal;
   }
 
-  .header__mega-card-title-link:hover,
-  .header__mega-card-title-link:focus-visible {
+  .header__primary-card-title-link:hover,
+  .header__primary-card-title-link:focus-visible {
     color: var(--sb-color-primary-500);
   }
 
-  .header__mega-card-body {
+  .header__primary-card-body {
     color: var(--sb-color-neutral-900);
     margin: var(--sb-space-12) 0 0;
     overflow-wrap: anywhere;
   }
 
-  .header__mega-card-links {
+  .header__primary-card-links {
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-20);
@@ -1383,24 +1349,24 @@
     padding: 0;
   }
 
-  .header__mega-card-links a {
+  .header__primary-card-links a {
     color: var(--sb-color-neutral-900);
     overflow-wrap: anywhere;
   }
 
-  .header__mega-card-links a:hover,
-  .header__mega-card-links a:focus-visible {
+  .header__primary-card-links a:hover,
+  .header__primary-card-links a:focus-visible {
     color: var(--sb-color-primary-500);
   }
 
-  .header__mega-card-app {
+  .header__primary-card-app {
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-6);
     margin-top: var(--sb-space-12);
   }
 
-  .header__mega-card-rating {
+  .header__primary-card-rating {
     align-items: center;
     color: var(--sb-color-neutral-900);
     display: flex;
@@ -1408,27 +1374,27 @@
     margin: 0;
   }
 
-  .header__mega-card-rating-count {
+  .header__primary-card-rating-count {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
-  .header__mega-card-stars {
+  .header__primary-card-stars {
     display: inline-flex;
     gap: var(--sb-space-4);
     line-height: 0;
     transform: translateY(calc(-1 * var(--sb-space-2)));
   }
 
-  .header__mega-card-star {
+  .header__primary-card-star {
     display: inline-block;
     height: var(--sb-space-20);
     position: relative;
     width: var(--sb-space-20);
   }
 
-  .header__mega-card-star::before,
-  .header__mega-card-star::after {
+  .header__primary-card-star::before,
+  .header__primary-card-star::after {
     content: '';
     display: block;
     left: 0;
@@ -1441,18 +1407,18 @@
     -webkit-mask: center / contain no-repeat var(--sb-star-icon-url);
   }
 
-  .header__mega-card-star::before {
+  .header__primary-card-star::before {
     background: var(--sb-color-neutral-900);
     opacity: 0.5;
   }
 
-  .header__mega-card-star::after {
+  .header__primary-card-star::after {
     background: var(--sb-color-neutral-900);
     clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
     -webkit-clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
   }
 
-  .header__mega-card-app-links {
+  .header__primary-card-app-links {
     align-items: flex-start;
     display: flex;
     flex-direction: column;
@@ -1460,19 +1426,19 @@
     margin-top: var(--sb-space-20);
   }
 
-  .header__mega-card-app-links a {
+  .header__primary-card-app-links a {
     align-self: flex-start;
     display: inline-flex;
     line-height: 0;
     width: fit-content;
   }
 
-  .header__mega-card-app-links a:hover,
-  .header__mega-card-app-links a:focus-visible {
+  .header__primary-card-app-links a:hover,
+  .header__primary-card-app-links a:focus-visible {
     opacity: 0.75;
   }
 
-  .header__mega-card-app-links img {
+  .header__primary-card-app-links img {
     display: block;
     height: var(--sb-space-30);
     width: auto;
@@ -1620,7 +1586,7 @@
   .menu-drawer {
     --sb-drawer-close-offset-top: var(--sb-space-20);
     --sb-drawer-close-offset-inline: var(--sb-space-20);
-    --sb-drawer-close-size: var(--sb-space-30);
+    --sb-drawer-close-size: 24px;
     --sb-drawer-navigation-top-padding: calc(var(--sb-drawer-close-offset-top) + var(--sb-drawer-close-size) + var(--sb-space-20));
     background: var(--sb-color-neutral-200);
     box-sizing: border-box;
@@ -1688,42 +1654,28 @@
     cursor: pointer;
     display: inline-flex;
     flex: 0 0 auto;
-    height: var(--sb-space-30);
+    height: var(--sb-drawer-close-size);
     justify-content: center;
     left: var(--sb-drawer-close-offset-inline);
     margin: 0;
     padding: 0;
     position: absolute;
     top: var(--sb-drawer-close-offset-top);
-    width: var(--sb-space-30);
+    width: var(--sb-drawer-close-size);
     z-index: 2;
   }
 
-  .menu-drawer__close-icon-circle,
-  .menu-drawer__close-icon-x {
+  .menu-drawer__close-icon {
+    color: var(--sb-color-neutral-900);
     display: inline-flex;
-    inset: 0;
-    position: absolute;
+    height: var(--sb-drawer-close-size);
+    width: var(--sb-drawer-close-size);
   }
 
-  .menu-drawer__close-icon-circle {
-    color: var(--sb-color-neutral-800);
-  }
-
-  .menu-drawer__close-icon-x {
-    color: var(--sb-color-neutral-100);
-  }
-
-  .menu-drawer__close-button:hover .menu-drawer__close-icon-x,
-  .menu-drawer__close-button:focus-visible .menu-drawer__close-icon-x {
-    color: var(--sb-color-primary-500);
-  }
-
-  .menu-drawer__close-icon-circle svg,
-  .menu-drawer__close-icon-x svg {
+  .menu-drawer__close-icon svg {
     display: block;
-    height: var(--sb-space-30);
-    width: var(--sb-space-30);
+    height: var(--sb-drawer-close-size);
+    width: var(--sb-drawer-close-size);
   }
 
   .menu-drawer__navigation {
@@ -2329,7 +2281,7 @@
       display: none;
     }
 
-    .header__mega-menu {
+    .header__primary-menu {
       display: none;
     }
 
@@ -2342,7 +2294,7 @@
     }
   }
 
-  .header__mega-backdrop {
+  .header__primary-backdrop {
     opacity: 0;
     pointer-events: none;
     position: fixed;
@@ -2351,7 +2303,7 @@
   }
 
   @media screen and (min-width: 990px) {
-    .header__mega-backdrop {
+    .header__primary-backdrop {
       -webkit-backdrop-filter: blur(var(--sb-space-8));
       backdrop-filter: blur(var(--sb-space-8));
       background: var(--sb-color-always-black-25);
@@ -2359,15 +2311,15 @@
       right: 0;
     }
 
-    .header__mega-backdrop--top {
+    .header__primary-backdrop--top {
       top: 0;
     }
 
-    .header__mega-backdrop--bottom {
+    .header__primary-backdrop--bottom {
       bottom: 0;
     }
 
-    .header__mega-backdrop.is-active {
+    .header__primary-backdrop.is-active {
       opacity: 1;
     }
   }
@@ -2505,8 +2457,79 @@
     const mobileMenuCloseControls = mobileMenuDrawer
       ? mobileMenuDrawer.querySelectorAll('[data-mobile-menu-close]')
       : [];
+    const mobileMenuReview = mobileMenuDrawer
+      ? mobileMenuDrawer.querySelector('[data-mobile-menu-review]')
+      : null;
+    const mobileMenuReviewName = mobileMenuReview
+      ? mobileMenuReview.querySelector('[data-mobile-menu-review-name]')
+      : null;
+    const mobileMenuReviewText = mobileMenuReview
+      ? mobileMenuReview.querySelector('[data-mobile-menu-review-text]')
+      : null;
+    const mobileMenuReviewDate = mobileMenuReview
+      ? mobileMenuReview.querySelector('[data-mobile-menu-review-date]')
+      : null;
     let mobileMenuCloseTimer = null;
     const mobileMenuPreloadedSources = new Set();
+    const primaryMenuPreloadedSources = new Set();
+    const mobileMenuReviewStorageKey = 'sb-mobile-menu-review-index';
+    const mobileMenuReviews = [
+      {
+        day: 8,
+        name: 'Wesley G.',
+        text: "I have the in-ear monitors and the Pulse. They work exactly as promised. Shipping was good and without bad surprises. Thank you Soundbrenner!"
+      },
+      {
+        day: 4,
+        name: 'Rob M.',
+        text: "I had questions about my purchase, and Ethan has been super attentive offering excellent explanations and suggestions. Services matters as much as the product you buy, and I'm impressed."
+      },
+      {
+        day: 15,
+        name: 'Lee K.',
+        text: 'My initial order was delayed but the staff were super responsive to my emails and sorted it out without problem. Issues happen from time to time but I appreciate that they care about their customers and service.'
+      },
+      {
+        day: 2,
+        name: 'Samuel A.',
+        text: 'Amazing customer service, great and quick service overall. I am really happy I purchased this product and I will be looking forward to future purchases.'
+      },
+      {
+        day: 21,
+        name: 'Nate L.',
+        text: "Soundbrenner's customer service has been top notch. They helped me with a return for a bad adapter and made it right. Will gladly buy again from SB."
+      },
+      {
+        day: 9,
+        name: 'Christos T.',
+        text: 'Incredible customer service experience: prompt and deliberate responses, and understanding of my needs. I am very pleased with how they handled my return process.'
+      },
+      {
+        day: 12,
+        name: 'Paul S.',
+        text: 'Easy to shop for, shipping was fast, and the package presentation was much higher end than I expected.'
+      },
+      {
+        day: 27,
+        name: 'Mark C.',
+        text: "This company is a breath of fresh air to deal with! I did have a problem with part of my order but it was resolved so quickly it really wasn't a problem. I genuinely look forward to using this company again."
+      },
+      {
+        day: 18,
+        name: 'Curtis E.',
+        text: "One of the best customer support experiences I've ever had. I had one minor issue and they went above and beyond to correct it and emailed back within an hour. I don't see myself or my son buying from anyone else again."
+      },
+      {
+        day: 5,
+        name: 'Jerry W.',
+        text: 'Easy checkout and fast shipping. These folks know how to treat a customer with respect and appreciation.'
+      },
+      {
+        day: 24,
+        name: 'Cymil M.',
+        text: 'Shopping was seamless and easy. Customer service is very responsive and always presents options for whatever concern you may have. Five star.'
+      }
+    ];
     let pageScrollLockY = 0;
     const isDesktopViewport = () => window.matchMedia('(min-width: 990px)').matches;
     const isMobileMenuOpen = () => Boolean(mobileMenuDrawer && mobileMenuDrawer.classList.contains('menu-open'));
@@ -2521,22 +2544,25 @@
       window.clearTimeout(mobileMenuCloseTimer);
       mobileMenuCloseTimer = null;
     };
-    const shouldSkipMobileMenuPreload = () => {
+    const shouldSkipDeferredImagePreload = () => {
       const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
       if (!connection) return false;
       if (connection.saveData) return true;
       const effectiveType = `${connection.effectiveType || ''}`.toLowerCase();
       return effectiveType.includes('2g');
     };
-    const preloadMobileMenuImageSource = (source) => {
-      if (!source || mobileMenuPreloadedSources.has(source)) return;
-      mobileMenuPreloadedSources.add(source);
+    const preloadImageSource = (source, sourceCache) => {
+      if (!source || sourceCache.has(source)) return;
+      sourceCache.add(source);
       const preloadImage = new Image();
       preloadImage.decoding = 'async';
       preloadImage.src = source;
     };
+    const preloadMobileMenuImageSource = (source) => {
+      preloadImageSource(source, mobileMenuPreloadedSources);
+    };
     const preloadMobileMenuImages = () => {
-      if (!mobileMenuDrawer || isDesktopViewport() || shouldSkipMobileMenuPreload()) return;
+      if (!mobileMenuDrawer || isDesktopViewport() || shouldSkipDeferredImagePreload()) return;
       const imageNodes = mobileMenuDrawer.querySelectorAll('.menu-drawer__submenu-image');
       imageNodes.forEach((imageNode) => {
         const source = imageNode.getAttribute('src');
@@ -2555,6 +2581,77 @@
         preloadMobileMenuImages();
       }, 180);
     };
+    const preloadPrimaryMenuImageSource = (source) => {
+      preloadImageSource(source, primaryMenuPreloadedSources);
+    };
+    const preloadPrimaryMenuImages = () => {
+      if (!isDesktopViewport() || shouldSkipDeferredImagePreload()) return;
+      const primaryImageNodes = header.querySelectorAll('.header__primary-card-image');
+      primaryImageNodes.forEach((imageNode) => {
+        const source = imageNode.getAttribute('src');
+        preloadPrimaryMenuImageSource(source);
+      });
+    };
+    const schedulePrimaryMenuPreload = () => {
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(() => {
+          preloadPrimaryMenuImages();
+        }, { timeout: 1200 });
+        return;
+      }
+
+      window.setTimeout(() => {
+        preloadPrimaryMenuImages();
+      }, 180);
+    };
+    const getReviewMonthAndYear = () => {
+      const now = new Date();
+      const previousMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return {
+        month: monthLabels[previousMonthDate.getMonth()],
+        year: previousMonthDate.getFullYear()
+      };
+    };
+    const getStoredReviewIndex = () => {
+      try {
+        const storedValue = sessionStorage.getItem(mobileMenuReviewStorageKey);
+        const parsedValue = Number.parseInt(`${storedValue}`, 10);
+        if (!Number.isFinite(parsedValue)) return -1;
+        if (parsedValue < 0 || parsedValue >= mobileMenuReviews.length) return -1;
+        return parsedValue;
+      } catch (_) {
+        return -1;
+      }
+    };
+    const storeReviewIndex = (index) => {
+      try {
+        sessionStorage.setItem(mobileMenuReviewStorageKey, `${index}`);
+      } catch (_) {
+        // Ignore storage failures (private mode, blocked storage, etc.)
+      }
+    };
+    const pickReloadReviewIndex = () => {
+      if (mobileMenuReviews.length <= 1) return 0;
+      const previousIndex = getStoredReviewIndex();
+      let nextIndex = Math.floor(Math.random() * mobileMenuReviews.length);
+      if (nextIndex === previousIndex) {
+        nextIndex = (nextIndex + 1 + Math.floor(Math.random() * (mobileMenuReviews.length - 1))) % mobileMenuReviews.length;
+      }
+      storeReviewIndex(nextIndex);
+      return nextIndex;
+    };
+    const renderMobileMenuReview = () => {
+      if (!mobileMenuReviewName || !mobileMenuReviewText || !mobileMenuReviewDate) return;
+      if (mobileMenuReviews.length === 0) return;
+      const review = mobileMenuReviews[pickReloadReviewIndex()];
+      const reviewDay = Number.parseInt(`${review.day}`, 10);
+      const { month, year } = getReviewMonthAndYear();
+      mobileMenuReviewName.textContent = review.name || '';
+      mobileMenuReviewText.textContent = review.text || '';
+      mobileMenuReviewDate.textContent = `${Number.isFinite(reviewDay) ? reviewDay : 8} ${month}, ${year}`;
+    };
+    renderMobileMenuReview();
     const syncPageScrollLock = () => {
       const cartDrawerElement = document.querySelector('[data-cart-drawer]');
       const cartOpen = Boolean(cartDrawerElement && !cartDrawerElement.hasAttribute('hidden'));
@@ -2640,6 +2737,7 @@
         () => {
           if (isDesktopViewport()) {
             closeMobileMenu({ immediate: true });
+            schedulePrimaryMenuPreload();
             return;
           }
 
@@ -2820,49 +2918,55 @@
       restoreState: restoreHeaderState
     };
 
-    let syncMegaBackdropOnScroll = () => {};
+    let syncPrimaryBackdropOnScroll = () => {};
 
     const dropdownMenuItems = header.querySelectorAll('.header__menu-item.has-dropdown');
     const plainMenuItems = header.querySelectorAll('.header__menu-item:not(.has-dropdown)');
-    const megaBackdrops = Array.from(document.querySelectorAll('[data-header-mega-backdrop]'));
+    const primaryBackdrops = Array.from(document.querySelectorAll('[data-header-primary-backdrop]'));
     if (dropdownMenuItems.length > 0) {
       let activeDropdownItem = null;
       let closeMenuTimer = null;
-      let megaSwitchTimer = null;
+      let primarySwitchTimer = null;
       let pointerX = 0;
       let pointerY = 0;
       const menuSafePadding = 8;
-      const megaSwitchDuration = 460;
+      const primarySwitchDuration = 460;
       const headerInner = header.querySelector('.header__inner');
       const headerMenu = header.querySelector('.header__menu');
       const dropdownMenuLinks = Array.from(dropdownMenuItems)
         .map((menuItem) => menuItem.querySelector('.header__menu-link'))
         .filter(Boolean);
+      let hasTriggeredPrimaryMenuPreload = false;
+      const triggerPrimaryMenuPreload = () => {
+        if (hasTriggeredPrimaryMenuPreload) return;
+        hasTriggeredPrimaryMenuPreload = true;
+        preloadPrimaryMenuImages();
+      };
       const clearCloseMenuTimer = () => {
         if (!closeMenuTimer) return;
         window.clearTimeout(closeMenuTimer);
         closeMenuTimer = null;
       };
-      const clearMegaSwitchTimer = () => {
-        if (!megaSwitchTimer) return;
-        window.clearTimeout(megaSwitchTimer);
-        megaSwitchTimer = null;
+      const clearPrimarySwitchTimer = () => {
+        if (!primarySwitchTimer) return;
+        window.clearTimeout(primarySwitchTimer);
+        primarySwitchTimer = null;
       };
-      const clearMegaSwitchInlineWidths = () => {
+      const clearPrimarySwitchInlineWidths = () => {
         dropdownMenuItems.forEach((menuItem) => {
-          const menu = menuItem.querySelector('.header__mega-menu');
+          const menu = menuItem.querySelector('.header__primary-menu');
           if (!menu) return;
           menu.style.removeProperty('width');
         });
       };
-      const endMegaSwitchMode = (menuElement) => {
+      const endPrimarySwitchMode = (menuElement) => {
         if (menuElement) menuElement.style.removeProperty('width');
-        header.classList.remove('is-mega-switching');
+        header.classList.remove('is-primary-switching');
       };
-      const triggerMegaSwitchMode = (fromItem, toItem) => {
+      const triggerPrimarySwitchMode = (fromItem, toItem) => {
         if (!fromItem || !toItem) return;
-        const fromMenu = fromItem.querySelector('.header__mega-menu');
-        const toMenu = toItem.querySelector('.header__mega-menu');
+        const fromMenu = fromItem.querySelector('.header__primary-menu');
+        const toMenu = toItem.querySelector('.header__primary-menu');
         if (!fromMenu || !toMenu) return;
 
         const fromWidth = fromMenu.getBoundingClientRect().width;
@@ -2871,24 +2975,24 @@
 
         const widthDiff = Math.abs(fromWidth - toWidth);
         if (widthDiff < 1) {
-          clearMegaSwitchTimer();
-          header.classList.remove('is-mega-switching');
+          clearPrimarySwitchTimer();
+          header.classList.remove('is-primary-switching');
           toMenu.style.removeProperty('width');
           return;
         }
 
-        clearMegaSwitchTimer();
-        header.classList.add('is-mega-switching');
+        clearPrimarySwitchTimer();
+        header.classList.add('is-primary-switching');
         toMenu.style.width = `${fromWidth}px`;
         window.requestAnimationFrame(() => {
           toMenu.style.width = `${toWidth}px`;
         });
-        megaSwitchTimer = window.setTimeout(() => {
-          endMegaSwitchMode(toMenu);
-        }, megaSwitchDuration);
+        primarySwitchTimer = window.setTimeout(() => {
+          endPrimarySwitchMode(toMenu);
+        }, primarySwitchDuration);
       };
-      const syncMegaBackdropTop = () => {
-        if (!headerInner || megaBackdrops.length === 0) return;
+      const syncPrimaryBackdropTop = () => {
+        if (!headerInner || primaryBackdrops.length === 0) return;
         const navRect = headerInner.getBoundingClientRect();
         const navTop = Math.max(0, navRect.top);
         const navBottom = Math.min(window.innerHeight, navRect.bottom);
@@ -2897,8 +3001,8 @@
 
         // If the header row is fully out of view, remove the nav cutout entirely.
         if (visibleNavHeight <= 1 || navIsTranslatingOut) {
-          megaBackdrops.forEach((backdrop) => {
-            if (backdrop.dataset.headerMegaBackdrop === 'top') {
+          primaryBackdrops.forEach((backdrop) => {
+            if (backdrop.dataset.headerPrimaryBackdrop === 'top') {
               backdrop.style.top = '0px';
               backdrop.style.bottom = '100%';
             } else {
@@ -2909,8 +3013,8 @@
           return;
         }
 
-        megaBackdrops.forEach((backdrop) => {
-          if (backdrop.dataset.headerMegaBackdrop === 'top') {
+        primaryBackdrops.forEach((backdrop) => {
+          if (backdrop.dataset.headerPrimaryBackdrop === 'top') {
             backdrop.style.top = '0px';
             backdrop.style.bottom = `${Math.max(0, window.innerHeight - navTop)}px`;
           } else {
@@ -2920,43 +3024,43 @@
         });
       };
 
-      syncMegaBackdropOnScroll = () => {
-        if (!header.classList.contains('is-mega-open')) return;
-        syncMegaBackdropTop();
+      syncPrimaryBackdropOnScroll = () => {
+        if (!header.classList.contains('is-primary-open')) return;
+        syncPrimaryBackdropTop();
       };
 
-      const updateMegaOpenState = () => {
-        const isMegaOpen = Boolean(activeDropdownItem);
+      const updatePrimaryOpenState = () => {
+        const isPrimaryOpen = Boolean(activeDropdownItem);
         if (window.matchMedia('(max-width: 989px)').matches) {
-          header.classList.remove('is-mega-open');
-          clearMegaSwitchTimer();
-          header.classList.remove('is-mega-switching');
-          clearMegaSwitchInlineWidths();
-          megaBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
+          header.classList.remove('is-primary-open');
+          clearPrimarySwitchTimer();
+          header.classList.remove('is-primary-switching');
+          clearPrimarySwitchInlineWidths();
+          primaryBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
           return;
         }
-        if (isMegaOpen) {
-          header.classList.add('is-mega-open');
-          syncMegaBackdropTop();
-          megaBackdrops.forEach((backdrop) => backdrop.classList.add('is-active'));
+        if (isPrimaryOpen) {
+          header.classList.add('is-primary-open');
+          syncPrimaryBackdropTop();
+          primaryBackdrops.forEach((backdrop) => backdrop.classList.add('is-active'));
         } else {
-          header.classList.remove('is-mega-open');
-          megaBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
+          header.classList.remove('is-primary-open');
+          primaryBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
         }
       };
 
       const setActiveDropdownItem = (nextItem) => {
         if (activeDropdownItem === nextItem) return;
-        if (activeDropdownItem && nextItem) triggerMegaSwitchMode(activeDropdownItem, nextItem);
+        if (activeDropdownItem && nextItem) triggerPrimarySwitchMode(activeDropdownItem, nextItem);
         else {
-          clearMegaSwitchTimer();
-          header.classList.remove('is-mega-switching');
-          clearMegaSwitchInlineWidths();
+          clearPrimarySwitchTimer();
+          header.classList.remove('is-primary-switching');
+          clearPrimarySwitchInlineWidths();
         }
         if (activeDropdownItem) activeDropdownItem.classList.remove('is-open');
         activeDropdownItem = nextItem || null;
         if (activeDropdownItem) activeDropdownItem.classList.add('is-open');
-        updateMegaOpenState();
+        updatePrimaryOpenState();
       };
 
       const closeActiveDropdown = () => {
@@ -2978,10 +3082,10 @@
 
       const pointerInSafeCorridor = (menuItem) => {
         if (!menuItem || !headerInner) return false;
-        const megaMenu = menuItem.querySelector('.header__mega-menu');
-        if (!megaMenu) return false;
+        const primaryMenu = menuItem.querySelector('.header__primary-menu');
+        if (!primaryMenu) return false;
         const headerInnerRect = headerInner.getBoundingClientRect();
-        const menuRect = megaMenu.getBoundingClientRect();
+        const menuRect = primaryMenu.getBoundingClientRect();
         const corridorTop = Math.min(headerInnerRect.bottom, menuRect.top);
         const corridorBottom = Math.max(headerInnerRect.bottom, menuRect.top);
         // Gap-safe zone follows the actual primary navigation panel width.
@@ -3009,11 +3113,11 @@
       const scheduleCloseActiveDropdown = () => {
         clearCloseMenuTimer();
         closeMenuTimer = window.setTimeout(() => {
-          const activeMegaMenu = activeDropdownItem && activeDropdownItem.querySelector('.header__mega-menu');
-          const megaHovered = Boolean(activeMegaMenu && activeMegaMenu.matches(':hover'));
+          const activePrimaryMenu = activeDropdownItem && activeDropdownItem.querySelector('.header__primary-menu');
+          const primaryMenuHovered = Boolean(activePrimaryMenu && activePrimaryMenu.matches(':hover'));
           const inSafeCorridor = pointerInSafeCorridor(activeDropdownItem);
           const inMenuStrip = pointerInMenuStrip();
-          if (megaHovered || inSafeCorridor || inMenuStrip) {
+          if (primaryMenuHovered || inSafeCorridor || inMenuStrip) {
             scheduleCloseActiveDropdown();
             return;
           }
@@ -3023,12 +3127,15 @@
 
       dropdownMenuItems.forEach((menuItem) => {
         const menuLink = menuItem.querySelector('.header__menu-link');
-        const megaMenu = menuItem.querySelector('.header__mega-menu');
+        const primaryMenu = menuItem.querySelector('.header__primary-menu');
         if (menuLink) {
           menuLink.addEventListener('mouseenter', () => {
+            triggerPrimaryMenuPreload();
             clearCloseMenuTimer();
             setActiveDropdownItem(menuItem);
           });
+          menuLink.addEventListener('focusin', triggerPrimaryMenuPreload);
+          menuLink.addEventListener('touchstart', triggerPrimaryMenuPreload, { passive: true });
         }
 
         menuItem.addEventListener('focusin', () => {
@@ -3040,17 +3147,17 @@
           if (menuItem.contains(event.relatedTarget)) return;
           window.requestAnimationFrame(() => {
             if (!header.contains(document.activeElement)) closeActiveDropdown();
-            else updateMegaOpenState();
+            else updatePrimaryOpenState();
           });
         });
 
-        if (megaMenu) {
-          megaMenu.addEventListener('mouseenter', () => {
+        if (primaryMenu) {
+          primaryMenu.addEventListener('mouseenter', () => {
             clearCloseMenuTimer();
             setActiveDropdownItem(menuItem);
           });
 
-          megaMenu.addEventListener('mouseleave', () => {
+          primaryMenu.addEventListener('mouseleave', () => {
             scheduleCloseActiveDropdown();
           });
         }
@@ -3114,14 +3221,16 @@
         () => {
           clearCloseMenuTimer();
           closeActiveDropdown();
-          syncMegaBackdropTop();
-          updateMegaOpenState();
+          syncPrimaryBackdropTop();
+          updatePrimaryOpenState();
         },
         { passive: true }
       );
 
-      syncMegaBackdropTop();
+      syncPrimaryBackdropTop();
     }
+
+    schedulePrimaryMenuPreload();
 
     const sync = (currentY, { force = false } = {}) => {
       const delta = currentY - lastY;
@@ -3161,7 +3270,7 @@
 
     const onWindowScroll = () => {
       sync(getWindowY());
-      syncMegaBackdropOnScroll();
+      syncPrimaryBackdropOnScroll();
     };
 
     window.addEventListener('scroll', onWindowScroll, { passive: true });
