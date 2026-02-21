@@ -106,7 +106,7 @@
           "settings": {
             "menu_item_index": "4",
             "collection": "music-tech",
-            "hide_on_mobile": false,
+            "hide_on_mobile": true,
             "image": "shopify://shop_images/Property_1_Stomp_foot_pedal_dd22d772-417a-485e-8aa1-589baced61dd.jpg",
             "related_product_1": "stomp-foot-pedal",
             "related_product_2": "flow-microphone",
@@ -119,7 +119,7 @@
           "settings": {
             "menu_item_index": "4",
             "collection": "playtronica-midi-instruments",
-            "hide_on_mobile": false,
+            "hide_on_mobile": true,
             "image": "shopify://shop_images/Property_1_Playtronica_f98ae1eb-f6c7-441b-87ec-d7775efaf9b1.jpg",
             "related_product_1": "playtron-midi-instrument",
             "related_product_2": "touchme-midi-instrument",
