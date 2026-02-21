@@ -189,6 +189,7 @@
                             assign app_mode = true
                         endcase
                         assign card_image = block.settings.image
+                        assign hide_on_mobile = block.settings.hide_on_mobile
                         assign card_title = blank
                         assign card_body = blank
                         assign card_link = blank
@@ -243,7 +244,7 @@
                         endif
                       %}
 
-                      <article class="header__mega-card" {{ block.shopify_attributes }}>
+                      <article class="header__mega-card" data-hide-on-mobile="{{ hide_on_mobile }}" {{ block.shopify_attributes }}>
                         <a class="header__mega-card-media" href="{{ card_link | default: '#' }}">
                           {% if card_badge_label != blank %}
                             <span class="header__mega-card-badge header__mega-card-badge--{{ card_badge_type }} font-caption weight-semibold">
@@ -256,7 +257,8 @@
                               class="header__mega-card-image"
                               src="{{ card_image_url }}"
                               alt="{{ card_title | default: link.title | escape }}"
-                              loading="lazy"
+                              loading="eager"
+                              fetchpriority="low"
                               decoding="async"
                               width="584"
                               height="584"
@@ -264,9 +266,10 @@
                           {% else %}
                             <img
                               class="header__mega-card-image"
-                              src="{{ 'mega-menu-card-placeholder.png' | asset_url }}"
+                              src="{{ 'mega-menu-item-placeholder.jpg' | asset_url }}"
                               alt="{{ card_title | default: link.title | escape }}"
-                              loading="lazy"
+                              loading="eager"
+                              fetchpriority="low"
                               decoding="async"
                               width="584"
                               height="584"
@@ -311,35 +314,91 @@
                             <p class="header__mega-card-body font-body weight-regular">{{ card_body }}</p>
                           {% endif %}
 
-                          {% assign has_card_links = false %}
-                          {% if block.settings.link_1_label != blank and block.settings.link_1_url != blank %}
-                            {% assign has_card_links = true %}
-                          {% endif %}
-                          {% if block.settings.link_2_label != blank and block.settings.link_2_url != blank %}
-                            {% assign has_card_links = true %}
-                          {% endif %}
-                          {% if block.settings.link_3_label != blank and block.settings.link_3_url != blank %}
-                            {% assign has_card_links = true %}
-                          {% endif %}
-
-                          {% if has_card_links %}
-                            <ul class="header__mega-card-links font-body weight-semibold" role="list">
-                              {% if block.settings.link_1_label != blank and block.settings.link_1_url != blank %}
-                                <li>
-                                  <a href="{{ block.settings.link_1_url }}">{{ block.settings.link_1_label }}</a>
-                                </li>
+                          {% if block.type == 'mega_menu_item_product' %}
+                            {% assign accessories_collection = block.settings.accessories_collection %}
+                            {% if accessories_collection == blank and card_product != blank and card_product.collections != blank %}
+                              {% for candidate_collection in card_product.collections %}
+                                {% assign candidate_handle = candidate_collection.handle | downcase %}
+                                {% assign candidate_title = candidate_collection.title | downcase %}
+                                {% if candidate_handle contains 'accessor' or candidate_title contains 'accessor' %}
+                                  {% assign accessories_collection = candidate_collection %}
+                                  {% break %}
+                                {% endif %}
+                              {% endfor %}
+                              {% if accessories_collection == blank %}
+                                {% assign accessories_collection = card_product.collections.first %}
                               {% endif %}
-                              {% if block.settings.link_2_label != blank and block.settings.link_2_url != blank %}
+                            {% endif %}
+                            {% if accessories_collection != blank %}
+                              <ul class="header__mega-card-links font-body weight-semibold" role="list">
                                 <li>
-                                  <a href="{{ block.settings.link_2_url }}">{{ block.settings.link_2_label }}</a>
+                                  <a href="{{ accessories_collection.url }}">Accessories</a>
                                 </li>
-                              {% endif %}
-                              {% if block.settings.link_3_label != blank and block.settings.link_3_url != blank %}
-                                <li>
-                                  <a href="{{ block.settings.link_3_url }}">{{ block.settings.link_3_label }}</a>
-                                </li>
-                              {% endif %}
-                            </ul>
+                              </ul>
+                            {% endif %}
+                          {% elsif block.type == 'mega_menu_item_collection' %}
+                            {% assign linked_product_1 = block.settings.related_product_1 %}
+                            {% assign linked_product_2 = block.settings.related_product_2 %}
+                            {% assign linked_product_3 = block.settings.related_product_3 %}
+                            {% assign has_card_links = false %}
+                            {% if linked_product_1 != blank or linked_product_2 != blank or linked_product_3 != blank %}
+                              {% assign has_card_links = true %}
+                            {% endif %}
+                            {% if has_card_links %}
+                              <ul class="header__mega-card-links font-body weight-semibold" role="list">
+                                {% if linked_product_1 != blank %}
+                                  {% assign linked_product_1_settings = linked_product_1.metafields.custom.sbv2_product_settings.value | default: linked_product_1.metafields.custom.sbv2_product_settings %}
+                                  {% assign linked_product_1_tagline = blank %}
+                                  {% if linked_product_1_settings != blank %}
+                                    {% assign linked_product_1_tagline = linked_product_1_settings.tagline.value | default: linked_product_1_settings.tagline %}
+                                  {% endif %}
+                                  <li>
+                                    <a
+                                      href="{{ linked_product_1.url }}"
+                                      data-mobile-product-title="{{ linked_product_1.title | escape }}"
+                                      data-mobile-product-description="{{ linked_product_1.description | strip_html | escape }}"
+                                      data-mobile-product-tagline="{{ linked_product_1_tagline | escape }}"
+                                    >
+                                      {{ linked_product_1.title }}
+                                    </a>
+                                  </li>
+                                {% endif %}
+                                {% if linked_product_2 != blank %}
+                                  {% assign linked_product_2_settings = linked_product_2.metafields.custom.sbv2_product_settings.value | default: linked_product_2.metafields.custom.sbv2_product_settings %}
+                                  {% assign linked_product_2_tagline = blank %}
+                                  {% if linked_product_2_settings != blank %}
+                                    {% assign linked_product_2_tagline = linked_product_2_settings.tagline.value | default: linked_product_2_settings.tagline %}
+                                  {% endif %}
+                                  <li>
+                                    <a
+                                      href="{{ linked_product_2.url }}"
+                                      data-mobile-product-title="{{ linked_product_2.title | escape }}"
+                                      data-mobile-product-description="{{ linked_product_2.description | strip_html | escape }}"
+                                      data-mobile-product-tagline="{{ linked_product_2_tagline | escape }}"
+                                    >
+                                      {{ linked_product_2.title }}
+                                    </a>
+                                  </li>
+                                {% endif %}
+                                {% if linked_product_3 != blank %}
+                                  {% assign linked_product_3_settings = linked_product_3.metafields.custom.sbv2_product_settings.value | default: linked_product_3.metafields.custom.sbv2_product_settings %}
+                                  {% assign linked_product_3_tagline = blank %}
+                                  {% if linked_product_3_settings != blank %}
+                                    {% assign linked_product_3_tagline = linked_product_3_settings.tagline.value | default: linked_product_3_settings.tagline %}
+                                  {% endif %}
+                                  <li>
+                                    <a
+                                      href="{{ linked_product_3.url }}"
+                                      data-mobile-product-title="{{ linked_product_3.title | escape }}"
+                                      data-mobile-product-description="{{ linked_product_3.description | strip_html | escape }}"
+                                      data-mobile-product-tagline="{{ linked_product_3_tagline | escape }}"
+                                    >
+                                      {{ linked_product_3.title }}
+                                    </a>
+                                  </li>
+                                {% endif %}
+                              </ul>
+                            {% endif %}
                           {% endif %}
                         {% endif %}
                       </article>
@@ -622,8 +681,9 @@
         - (var(--sb-space-64) * 2)
       ) / 4
     );
+    --sb-mega-clip-closed: calc(100% + var(--sb-space-2));
     left: 50%;
-    opacity: 0;
+    border-radius: var(--sb-space-24);
     pointer-events: none;
     position: absolute;
     top: calc(100% + var(--sb-space-16) + ((var(--sb-header-height) - var(--sb-space-36)) / 2));
@@ -637,24 +697,56 @@
         + (var(--sb-space-64) * 2)
       )
     );
+    isolation: isolate;
     z-index: 120;
-    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms linear;
+    transition: visibility 0s linear 460ms;
+  }
+
+  .header__mega-menu::before {
+    border-radius: var(--sb-space-24);
+    box-shadow: 0 calc(var(--sb-space-8) + var(--sb-space-2)) 90px 0 var(--sb-color-always-black-50, rgba(0, 0, 0, 0.5));
+    content: '';
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transition: opacity 320ms ease;
+    will-change: opacity;
+    z-index: 0;
   }
 
   .header__menu-item.has-dropdown.is-open > .header__mega-menu,
   .header__menu-item.has-dropdown:focus-within > .header__mega-menu {
-    opacity: 1;
     pointer-events: auto;
-    transform: translate(-50%, 0);
     visibility: visible;
+    transition-delay: 0s;
+  }
+
+  .header.is-mega-shadow-ready .header__menu-item.has-dropdown.is-open > .header__mega-menu::before,
+  .header.is-mega-shadow-ready .header__menu-item.has-dropdown:focus-within > .header__mega-menu::before {
+    opacity: 1;
+  }
+
+  .header__mega-menu-panel {
+    clip-path: inset(0 0 var(--sb-mega-clip-closed) 0 round var(--sb-space-24));
+    transform-origin: top center;
+    transition: clip-path 460ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: clip-path;
+  }
+
+  .header__menu-item.has-dropdown.is-open > .header__mega-menu .header__mega-menu-panel,
+  .header__menu-item.has-dropdown:focus-within > .header__mega-menu .header__mega-menu-panel {
+    clip-path: inset(0 0 0 0 round var(--sb-space-24));
   }
 
   .header__mega-menu-panel {
     background: var(--sb-color-neutral-200);
     border-radius: var(--sb-space-24);
-    box-shadow: 0 var(--sb-space-24) 90px calc(-1 * var(--sb-space-24)) var(--rare-always-black-50, rgba(0, 0, 0, 0.5));
+    overflow: hidden;
     padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-48);
+    position: relative;
     white-space: normal;
+    z-index: 1;
   }
 
   .header__mega-menu-grid {
@@ -671,7 +763,9 @@
     display: flex;
     justify-content: center;
     margin: 0 auto;
+    opacity: 0;
     text-align: center;
+    transition: opacity 220ms ease;
     width: fit-content;
   }
 
@@ -682,6 +776,15 @@
 
   .header__mega-card {
     min-width: 0;
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+
+  .header__menu-item.has-dropdown.is-open > .header__mega-menu .header__mega-menu-title,
+  .header__menu-item.has-dropdown:focus-within > .header__mega-menu .header__mega-menu-title,
+  .header__menu-item.has-dropdown.is-open > .header__mega-menu .header__mega-card,
+  .header__menu-item.has-dropdown:focus-within > .header__mega-menu .header__mega-card {
+    opacity: 1;
   }
 
   .header__mega-card-media {
@@ -689,6 +792,9 @@
     display: block;
     overflow: hidden;
     position: relative;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform 220ms ease;
   }
 
   .header__mega-card-image {
@@ -699,9 +805,9 @@
     width: 100%;
   }
 
-  .header__mega-card-media:hover .header__mega-card-image,
-  .header__mega-card-media:focus-visible .header__mega-card-image {
-    opacity: 0.75;
+  .header__mega-card-media:hover,
+  .header__mega-card-media:focus-visible {
+    transform: scale(1.015);
   }
 
   .header__mega-card-badge {
@@ -728,7 +834,7 @@
 
   .header__mega-card-title-link {
     color: var(--sb-color-neutral-900);
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
   }
 
   .header__mega-card-title-link:hover,
@@ -1259,20 +1365,39 @@
       restoreState: restoreHeaderState
     };
 
+    let syncMegaBackdropOnScroll = () => {};
+
     const dropdownMenuItems = header.querySelectorAll('.header__menu-item.has-dropdown');
     const plainMenuItems = header.querySelectorAll('.header__menu-item:not(.has-dropdown)');
     const megaBackdrops = Array.from(document.querySelectorAll('[data-header-mega-backdrop]'));
     if (dropdownMenuItems.length > 0) {
       let activeDropdownItem = null;
       let closeMenuTimer = null;
+      let megaShadowTimer = null;
+      let closeAfterShadowTimer = null;
       let pointerX = 0;
       let pointerY = 0;
       const menuSafePadding = 8;
+      const megaShadowOpenDelay = 140;
+      const megaCloseStartDelay = 0;
       const headerInner = header.querySelector('.header__inner');
       const headerMenu = header.querySelector('.header__menu');
       const dropdownMenuLinks = Array.from(dropdownMenuItems)
         .map((menuItem) => menuItem.querySelector('.header__menu-link'))
         .filter(Boolean);
+      const clearMegaShadowTimer = () => {
+        if (!megaShadowTimer) return;
+        window.clearTimeout(megaShadowTimer);
+        megaShadowTimer = null;
+      };
+      const setMegaShadowReady = (isReady) => {
+        header.classList.toggle('is-mega-shadow-ready', Boolean(isReady));
+      };
+      const clearCloseAfterShadowTimer = () => {
+        if (!closeAfterShadowTimer) return;
+        window.clearTimeout(closeAfterShadowTimer);
+        closeAfterShadowTimer = null;
+      };
       const clearCloseMenuTimer = () => {
         if (!closeMenuTimer) return;
         window.clearTimeout(closeMenuTimer);
@@ -1282,7 +1407,23 @@
         if (!headerInner || megaBackdrops.length === 0) return;
         const navRect = headerInner.getBoundingClientRect();
         const navTop = Math.max(0, navRect.top);
-        const navBottom = Math.max(navTop, navRect.bottom);
+        const navBottom = Math.min(window.innerHeight, navRect.bottom);
+        const visibleNavHeight = Math.max(0, navBottom - navTop);
+        const navIsTranslatingOut = hiddenOffset > 0.5;
+
+        // If the header row is fully out of view, remove the nav cutout entirely.
+        if (visibleNavHeight <= 1 || navIsTranslatingOut) {
+          megaBackdrops.forEach((backdrop) => {
+            if (backdrop.dataset.headerMegaBackdrop === 'top') {
+              backdrop.style.top = '0px';
+              backdrop.style.bottom = '100%';
+            } else {
+              backdrop.style.top = '0px';
+              backdrop.style.bottom = '0px';
+            }
+          });
+          return;
+        }
 
         megaBackdrops.forEach((backdrop) => {
           if (backdrop.dataset.headerMegaBackdrop === 'top') {
@@ -1295,17 +1436,25 @@
         });
       };
 
-      const updateMegaOpenState = () => {
+      syncMegaBackdropOnScroll = () => {
+        if (!header.classList.contains('is-mega-open')) return;
         syncMegaBackdropTop();
+      };
+
+      const updateMegaOpenState = () => {
         const hasFocusedDropdown = Array.from(dropdownMenuItems).some((menuItem) => menuItem.contains(document.activeElement));
         const isMegaOpen = Boolean(activeDropdownItem) || hasFocusedDropdown;
         if (window.matchMedia('(max-width: 989px)').matches) {
           header.classList.remove('is-mega-open');
+          setMegaShadowReady(false);
+          clearMegaShadowTimer();
+          clearCloseAfterShadowTimer();
           megaBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
           return;
         }
         if (isMegaOpen) {
           header.classList.add('is-mega-open');
+          syncMegaBackdropTop();
           megaBackdrops.forEach((backdrop) => backdrop.classList.add('is-active'));
         } else {
           header.classList.remove('is-mega-open');
@@ -1314,15 +1463,55 @@
       };
 
       const setActiveDropdownItem = (nextItem) => {
-        if (activeDropdownItem === nextItem) return;
+        if (activeDropdownItem === nextItem) {
+          if (activeDropdownItem) {
+            clearCloseAfterShadowTimer();
+            clearMegaShadowTimer();
+            if (!header.classList.contains('is-mega-shadow-ready')) {
+              const expectedActiveItem = activeDropdownItem;
+              megaShadowTimer = window.setTimeout(() => {
+                if (activeDropdownItem !== expectedActiveItem) return;
+                setMegaShadowReady(true);
+              }, megaShadowOpenDelay);
+            }
+          }
+          return;
+        }
+        clearCloseAfterShadowTimer();
         if (activeDropdownItem) activeDropdownItem.classList.remove('is-open');
         activeDropdownItem = nextItem || null;
         if (activeDropdownItem) activeDropdownItem.classList.add('is-open');
+        clearMegaShadowTimer();
+        if (activeDropdownItem) {
+          setMegaShadowReady(false);
+          const expectedActiveItem = activeDropdownItem;
+          megaShadowTimer = window.setTimeout(() => {
+            if (activeDropdownItem !== expectedActiveItem) return;
+            setMegaShadowReady(true);
+          }, megaShadowOpenDelay);
+        } else {
+          setMegaShadowReady(false);
+        }
         updateMegaOpenState();
       };
 
       const closeActiveDropdown = () => {
-        setActiveDropdownItem(null);
+        if (!activeDropdownItem) {
+          clearMegaShadowTimer();
+          clearCloseAfterShadowTimer();
+          setMegaShadowReady(false);
+          updateMegaOpenState();
+          return;
+        }
+        clearMegaShadowTimer();
+        clearCloseAfterShadowTimer();
+        setMegaShadowReady(false);
+        updateMegaOpenState();
+        const closingItem = activeDropdownItem;
+        closeAfterShadowTimer = window.setTimeout(() => {
+          if (activeDropdownItem !== closingItem) return;
+          setActiveDropdownItem(null);
+        }, megaCloseStartDelay);
       };
 
       const getDropdownTrackBounds = () => {
@@ -1441,6 +1630,12 @@
           if (window.matchMedia('(max-width: 989px)').matches) return;
           const trackBounds = getDropdownTrackBounds();
           if (!trackBounds) return;
+          const aboveMenuStrip = event.clientY < (trackBounds.top - menuSafePadding);
+          if (aboveMenuStrip) {
+            clearCloseMenuTimer();
+            closeActiveDropdown();
+            return;
+          }
           const withinMenuBand = event.clientY >= trackBounds.top && event.clientY <= trackBounds.bottom;
           const outsideMenuHorizontally = event.clientX < (trackBounds.left - menuSafePadding)
             || event.clientX > (trackBounds.right + menuSafePadding);
@@ -1517,6 +1712,7 @@
 
     const onWindowScroll = () => {
       sync(getWindowY());
+      syncMegaBackdropOnScroll();
     };
 
     window.addEventListener('scroll', onWindowScroll, { passive: true });
@@ -1843,13 +2039,13 @@
       "type": "link_list",
       "id": "menu",
       "label": "t:labels.menu",
-      "info": "Top-level navigation. Dropdown content is configured with mega menu card blocks below."
+      "info": "Top-level navigation. Dropdown content is configured with mega menu items below."
     }
   ],
   "blocks": [
     {
       "type": "mega_menu_item_product",
-      "name": "Mega menu item (product)",
+      "name": "Mega menu product",
       "settings": [
         {
           "type": "select",
@@ -1890,46 +2086,27 @@
           "label": "Product"
         },
         {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on mobile",
+          "default": false
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Image",
           "info": "Target minimum 584x584 at 1x export (584x584)."
         },
         {
-          "type": "text",
-          "id": "link_1_label",
-          "label": "Link 1 label"
-        },
-        {
-          "type": "url",
-          "id": "link_1_url",
-          "label": "Link 1 destination"
-        },
-        {
-          "type": "text",
-          "id": "link_2_label",
-          "label": "Link 2 label"
-        },
-        {
-          "type": "url",
-          "id": "link_2_url",
-          "label": "Link 2 destination"
-        },
-        {
-          "type": "text",
-          "id": "link_3_label",
-          "label": "Link 3 label"
-        },
-        {
-          "type": "url",
-          "id": "link_3_url",
-          "label": "Link 3 destination"
+          "type": "collection",
+          "id": "accessories_collection",
+          "label": "Accessories collection"
         }
       ]
     },
     {
       "type": "mega_menu_item_collection",
-      "name": "Mega menu item (collect.)",
+      "name": "Mega menu collection",
       "settings": [
         {
           "type": "select",
@@ -1952,46 +2129,37 @@
           "label": "Collection"
         },
         {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on mobile",
+          "default": false
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Image",
           "info": "Target minimum 584x584 at 1x export (584x584)."
         },
         {
-          "type": "text",
-          "id": "link_1_label",
-          "label": "Link 1 label"
+          "type": "product",
+          "id": "related_product_1",
+          "label": "Linked product 1"
         },
         {
-          "type": "url",
-          "id": "link_1_url",
-          "label": "Link 1 destination"
+          "type": "product",
+          "id": "related_product_2",
+          "label": "Linked product 2"
         },
         {
-          "type": "text",
-          "id": "link_2_label",
-          "label": "Link 2 label"
-        },
-        {
-          "type": "url",
-          "id": "link_2_url",
-          "label": "Link 2 destination"
-        },
-        {
-          "type": "text",
-          "id": "link_3_label",
-          "label": "Link 3 label"
-        },
-        {
-          "type": "url",
-          "id": "link_3_url",
-          "label": "Link 3 destination"
+          "type": "product",
+          "id": "related_product_3",
+          "label": "Linked product 3"
         }
       ]
     },
     {
       "type": "mega_menu_item_page",
-      "name": "Mega menu item (page)",
+      "name": "Mega menu page",
       "settings": [
         {
           "type": "select",
@@ -2014,46 +2182,22 @@
           "label": "Page"
         },
         {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on mobile",
+          "default": false
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "Image",
           "info": "Target minimum 584x584 at 1x export (584x584)."
-        },
-        {
-          "type": "text",
-          "id": "link_1_label",
-          "label": "Link 1 label"
-        },
-        {
-          "type": "url",
-          "id": "link_1_url",
-          "label": "Link 1 destination"
-        },
-        {
-          "type": "text",
-          "id": "link_2_label",
-          "label": "Link 2 label"
-        },
-        {
-          "type": "url",
-          "id": "link_2_url",
-          "label": "Link 2 destination"
-        },
-        {
-          "type": "text",
-          "id": "link_3_label",
-          "label": "Link 3 label"
-        },
-        {
-          "type": "url",
-          "id": "link_3_url",
-          "label": "Link 3 destination"
         }
       ]
     },
     {
       "type": "mega_menu_item_app",
-      "name": "The Metronome app",
+      "name": "Mega menu mobile app",
       "settings": [
         {
           "type": "select",
@@ -2069,6 +2213,12 @@
             { "value": "6", "label": "6" }
           ],
           "info": "Assign this item to a top-level menu item by position."
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide on mobile",
+          "default": false
         },
         {
           "type": "image_picker",

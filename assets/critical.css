@@ -46,9 +46,6 @@ dialog {
   color: var(--color-foreground);
 }
 
-p {
-  text-wrap: pretty;
-}
 p,
 h1,
 h2,
