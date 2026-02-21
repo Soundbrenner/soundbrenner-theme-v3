@@ -60,14 +60,17 @@
 >
   {% if show_announcement %}
     <div class="header__announcement">
+      <div class="header__announcement-emojis" aria-hidden="true">
+        <span class="header__announcement-emoji header__announcement-emoji--left">
+          <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
+        </span>
+        <span class="header__announcement-emoji header__announcement-emoji--right">
+          <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
+        </span>
+      </div>
+
       <div class="header__announcement-top">
-        <span class="header__announcement-emoji" aria-hidden="true">
-          <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
-        </span>
         <p class="header__announcement-text font-caption weight-semibold">{{ announcement_text | escape | newline_to_br }}</p>
-        <span class="header__announcement-emoji" aria-hidden="true">
-          <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
-        </span>
       </div>
 
       {% if show_announcement_countdown %}
@@ -543,14 +546,22 @@
     justify-content: center;
     min-height: var(--sb-announcement-min-height);
     padding: var(--sb-space-8) var(--page-margin, 16px);
+    position: relative;
     width: 100%;
   }
 
-  .header__announcement-top {
+  .header__announcement-emojis {
     align-items: center;
-    column-gap: var(--sb-space-16);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    display: flex;
+    inset: 0 var(--page-margin, 16px);
+    justify-content: space-between;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .header__announcement-top {
+    display: block;
+    padding-inline: calc(var(--sb-space-20) + var(--sb-space-16));
     width: 100%;
   }
 
@@ -562,14 +573,6 @@
     justify-content: center;
     overflow: hidden;
     width: var(--sb-space-20);
-  }
-
-  .header__announcement-emoji:first-child {
-    justify-self: end;
-  }
-
-  .header__announcement-emoji:last-child {
-    justify-self: start;
   }
 
   .header__announcement-emoji img {
@@ -1250,14 +1253,22 @@
         countdownRoot.setAttribute('hidden', '');
       } else {
         const formatCountdownValue = (value) => `${Math.min(99, Math.max(0, value))}`.padStart(2, '0');
+        const countdownDisplayThresholdSeconds = 5 * 24 * 60 * 60;
         let countdownTimer = null;
 
         const updateCountdown = () => {
           const remainingSeconds = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
+          const shouldShowCountdown = remainingSeconds <= countdownDisplayThresholdSeconds;
           const days = Math.floor(remainingSeconds / 86400);
           const hours = Math.floor((remainingSeconds % 86400) / 3600);
           const mins = Math.floor((remainingSeconds % 3600) / 60);
           const secs = remainingSeconds % 60;
+
+          if (shouldShowCountdown) {
+            countdownRoot.removeAttribute('hidden');
+          } else {
+            countdownRoot.setAttribute('hidden', '');
+          }
 
           daysValue.textContent = formatCountdownValue(days);
           hoursValue.textContent = formatCountdownValue(hours);

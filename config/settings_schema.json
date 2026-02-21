@@ -108,7 +108,7 @@
         "label": "Seasonal sale end date",
         "default": "2026-02-28",
         "placeholder": "YYYY-MM-DD",
-        "info": "Select the sale end date. It ends at 23:59:59 PST/PDT (America/Los_Angeles) on that date, and daylight saving time is applied automatically by season."
+        "info": "Select the sale end date. It ends at 23:59:59 PST/PDT (America/Los_Angeles) on that date, and daylight saving time is applied automatically by season. Countdown only appears in the final 5 days."
       },
       {
         "type": "select",
