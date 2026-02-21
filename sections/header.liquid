@@ -187,7 +187,7 @@
             assign dropdown_card_count = 0
 
             for block in section.blocks
-              if block.type == 'mega_menu_item_product' or block.type == 'mega_menu_item_collection' or block.type == 'mega_menu_item_page' or block.type == 'mega_menu_item_app'
+              if block.type == 'primary_item_product' or block.type == 'primary_item_collection' or block.type == 'primary_item_page' or block.type == 'primary_item_app'
                 assign card_menu_index = block.settings.menu_item_index | plus: 0
                 if card_menu_index == link_index
                   assign has_mega_cards = true
@@ -220,7 +220,7 @@
                   <div class="header__mega-menu-grid">
                     {% for block in section.blocks %}
                       {% liquid
-                        if block.type != 'mega_menu_item_product' and block.type != 'mega_menu_item_collection' and block.type != 'mega_menu_item_page' and block.type != 'mega_menu_item_app'
+                        if block.type != 'primary_item_product' and block.type != 'primary_item_collection' and block.type != 'primary_item_page' and block.type != 'primary_item_app'
                           continue
                         endif
 
@@ -235,14 +235,14 @@
                         assign hide_on_mobile = false
 
                         case block.type
-                          when 'mega_menu_item_product'
+                          when 'primary_item_product'
                             assign card_product = block.settings.product
-                          when 'mega_menu_item_collection'
+                          when 'primary_item_collection'
                             assign card_collection = block.settings.collection
                             assign hide_on_mobile = block.settings.hide_on_mobile
-                          when 'mega_menu_item_page'
+                          when 'primary_item_page'
                             assign card_page = block.settings.page
-                          when 'mega_menu_item_app'
+                          when 'primary_item_app'
                             assign app_mode = true
                         endcase
                         assign card_image = block.settings.image
@@ -396,7 +396,7 @@
                             <p class="header__mega-card-body font-body weight-regular">{{ card_body }}</p>
                           {% endif %}
 
-                          {% if block.type == 'mega_menu_item_product' %}
+                          {% if block.type == 'primary_item_product' %}
                             {% assign accessories_collection = block.settings.accessories_collection %}
                             {% if accessories_collection == blank and card_product != blank and card_product.collections != blank %}
                               {% for candidate_collection in card_product.collections %}
@@ -418,7 +418,7 @@
                                 </li>
                               </ul>
                             {% endif %}
-                          {% elsif block.type == 'mega_menu_item_collection' %}
+                          {% elsif block.type == 'primary_item_collection' %}
                             {% assign linked_product_1 = block.settings.related_product_1 %}
                             {% assign linked_product_2 = block.settings.related_product_2 %}
                             {% assign linked_product_3 = block.settings.related_product_3 %}
@@ -546,7 +546,7 @@
               assign has_drawer_submenu = false
 
               for block in section.blocks
-                if block.type == 'mega_menu_item_product' or block.type == 'mega_menu_item_collection' or block.type == 'mega_menu_item_page' or block.type == 'mega_menu_item_app'
+                if block.type == 'primary_item_product' or block.type == 'primary_item_collection' or block.type == 'primary_item_page' or block.type == 'primary_item_app'
                   assign block_menu_index = block.settings.menu_item_index | plus: 0
                   if block_menu_index == drawer_link_index
                     assign has_drawer_submenu = true
@@ -568,7 +568,7 @@
                   <ul class="menu-drawer__menu menu-drawer__menu--childlist" role="list">
                     {% for block in section.blocks %}
                       {% liquid
-                        if block.type != 'mega_menu_item_product' and block.type != 'mega_menu_item_collection' and block.type != 'mega_menu_item_page' and block.type != 'mega_menu_item_app'
+                        if block.type != 'primary_item_product' and block.type != 'primary_item_collection' and block.type != 'primary_item_page' and block.type != 'primary_item_app'
                           continue
                         endif
 
@@ -601,14 +601,14 @@
                         assign drawer_related_product_1_image = blank
                         assign drawer_related_product_2_image = blank
                         assign drawer_related_product_3_image = blank
-                        assign drawer_related_product_1_show_on_mobile = true
-                        assign drawer_related_product_2_show_on_mobile = true
-                        assign drawer_related_product_3_show_on_mobile = true
+                        assign drawer_related_product_1_hide_on_mobile = false
+                        assign drawer_related_product_2_hide_on_mobile = false
+                        assign drawer_related_product_3_hide_on_mobile = false
 
                         case block.type
-                          when 'mega_menu_item_product'
+                          when 'primary_item_product'
                             assign drawer_card_product = block.settings.product
-                          when 'mega_menu_item_collection'
+                          when 'primary_item_collection'
                             assign drawer_card_collection = block.settings.collection
                             assign drawer_hide_primary_tile = block.settings.hide_on_mobile
                             assign drawer_related_product_1 = block.settings.related_product_1
@@ -617,12 +617,12 @@
                             assign drawer_related_product_1_image = block.settings.related_product_1_image
                             assign drawer_related_product_2_image = block.settings.related_product_2_image
                             assign drawer_related_product_3_image = block.settings.related_product_3_image
-                            assign drawer_related_product_1_show_on_mobile = block.settings.related_product_1_show_on_mobile
-                            assign drawer_related_product_2_show_on_mobile = block.settings.related_product_2_show_on_mobile
-                            assign drawer_related_product_3_show_on_mobile = block.settings.related_product_3_show_on_mobile
-                          when 'mega_menu_item_page'
+                            assign drawer_related_product_1_hide_on_mobile = block.settings.related_product_1_show_on_mobile | default: false
+                            assign drawer_related_product_2_hide_on_mobile = block.settings.related_product_2_show_on_mobile | default: false
+                            assign drawer_related_product_3_hide_on_mobile = block.settings.related_product_3_show_on_mobile | default: false
+                          when 'primary_item_page'
                             assign drawer_card_page = block.settings.page
-                          when 'mega_menu_item_app'
+                          when 'primary_item_app'
                             assign drawer_is_app = true
                             assign drawer_card_page = block.settings.app_page
                             assign drawer_card_title = 'The Metronome app'
@@ -697,9 +697,9 @@
                           assign drawer_card_image_url = drawer_image | image_url: width: 502
                         endif
                       %}
-                      <li class="menu-drawer__submenu-item">
+                      <li class="menu-drawer__submenu-item menu-drawer__submenu-animated-element" style="--menu-drawer-animation-index: {{ forloop.index }};">
                         {% unless drawer_hide_primary_tile %}
-                          <a class="menu-drawer__submenu-card menu-drawer__animated-element{% if drawer_is_app %} menu-drawer__submenu-card--app{% endif %}{% if drawer_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_badge_type }}{% endif %}" href="{{ drawer_card_link }}">
+                          <a class="menu-drawer__submenu-card{% if drawer_is_app %} menu-drawer__submenu-card--app{% endif %}{% if drawer_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_badge_type }}{% endif %}" href="{{ drawer_card_link }}">
                             <span class="menu-drawer__submenu-media" aria-hidden="true">
                               {% if drawer_card_image_url != blank %}
                                 <img
@@ -755,7 +755,7 @@
                         {% endunless %}
 
                         {% if drawer_accessories_collection != blank %}
-                          <a class="menu-drawer__submenu-secondary font-caption weight-semibold menu-drawer__animated-element" href="{{ drawer_accessories_collection.url }}">
+                          <a class="menu-drawer__submenu-secondary font-caption weight-semibold" href="{{ drawer_accessories_collection.url }}">
                             Accessories
                           </a>
                         {% endif %}
@@ -764,23 +764,23 @@
                           {% liquid
                             assign drawer_related_product = blank
                             assign drawer_related_product_image = blank
-                            assign drawer_related_product_show_on_mobile = true
+                            assign drawer_related_product_hide_on_mobile = false
                             case drawer_related_index
                               when 1
                                 assign drawer_related_product = drawer_related_product_1
                                 assign drawer_related_product_image = drawer_related_product_1_image
-                                assign drawer_related_product_show_on_mobile = drawer_related_product_1_show_on_mobile
+                                assign drawer_related_product_hide_on_mobile = drawer_related_product_1_hide_on_mobile
                               when 2
                                 assign drawer_related_product = drawer_related_product_2
                                 assign drawer_related_product_image = drawer_related_product_2_image
-                                assign drawer_related_product_show_on_mobile = drawer_related_product_2_show_on_mobile
+                                assign drawer_related_product_hide_on_mobile = drawer_related_product_2_hide_on_mobile
                               when 3
                                 assign drawer_related_product = drawer_related_product_3
                                 assign drawer_related_product_image = drawer_related_product_3_image
-                                assign drawer_related_product_show_on_mobile = drawer_related_product_3_show_on_mobile
+                                assign drawer_related_product_hide_on_mobile = drawer_related_product_3_hide_on_mobile
                             endcase
 
-                            if drawer_related_product == blank or drawer_related_product_show_on_mobile == false
+                            if drawer_related_product == blank or drawer_related_product_hide_on_mobile == true
                               continue
                             endif
 
@@ -817,7 +817,7 @@
                               endfor
                             endif
                           %}
-                          <a class="menu-drawer__submenu-card menu-drawer__submenu-card--related menu-drawer__animated-element{% if drawer_related_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_related_badge_type }}{% endif %}" href="{{ drawer_related_product.url }}">
+                          <a class="menu-drawer__submenu-card menu-drawer__submenu-card--related{% if drawer_related_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_related_badge_type }}{% endif %}" href="{{ drawer_related_product.url }}">
                             <span class="menu-drawer__submenu-media" aria-hidden="true">
                               {% if drawer_related_image_url != blank %}
                                 <img
@@ -856,7 +856,7 @@
                         {% endfor %}
 
                         {% if drawer_is_app %}
-                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold menu-drawer__animated-element" href="{{ drawer_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold" href="{{ drawer_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
                             <span>App Store</span>
                             <span class="menu-drawer__submenu-store-badge" aria-hidden="true">
                               <img
@@ -868,7 +868,7 @@
                               >
                             </span>
                           </a>
-                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold menu-drawer__animated-element" href="{{ drawer_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold" href="{{ drawer_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
                             <span>Google Play</span>
                             <span class="menu-drawer__submenu-store-badge" aria-hidden="true">
                               <img
@@ -1642,7 +1642,7 @@
       opacity var(--sb-drawer-animation-speed) ease;
     visibility: hidden;
     width: min(100vw, 500px);
-    box-shadow: 0 var(--sb-space-4) var(--sb-space-20) 0 var(--sb-color-primary-500);
+    box-shadow: 0 var(--sb-space-4) var(--sb-space-20) 0 var(--sb-color-always-black-25);
     z-index: 79;
     -webkit-overflow-scrolling: touch;
   }
@@ -1871,8 +1871,12 @@
     padding: 0;
   }
 
+  .menu-drawer__menu-container[open] > .menu-drawer__menu--childlist {
+    padding-bottom: var(--sb-space-6);
+  }
+
   .menu-drawer__trustpilot {
-    align-items: center;
+    align-items: flex-end;
     background: var(--sb-color-neutral-100);
     border-radius: 12px;
     color: var(--sb-color-neutral-900);
@@ -1884,7 +1888,7 @@
   }
 
   .menu-drawer__trustpilot-link {
-    align-items: center;
+    align-items: flex-end;
     color: inherit;
     display: inline-flex;
     text-decoration: none;
@@ -1899,6 +1903,10 @@
   .menu-drawer__trustpilot-stars {
     display: inline-flex;
     line-height: 0;
+  }
+
+  .menu-drawer__trustpilot-stars {
+    padding-bottom: var(--sb-space-2);
   }
 
   .menu-drawer__trustpilot-logo svg {
@@ -2048,6 +2056,12 @@
     gap: var(--sb-space-12);
   }
 
+  .menu-drawer__menu-container[open] > .menu-drawer__menu--childlist > .menu-drawer__submenu-animated-element {
+    animation: menu-drawer-nav-open var(--sb-drawer-animation-speed) ease-in-out;
+    animation-delay: calc((var(--menu-drawer-animation-index, 1) - 1) * 100ms);
+    animation-fill-mode: backwards;
+  }
+
   .menu-drawer__submenu-card {
     align-items: stretch;
     background: var(--sb-color-neutral-100);
@@ -2188,10 +2202,9 @@
 
   .menu-drawer__app-stars {
     display: inline-flex;
-    gap: var(--sb-space-8);
+    gap: 4px;
     line-height: 0;
-    padding-bottom: var(--sb-space-4);
-    transform: translateY(var(--sb-space-4));
+    padding-bottom: var(--sb-space-2);
   }
 
   .menu-drawer__app-star {
@@ -2971,7 +2984,7 @@
         const menuRect = megaMenu.getBoundingClientRect();
         const corridorTop = Math.min(headerInnerRect.bottom, menuRect.top);
         const corridorBottom = Math.max(headerInnerRect.bottom, menuRect.top);
-        // Gap-safe zone follows the actual mega menu width.
+        // Gap-safe zone follows the actual primary navigation panel width.
         const corridorLeft = menuRect.left;
         const corridorRight = menuRect.right;
         return (
@@ -3479,18 +3492,18 @@
       "type": "link_list",
       "id": "primary_navigation",
       "label": "Primary navigation",
-      "info": "Top-level navigation. Dropdown content is configured with mega menu items below."
+      "info": "Top-level navigation. Dropdown content is configured with primary navigation items below."
     }
   ],
   "blocks": [
     {
-      "type": "mega_menu_item_product",
-      "name": "Mega menu product",
+      "type": "primary_item_product",
+      "name": "Product",
       "settings": [
         {
           "type": "select",
           "id": "menu_item_index",
-          "label": "Menu item index",
+          "label": "Primary navigation item index",
           "default": "1",
           "options": [
             {
@@ -3538,13 +3551,13 @@
       ]
     },
     {
-      "type": "mega_menu_item_collection",
-      "name": "Mega menu collection",
+      "type": "primary_item_collection",
+      "name": "Collection",
       "settings": [
         {
           "type": "select",
           "id": "menu_item_index",
-          "label": "Menu item index",
+          "label": "Primary navigation item index",
           "default": "1",
           "options": [
             { "value": "1", "label": "1" },
@@ -3564,7 +3577,6 @@
           "type": "checkbox",
           "id": "hide_on_mobile",
           "label": "Hide umbrella collection on mobile",
-          "info": "Only shows the links below on mobile.",
           "default": false
         },
         {
@@ -3587,8 +3599,8 @@
         {
           "type": "checkbox",
           "id": "related_product_1_show_on_mobile",
-          "label": "Show linked product 1 on mobile",
-          "default": true
+          "label": "Hide linked product 1 on mobile",
+          "default": false
         },
         {
           "type": "product",
@@ -3604,8 +3616,8 @@
         {
           "type": "checkbox",
           "id": "related_product_2_show_on_mobile",
-          "label": "Show linked product 2 on mobile",
-          "default": true
+          "label": "Hide linked product 2 on mobile",
+          "default": false
         },
         {
           "type": "product",
@@ -3621,19 +3633,19 @@
         {
           "type": "checkbox",
           "id": "related_product_3_show_on_mobile",
-          "label": "Show linked product 3 on mobile",
-          "default": true
+          "label": "Hide linked product 3 on mobile",
+          "default": false
         }
       ]
     },
     {
-      "type": "mega_menu_item_page",
-      "name": "Mega menu page",
+      "type": "primary_item_page",
+      "name": "Page",
       "settings": [
         {
           "type": "select",
           "id": "menu_item_index",
-          "label": "Menu item index",
+          "label": "Primary navigation item index",
           "default": "1",
           "options": [
             { "value": "1", "label": "1" },
@@ -3658,13 +3670,13 @@
       ]
     },
     {
-      "type": "mega_menu_item_app",
-      "name": "Mega menu mobile app",
+      "type": "primary_item_app",
+      "name": "Mobile app",
       "settings": [
         {
           "type": "select",
           "id": "menu_item_index",
-          "label": "Menu item index",
+          "label": "Primary navigation item index",
           "default": "1",
           "options": [
             { "value": "1", "label": "1" },
@@ -3695,7 +3707,7 @@
       "name": "t:general.header",
       "blocks": [
         {
-          "type": "mega_menu_item_product",
+          "type": "primary_item_product",
           "settings": {
             "menu_item_index": "1"
           }

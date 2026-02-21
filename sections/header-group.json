@@ -14,8 +14,8 @@
     "header": {
       "type": "header",
       "blocks": {
-        "mega_menu_item_product_TGzd8i": {
-          "type": "mega_menu_item_product",
+        "primary_item_product_TGzd8i": {
+          "type": "primary_item_product",
           "settings": {
             "menu_item_index": "1",
             "product": "wave-in-ear-monitors",
@@ -23,8 +23,8 @@
             "accessories_collection": "wave-in-ear-monitors"
           }
         },
-        "mega_menu_item_product_Ce6kCT": {
-          "type": "mega_menu_item_product",
+        "primary_item_product_Ce6kCT": {
+          "type": "primary_item_product",
           "settings": {
             "menu_item_index": "1",
             "product": "wave-pro-in-ear-monitors",
@@ -32,16 +32,16 @@
             "accessories_collection": ""
           }
         },
-        "mega_menu_item_page_dGDiqC": {
-          "type": "mega_menu_item_page",
+        "primary_item_page_dGDiqC": {
+          "type": "primary_item_page",
           "settings": {
             "menu_item_index": "1",
             "page": "compare-in-ear-monitors",
             "image": "shopify://shop_images/Property_1_Compare.jpg"
           }
         },
-        "mega_menu_item_product_BnEawC": {
-          "type": "mega_menu_item_product",
+        "primary_item_product_BnEawC": {
+          "type": "primary_item_product",
           "settings": {
             "menu_item_index": "2",
             "product": "pulse-vibrating-metronome",
@@ -49,8 +49,8 @@
             "accessories_collection": "pulse-vibrating-metronome"
           }
         },
-        "mega_menu_item_product_jhbRe7": {
-          "type": "mega_menu_item_product",
+        "primary_item_product_jhbRe7": {
+          "type": "primary_item_product",
           "settings": {
             "menu_item_index": "2",
             "product": "core-2-practice-companion",
@@ -58,8 +58,8 @@
             "accessories_collection": "core-2-practice-companion"
           }
         },
-        "mega_menu_item_product_wtjTVF": {
-          "type": "mega_menu_item_product",
+        "primary_item_product_wtjTVF": {
+          "type": "primary_item_product",
           "settings": {
             "menu_item_index": "2",
             "product": "spark-practice-companion",
@@ -67,16 +67,16 @@
             "accessories_collection": "spark-practice-companion"
           }
         },
-        "mega_menu_item_page_zwF4xb": {
-          "type": "mega_menu_item_page",
+        "primary_item_page_zwF4xb": {
+          "type": "primary_item_page",
           "settings": {
             "menu_item_index": "2",
             "page": "compare-wearables",
             "image": "shopify://shop_images/Property_1_Compare.jpg"
           }
         },
-        "mega_menu_item_product_fEhXUz": {
-          "type": "mega_menu_item_product",
+        "primary_item_product_fEhXUz": {
+          "type": "primary_item_product",
           "settings": {
             "menu_item_index": "3",
             "product": "minuendo-earplugs",
@@ -84,16 +84,16 @@
             "accessories_collection": "minuendo-earplugs"
           }
         },
-        "mega_menu_item_app_icwCwx": {
-          "type": "mega_menu_item_app",
+        "primary_item_app_icwCwx": {
+          "type": "primary_item_app",
           "settings": {
             "menu_item_index": "4",
             "image": "shopify://shop_images/Property_1_The_Metronome_app_0df9a720-9ae7-4667-a157-b1b053bc70f9.jpg",
             "app_page": "manual-the-metronome-app"
           }
         },
-        "mega_menu_item_collection_WEj8jz": {
-          "type": "mega_menu_item_collection",
+        "primary_item_collection_WEj8jz": {
+          "type": "primary_item_collection",
           "settings": {
             "menu_item_index": "4",
             "collection": "music-tech",
@@ -101,62 +101,62 @@
             "image": "shopify://shop_images/Property_1_Stomp_foot_pedal_dd22d772-417a-485e-8aa1-589baced61dd.jpg",
             "related_product_1": "stomp-foot-pedal",
             "related_product_1_image": "shopify://shop_images/Property_1_Stomp_foot_pedal_dd22d772-417a-485e-8aa1-589baced61dd.jpg",
-            "related_product_1_show_on_mobile": true,
+            "related_product_1_show_on_mobile": false,
             "related_product_2": "flow-microphone",
             "related_product_2_image": "shopify://shop_images/Property_1_Flow_microphone_b7dacb29-b98c-4a3b-93f2-121b0cf6f4b9.jpg",
-            "related_product_2_show_on_mobile": true,
+            "related_product_2_show_on_mobile": false,
             "related_product_3": "genki-wave-midi-ring",
             "related_product_3_image": "shopify://shop_images/Property_1_Genki_Wave_4a8c55aa-0c6d-40aa-b3ec-7b887cf609c5.jpg",
-            "related_product_3_show_on_mobile": true
+            "related_product_3_show_on_mobile": false
           }
         },
-        "mega_menu_item_collection_MWaXRa": {
-          "type": "mega_menu_item_collection",
+        "primary_item_collection_MWaXRa": {
+          "type": "primary_item_collection",
           "settings": {
             "menu_item_index": "4",
             "collection": "playtronica-midi-instruments",
             "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Playtronica_f98ae1eb-f6c7-441b-87ec-d7775efaf9b1.jpg",
             "related_product_1": "playtron-midi-instrument",
-            "related_product_1_show_on_mobile": false,
+            "related_product_1_show_on_mobile": true,
             "related_product_2": "touchme-midi-instrument",
-            "related_product_2_show_on_mobile": false,
+            "related_product_2_show_on_mobile": true,
             "related_product_3": "",
-            "related_product_3_show_on_mobile": true
+            "related_product_3_show_on_mobile": false
           }
         },
-        "mega_menu_item_collection_NMFWmf": {
-          "type": "mega_menu_item_collection",
+        "primary_item_collection_NMFWmf": {
+          "type": "primary_item_collection",
           "settings": {
             "menu_item_index": "4",
             "collection": "merch",
             "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Merch_cc4909a6-b4d9-4817-ae79-27a8d4cbb0bf.jpg",
             "related_product_1": "gift-card",
-            "related_product_1_show_on_mobile": true,
+            "related_product_1_show_on_mobile": false,
             "related_product_2": "",
-            "related_product_2_show_on_mobile": true,
+            "related_product_2_show_on_mobile": false,
             "related_product_3": "",
-            "related_product_3_show_on_mobile": true
+            "related_product_3_show_on_mobile": false
           }
         }
       },
       "block_order": [
-        "mega_menu_item_product_TGzd8i",
-        "mega_menu_item_product_Ce6kCT",
-        "mega_menu_item_page_dGDiqC",
-        "mega_menu_item_product_BnEawC",
-        "mega_menu_item_product_jhbRe7",
-        "mega_menu_item_product_wtjTVF",
-        "mega_menu_item_page_zwF4xb",
-        "mega_menu_item_product_fEhXUz",
-        "mega_menu_item_app_icwCwx",
-        "mega_menu_item_collection_WEj8jz",
-        "mega_menu_item_collection_MWaXRa",
-        "mega_menu_item_collection_NMFWmf"
+        "primary_item_product_TGzd8i",
+        "primary_item_product_Ce6kCT",
+        "primary_item_page_dGDiqC",
+        "primary_item_product_BnEawC",
+        "primary_item_product_jhbRe7",
+        "primary_item_product_wtjTVF",
+        "primary_item_page_zwF4xb",
+        "primary_item_product_fEhXUz",
+        "primary_item_app_icwCwx",
+        "primary_item_collection_WEj8jz",
+        "primary_item_collection_MWaXRa",
+        "primary_item_collection_NMFWmf"
       ],
       "settings": {
-        "primary_navigation": ""
+        "primary_navigation": "main-menu"
       }
     }
   },
