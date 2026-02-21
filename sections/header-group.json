@@ -31,22 +31,9 @@
           "type": "mega_menu_item_product",
           "settings": {
             "menu_item_index": "1",
-            "product": "",
-            "link_1_label": "",
-            "link_1_url": "",
-            "link_2_label": "",
-            "link_2_url": "",
-            "link_3_label": "",
-            "link_3_url": ""
-          }
-        },
-        "mega_menu_item_product_TU6qfn": {
-          "type": "mega_menu_item_product",
-          "settings": {
-            "menu_item_index": "1",
-            "product": "",
-            "link_1_label": "",
-            "link_1_url": "",
+            "product": "wave-pro-in-ear-monitors",
+            "link_1_label": "Accessories",
+            "link_1_url": "shopify://collections/wave-pro-in-ear-monitors",
             "link_2_label": "",
             "link_2_url": "",
             "link_3_label": "",
@@ -56,8 +43,7 @@
       },
       "block_order": [
         "mega_menu_item_product_TGzd8i",
-        "mega_menu_item_product_Ce6kCT",
-        "mega_menu_item_product_TU6qfn"
+        "mega_menu_item_product_Ce6kCT"
       ],
       "settings": {
         "menu": "main-menu"
