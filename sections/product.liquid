@@ -414,7 +414,7 @@
                 data-sticky-reviews-link
                 aria-label="Go to reviews"
               >
-                {% assign sticky_star_icon_url = 'icon-klaviyo-star.svg' | asset_url %}
+                {% assign sticky_star_icon_url = 'icon-review-star.svg' | asset_url %}
                 {% for i in (1..5) %}
                   {% assign step = i | minus: 1 %}
                   {% assign fill_ratio = product_rating | minus: step %}

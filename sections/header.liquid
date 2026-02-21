@@ -25,6 +25,11 @@
   endif
   assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
   assign announcement_emoji_asset = 'emoji-sale-new-year.png'
+  assign trustpilot_entry = metaobjects.trustpilot.values | first
+  assign metronome_rating_raw = trustpilot_entry.the_metronome_app_review_rating.value | default: trustpilot_entry.the_metronome_app_review_rating
+  assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count
+  assign metronome_rating_display = metronome_rating_raw | strip
+  assign metronome_count_display = metronome_count_raw | strip
 
   case announcement_gradient
     when 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
@@ -161,6 +166,7 @@
             {% if has_dropdown %}
               <div class="header__mega-menu" aria-label="{{ link.title | escape }}" style="--sb-mega-columns: {{ dropdown_card_count }};">
                 <div class="header__mega-menu-panel">
+                  <div class="header__mega-menu-panel-inner">
                   <a class="header__mega-menu-title font-title weight-bold" href="{{ link.url }}">{{ link.title }}</a>
                   <div class="header__mega-menu-grid">
                     {% for block in section.blocks %}
@@ -193,12 +199,26 @@
                         assign card_title = blank
                         assign card_body = blank
                         assign card_link = blank
-                        assign card_rating_label = '4.8 stars on app stores'
+                        assign card_rating_value = 4.8
+                        assign card_rating_display = metronome_rating_display | default: '4.8'
+                        assign card_rating_count_display = metronome_count_display | default: '100K+'
+                        assign card_star_icon_url = 'icon-review-star.svg' | asset_url
+                        assign card_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353'
+                        assign card_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse'
 
                         if app_mode == true
-                          assign card_link = routes.root_url | append: 'pages/the-app'
+                          assign app_page = block.settings.app_page
+                          if app_page != blank
+                            assign card_link = app_page.url
+                          else
+                            assign card_link = routes.root_url | append: 'pages/the-app'
+                          endif
                           assign card_title = 'The Metronome app'
                           assign card_body = 'Download for iOS and Android'
+                          assign parsed_rating_value = card_rating_display | split: ' ' | first | plus: 0
+                          if parsed_rating_value > 0
+                            assign card_rating_value = parsed_rating_value
+                          endif
                         else
                           if card_product != blank
                             assign card_link = card_product.url
@@ -223,7 +243,7 @@
 
                         assign card_image_url = blank
                         if card_image != blank
-                          assign card_image_url = card_image | image_url: width: 584
+                          assign card_image_url = card_image | image_url: width: 502
                         endif
 
                         assign card_badge_label = blank
@@ -260,8 +280,8 @@
                               loading="eager"
                               fetchpriority="low"
                               decoding="async"
-                              width="584"
-                              height="584"
+                              width="502"
+                              height="502"
                             >
                           {% else %}
                             <img
@@ -271,8 +291,8 @@
                               loading="eager"
                               fetchpriority="low"
                               decoding="async"
-                              width="584"
-                              height="584"
+                              width="502"
+                              height="502"
                             >
                           {% endif %}
                         </a>
@@ -283,13 +303,25 @@
 
                         {% if app_mode == true %}
                           <div class="header__mega-card-app">
-                            <p class="header__mega-card-rating font-body weight-regular">
-                              <span class="header__mega-card-stars" aria-hidden="true">★★★★★</span>
-                              <span>{{ card_rating_label }}</span>
+                            <p class="header__mega-card-rating font-body weight-semibold">
+                              <span class="header__mega-card-stars" aria-hidden="true">
+                                {% for star_index in (1..5) %}
+                                  {% assign prior_stars = star_index | minus: 1 %}
+                                  {% assign star_fill = 0 %}
+                                  {% if card_rating_value >= star_index %}
+                                    {% assign star_fill = 100 %}
+                                  {% elsif card_rating_value > prior_stars %}
+                                    {% assign star_fill = card_rating_value | minus: prior_stars | times: 100 | round %}
+                                  {% endif %}
+                                  <span class="header__mega-card-star" style="--sb-star-fill: {{ star_fill }}%; --sb-star-icon-url: url('{{ card_star_icon_url }}');"></span>
+                                {% endfor %}
+                              </span>
+                              <span>{{ card_rating_display }}</span>
                             </p>
+                            <p class="header__mega-card-rating-count font-body weight-regular">{{ card_rating_count_display }} ratings</p>
 
                             <div class="header__mega-card-app-links">
-                              <a href="{{ card_link }}" aria-label="Download on the App Store">
+                              <a href="{{ card_app_store_link }}" aria-label="Download on the App Store">
                                 <img
                                   src="{{ 'app-download-app-store.png' | asset_url }}"
                                   alt="Download on the App Store"
@@ -298,7 +330,7 @@
                                   height="36"
                                 >
                               </a>
-                              <a href="{{ card_link }}" aria-label="Get it on Google Play">
+                              <a href="{{ card_google_play_link }}" aria-label="Get it on Google Play">
                                 <img
                                   src="{{ 'app-download-google-play.png' | asset_url }}"
                                   alt="Get it on Google Play"
@@ -340,8 +372,9 @@
                             {% assign linked_product_1 = block.settings.related_product_1 %}
                             {% assign linked_product_2 = block.settings.related_product_2 %}
                             {% assign linked_product_3 = block.settings.related_product_3 %}
+                            {% assign linked_collection = block.settings.related_collection %}
                             {% assign has_card_links = false %}
-                            {% if linked_product_1 != blank or linked_product_2 != blank or linked_product_3 != blank %}
+                            {% if linked_product_1 != blank or linked_product_2 != blank or linked_product_3 != blank or linked_collection != blank %}
                               {% assign has_card_links = true %}
                             {% endif %}
                             {% if has_card_links %}
@@ -397,12 +430,20 @@
                                     </a>
                                   </li>
                                 {% endif %}
+                                {% if linked_collection != blank %}
+                                  <li>
+                                    <a href="{{ linked_collection.url }}">
+                                      {{ linked_collection.title }}
+                                    </a>
+                                  </li>
+                                {% endif %}
                               </ul>
                             {% endif %}
                           {% endif %}
                         {% endif %}
                       </article>
                     {% endfor %}
+                  </div>
                   </div>
                 </div>
               </div>
@@ -681,14 +722,16 @@
         - (var(--sb-space-64) * 2)
       ) / 4
     );
-    --sb-mega-clip-closed: calc(100% + var(--sb-space-2));
+    --sb-mega-min-width: calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24));
     left: 50%;
     border-radius: var(--sb-space-24);
+    display: grid;
+    grid-template-rows: 0fr;
     pointer-events: none;
     position: absolute;
     top: calc(100% + var(--sb-space-16) + ((var(--sb-header-height) - var(--sb-space-36)) / 2));
     transform: translate(-50%, 0);
-    visibility: hidden;
+    min-width: min(var(--sb-mega-max-width), var(--sb-mega-min-width));
     width: min(
       var(--sb-mega-max-width),
       calc(
@@ -699,54 +742,38 @@
     );
     isolation: isolate;
     z-index: 120;
-    transition: visibility 0s linear 460ms;
+    transition: grid-template-rows 460ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .header__mega-menu::before {
-    border-radius: var(--sb-space-24);
-    box-shadow: 0 calc(var(--sb-space-8) + var(--sb-space-2)) 90px 0 var(--sb-color-always-black-50, rgba(0, 0, 0, 0.5));
-    content: '';
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    transition: opacity 320ms ease;
-    will-change: opacity;
-    z-index: 0;
-  }
-
-  .header__menu-item.has-dropdown.is-open > .header__mega-menu,
-  .header__menu-item.has-dropdown:focus-within > .header__mega-menu {
+  .header__menu-item.has-dropdown.is-open > .header__mega-menu {
+    grid-template-rows: 1fr;
     pointer-events: auto;
-    visibility: visible;
+  }
+
+  .header.is-mega-switching .header__menu-item.has-dropdown:not(.is-open) > .header__mega-menu {
+    transition-duration: 0s;
     transition-delay: 0s;
+    grid-template-rows: 0fr;
   }
 
-  .header.is-mega-shadow-ready .header__menu-item.has-dropdown.is-open > .header__mega-menu::before,
-  .header.is-mega-shadow-ready .header__menu-item.has-dropdown:focus-within > .header__mega-menu::before {
-    opacity: 1;
-  }
-
-  .header__mega-menu-panel {
-    clip-path: inset(0 0 var(--sb-mega-clip-closed) 0 round var(--sb-space-24));
-    transform-origin: top center;
-    transition: clip-path 460ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: clip-path;
-  }
-
-  .header__menu-item.has-dropdown.is-open > .header__mega-menu .header__mega-menu-panel,
-  .header__menu-item.has-dropdown:focus-within > .header__mega-menu .header__mega-menu-panel {
-    clip-path: inset(0 0 0 0 round var(--sb-space-24));
+  .header.is-mega-switching .header__menu-item.has-dropdown.is-open > .header__mega-menu {
+    grid-template-rows: 1fr;
+    transition: width 460ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .header__mega-menu-panel {
     background: var(--sb-color-neutral-200);
     border-radius: var(--sb-space-24);
+    box-shadow: 0 calc(var(--sb-space-8) + var(--sb-space-2)) 90px 0 var(--sb-color-always-black-50, rgba(0, 0, 0, 0.5));
     overflow: hidden;
-    padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-48);
+    min-height: 0;
     position: relative;
     white-space: normal;
     z-index: 1;
+  }
+
+  .header__mega-menu-panel-inner {
+    padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-48);
   }
 
   .header__mega-menu-grid {
@@ -763,9 +790,7 @@
     display: flex;
     justify-content: center;
     margin: 0 auto;
-    opacity: 0;
     text-align: center;
-    transition: opacity 220ms ease;
     width: fit-content;
   }
 
@@ -776,15 +801,8 @@
 
   .header__mega-card {
     min-width: 0;
-    opacity: 0;
-    transition: opacity 220ms ease;
-  }
-
-  .header__menu-item.has-dropdown.is-open > .header__mega-menu .header__mega-menu-title,
-  .header__menu-item.has-dropdown:focus-within > .header__mega-menu .header__mega-menu-title,
-  .header__menu-item.has-dropdown.is-open > .header__mega-menu .header__mega-card,
-  .header__menu-item.has-dropdown:focus-within > .header__mega-menu .header__mega-card {
-    opacity: 1;
+    width: min(100%, var(--sb-mega-card-width));
+    justify-self: center;
   }
 
   .header__mega-card-media {
@@ -851,7 +869,7 @@
   .header__mega-card-links {
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-12);
+    gap: var(--sb-space-20);
     list-style: none;
     margin: var(--sb-space-20) 0 0;
     padding: 0;
@@ -868,6 +886,9 @@
   }
 
   .header__mega-card-app {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-6);
     margin-top: var(--sb-space-12);
   }
 
@@ -875,20 +896,57 @@
     align-items: center;
     color: var(--sb-color-neutral-900);
     display: flex;
-    gap: var(--sb-space-8);
+    gap: var(--sb-space-12);
+    margin: 0;
+  }
+
+  .header__mega-card-rating-count {
+    color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
   .header__mega-card-stars {
-    color: var(--sb-color-neutral-900);
-    letter-spacing: var(--sb-space-2);
-    line-height: 1;
+    display: inline-flex;
+    gap: var(--sb-space-4);
+    line-height: 0;
+    transform: translateY(calc(-1 * var(--sb-space-2)));
+  }
+
+  .header__mega-card-star {
+    display: inline-block;
+    height: var(--sb-space-20);
+    position: relative;
+    width: var(--sb-space-20);
+  }
+
+  .header__mega-card-star::before,
+  .header__mega-card-star::after {
+    content: '';
+    display: block;
+    left: 0;
+    height: 100%;
+    mask: center / contain no-repeat var(--sb-star-icon-url);
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    -webkit-mask: center / contain no-repeat var(--sb-star-icon-url);
+  }
+
+  .header__mega-card-star::before {
+    background: var(--sb-light-neutral-900-50);
+  }
+
+  .header__mega-card-star::after {
+    background: var(--sb-light-neutral-900);
+    clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
+    -webkit-clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
   }
 
   .header__mega-card-app-links {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--sb-space-12);
+    flex-direction: column;
+    gap: var(--sb-space-20);
     margin-top: var(--sb-space-20);
   }
 
@@ -897,10 +955,15 @@
     line-height: 0;
   }
 
+  .header__mega-card-app-links a:hover,
+  .header__mega-card-app-links a:focus-visible {
+    opacity: 0.75;
+  }
+
   .header__mega-card-app-links img {
     display: block;
-    height: auto;
-    width: calc(var(--sb-space-96) + var(--sb-space-24));
+    height: var(--sb-space-36);
+    width: auto;
   }
 
   .header__icons {
@@ -1373,35 +1436,64 @@
     if (dropdownMenuItems.length > 0) {
       let activeDropdownItem = null;
       let closeMenuTimer = null;
-      let megaShadowTimer = null;
-      let closeAfterShadowTimer = null;
+      let megaSwitchTimer = null;
       let pointerX = 0;
       let pointerY = 0;
       const menuSafePadding = 8;
-      const megaShadowOpenDelay = 140;
-      const megaCloseStartDelay = 0;
+      const megaSwitchDuration = 460;
       const headerInner = header.querySelector('.header__inner');
       const headerMenu = header.querySelector('.header__menu');
       const dropdownMenuLinks = Array.from(dropdownMenuItems)
         .map((menuItem) => menuItem.querySelector('.header__menu-link'))
         .filter(Boolean);
-      const clearMegaShadowTimer = () => {
-        if (!megaShadowTimer) return;
-        window.clearTimeout(megaShadowTimer);
-        megaShadowTimer = null;
-      };
-      const setMegaShadowReady = (isReady) => {
-        header.classList.toggle('is-mega-shadow-ready', Boolean(isReady));
-      };
-      const clearCloseAfterShadowTimer = () => {
-        if (!closeAfterShadowTimer) return;
-        window.clearTimeout(closeAfterShadowTimer);
-        closeAfterShadowTimer = null;
-      };
       const clearCloseMenuTimer = () => {
         if (!closeMenuTimer) return;
         window.clearTimeout(closeMenuTimer);
         closeMenuTimer = null;
+      };
+      const clearMegaSwitchTimer = () => {
+        if (!megaSwitchTimer) return;
+        window.clearTimeout(megaSwitchTimer);
+        megaSwitchTimer = null;
+      };
+      const clearMegaSwitchInlineWidths = () => {
+        dropdownMenuItems.forEach((menuItem) => {
+          const menu = menuItem.querySelector('.header__mega-menu');
+          if (!menu) return;
+          menu.style.removeProperty('width');
+        });
+      };
+      const endMegaSwitchMode = (menuElement) => {
+        if (menuElement) menuElement.style.removeProperty('width');
+        header.classList.remove('is-mega-switching');
+      };
+      const triggerMegaSwitchMode = (fromItem, toItem) => {
+        if (!fromItem || !toItem) return;
+        const fromMenu = fromItem.querySelector('.header__mega-menu');
+        const toMenu = toItem.querySelector('.header__mega-menu');
+        if (!fromMenu || !toMenu) return;
+
+        const fromWidth = fromMenu.getBoundingClientRect().width;
+        const toWidth = toMenu.getBoundingClientRect().width;
+        if (!(fromWidth > 0) || !(toWidth > 0)) return;
+
+        const widthDiff = Math.abs(fromWidth - toWidth);
+        if (widthDiff < 1) {
+          clearMegaSwitchTimer();
+          header.classList.remove('is-mega-switching');
+          toMenu.style.removeProperty('width');
+          return;
+        }
+
+        clearMegaSwitchTimer();
+        header.classList.add('is-mega-switching');
+        toMenu.style.width = `${fromWidth}px`;
+        window.requestAnimationFrame(() => {
+          toMenu.style.width = `${toWidth}px`;
+        });
+        megaSwitchTimer = window.setTimeout(() => {
+          endMegaSwitchMode(toMenu);
+        }, megaSwitchDuration);
       };
       const syncMegaBackdropTop = () => {
         if (!headerInner || megaBackdrops.length === 0) return;
@@ -1442,13 +1534,12 @@
       };
 
       const updateMegaOpenState = () => {
-        const hasFocusedDropdown = Array.from(dropdownMenuItems).some((menuItem) => menuItem.contains(document.activeElement));
-        const isMegaOpen = Boolean(activeDropdownItem) || hasFocusedDropdown;
+        const isMegaOpen = Boolean(activeDropdownItem);
         if (window.matchMedia('(max-width: 989px)').matches) {
           header.classList.remove('is-mega-open');
-          setMegaShadowReady(false);
-          clearMegaShadowTimer();
-          clearCloseAfterShadowTimer();
+          clearMegaSwitchTimer();
+          header.classList.remove('is-mega-switching');
+          clearMegaSwitchInlineWidths();
           megaBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
           return;
         }
@@ -1463,55 +1554,21 @@
       };
 
       const setActiveDropdownItem = (nextItem) => {
-        if (activeDropdownItem === nextItem) {
-          if (activeDropdownItem) {
-            clearCloseAfterShadowTimer();
-            clearMegaShadowTimer();
-            if (!header.classList.contains('is-mega-shadow-ready')) {
-              const expectedActiveItem = activeDropdownItem;
-              megaShadowTimer = window.setTimeout(() => {
-                if (activeDropdownItem !== expectedActiveItem) return;
-                setMegaShadowReady(true);
-              }, megaShadowOpenDelay);
-            }
-          }
-          return;
+        if (activeDropdownItem === nextItem) return;
+        if (activeDropdownItem && nextItem) triggerMegaSwitchMode(activeDropdownItem, nextItem);
+        else {
+          clearMegaSwitchTimer();
+          header.classList.remove('is-mega-switching');
+          clearMegaSwitchInlineWidths();
         }
-        clearCloseAfterShadowTimer();
         if (activeDropdownItem) activeDropdownItem.classList.remove('is-open');
         activeDropdownItem = nextItem || null;
         if (activeDropdownItem) activeDropdownItem.classList.add('is-open');
-        clearMegaShadowTimer();
-        if (activeDropdownItem) {
-          setMegaShadowReady(false);
-          const expectedActiveItem = activeDropdownItem;
-          megaShadowTimer = window.setTimeout(() => {
-            if (activeDropdownItem !== expectedActiveItem) return;
-            setMegaShadowReady(true);
-          }, megaShadowOpenDelay);
-        } else {
-          setMegaShadowReady(false);
-        }
         updateMegaOpenState();
       };
 
       const closeActiveDropdown = () => {
-        if (!activeDropdownItem) {
-          clearMegaShadowTimer();
-          clearCloseAfterShadowTimer();
-          setMegaShadowReady(false);
-          updateMegaOpenState();
-          return;
-        }
-        clearMegaShadowTimer();
-        clearCloseAfterShadowTimer();
-        setMegaShadowReady(false);
-        updateMegaOpenState();
-        const closingItem = activeDropdownItem;
-        closeAfterShadowTimer = window.setTimeout(() => {
-          if (activeDropdownItem !== closingItem) return;
-          setActiveDropdownItem(null);
-        }, megaCloseStartDelay);
+        setActiveDropdownItem(null);
       };
 
       const getDropdownTrackBounds = () => {
@@ -2077,8 +2134,7 @@
               "value": "6",
               "label": "6"
             }
-          ],
-          "info": "Assign this item to a top-level menu item by position."
+          ]
         },
         {
           "type": "product",
@@ -2095,7 +2151,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Target minimum 584x584 at 1x export (584x584)."
+          "info": "Target minimum 251x251 at 2x export (502x502)."
         },
         {
           "type": "collection",
@@ -2120,8 +2176,7 @@
             { "value": "4", "label": "4" },
             { "value": "5", "label": "5" },
             { "value": "6", "label": "6" }
-          ],
-          "info": "Assign this item to a top-level menu item by position."
+          ]
         },
         {
           "type": "collection",
@@ -2138,7 +2193,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Target minimum 584x584 at 1x export (584x584)."
+          "info": "Target minimum 251x251 at 2x export (502x502)."
         },
         {
           "type": "product",
@@ -2154,6 +2209,11 @@
           "type": "product",
           "id": "related_product_3",
           "label": "Linked product 3"
+        },
+        {
+          "type": "collection",
+          "id": "related_collection",
+          "label": "Linked collection"
         }
       ]
     },
@@ -2173,8 +2233,7 @@
             { "value": "4", "label": "4" },
             { "value": "5", "label": "5" },
             { "value": "6", "label": "6" }
-          ],
-          "info": "Assign this item to a top-level menu item by position."
+          ]
         },
         {
           "type": "page",
@@ -2191,7 +2250,7 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Target minimum 584x584 at 1x export (584x584)."
+          "info": "Target minimum 251x251 at 2x export (502x502)."
         }
       ]
     },
@@ -2211,8 +2270,7 @@
             { "value": "4", "label": "4" },
             { "value": "5", "label": "5" },
             { "value": "6", "label": "6" }
-          ],
-          "info": "Assign this item to a top-level menu item by position."
+          ]
         },
         {
           "type": "checkbox",
@@ -2224,7 +2282,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image",
-          "info": "Target minimum 584x584 at 1x export (584x584)."
+          "info": "Target minimum 251x251 at 2x export (502x502)."
+        },
+        {
+          "type": "page",
+          "id": "app_page",
+          "label": "App page"
         }
       ]
     }

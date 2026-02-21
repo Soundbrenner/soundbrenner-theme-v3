@@ -2414,10 +2414,10 @@ button[aria-label='Modal close button']:focus-visible::after {
   background-color: var(--sb-color-neutral-800) !important;
   display: inline-block;
   height: var(--sb-space-12);
-  mask: center / contain no-repeat url("icon-klaviyo-star.svg");
+  mask: center / contain no-repeat url("icon-review-star.svg");
   vertical-align: middle;
   width: var(--sb-space-12);
-  -webkit-mask: center / contain no-repeat url("icon-klaviyo-star.svg");
+  -webkit-mask: center / contain no-repeat url("icon-review-star.svg");
 }
 
 /* Histogram rating number style */
@@ -2468,8 +2468,8 @@ button[aria-label='Modal close button']:focus-visible::after {
   min-height: var(--sb-space-16) !important;
   min-width: var(--sb-space-16) !important;
   width: var(--sb-space-16) !important;
-  mask: center / contain no-repeat url("icon-klaviyo-star.svg");
-  -webkit-mask: center / contain no-repeat url("icon-klaviyo-star.svg");
+  mask: center / contain no-repeat url("icon-review-star.svg");
+  -webkit-mask: center / contain no-repeat url("icon-review-star.svg");
 }
 
 :is(#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper) .kl_reviews__histogram__row > svg path {
