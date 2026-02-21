@@ -1270,7 +1270,7 @@
 
         const updateCountdown = () => {
           const remainingSeconds = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
-          const shouldShowCountdown = remainingSeconds <= countdownDisplayThresholdSeconds;
+          const shouldShowCountdown = remainingSeconds > 0 && remainingSeconds <= countdownDisplayThresholdSeconds;
           const days = Math.floor(remainingSeconds / 86400);
           const hours = Math.floor((remainingSeconds % 86400) / 3600);
           const mins = Math.floor((remainingSeconds % 3600) / 60);
