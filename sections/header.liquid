@@ -100,14 +100,14 @@
 
   <div class="header__inner">
     <div class="header__icons header__icons--left">
-      <a class="header__icon-link header__icon-link--search" href="{{ routes.search_url }}" aria-label="Search">
+      <button type="button" class="header__icon-link header__icon-link--menu" aria-label="Menu">
         <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-search.svg' | inline_asset_content }}
+          {{ 'icon-hamburger-padded.svg' | inline_asset_content }}
         </span>
-      </a>
+      </button>
       <a class="header__icon-link header__icon-link--search" href="{{ routes.search_url }}" aria-label="Search">
         <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-search.svg' | inline_asset_content }}
+          {{ 'icon-search-padded.svg' | inline_asset_content }}
         </span>
       </a>
     </div>
@@ -122,7 +122,7 @@
       {% if section.settings.menu != blank and section.settings.menu.links.size > 0 %}
         {% for link in section.settings.menu.links %}
           {% liquid
-            assign link_handle = link.title | handleize
+            assign link_index = forloop.index
             assign link_path = link.url | split: '?' | first
             assign is_active_link = false
             if link.current or request.path == link_path
@@ -134,8 +134,8 @@
 
             for block in section.blocks
               if block.type == 'mega_menu_card'
-                assign card_handle = block.settings.menu_item_handle | strip | handleize
-                if card_handle == link_handle
+                assign card_menu_index = block.settings.menu_item_index | plus: 0
+                if card_menu_index == link_index
                   assign has_mega_cards = true
                   assign dropdown_card_count = dropdown_card_count | plus: 1
                 endif
@@ -161,6 +161,7 @@
             {% if has_dropdown %}
               <div class="header__mega-menu" aria-label="{{ link.title | escape }}" style="--sb-mega-columns: {{ dropdown_card_count }};">
                 <div class="header__mega-menu-panel">
+                  <a class="header__mega-menu-title font-title weight-bold" href="{{ link.url }}">{{ link.title }}</a>
                   <div class="header__mega-menu-grid">
                     {% for block in section.blocks %}
                       {% liquid
@@ -168,8 +169,8 @@
                           continue
                         endif
 
-                        assign block_handle = block.settings.menu_item_handle | strip | handleize
-                        if block_handle != link_handle
+                        assign block_menu_index = block.settings.menu_item_index | plus: 0
+                        if block_menu_index != link_index
                           continue
                         endif
                         assign card_product = block.settings.product
@@ -249,13 +250,21 @@
                               height="584"
                             >
                           {% else %}
-                            <span class="header__mega-card-image-placeholder font-caption weight-semibold">Image</span>
+                            <img
+                              class="header__mega-card-image"
+                              src="{{ 'mega-menu-card-placeholder.png' | asset_url }}"
+                              alt="{{ card_title | default: link.title | escape }}"
+                              loading="lazy"
+                              decoding="async"
+                              width="584"
+                              height="584"
+                            >
                           {% endif %}
                         </a>
 
-                        <a class="header__mega-card-title font-callout weight-bold" href="{{ card_link | default: '#' }}">
-                          {{ card_title | default: link.title }}
-                        </a>
+                        <p class="header__mega-card-title font-callout weight-bold">
+                          <a class="header__mega-card-title-link" href="{{ card_link | default: '#' }}">{{ card_title | default: link.title }}</a>
+                        </p>
 
                         {% if card_mode == 'app' %}
                           <div class="header__mega-card-app">
@@ -322,24 +331,32 @@
         aria-label="Search"
       >
         <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-search.svg' | inline_asset_content }}
+          {{ 'icon-search-padded.svg' | inline_asset_content }}
         </span>
       </a>
-      <a class="header__icon-link header__icon-link--search" href="{{ routes.search_url }}" aria-label="Search">
+      <a class="header__icon-link header__icon-link--account" href="{{ routes.account_url }}" aria-label="Account">
         <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-search.svg' | inline_asset_content }}
+          {{ 'icon-account-padded.svg' | inline_asset_content }}
         </span>
       </a>
 
       <a class="header__icon-link header__icon-link--cart" href="{{ routes.cart_url }}" data-header-cart-link aria-label="Cart">
-        <sup data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</sup>
+        <sup class="header__cart-count-badge font-caption2 weight-semibold" data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+          {{ cart.item_count }}
+        </sup>
         <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-add-to-cart.svg' | inline_asset_content }}
+          {{ 'icon-cart-padded.svg' | inline_asset_content }}
         </span>
       </a>
     </div>
   </div>
 </header>
+<div class="header__mega-backdrop header__mega-backdrop--top" data-header-mega-backdrop="top" aria-hidden="true"></div>
+<div
+  class="header__mega-backdrop header__mega-backdrop--bottom"
+  data-header-mega-backdrop="bottom"
+  aria-hidden="true"
+></div>
 
 <div class="header__cart-drawer" data-cart-drawer hidden>
   <div class="header__cart-drawer-backdrop" data-cart-drawer-close></div>
@@ -357,50 +374,6 @@
       <a class="header__cart-drawer-action" href="/checkout">Checkout</a>
     </div>
   </aside>
-</div>
-
-<div class="header__debug-tools" aria-label="Debug controls">
-  <button type="button" class="header__debug-button font-caption weight-regular" data-theme-toggle aria-label="Theme">
-    Theme
-  </button>
-
-  {% if localization.available_languages.size > 1 %}
-    <localization-form class="header__debug-localization">
-      {% form 'localization', class: 'header__debug-language-form', id: 'HeaderDebugLanguageForm' %}
-        <div class="header__debug-language-disclosure">
-          <input type="hidden" name="return_to" value="{{ request.path }}">
-          <button
-            type="button"
-            class="header__debug-button header__debug-button--language font-caption weight-regular"
-            aria-expanded="false"
-            aria-controls="HeaderDebugLanguageList"
-          >
-            {{ localization.language.iso_code | upcase }}
-          </button>
-
-          <ul id="HeaderDebugLanguageList" role="list" class="header__debug-language-list" hidden>
-            {% for language in localization.available_languages %}
-              <li class="header__debug-language-item" tabindex="-1">
-                <a
-                  href="#"
-                  {% if language.iso_code == localization.language.iso_code %}
-                    aria-current="true"
-                  {% endif %}
-                  hreflang="{{ language.iso_code }}"
-                  lang="{{ language.iso_code }}"
-                  data-value="{{ language.iso_code }}"
-                >
-                  {{ language.iso_code | upcase }}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-
-          <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
-        </div>
-      {% endform %}
-    </localization-form>
-  {% endif %}
 </div>
 
 {% stylesheet %}
@@ -609,8 +582,18 @@
   }
 
   .header__mega-menu {
+    --sb-mega-max-width: min(
+      calc(100vw - (var(--page-margin, 16px) * 2)),
+      var(--page-width, 1240px)
+    );
+    --sb-mega-card-width: calc(
+      (
+        var(--sb-mega-max-width)
+        - (var(--sb-space-36) * 3)
+        - (var(--sb-space-64) * 2)
+      ) / 4
+    );
     left: 50%;
-    min-width: calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24));
     opacity: 0;
     pointer-events: none;
     position: absolute;
@@ -618,21 +601,18 @@
     transform: translate(-50%, 0);
     visibility: hidden;
     width: min(
-      calc(100vw - (var(--page-margin, 16px) * 2)),
-      max(
-        calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24)),
-        calc(
-          (var(--sb-space-128) * var(--sb-mega-columns, 4))
-          + (var(--sb-space-36) * (var(--sb-mega-columns, 4) - 1))
-          + (var(--sb-space-64) * 2)
-        )
+      var(--sb-mega-max-width),
+      calc(
+        (var(--sb-mega-card-width) * var(--sb-mega-columns, 4))
+        + (var(--sb-space-36) * (var(--sb-mega-columns, 4) - 1))
+        + (var(--sb-space-64) * 2)
       )
     );
     z-index: 120;
     transition: opacity 180ms ease, transform 180ms ease, visibility 180ms linear;
   }
 
-  .header__menu-item.has-dropdown:hover > .header__mega-menu,
+  .header__menu-item.has-dropdown.is-open > .header__mega-menu,
   .header__menu-item.has-dropdown:focus-within > .header__mega-menu {
     opacity: 1;
     pointer-events: auto;
@@ -643,14 +623,32 @@
   .header__mega-menu-panel {
     background: var(--sb-color-neutral-200);
     border-radius: var(--sb-space-24);
+    box-shadow: 0 var(--sb-space-24) 90px calc(-1 * var(--sb-space-24)) var(--rare-always-black-50, rgba(0, 0, 0, 0.5));
     padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-48);
+    white-space: normal;
   }
 
   .header__mega-menu-grid {
     display: grid;
+    margin-top: var(--sb-space-36);
     gap: var(--sb-space-36);
     grid-template-columns: repeat(var(--sb-mega-columns, 4), minmax(0, 1fr));
     justify-content: center;
+  }
+
+  .header__mega-menu-title {
+    align-items: center;
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+    width: fit-content;
+  }
+
+  .header__mega-menu-title:hover,
+  .header__mega-menu-title:focus-visible {
+    color: var(--sb-color-primary-500);
   }
 
   .header__mega-card {
@@ -659,7 +657,6 @@
 
   .header__mega-card-media {
     border-radius: var(--sb-space-24);
-    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     display: block;
     overflow: hidden;
     position: relative;
@@ -676,16 +673,6 @@
   .header__mega-card-media:hover .header__mega-card-image,
   .header__mega-card-media:focus-visible .header__mega-card-image {
     opacity: 0.75;
-  }
-
-  .header__mega-card-image-placeholder {
-    align-items: center;
-    aspect-ratio: 1 / 1;
-    background: var(--sb-color-neutral-300);
-    color: var(--sb-color-neutral-900);
-    display: flex;
-    justify-content: center;
-    width: 100%;
   }
 
   .header__mega-card-badge {
@@ -707,14 +694,16 @@
   }
 
   .header__mega-card-title {
+    margin: var(--sb-space-20) 0 0;
+  }
+
+  .header__mega-card-title-link {
     color: var(--sb-color-neutral-900);
-    display: block;
-    margin-top: var(--sb-space-20);
     overflow-wrap: anywhere;
   }
 
-  .header__mega-card-title:hover,
-  .header__mega-card-title:focus-visible {
+  .header__mega-card-title-link:hover,
+  .header__mega-card-title-link:focus-visible {
     color: var(--sb-color-primary-500);
   }
 
@@ -782,7 +771,7 @@
   .header__icons {
     align-items: center;
     display: flex;
-    gap: var(--sb-space-24);
+    gap: var(--sb-space-16);
     margin-left: auto;
   }
 
@@ -793,11 +782,14 @@
 
   .header__icon-link {
     align-items: center;
+    background: transparent;
+    border: 0;
     color: var(--sb-color-neutral-900);
     cursor: pointer;
     display: inline-flex;
     justify-content: center;
     line-height: 0;
+    padding: 0;
     position: relative;
     text-decoration: none;
   }
@@ -810,9 +802,9 @@
   .header__icon-asset {
     align-items: center;
     display: inline-flex;
-    height: 16px;
+    height: var(--sb-space-24);
     justify-content: center;
-    width: 16px;
+    width: var(--sb-space-24);
   }
 
   .header__icon-asset svg,
@@ -822,7 +814,15 @@
     width: 100%;
   }
 
+  .header__icon-link--menu svg [fill] {
+    fill: currentColor;
+  }
+
   .header__icon-link--search svg [fill] {
+    fill: currentColor;
+  }
+
+  .header__icon-link--account svg [fill] {
     fill: currentColor;
   }
 
@@ -840,13 +840,48 @@
     color: var(--sb-color-primary-500);
   }
 
-  .header a sup {
-    color: currentColor;
-    left: calc(100% - var(--sb-space-2));
-    max-width: var(--page-margin);
+  .header__cart-count-badge {
+    align-items: center;
+    background: var(--sb-color-primary-500);
+    border: 1px solid var(--sb-color-neutral-200);
+    border-radius: 999px;
+    box-sizing: border-box;
+    color: var(--sb-color-always-white);
+    display: inline-flex;
+    height: var(--sb-space-20);
+    justify-content: center;
+    min-width: var(--sb-space-20);
+    padding: 0 var(--sb-space-4);
     position: absolute;
-    overflow: hidden;
-    top: calc(var(--sb-space-2) * -1);
+    right: calc(-1 * var(--sb-space-6));
+    top: calc(-1 * var(--sb-space-6));
+    transform: scale(1);
+    transform-origin: center;
+    z-index: 1;
+  }
+
+  .header__cart-count-badge[hidden] {
+    display: none;
+  }
+
+  .header__cart-count-badge.is-double-digit {
+    padding: 0 var(--sb-space-6);
+  }
+
+  .header__cart-count-badge.is-bump {
+    animation: header-cart-badge-bump 420ms cubic-bezier(0.2, 0.9, 0.2, 1.15);
+  }
+
+  @keyframes header-cart-badge-bump {
+    0% {
+      transform: scale(0.72);
+    }
+    55% {
+      transform: scale(1.18);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 
   @media screen and (max-width: 989px) {
@@ -877,19 +912,32 @@
     }
   }
 
+  .header__mega-backdrop {
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    transition: opacity 180ms ease;
+    z-index: 49;
+  }
+
   @media screen and (min-width: 990px) {
-    .header::after {
+    .header__mega-backdrop {
+      -webkit-backdrop-filter: blur(var(--sb-space-8));
       backdrop-filter: blur(var(--sb-space-8));
-      content: '';
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-      position: fixed;
-      z-index: 100;
+      background: var(--sb-color-always-black-25);
+      left: 0;
+      right: 0;
     }
 
-    .header:has(.header__menu-item.has-dropdown:hover > .header__mega-menu)::after,
-    .header:has(.header__menu-item.has-dropdown:focus-within > .header__mega-menu)::after {
+    .header__mega-backdrop--top {
+      top: 0;
+    }
+
+    .header__mega-backdrop--bottom {
+      bottom: 0;
+    }
+
+    .header__mega-backdrop.is-active {
       opacity: 1;
     }
   }
@@ -1014,85 +1062,6 @@
     min-height: calc(var(--sb-header-height) + var(--sb-announcement-min-height, 0px));
   }
 
-  .header__debug-tools {
-    align-items: center;
-    background: var(--sb-color-neutral-100);
-    border: 1px solid var(--sb-color-neutral-600);
-    border-radius: 999px;
-    bottom: var(--sb-space-8);
-    display: inline-flex;
-    gap: var(--sb-space-4);
-    padding: var(--sb-space-2);
-    position: fixed;
-    right: var(--sb-space-8);
-    z-index: 95;
-  }
-
-  .header__debug-button {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    border-radius: 999px;
-    color: var(--sb-color-neutral-800);
-    cursor: pointer;
-    display: inline-flex;
-    height: var(--sb-space-24);
-    justify-content: center;
-    line-height: 1;
-    padding-inline: var(--sb-space-8);
-    white-space: nowrap;
-  }
-
-  .header__debug-button:hover,
-  .header__debug-button:focus-visible {
-    color: var(--sb-color-primary-500);
-  }
-
-  .header__debug-button[disabled] {
-    cursor: default;
-    opacity: 0.75;
-  }
-
-  .header__debug-localization,
-  .header__debug-language-form {
-    margin: 0;
-  }
-
-  .header__debug-language-disclosure {
-    position: relative;
-  }
-
-  .header__debug-language-list {
-    background: var(--sb-color-neutral-100);
-    border: 1px solid var(--sb-color-neutral-600);
-    border-radius: var(--sb-space-12);
-    bottom: calc(100% + var(--sb-space-4));
-    display: flex;
-    flex-direction: column;
-    gap: var(--sb-space-2);
-    list-style: none;
-    margin: 0;
-    min-width: var(--sb-space-96);
-    padding: var(--sb-space-4);
-    position: absolute;
-    right: 0;
-    z-index: 96;
-  }
-
-  .header__debug-language-item a {
-    border-radius: 999px;
-    color: var(--sb-color-neutral-800);
-    display: block;
-    line-height: 1;
-    padding: var(--sb-space-6) var(--sb-space-8);
-    text-align: center;
-    text-decoration: none;
-  }
-
-  .header__debug-language-item a:hover,
-  .header__debug-language-item a:focus-visible {
-    color: var(--sb-color-primary-500);
-  }
 {% endstylesheet %}
 
 <script>
@@ -1261,6 +1230,226 @@
       restoreState: restoreHeaderState
     };
 
+    const dropdownMenuItems = header.querySelectorAll('.header__menu-item.has-dropdown');
+    const plainMenuItems = header.querySelectorAll('.header__menu-item:not(.has-dropdown)');
+    const megaBackdrops = Array.from(document.querySelectorAll('[data-header-mega-backdrop]'));
+    if (dropdownMenuItems.length > 0) {
+      let activeDropdownItem = null;
+      let closeMenuTimer = null;
+      let pointerX = 0;
+      let pointerY = 0;
+      const menuSafePadding = 8;
+      const headerInner = header.querySelector('.header__inner');
+      const headerMenu = header.querySelector('.header__menu');
+      const dropdownMenuLinks = Array.from(dropdownMenuItems)
+        .map((menuItem) => menuItem.querySelector('.header__menu-link'))
+        .filter(Boolean);
+      const clearCloseMenuTimer = () => {
+        if (!closeMenuTimer) return;
+        window.clearTimeout(closeMenuTimer);
+        closeMenuTimer = null;
+      };
+      const syncMegaBackdropTop = () => {
+        if (!headerInner || megaBackdrops.length === 0) return;
+        const navRect = headerInner.getBoundingClientRect();
+        const navTop = Math.max(0, navRect.top);
+        const navBottom = Math.max(navTop, navRect.bottom);
+
+        megaBackdrops.forEach((backdrop) => {
+          if (backdrop.dataset.headerMegaBackdrop === 'top') {
+            backdrop.style.top = '0px';
+            backdrop.style.bottom = `${Math.max(0, window.innerHeight - navTop)}px`;
+          } else {
+            backdrop.style.top = `${navBottom}px`;
+            backdrop.style.bottom = '0px';
+          }
+        });
+      };
+
+      const updateMegaOpenState = () => {
+        syncMegaBackdropTop();
+        const hasFocusedDropdown = Array.from(dropdownMenuItems).some((menuItem) => menuItem.contains(document.activeElement));
+        const isMegaOpen = Boolean(activeDropdownItem) || hasFocusedDropdown;
+        if (window.matchMedia('(max-width: 989px)').matches) {
+          header.classList.remove('is-mega-open');
+          megaBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
+          return;
+        }
+        if (isMegaOpen) {
+          header.classList.add('is-mega-open');
+          megaBackdrops.forEach((backdrop) => backdrop.classList.add('is-active'));
+        } else {
+          header.classList.remove('is-mega-open');
+          megaBackdrops.forEach((backdrop) => backdrop.classList.remove('is-active'));
+        }
+      };
+
+      const setActiveDropdownItem = (nextItem) => {
+        if (activeDropdownItem === nextItem) return;
+        if (activeDropdownItem) activeDropdownItem.classList.remove('is-open');
+        activeDropdownItem = nextItem || null;
+        if (activeDropdownItem) activeDropdownItem.classList.add('is-open');
+        updateMegaOpenState();
+      };
+
+      const closeActiveDropdown = () => {
+        setActiveDropdownItem(null);
+      };
+
+      const getDropdownTrackBounds = () => {
+        if (!headerMenu || dropdownMenuLinks.length === 0) return null;
+        const menuRect = headerMenu.getBoundingClientRect();
+        const firstRect = dropdownMenuLinks[0].getBoundingClientRect();
+        const lastRect = dropdownMenuLinks[dropdownMenuLinks.length - 1].getBoundingClientRect();
+        return {
+          left: firstRect.left,
+          right: lastRect.right,
+          top: menuRect.top,
+          bottom: menuRect.bottom
+        };
+      };
+
+      const pointerInSafeCorridor = (menuItem) => {
+        if (!menuItem || !headerInner) return false;
+        const megaMenu = menuItem.querySelector('.header__mega-menu');
+        if (!megaMenu) return false;
+        const headerInnerRect = headerInner.getBoundingClientRect();
+        const menuRect = megaMenu.getBoundingClientRect();
+        const corridorTop = Math.min(headerInnerRect.bottom, menuRect.top);
+        const corridorBottom = Math.max(headerInnerRect.bottom, menuRect.top);
+        // Gap-safe zone follows the actual mega menu width.
+        const corridorLeft = menuRect.left;
+        const corridorRight = menuRect.right;
+        return (
+          pointerX >= corridorLeft
+          && pointerX <= corridorRight
+          && pointerY >= corridorTop
+          && pointerY <= corridorBottom
+        );
+      };
+
+      const pointerInMenuStrip = () => {
+        const trackBounds = getDropdownTrackBounds();
+        if (!trackBounds) return false;
+        return (
+          pointerY >= trackBounds.top
+          && pointerY <= trackBounds.bottom
+          && pointerX >= trackBounds.left - menuSafePadding
+          && pointerX <= trackBounds.right + menuSafePadding
+        );
+      };
+
+      const scheduleCloseActiveDropdown = () => {
+        clearCloseMenuTimer();
+        closeMenuTimer = window.setTimeout(() => {
+          const activeMegaMenu = activeDropdownItem && activeDropdownItem.querySelector('.header__mega-menu');
+          const megaHovered = Boolean(activeMegaMenu && activeMegaMenu.matches(':hover'));
+          const inSafeCorridor = pointerInSafeCorridor(activeDropdownItem);
+          const inMenuStrip = pointerInMenuStrip();
+          if (megaHovered || inSafeCorridor || inMenuStrip) {
+            scheduleCloseActiveDropdown();
+            return;
+          }
+          closeActiveDropdown();
+        }, 120);
+      };
+
+      dropdownMenuItems.forEach((menuItem) => {
+        const menuLink = menuItem.querySelector('.header__menu-link');
+        const megaMenu = menuItem.querySelector('.header__mega-menu');
+        if (menuLink) {
+          menuLink.addEventListener('mouseenter', () => {
+            clearCloseMenuTimer();
+            setActiveDropdownItem(menuItem);
+          });
+        }
+
+        menuItem.addEventListener('focusin', () => {
+          clearCloseMenuTimer();
+          setActiveDropdownItem(menuItem);
+        });
+
+        menuItem.addEventListener('focusout', (event) => {
+          if (menuItem.contains(event.relatedTarget)) return;
+          window.requestAnimationFrame(() => {
+            if (!header.contains(document.activeElement)) closeActiveDropdown();
+            else updateMegaOpenState();
+          });
+        });
+
+        if (megaMenu) {
+          megaMenu.addEventListener('mouseenter', () => {
+            clearCloseMenuTimer();
+            setActiveDropdownItem(menuItem);
+          });
+
+          megaMenu.addEventListener('mouseleave', () => {
+            scheduleCloseActiveDropdown();
+          });
+        }
+      });
+
+      plainMenuItems.forEach((menuItem) => {
+        const menuLink = menuItem.querySelector('.header__menu-link');
+        if (!menuLink) return;
+        menuLink.addEventListener('mouseenter', () => {
+          clearCloseMenuTimer();
+          closeActiveDropdown();
+        });
+      });
+
+      header.addEventListener('mouseenter', () => {
+        clearCloseMenuTimer();
+      });
+
+      header.addEventListener('mouseleave', () => {
+        scheduleCloseActiveDropdown();
+      });
+
+      if (headerInner) {
+        headerInner.addEventListener('mousemove', (event) => {
+          if (!activeDropdownItem) return;
+          if (window.matchMedia('(max-width: 989px)').matches) return;
+          const trackBounds = getDropdownTrackBounds();
+          if (!trackBounds) return;
+          const withinMenuBand = event.clientY >= trackBounds.top && event.clientY <= trackBounds.bottom;
+          const outsideMenuHorizontally = event.clientX < (trackBounds.left - menuSafePadding)
+            || event.clientX > (trackBounds.right + menuSafePadding);
+          if (!withinMenuBand || !outsideMenuHorizontally) return;
+          clearCloseMenuTimer();
+          closeActiveDropdown();
+        });
+      }
+
+      document.addEventListener('pointerdown', (event) => {
+        if (header.contains(event.target)) return;
+        clearCloseMenuTimer();
+        closeActiveDropdown();
+      });
+
+      document.addEventListener(
+        'pointermove',
+        (event) => {
+          pointerX = event.clientX;
+          pointerY = event.clientY;
+        },
+        { passive: true }
+      );
+
+      window.addEventListener(
+        'resize',
+        () => {
+          clearCloseMenuTimer();
+          closeActiveDropdown();
+          syncMegaBackdropTop();
+          updateMegaOpenState();
+        },
+        { passive: true }
+      );
+
+      syncMegaBackdropTop();
+    }
+
     const sync = (currentY, { force = false } = {}) => {
       const delta = currentY - lastY;
       const maxOffset = headerHeight();
@@ -1316,98 +1505,6 @@
     });
     window.setTimeout(syncHeaderSectionMinHeight, 300);
 
-    const root = document.documentElement;
-    const toggle = document.querySelector('[data-theme-toggle]');
-    const lockedTheme = root.getAttribute('data-theme-locked');
-
-    const STORAGE_KEY = 'sb-theme-mode';
-    const formatThemeLabel = (theme) => (theme === 'light' ? 'Light' : 'Dark');
-
-    const applyTheme = (theme) => {
-      if (theme !== 'dark' && theme !== 'light') return;
-      root.setAttribute('data-theme', theme);
-      if (!toggle) return;
-      toggle.setAttribute('data-theme-current', theme);
-      const themeLabel = formatThemeLabel(theme);
-      toggle.textContent = themeLabel;
-      toggle.setAttribute('aria-label', `Theme: ${themeLabel}`);
-      toggle.disabled = lockedTheme === 'light' || lockedTheme === 'dark';
-    };
-
-    if (toggle) {
-      if (lockedTheme === 'light' || lockedTheme === 'dark') {
-        applyTheme(lockedTheme);
-      } else {
-        const storedTheme = localStorage.getItem(STORAGE_KEY);
-        if (storedTheme === 'dark' || storedTheme === 'light') applyTheme(storedTheme);
-        else applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
-      }
-
-      toggle.addEventListener('click', () => {
-        if (lockedTheme === 'light' || lockedTheme === 'dark') return;
-        const current = root.getAttribute('data-theme') || 'dark';
-        const next = current === 'dark' ? 'light' : 'dark';
-        applyTheme(next);
-        localStorage.setItem(STORAGE_KEY, next);
-      });
-    }
-
-    if (!customElements.get('localization-form')) {
-      class LocalizationForm extends HTMLElement {
-        constructor() {
-          super();
-          this.elements = {
-            input: this.querySelector('input[name="language_code"], input[name="country_code"]'),
-            button: this.querySelector('button'),
-            panel: this.querySelector('ul')
-          };
-
-          if (!this.elements.button || !this.elements.panel || !this.elements.input) return;
-
-          this.elements.button.addEventListener('click', this.openSelector.bind(this));
-          this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
-          this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
-          this.querySelectorAll('a').forEach((item) => item.addEventListener('click', this.onItemClick.bind(this)));
-        }
-
-        hidePanel() {
-          this.elements.button.setAttribute('aria-expanded', 'false');
-          this.elements.panel.setAttribute('hidden', true);
-        }
-
-        onContainerKeyUp(event) {
-          if (event.code.toUpperCase() !== 'ESCAPE') return;
-          this.hidePanel();
-          this.elements.button.focus();
-        }
-
-        onItemClick(event) {
-          event.preventDefault();
-          const form = this.querySelector('form');
-          this.elements.input.value = event.currentTarget.dataset.value;
-          if (form) form.submit();
-        }
-
-        openSelector() {
-          this.elements.button.focus();
-          this.elements.panel.toggleAttribute('hidden');
-          this.elements.button.setAttribute(
-            'aria-expanded',
-            (this.elements.button.getAttribute('aria-expanded') === 'false').toString()
-          );
-        }
-
-        closeSelector(event) {
-          const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
-          if (event.relatedTarget === null || shouldClose) {
-            this.hidePanel();
-          }
-        }
-      }
-
-      customElements.define('localization-form', LocalizationForm);
-    }
-
     const cartDrawer = document.querySelector('[data-cart-drawer]');
     const cartDrawerStatus = document.querySelector('[data-cart-drawer-status]');
     const cartDrawerItems = document.querySelector('[data-cart-drawer-items]');
@@ -1424,11 +1521,45 @@
     })();
     const cartUrl = (path) => `${shopRoot}${path}`;
 
-    const setCartCount = (count) => {
-      if (!headerCartCount) return;
-      headerCartCount.textContent = `${count}`;
-      headerCartCount.hidden = count <= 0;
+    let previousCartCount = (() => {
+      if (!headerCartCount) return 0;
+      const parsed = Number.parseInt(`${headerCartCount.textContent || '0'}`, 10);
+      return Number.isFinite(parsed) ? parsed : 0;
+    })();
+
+    const triggerCartBadgeAnimation = () => {
+      if (!headerCartCount || headerCartCount.hidden) return;
+      headerCartCount.classList.remove('is-bump');
+      void headerCartCount.offsetWidth;
+      headerCartCount.classList.add('is-bump');
     };
+
+    const setCartCount = (count, { animate = true } = {}) => {
+      if (!headerCartCount) return;
+      const parsedCount = Number.parseInt(`${count}`, 10);
+      const normalizedCount = Number.isFinite(parsedCount) ? Math.max(0, parsedCount) : 0;
+      const wasHidden = headerCartCount.hidden;
+      if (normalizedCount <= 0) {
+        headerCartCount.textContent = '';
+        headerCartCount.hidden = true;
+        headerCartCount.classList.remove('is-double-digit', 'is-bump');
+        previousCartCount = 0;
+        return;
+      }
+      const displayCount = normalizedCount > 99 ? '99+' : `${normalizedCount}`;
+      headerCartCount.textContent = displayCount;
+      headerCartCount.hidden = false;
+      headerCartCount.classList.toggle('is-double-digit', displayCount.length > 1);
+      const shouldAnimate = animate && normalizedCount > 0 && (wasHidden || normalizedCount !== previousCartCount);
+      previousCartCount = normalizedCount;
+      if (shouldAnimate) triggerCartBadgeAnimation();
+    };
+
+    if (headerCartCount) {
+      headerCartCount.addEventListener('animationend', () => {
+        headerCartCount.classList.remove('is-bump');
+      });
+    }
 
     const formatMoney = (cents, currency = 'USD') => {
       const normalizedCents = Number.isFinite(Number(cents)) ? Number(cents) : 0;
@@ -1663,6 +1794,14 @@
       refreshCartDrawer();
     });
 
+    document.addEventListener('sb:cart-badge:debug-bump', (event) => {
+      const requestedCount = event.detail && Number.parseInt(`${event.detail.count}`, 10);
+      const nextCount = Number.isFinite(requestedCount)
+        ? Math.max(0, requestedCount)
+        : Math.max(1, previousCartCount + 1);
+      setCartCount(nextCount, { animate: true });
+    });
+
     refreshCartDrawer();
   })();
 </script>
@@ -1683,12 +1822,15 @@
       "type": "mega_menu_card",
       "name": "Mega menu card",
       "settings": [
-        {
-          "type": "text",
-          "id": "menu_item_handle",
-          "label": "Menu item handle",
-          "default": "in-ear-monitors",
-          "info": "Match this to the top-level menu item title handle."
+    {
+      "type": "range",
+      "id": "menu_item_index",
+      "label": "Menu item index",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 1,
+      "info": "Assign this card to a top-level menu item by position: 1 is first, 2 is second, and so on."
         },
         {
           "type": "select",
@@ -1776,7 +1918,7 @@
         {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "in-ear-monitors",
+            "menu_item_index": 1,
             "title": "Wave in-ear monitors",
             "body": "Placeholder card. Replace this content in Header settings."
           }

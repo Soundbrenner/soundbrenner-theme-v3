@@ -17,7 +17,7 @@
         "iem_card_1": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "in-ear-monitors",
+            "menu_item_index": 1,
             "title": "Wave in-ear monitors 1",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/in-ear-monitors"
@@ -26,7 +26,7 @@
         "iem_card_2": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "in-ear-monitors",
+            "menu_item_index": 1,
             "title": "Wave in-ear monitors 2",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/in-ear-monitors"
@@ -35,7 +35,7 @@
         "iem_card_3": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "in-ear-monitors",
+            "menu_item_index": 1,
             "title": "Wave in-ear monitors 3",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/in-ear-monitors"
@@ -44,7 +44,7 @@
         "wearables_card_1": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "wearables",
+            "menu_item_index": 2,
             "title": "Wearables 1",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/wearables"
@@ -53,7 +53,7 @@
         "wearables_card_2": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "wearables",
+            "menu_item_index": 2,
             "title": "Wearables 2",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/wearables"
@@ -62,7 +62,7 @@
         "wearables_card_3": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "wearables",
+            "menu_item_index": 2,
             "title": "Wearables 3",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/wearables"
@@ -71,7 +71,7 @@
         "wearables_card_4": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "wearables",
+            "menu_item_index": 2,
             "title": "Wearables 4",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/wearables"
@@ -80,7 +80,7 @@
         "earplugs_card_1": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "earplugs",
+            "menu_item_index": 3,
             "title": "Earplugs 1",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/earplugs"
@@ -89,7 +89,7 @@
         "more_products_card_1": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "more-products",
+            "menu_item_index": 4,
             "title": "More products 1",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/all"
@@ -98,7 +98,7 @@
         "more_products_card_2": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "more-products",
+            "menu_item_index": 4,
             "title": "More products 2",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/all"
@@ -107,7 +107,7 @@
         "more_products_card_3": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "more-products",
+            "menu_item_index": 4,
             "title": "More products 3",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/all"
@@ -116,7 +116,7 @@
         "more_products_card_4": {
           "type": "mega_menu_card",
           "settings": {
-            "menu_item_handle": "more-products",
+            "menu_item_index": 4,
             "title": "More products 4",
             "body": "Placeholder card. Replace this content in Header settings.",
             "card_link": "shopify://collections/all"

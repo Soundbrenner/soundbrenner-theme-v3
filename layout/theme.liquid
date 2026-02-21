@@ -82,8 +82,107 @@
 
     {% sections 'footer-group' %}
 
+    <div class="sb-theme-debug" data-sb-theme-debug>
+      <button type="button" class="sb-theme-debug__button font-caption weight-semibold" data-sb-theme-debug-toggle>
+        Switch theme
+      </button>
+      <button type="button" class="sb-theme-debug__button font-caption weight-semibold" data-sb-cart-badge-debug-bump>
+        Cart bump
+      </button>
+      <button type="button" class="sb-theme-debug__button font-caption weight-semibold" data-sb-cart-badge-debug-reset>
+        Cart reset
+      </button>
+    </div>
+
+    <style>
+      .sb-theme-debug {
+        align-items: center;
+        background: var(--sb-color-neutral-200);
+        border: 1px solid var(--sb-color-neutral-600);
+        border-radius: var(--sb-space-12);
+        bottom: var(--sb-space-16);
+        box-shadow: 0 0 var(--sb-space-16) 0 var(--sb-color-always-black-25);
+        display: inline-flex;
+        gap: var(--sb-space-8);
+        left: var(--sb-space-16);
+        padding: var(--sb-space-8) var(--sb-space-12);
+        position: fixed;
+        z-index: 1000;
+      }
+
+      .sb-theme-debug__button {
+        align-items: center;
+        background: var(--sb-color-neutral-100);
+        border: 1px solid var(--sb-color-neutral-600);
+        border-radius: var(--sb-space-8);
+        color: var(--sb-color-neutral-900);
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        min-height: var(--sb-space-32);
+        padding: 0 var(--sb-space-8);
+      }
+    </style>
+
     <script>
       (() => {
+        const themeDebugToggle = document.querySelector('[data-sb-theme-debug-toggle]');
+        if (themeDebugToggle) {
+          const root = document.documentElement;
+          const storageKey = 'sb_theme_debug_mode';
+          const savedThemeMode = window.localStorage ? window.localStorage.getItem(storageKey) : '';
+          const validModes = ['light', 'dark'];
+
+          const setThemeMode = (mode) => {
+            if (!validModes.includes(mode)) return;
+            root.setAttribute('data-theme', mode);
+            root.setAttribute('data-theme-debug-override', 'true');
+            if (window.localStorage) window.localStorage.setItem(storageKey, mode);
+          };
+
+          if (savedThemeMode && validModes.includes(savedThemeMode)) {
+            setThemeMode(savedThemeMode);
+          } else {
+            const initialTheme = (root.getAttribute('data-theme') || 'dark') === 'light' ? 'light' : 'dark';
+            setThemeMode(initialTheme);
+          }
+
+          themeDebugToggle.addEventListener('click', () => {
+            const currentTheme = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setThemeMode(nextTheme);
+          });
+        }
+
+        const cartBadgeDebugButton = document.querySelector('[data-sb-cart-badge-debug-bump]');
+        const cartBadgeDebugResetButton = document.querySelector('[data-sb-cart-badge-debug-reset]');
+        if (cartBadgeDebugButton) {
+          let cartBadgeDebugCount = 0;
+          cartBadgeDebugButton.addEventListener('click', () => {
+            cartBadgeDebugCount = (cartBadgeDebugCount % 12) + 1;
+            document.dispatchEvent(
+              new CustomEvent('sb:cart-badge:debug-bump', {
+                detail: {
+                  count: cartBadgeDebugCount
+                }
+              })
+            );
+          });
+
+          if (cartBadgeDebugResetButton) {
+            cartBadgeDebugResetButton.addEventListener('click', () => {
+              cartBadgeDebugCount = 0;
+              document.dispatchEvent(
+                new CustomEvent('sb:cart-badge:debug-bump', {
+                  detail: {
+                    count: 0
+                  }
+                })
+              );
+            });
+          }
+        }
+
         const revealGroups = document.querySelectorAll('[data-sb-reveal]');
         if (!revealGroups.length) return;
 
