@@ -115,12 +115,12 @@
           "settings": {
             "menu_item_index": "4",
             "collection": "playtronica-midi-instruments",
-            "hide_on_mobile": true,
+            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Playtronica_f98ae1eb-f6c7-441b-87ec-d7775efaf9b1.jpg",
             "related_product_1": "playtron-midi-instrument",
-            "related_product_1_show_on_mobile": true,
+            "related_product_1_show_on_mobile": false,
             "related_product_2": "touchme-midi-instrument",
-            "related_product_2_show_on_mobile": true,
+            "related_product_2_show_on_mobile": false,
             "related_product_3": "",
             "related_product_3_show_on_mobile": true
           }
