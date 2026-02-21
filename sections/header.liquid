@@ -1167,7 +1167,80 @@
     const countdownRoot = header.querySelector('[data-announcement-countdown]');
     if (countdownRoot) {
       const endDateValue = countdownRoot.getAttribute('data-sale-end-date') || '';
-      const endTimestamp = Date.parse(endDateValue);
+      const parseSaleEndTimestamp = (value) => {
+        const normalizedValue = `${value || ''}`.trim();
+        if (!normalizedValue) return NaN;
+
+        const dateOnlyMatch = normalizedValue.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!dateOnlyMatch) {
+          const fallbackTimestamp = Date.parse(normalizedValue);
+          return Number.isFinite(fallbackTimestamp) ? fallbackTimestamp : NaN;
+        }
+
+        const year = Number.parseInt(dateOnlyMatch[1], 10);
+        const monthIndex = Number.parseInt(dateOnlyMatch[2], 10) - 1;
+        const day = Number.parseInt(dateOnlyMatch[3], 10);
+        const parsedDate = new Date(Date.UTC(year, monthIndex, day));
+
+        if (
+          parsedDate.getUTCFullYear() !== year
+          || parsedDate.getUTCMonth() !== monthIndex
+          || parsedDate.getUTCDate() !== day
+        ) {
+          return NaN;
+        }
+
+        const endOfDayUtcGuess = Date.UTC(year, monthIndex, day, 23, 59, 59);
+        if (!window.Intl || typeof Intl.DateTimeFormat !== 'function') {
+          return Date.parse(`${normalizedValue}T23:59:59-08:00`);
+        }
+
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/Los_Angeles',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hourCycle: 'h23'
+        });
+
+        if (typeof formatter.formatToParts !== 'function') {
+          return Date.parse(`${normalizedValue}T23:59:59-08:00`);
+        }
+
+        const getOffsetMs = (utcTimestamp) => {
+          const parts = formatter.formatToParts(new Date(utcTimestamp));
+          const timeParts = {};
+
+          for (const part of parts) {
+            if (part.type !== 'literal') timeParts[part.type] = Number.parseInt(part.value, 10);
+          }
+
+          const localTimeAsUtc = Date.UTC(
+            timeParts.year,
+            timeParts.month - 1,
+            timeParts.day,
+            timeParts.hour,
+            timeParts.minute,
+            timeParts.second
+          );
+
+          return localTimeAsUtc - utcTimestamp;
+        };
+
+        let resolvedTimestamp = endOfDayUtcGuess;
+        for (let index = 0; index < 4; index += 1) {
+          const nextTimestamp = endOfDayUtcGuess - getOffsetMs(resolvedTimestamp);
+          if (Math.abs(nextTimestamp - resolvedTimestamp) < 1) break;
+          resolvedTimestamp = nextTimestamp;
+        }
+
+        return resolvedTimestamp;
+      };
+
+      const endTimestamp = parseSaleEndTimestamp(endDateValue);
       const daysValue = countdownRoot.querySelector('[data-countdown-days]');
       const hoursValue = countdownRoot.querySelector('[data-countdown-hours]');
       const minsValue = countdownRoot.querySelector('[data-countdown-mins]');

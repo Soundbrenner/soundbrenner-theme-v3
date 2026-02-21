@@ -96,6 +96,78 @@
     "name": "Seasonal sale",
     "settings": [
       {
+        "type": "text",
+        "id": "seasonal_sale_name",
+        "label": "Seasonal sale name",
+        "default": "Spring Sale",
+        "info": "Use {{ Seasonal sale name }} to insert the sale name."
+      },
+      {
+        "type": "text",
+        "id": "seasonal_sale_end_date",
+        "label": "Seasonal sale end date",
+        "default": "2026-02-28",
+        "placeholder": "YYYY-MM-DD",
+        "info": "Select the sale end date. It ends at 23:59:59 PST/PDT (America/Los_Angeles) on that date, and daylight saving time is applied automatically by season."
+      },
+      {
+        "type": "select",
+        "id": "seasonal_announcement_gradient",
+        "label": "Announcement bar theme",
+        "default": "linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)",
+        "options": [
+          {
+            "value": "linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)",
+            "label": "New Year's Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #F3C1DE 0%, #C77CA5 33%, #C77CA5 66%, #F3C1DE 100%)",
+            "label": "Valentine's Day Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #A4CF83 0%, #768E57 33%, #768E57 66%, #A4CF83 100%)",
+            "label": "Spring Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #B19CD9 0%, #7B5EA7 33%, #7B5EA7 66%, #B19CD9 100%)",
+            "label": "Easter Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, var(--sb-color-primary-500) 0%, var(--sb-color-primary-700) 33%, var(--sb-color-primary-700) 66%, var(--sb-color-primary-500) 100%)",
+            "label": "Anniversary Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #9CBDCD 0%, #F08835 33%, #F08835 66%, #9CBDCD 100%)",
+            "label": "Summer Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #E6A53C 0%, #1E4F8F 33%, #1E4F8F 66%, #E6A53C 100%)",
+            "label": "Back to School Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #1F3937 0%, #57522A 33%, #E58C56 66%, #6F351F 100%)",
+            "label": "Fall Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #2F173A 0%, #D84418 33%, #D84418 66%, #2F173A 100%)",
+            "label": "Halloween Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #8759F1 0%, #023CFB 33%, #8759F1 66%, #023CFB 100%)",
+            "label": "BFCM Sale"
+          },
+          {
+            "value": "linear-gradient(90deg, #B49F76 0%, #C32B2E 33%, #C32B2E 66%, #B49F76 100%)",
+            "label": "Holiday Sale"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "id": "seasonal_announcement_copy",
+        "label": "Announcement bar body"
+      },
+      {
         "type": "image_picker",
         "id": "seasonal_hero_image_desktop",
         "label": "Seasonal hero image desktop",
@@ -110,98 +182,27 @@
       {
         "type": "text",
         "id": "seasonal_hero_kicker",
-        "label": "Seasonal kicker"
+        "label": "Seasonal hero card kicker"
       },
       {
         "type": "textarea",
         "id": "seasonal_hero_headline",
-        "label": "Seasonal headline"
+        "label": "Seasonal hero card headline"
       },
       {
         "type": "textarea",
         "id": "seasonal_hero_subheadline",
-        "label": "Seasonal subheadline"
+        "label": "Seasonal hero card subheadline"
       },
       {
         "type": "text",
         "id": "seasonal_hero_button_label",
-        "label": "Seasonal button label"
+        "label": "Seasonal hero card button label"
       },
       {
         "type": "url",
         "id": "seasonal_hero_button_link",
-        "label": "Seasonal button link"
-      },
-      {
-        "type": "text",
-        "id": "seasonal_sale_name",
-        "label": "Seasonal sale name",
-        "default": "Spring sale"
-      },
-      {
-        "type": "textarea",
-        "id": "seasonal_announcement_copy",
-        "label": "Announcement copy",
-        "info": "Use {{ Seasonal sale name }} to insert the sale name."
-      },
-      {
-        "type": "text",
-        "id": "seasonal_sale_end_date",
-        "label": "Seasonal sale end date",
-        "default": "2026-02-28T23:59:59Z",
-        "info": "Use ISO date-time format, for example 2026-12-31T23:59:59Z."
-      },
-      {
-        "type": "select",
-        "id": "seasonal_announcement_gradient",
-        "label": "Announcement gradient",
-        "default": "linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)",
-        "options": [
-          {
-            "value": "linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)",
-            "label": "New Year's sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #F3C1DE 0%, #C77CA5 33%, #C77CA5 66%, #F3C1DE 100%)",
-            "label": "Valentine's Day sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #A4CF83 0%, #768E57 33%, #768E57 66%, #A4CF83 100%)",
-            "label": "Spring sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #B19CD9 0%, #7B5EA7 33%, #7B5EA7 66%, #B19CD9 100%)",
-            "label": "Easter sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #9CBDCD 0%, #F08835 33%, #F08835 66%, #9CBDCD 100%)",
-            "label": "Summer sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #E6A53C 0%, #1E4F8F 33%, #1E4F8F 66%, #E6A53C 100%)",
-            "label": "Back to school sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #1F3937 0%, #57522A 33%, #E58C56 66%, #6F351F 100%)",
-            "label": "Fall sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #2F173A 0%, #D84418 33%, #D84418 66%, #2F173A 100%)",
-            "label": "Halloween sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #8759F1 0%, #023CFB 33%, #8759F1 66%, #023CFB 100%)",
-            "label": "BFCM sale"
-          },
-          {
-            "value": "linear-gradient(90deg, #B49F76 0%, #C32B2E 33%, #C32B2E 66%, #B49F76 100%)",
-            "label": "Holiday sale"
-          },
-          {
-            "value": "linear-gradient(90deg, var(--sb-color-primary-500) 0%, var(--sb-color-primary-700) 33%, var(--sb-color-primary-700) 66%, var(--sb-color-primary-500) 100%)",
-            "label": "Anniversary sale"
-          }
-        ]
+        "label": "Seasonal hero card button link"
       }
     ]
   }
