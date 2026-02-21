@@ -19,12 +19,9 @@
           "settings": {
             "menu_item_index": "1",
             "product": "wave-in-ear-monitors",
-            "link_1_label": "Accessories",
-            "link_1_url": "shopify://collections/wave-in-ear-monitors",
-            "link_2_label": "",
-            "link_2_url": "",
-            "link_3_label": "",
-            "link_3_url": ""
+            "hide_on_mobile": false,
+            "image": "shopify://shop_images/Property_1_Wave_da42df97-aa95-4e5e-abaa-b4cdfdeea57c.jpg",
+            "accessories_collection": "wave-in-ear-monitors"
           }
         },
         "mega_menu_item_product_Ce6kCT": {
@@ -32,12 +29,9 @@
           "settings": {
             "menu_item_index": "1",
             "product": "wave-pro-in-ear-monitors",
-            "link_1_label": "Accessories",
-            "link_1_url": "shopify://collections/wave-pro-in-ear-monitors",
-            "link_2_label": "",
-            "link_2_url": "",
-            "link_3_label": "",
-            "link_3_url": ""
+            "hide_on_mobile": false,
+            "image": "shopify://shop_images/Property_1_Wave_Pro_3c0d5d48-4280-4572-87b1-3c90ff2ab8fe.jpg",
+            "accessories_collection": ""
           }
         },
         "mega_menu_item_page_dGDiqC": {
@@ -45,19 +39,58 @@
           "settings": {
             "menu_item_index": "1",
             "page": "compare-in-ear-monitors",
-            "link_1_label": "",
-            "link_1_url": "",
-            "link_2_label": "",
-            "link_2_url": "",
-            "link_3_label": "",
-            "link_3_url": ""
+            "hide_on_mobile": false,
+            "image": "shopify://shop_images/Property_1_Compare.jpg"
+          }
+        },
+        "mega_menu_item_product_BnEawC": {
+          "type": "mega_menu_item_product",
+          "settings": {
+            "menu_item_index": "2",
+            "product": "pulse-vibrating-metronome",
+            "hide_on_mobile": false,
+            "image": "shopify://shop_images/Property_1_Pulse_8cb2c0fd-89f4-43e5-81e9-6e30893edf69.jpg",
+            "accessories_collection": "pulse-vibrating-metronome"
+          }
+        },
+        "mega_menu_item_product_jhbRe7": {
+          "type": "mega_menu_item_product",
+          "settings": {
+            "menu_item_index": "2",
+            "product": "core-2-practice-companion",
+            "hide_on_mobile": false,
+            "image": "shopify://shop_images/Property_1_Core_2_823f4bf1-1ad6-45c7-a017-8f388f257b4b.jpg",
+            "accessories_collection": "core-2-practice-companion"
+          }
+        },
+        "mega_menu_item_product_wtjTVF": {
+          "type": "mega_menu_item_product",
+          "settings": {
+            "menu_item_index": "2",
+            "product": "spark-practice-companion",
+            "hide_on_mobile": false,
+            "image": "shopify://shop_images/Property_1_Spark_0172773e-038f-4933-8f06-f6760d1a184c.jpg",
+            "accessories_collection": "spark-practice-companion"
+          }
+        },
+        "mega_menu_item_page_zwF4xb": {
+          "type": "mega_menu_item_page",
+          "settings": {
+            "menu_item_index": "2",
+            "page": "compare-wearables",
+            "hide_on_mobile": false,
+            "image": "shopify://shop_images/Property_1_Compare.jpg"
           }
         }
       },
       "block_order": [
         "mega_menu_item_product_TGzd8i",
         "mega_menu_item_product_Ce6kCT",
-        "mega_menu_item_page_dGDiqC"
+        "mega_menu_item_page_dGDiqC",
+        "mega_menu_item_product_BnEawC",
+        "mega_menu_item_product_jhbRe7",
+        "mega_menu_item_product_wtjTVF",
+        "mega_menu_item_page_zwF4xb"
       ],
       "settings": {
         "menu": "main-menu"
