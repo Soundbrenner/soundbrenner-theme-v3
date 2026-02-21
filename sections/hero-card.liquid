@@ -179,7 +179,7 @@
             >
           </div>
 
-          <a class="sb-framing-card__app-download-link" href="{{ hero_card_app_store_link }}">
+          <a class="sb-framing-card__app-download-link" href="{{ hero_card_app_store_link }}" target="_blank" rel="noopener noreferrer">
             <img
               class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--app-store"
               src="{{ 'app-download-app-store.png' | asset_url }}"
@@ -188,7 +188,7 @@
             >
           </a>
 
-          <a class="sb-framing-card__app-download-link" href="{{ hero_card_google_play_link }}">
+          <a class="sb-framing-card__app-download-link" href="{{ hero_card_google_play_link }}" target="_blank" rel="noopener noreferrer">
             <img
               class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--google-play"
               src="{{ 'app-download-google-play.png' | asset_url }}"
@@ -197,7 +197,7 @@
             >
           </a>
 
-          <a class="sb-framing-card__app-download-link" href="{{ hero_card_china_download_link }}">
+          <a class="sb-framing-card__app-download-link" href="{{ hero_card_china_download_link }}" target="_blank" rel="noopener noreferrer">
             <img
               class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--china"
               src="{{ 'app-download-china.png' | asset_url }}"
@@ -518,6 +518,7 @@
       "type": "checkbox",
       "id": "use_product_page_metaobjects",
       "label": "Use product page metaobjects",
+      "info": "Uses product footer metaobject values, fixed guarantee copy, and a dynamic add to cart button. Product templates only.",
       "default": false,
       "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },

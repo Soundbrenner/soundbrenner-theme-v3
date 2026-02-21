@@ -83,30 +83,25 @@
     {% sections 'footer-group' %}
 
     <div class="sb-theme-debug" data-sb-theme-debug>
-      <button type="button" class="sb-theme-debug__button font-caption weight-semibold" data-sb-theme-debug-toggle>
-        Switch theme
-      </button>
-      <button type="button" class="sb-theme-debug__button font-caption weight-semibold" data-sb-cart-badge-debug-bump>
-        Cart bump
-      </button>
-      <button type="button" class="sb-theme-debug__button font-caption weight-semibold" data-sb-cart-badge-debug-reset>
-        Cart reset
+      <button
+        type="button"
+        class="sb-theme-debug__button sb-theme-debug__button--icon"
+        data-sb-theme-debug-toggle
+        aria-label="Switch theme"
+        title="Switch theme"
+      >
+        ◐
       </button>
     </div>
 
     <style>
       .sb-theme-debug {
         align-items: center;
-        background: var(--sb-color-neutral-200);
-        border: 1px solid var(--sb-color-neutral-600);
-        border-radius: var(--sb-space-12);
-        bottom: var(--sb-space-16);
-        box-shadow: 0 0 var(--sb-space-16) 0 var(--sb-color-always-black-25);
         display: inline-flex;
-        gap: var(--sb-space-8);
-        left: var(--sb-space-16);
-        padding: var(--sb-space-8) var(--sb-space-12);
+        right: var(--sb-space-16);
         position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 1000;
       }
 
@@ -121,6 +116,15 @@
         justify-content: center;
         min-height: var(--sb-space-32);
         padding: 0 var(--sb-space-8);
+      }
+
+      .sb-theme-debug__button--icon {
+        border-radius: 999px;
+        height: var(--sb-space-36);
+        min-height: var(--sb-space-36);
+        min-width: var(--sb-space-36);
+        padding: 0;
+        width: var(--sb-space-36);
       }
     </style>
 
@@ -152,35 +156,6 @@
             const nextTheme = currentTheme === 'light' ? 'dark' : 'light';
             setThemeMode(nextTheme);
           });
-        }
-
-        const cartBadgeDebugButton = document.querySelector('[data-sb-cart-badge-debug-bump]');
-        const cartBadgeDebugResetButton = document.querySelector('[data-sb-cart-badge-debug-reset]');
-        if (cartBadgeDebugButton) {
-          let cartBadgeDebugCount = 0;
-          cartBadgeDebugButton.addEventListener('click', () => {
-            cartBadgeDebugCount = (cartBadgeDebugCount % 12) + 1;
-            document.dispatchEvent(
-              new CustomEvent('sb:cart-badge:debug-bump', {
-                detail: {
-                  count: cartBadgeDebugCount
-                }
-              })
-            );
-          });
-
-          if (cartBadgeDebugResetButton) {
-            cartBadgeDebugResetButton.addEventListener('click', () => {
-              cartBadgeDebugCount = 0;
-              document.dispatchEvent(
-                new CustomEvent('sb:cart-badge:debug-bump', {
-                  detail: {
-                    count: 0
-                  }
-                })
-              );
-            });
-          }
         }
 
         const revealGroups = document.querySelectorAll('[data-sb-reveal]');

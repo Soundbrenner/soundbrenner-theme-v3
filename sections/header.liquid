@@ -11,6 +11,7 @@
 </script>
 
 {% liquid
+  assign primary_navigation = section.settings.primary_navigation
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
   assign announcement_text = settings.seasonal_announcement_copy | strip
   assign announcement_text = announcement_text | replace: '{{ Seasonal sale name }}', seasonal_sale_name
@@ -26,6 +27,48 @@
   assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
   assign announcement_emoji_asset = 'emoji-sale-new-year.png'
   assign trustpilot_entry = metaobjects.trustpilot.values | first
+  assign trustpilot_url = 'https://www.trustpilot.com/review/soundbrenner.com'
+  assign trustpilot_rating_raw = trustpilot_entry.rating.value | default: trustpilot_entry.rating
+  if trustpilot_rating_raw != blank
+    assign trustpilot_rating_text = trustpilot_rating_raw | append: ' out of 5'
+  else
+    assign trustpilot_rating_text = 'X.X out of 5'
+  endif
+  assign review_month_number = 'now' | date: '%m' | plus: 0
+  assign review_year_number = 'now' | date: '%Y' | plus: 0
+  if review_month_number == 1
+    assign review_month_number = 12
+    assign review_year_number = review_year_number | minus: 1
+  else
+    assign review_month_number = review_month_number | minus: 1
+  endif
+  case review_month_number
+    when 1
+      assign review_month_label = 'Jan'
+    when 2
+      assign review_month_label = 'Feb'
+    when 3
+      assign review_month_label = 'Mar'
+    when 4
+      assign review_month_label = 'Apr'
+    when 5
+      assign review_month_label = 'May'
+    when 6
+      assign review_month_label = 'Jun'
+    when 7
+      assign review_month_label = 'Jul'
+    when 8
+      assign review_month_label = 'Aug'
+    when 9
+      assign review_month_label = 'Sep'
+    when 10
+      assign review_month_label = 'Oct'
+    when 11
+      assign review_month_label = 'Nov'
+    else
+      assign review_month_label = 'Dec'
+  endcase
+  assign review_date_text = '8 ' | append: review_month_label | append: ', ' | append: review_year_number
   assign metronome_rating_raw = trustpilot_entry.the_metronome_app_review_rating.value | default: trustpilot_entry.the_metronome_app_review_rating
   assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count
   assign metronome_rating_display = metronome_rating_raw | strip
@@ -105,7 +148,13 @@
 
   <div class="header__inner">
     <div class="header__icons header__icons--left">
-      <button type="button" class="header__icon-link header__icon-link--menu" aria-label="Menu">
+      <button
+        type="button"
+        class="header__icon-link header__icon-link--menu"
+        aria-label="Menu"
+        aria-expanded="false"
+        data-mobile-menu-toggle
+      >
         <span class="header__icon-asset" aria-hidden="true">
           {{ 'icon-hamburger-padded.svg' | inline_asset_content }}
         </span>
@@ -124,8 +173,8 @@
     </a>
 
     <nav class="header__menu" aria-label="Primary">
-      {% if section.settings.menu != blank and section.settings.menu.links.size > 0 %}
-        {% for link in section.settings.menu.links %}
+      {% if primary_navigation != blank and primary_navigation.links.size > 0 %}
+        {% for link in primary_navigation.links %}
           {% liquid
             assign link_index = forloop.index
             assign link_path = link.url | split: '?' | first
@@ -322,22 +371,22 @@
                             <p class="header__mega-card-rating-count font-body weight-regular">{{ card_rating_count_display }} ratings</p>
 
                             <div class="header__mega-card-app-links">
-                              <a href="{{ card_app_store_link }}" aria-label="Download on the App Store">
+                              <a href="{{ card_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
                                 <img
                                   src="{{ 'app-download-app-store.png' | asset_url }}"
                                   alt="Download on the App Store"
                                   loading="lazy"
-                                  width="120"
-                                  height="36"
+                                  width="100"
+                                  height="30"
                                 >
                               </a>
-                              <a href="{{ card_google_play_link }}" aria-label="Get it on Google Play">
+                              <a href="{{ card_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
                                 <img
                                   src="{{ 'app-download-google-play.png' | asset_url }}"
                                   alt="Get it on Google Play"
                                   loading="lazy"
-                                  width="120"
-                                  height="36"
+                                  width="100"
+                                  height="30"
                                 >
                               </a>
                             </div>
@@ -373,9 +422,8 @@
                             {% assign linked_product_1 = block.settings.related_product_1 %}
                             {% assign linked_product_2 = block.settings.related_product_2 %}
                             {% assign linked_product_3 = block.settings.related_product_3 %}
-                            {% assign linked_collection = block.settings.related_collection %}
                             {% assign has_card_links = false %}
-                            {% if linked_product_1 != blank or linked_product_2 != blank or linked_product_3 != blank or linked_collection != blank %}
+                            {% if linked_product_1 != blank or linked_product_2 != blank or linked_product_3 != blank %}
                               {% assign has_card_links = true %}
                             {% endif %}
                             {% if has_card_links %}
@@ -431,13 +479,6 @@
                                     </a>
                                   </li>
                                 {% endif %}
-                                {% if linked_collection != blank %}
-                                  <li>
-                                    <a href="{{ linked_collection.url }}">
-                                      {{ linked_collection.title }}
-                                    </a>
-                                  </li>
-                                {% endif %}
                               </ul>
                             {% endif %}
                           {% endif %}
@@ -481,6 +522,467 @@
     </div>
   </div>
 </header>
+<div class="menu-drawer-container" data-mobile-menu-drawer>
+  <div class="menu-drawer" data-mobile-menu-panel>
+    <button
+      class="menu-drawer__close-button"
+      type="button"
+      aria-label="Close menu"
+      data-mobile-menu-close
+    >
+      <span class="menu-drawer__close-icon-circle" aria-hidden="true">
+        {{ 'icon-cancel-circle.svg' | inline_asset_content }}
+      </span>
+      <span class="menu-drawer__close-icon-x" aria-hidden="true">
+        {{ 'icon-cancel-x.svg' | inline_asset_content }}
+      </span>
+    </button>
+    <nav class="menu-drawer__navigation" aria-label="Primary navigation">
+      <ul class="menu-drawer__menu has-submenu" role="list">
+        {% if primary_navigation != blank and primary_navigation.links.size > 0 %}
+          {% for link in primary_navigation.links %}
+            {% liquid
+              assign drawer_link_index = forloop.index
+              assign has_drawer_submenu = false
+
+              for block in section.blocks
+                if block.type == 'mega_menu_item_product' or block.type == 'mega_menu_item_collection' or block.type == 'mega_menu_item_page' or block.type == 'mega_menu_item_app'
+                  assign block_menu_index = block.settings.menu_item_index | plus: 0
+                  if block_menu_index == drawer_link_index
+                    assign has_drawer_submenu = true
+                    break
+                  endif
+                endif
+              endfor
+            %}
+            <li class="menu-drawer__list-item" style="--menu-drawer-animation-index: {{ forloop.index }};">
+              {% if has_drawer_submenu %}
+                <details class="menu-drawer__menu-container">
+                  <summary class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element">
+                    <span class="menu-drawer__menu-item-text font-callout weight-semibold">{{ link.title | escape }}</span>
+                    <span class="menu-drawer__menu-item-indicator" aria-hidden="true">
+                      <span class="menu-drawer__menu-item-indicator-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                      <span class="menu-drawer__menu-item-indicator-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                    </span>
+                  </summary>
+                  <ul class="menu-drawer__menu menu-drawer__menu--childlist" role="list">
+                    {% for block in section.blocks %}
+                      {% liquid
+                        if block.type != 'mega_menu_item_product' and block.type != 'mega_menu_item_collection' and block.type != 'mega_menu_item_page' and block.type != 'mega_menu_item_app'
+                          continue
+                        endif
+
+                        assign block_menu_index = block.settings.menu_item_index | plus: 0
+                        if block_menu_index != drawer_link_index
+                          continue
+                        endif
+
+                        assign drawer_card_link = blank
+                        assign drawer_card_title = blank
+                        assign drawer_card_body = blank
+                        assign drawer_card_image_url = blank
+                        assign drawer_badge_label = blank
+                        assign drawer_badge_type = blank
+                        assign drawer_is_app = false
+                        assign drawer_star_icon_url = 'icon-review-star.svg' | asset_url
+                        assign drawer_rating_display = metronome_rating_display | default: '4.8'
+                        assign drawer_rating_count_display = metronome_count_display | default: '100K+'
+                        assign drawer_rating_value = 4.8
+                        assign drawer_app_store_link = 'https://apps.apple.com/us/app/the-metronome-by-soundbrenner/id1048954353'
+                        assign drawer_google_play_link = 'https://play.google.com/store/apps/details?id=com.soundbrenner.pulse'
+                        assign drawer_card_product = blank
+                        assign drawer_card_collection = blank
+                        assign drawer_card_page = blank
+                        assign drawer_hide_primary_tile = false
+                        assign drawer_accessories_collection = blank
+                        assign drawer_related_product_1 = blank
+                        assign drawer_related_product_2 = blank
+                        assign drawer_related_product_3 = blank
+                        assign drawer_related_product_1_image = blank
+                        assign drawer_related_product_2_image = blank
+                        assign drawer_related_product_3_image = blank
+                        assign drawer_related_product_1_show_on_mobile = true
+                        assign drawer_related_product_2_show_on_mobile = true
+                        assign drawer_related_product_3_show_on_mobile = true
+
+                        case block.type
+                          when 'mega_menu_item_product'
+                            assign drawer_card_product = block.settings.product
+                          when 'mega_menu_item_collection'
+                            assign drawer_card_collection = block.settings.collection
+                            assign drawer_hide_primary_tile = block.settings.hide_on_mobile
+                            assign drawer_related_product_1 = block.settings.related_product_1
+                            assign drawer_related_product_2 = block.settings.related_product_2
+                            assign drawer_related_product_3 = block.settings.related_product_3
+                            assign drawer_related_product_1_image = block.settings.related_product_1_image
+                            assign drawer_related_product_2_image = block.settings.related_product_2_image
+                            assign drawer_related_product_3_image = block.settings.related_product_3_image
+                            assign drawer_related_product_1_show_on_mobile = block.settings.related_product_1_show_on_mobile
+                            assign drawer_related_product_2_show_on_mobile = block.settings.related_product_2_show_on_mobile
+                            assign drawer_related_product_3_show_on_mobile = block.settings.related_product_3_show_on_mobile
+                          when 'mega_menu_item_page'
+                            assign drawer_card_page = block.settings.page
+                          when 'mega_menu_item_app'
+                            assign drawer_is_app = true
+                            assign drawer_card_page = block.settings.app_page
+                            assign drawer_card_title = 'The Metronome app'
+                        endcase
+
+                        if drawer_card_product != blank
+                          assign drawer_card_link = drawer_card_product.url
+                          assign drawer_card_title = drawer_card_product.title
+                          assign drawer_product_settings_ref = drawer_card_product.metafields.custom.sbv2_product_settings.value | default: drawer_card_product.metafields.custom.sbv2_product_settings
+                          if drawer_product_settings_ref != blank
+                            assign drawer_card_body = drawer_product_settings_ref.tagline.value | default: drawer_product_settings_ref.tagline
+                          endif
+                          if drawer_card_body == blank and drawer_card_product.description != blank
+                            assign drawer_card_body = drawer_card_product.description | strip_html
+                          endif
+
+                          if drawer_card_product.tags != blank
+                            for drawer_product_tag in drawer_card_product.tags
+                              assign drawer_product_tag_downcase = drawer_product_tag | downcase
+                              if drawer_product_tag_downcase == 'bestseller'
+                                assign drawer_badge_label = 'Bestseller'
+                                assign drawer_badge_type = 'bestseller'
+                                break
+                              endif
+                              if drawer_product_tag_downcase == 'new'
+                                assign drawer_badge_label = 'New'
+                                assign drawer_badge_type = 'new'
+                              endif
+                            endfor
+                          endif
+
+                          assign drawer_accessories_collection = block.settings.accessories_collection
+                          if drawer_accessories_collection == blank and drawer_card_product.collections != blank
+                            for drawer_candidate_collection in drawer_card_product.collections
+                              assign drawer_candidate_handle = drawer_candidate_collection.handle | downcase
+                              assign drawer_candidate_title = drawer_candidate_collection.title | downcase
+                              if drawer_candidate_handle contains 'accessor' or drawer_candidate_title contains 'accessor'
+                                assign drawer_accessories_collection = drawer_candidate_collection
+                                break
+                              endif
+                            endfor
+                            if drawer_accessories_collection == blank
+                              assign drawer_accessories_collection = drawer_card_product.collections.first
+                            endif
+                          endif
+                        elsif drawer_card_collection != blank
+                          assign drawer_card_link = drawer_card_collection.url
+                          assign drawer_card_title = drawer_card_collection.title
+                          assign drawer_card_body = drawer_card_collection.description | strip_html
+                        elsif drawer_card_page != blank
+                          assign drawer_card_link = drawer_card_page.url
+                          if drawer_card_title == blank
+                            assign drawer_card_title = drawer_card_page.title
+                          endif
+                          if drawer_is_app
+                            assign drawer_card_body = 'Download for iOS and Android'
+                            assign parsed_drawer_rating_value = drawer_rating_display | split: ' ' | first | plus: 0
+                            if parsed_drawer_rating_value > 0
+                              assign drawer_rating_value = parsed_drawer_rating_value
+                            endif
+                          else
+                            assign drawer_card_body = drawer_card_page.content | strip_html
+                          endif
+                        endif
+
+                        if drawer_card_link == blank or drawer_card_title == blank
+                          continue
+                        endif
+
+                        assign drawer_image = block.settings.image
+                        if drawer_image != blank
+                          assign drawer_card_image_url = drawer_image | image_url: width: 502
+                        endif
+                      %}
+                      <li class="menu-drawer__submenu-item">
+                        {% unless drawer_hide_primary_tile %}
+                          <a class="menu-drawer__submenu-card menu-drawer__animated-element{% if drawer_is_app %} menu-drawer__submenu-card--app{% endif %}{% if drawer_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_badge_type }}{% endif %}" href="{{ drawer_card_link }}">
+                            <span class="menu-drawer__submenu-media" aria-hidden="true">
+                              {% if drawer_card_image_url != blank %}
+                                <img
+                                  class="menu-drawer__submenu-image"
+                                  src="{{ drawer_card_image_url }}"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="502"
+                                  height="502"
+                                >
+                              {% else %}
+                                <img
+                                  class="menu-drawer__submenu-image"
+                                  src="{{ 'mega-menu-item-placeholder.jpg' | asset_url }}"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="502"
+                                  height="502"
+                                >
+                              {% endif %}
+                            </span>
+                            <span class="menu-drawer__submenu-copy">
+                              <span class="menu-drawer__submenu-title font-body weight-bold">{{ drawer_card_title | escape }}</span>
+                              {% if drawer_is_app %}
+                                <p class="menu-drawer__app-rating font-caption weight-semibold">
+                                  <span class="menu-drawer__app-stars" aria-hidden="true">
+                                    {% for star_index in (1..5) %}
+                                      {% assign drawer_prior_stars = star_index | minus: 1 %}
+                                      {% assign drawer_star_fill = 0 %}
+                                      {% if drawer_rating_value >= star_index %}
+                                        {% assign drawer_star_fill = 100 %}
+                                      {% elsif drawer_rating_value > drawer_prior_stars %}
+                                        {% assign drawer_star_fill = drawer_rating_value | minus: drawer_prior_stars | times: 100 | round %}
+                                      {% endif %}
+                                      <span class="menu-drawer__app-star" style="--sb-star-fill: {{ drawer_star_fill }}%; --sb-star-icon-url: url('{{ drawer_star_icon_url }}');"></span>
+                                    {% endfor %}
+                                  </span>
+                                  <span>{{ drawer_rating_display }}</span>
+                                </p>
+                                <p class="menu-drawer__app-rating-count font-caption weight-regular">{{ drawer_rating_count_display }} ratings</p>
+                              {% elsif drawer_card_body != blank %}
+                                <span class="menu-drawer__submenu-body font-caption weight-regular">{{ drawer_card_body | truncate: 120 }}</span>
+                              {% endif %}
+                            </span>
+                            {% if drawer_badge_label != blank %}
+                              <span class="menu-drawer__submenu-badge menu-drawer__submenu-badge--{{ drawer_badge_type }} font-caption weight-semibold">
+                                {{ drawer_badge_label }}
+                              </span>
+                            {% endif %}
+                          </a>
+                        {% endunless %}
+
+                        {% if drawer_accessories_collection != blank %}
+                          <a class="menu-drawer__submenu-secondary font-caption weight-semibold menu-drawer__animated-element" href="{{ drawer_accessories_collection.url }}">
+                            Accessories
+                          </a>
+                        {% endif %}
+
+                        {% for drawer_related_index in (1..3) %}
+                          {% liquid
+                            assign drawer_related_product = blank
+                            assign drawer_related_product_image = blank
+                            assign drawer_related_product_show_on_mobile = true
+                            case drawer_related_index
+                              when 1
+                                assign drawer_related_product = drawer_related_product_1
+                                assign drawer_related_product_image = drawer_related_product_1_image
+                                assign drawer_related_product_show_on_mobile = drawer_related_product_1_show_on_mobile
+                              when 2
+                                assign drawer_related_product = drawer_related_product_2
+                                assign drawer_related_product_image = drawer_related_product_2_image
+                                assign drawer_related_product_show_on_mobile = drawer_related_product_2_show_on_mobile
+                              when 3
+                                assign drawer_related_product = drawer_related_product_3
+                                assign drawer_related_product_image = drawer_related_product_3_image
+                                assign drawer_related_product_show_on_mobile = drawer_related_product_3_show_on_mobile
+                            endcase
+
+                            if drawer_related_product == blank or drawer_related_product_show_on_mobile == false
+                              continue
+                            endif
+
+                            assign drawer_related_image_url = blank
+                            if drawer_related_product_image != blank
+                              assign drawer_related_image_url = drawer_related_product_image | image_url: width: 502
+                            elsif drawer_related_product.featured_image != blank
+                              assign drawer_related_image_url = drawer_related_product.featured_image | image_url: width: 502
+                            endif
+
+                            assign drawer_related_body = blank
+                            assign drawer_related_settings_ref = drawer_related_product.metafields.custom.sbv2_product_settings.value | default: drawer_related_product.metafields.custom.sbv2_product_settings
+                            if drawer_related_settings_ref != blank
+                              assign drawer_related_body = drawer_related_settings_ref.tagline.value | default: drawer_related_settings_ref.tagline
+                            endif
+                            if drawer_related_body == blank and drawer_related_product.description != blank
+                              assign drawer_related_body = drawer_related_product.description | strip_html
+                            endif
+
+                            assign drawer_related_badge_label = blank
+                            assign drawer_related_badge_type = blank
+                            if drawer_related_product.tags != blank
+                              for drawer_related_tag in drawer_related_product.tags
+                                assign drawer_related_tag_downcase = drawer_related_tag | downcase
+                                if drawer_related_tag_downcase == 'bestseller'
+                                  assign drawer_related_badge_label = 'Bestseller'
+                                  assign drawer_related_badge_type = 'bestseller'
+                                  break
+                                endif
+                                if drawer_related_tag_downcase == 'new'
+                                  assign drawer_related_badge_label = 'New'
+                                  assign drawer_related_badge_type = 'new'
+                                endif
+                              endfor
+                            endif
+                          %}
+                          <a class="menu-drawer__submenu-card menu-drawer__submenu-card--related menu-drawer__animated-element{% if drawer_related_badge_label != blank %} menu-drawer__submenu-card--has-badge menu-drawer__submenu-card--{{ drawer_related_badge_type }}{% endif %}" href="{{ drawer_related_product.url }}">
+                            <span class="menu-drawer__submenu-media" aria-hidden="true">
+                              {% if drawer_related_image_url != blank %}
+                                <img
+                                  class="menu-drawer__submenu-image"
+                                  src="{{ drawer_related_image_url }}"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="502"
+                                  height="502"
+                                >
+                              {% else %}
+                                <img
+                                  class="menu-drawer__submenu-image"
+                                  src="{{ 'mega-menu-item-placeholder.jpg' | asset_url }}"
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  width="502"
+                                  height="502"
+                                >
+                              {% endif %}
+                            </span>
+                            <span class="menu-drawer__submenu-copy">
+                              <span class="menu-drawer__submenu-title font-body weight-bold">{{ drawer_related_product.title | escape }}</span>
+                              {% if drawer_related_body != blank %}
+                                <span class="menu-drawer__submenu-body font-caption weight-regular">{{ drawer_related_body | truncate: 120 }}</span>
+                              {% endif %}
+                            </span>
+                            {% if drawer_related_badge_label != blank %}
+                              <span class="menu-drawer__submenu-badge menu-drawer__submenu-badge--{{ drawer_related_badge_type }} font-caption weight-semibold">
+                                {{ drawer_related_badge_label }}
+                              </span>
+                            {% endif %}
+                          </a>
+                        {% endfor %}
+
+                        {% if drawer_is_app %}
+                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold menu-drawer__animated-element" href="{{ drawer_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                            <span>App Store</span>
+                            <span class="menu-drawer__submenu-store-badge" aria-hidden="true">
+                              <img
+                                src="{{ 'app-download-app-store.png' | asset_url }}"
+                                alt=""
+                                loading="lazy"
+                                width="100"
+                                height="30"
+                              >
+                            </span>
+                          </a>
+                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold menu-drawer__animated-element" href="{{ drawer_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                            <span>Google Play</span>
+                            <span class="menu-drawer__submenu-store-badge" aria-hidden="true">
+                              <img
+                                src="{{ 'app-download-google-play.png' | asset_url }}"
+                                alt=""
+                                loading="lazy"
+                                width="100"
+                                height="30"
+                              >
+                            </span>
+                          </a>
+                        {% endif %}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </details>
+              {% else %}
+                <a
+                  class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element"
+                  href="{{ link.url }}"
+                  {% if link.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  <span class="menu-drawer__menu-item-text font-callout weight-semibold">{{ link.title | escape }}</span>
+                </a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        {% endif %}
+      </ul>
+      <div class="menu-drawer__trustpilot menu-drawer__animated-element" style="--menu-drawer-animation-index: 7;">
+        <a
+          class="menu-drawer__trustpilot-link menu-drawer__trustpilot-link--logo"
+          href="{{ trustpilot_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Trustpilot logo link"
+        >
+          <span class="menu-drawer__trustpilot-logo" aria-hidden="true">
+            {{ 'trustpilot-logo-multicolor.svg' | inline_asset_content }}
+          </span>
+        </a>
+        <a
+          class="menu-drawer__trustpilot-link menu-drawer__trustpilot-link--stars"
+          href="{{ trustpilot_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Trustpilot stars link"
+        >
+          <span class="menu-drawer__trustpilot-stars" aria-hidden="true">
+            {{ 'trustpilot-stars-multicolor.svg' | inline_asset_content }}
+          </span>
+        </a>
+        <a
+          class="menu-drawer__trustpilot-link menu-drawer__trustpilot-link--text font-body weight-semibold"
+          href="{{ trustpilot_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Read Soundbrenner reviews on Trustpilot"
+        >
+          {{ trustpilot_rating_text }}
+        </a>
+      </div>
+
+      <div class="menu-drawer__review menu-drawer__animated-element" style="--menu-drawer-animation-index: 8;">
+        <div class="menu-drawer__review-row">
+          <span class="menu-drawer__review-name font-caption weight-semibold">Wesley G.</span>
+          <span class="menu-drawer__review-verified font-caption weight-semibold">
+            <span class="menu-drawer__review-verified-icon" aria-hidden="true">
+              {{ 'icon-verified-badge.svg' | inline_asset_content }}
+            </span>
+            <span>Verified buyer</span>
+          </span>
+          <span class="menu-drawer__review-stars" aria-hidden="true" style="--sb-review-star-icon-url: url('{{ 'icon-review-star.svg' | asset_url }}');">
+            <span class="menu-drawer__review-star"></span>
+            <span class="menu-drawer__review-star"></span>
+            <span class="menu-drawer__review-star"></span>
+            <span class="menu-drawer__review-star"></span>
+            <span class="menu-drawer__review-star"></span>
+          </span>
+        </div>
+        <p class="menu-drawer__review-text font-caption weight-regular">
+          I have the in-ear monitors and the Pulse. They work exactly as promised. Shipping was good and without bad surprises. Thank you Soundbrenner!
+        </p>
+        <p class="menu-drawer__review-date font-caption weight-regular">{{ review_date_text }}</p>
+      </div>
+
+      <div class="menu-drawer__social menu-drawer__animated-element" style="--menu-drawer-animation-index: 9;" aria-label="Social links">
+        <a class="menu-drawer__social-link" href="https://www.instagram.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          {{ 'icon-instagram.svg' | inline_asset_content }}
+        </a>
+        <a class="menu-drawer__social-link" href="https://www.facebook.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          {{ 'icon-facebook.svg' | inline_asset_content }}
+        </a>
+        <a class="menu-drawer__social-link" href="https://www.tiktok.com/@soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+          {{ 'icon-tiktok.svg' | inline_asset_content }}
+        </a>
+        <a class="menu-drawer__social-link" href="https://x.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="X">
+          {{ 'icon-x.svg' | inline_asset_content }}
+        </a>
+        <a class="menu-drawer__social-link" href="https://www.youtube.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          {{ 'icon-youtube.svg' | inline_asset_content }}
+        </a>
+      </div>
+    </nav>
+  </div>
+  <button
+    class="menu-drawer__backdrop menu-drawer__backdrop--local"
+    type="button"
+    aria-label="Close menu"
+    data-mobile-menu-close
+  ></button>
+</div>
 <div class="header__mega-backdrop header__mega-backdrop--top" data-header-mega-backdrop="top" aria-hidden="true"></div>
 <div
   class="header__mega-backdrop header__mega-backdrop--bottom"
@@ -643,7 +1145,7 @@
       var(--page-width, 1240px),
       calc(100% - (var(--page-margin, 16px) * 2))
     );
-    z-index: 2;
+    z-index: 1;
   }
 
   .header a {
@@ -656,7 +1158,7 @@
     display: inline-flex;
     line-height: 0;
     position: relative;
-    z-index: 2;
+    z-index: 1;
   }
 
   .header__brand:hover,
@@ -688,7 +1190,7 @@
     transform: translate(-50%, -50%);
     white-space: nowrap;
     width: fit-content;
-    z-index: 2;
+    z-index: 1;
   }
 
   .header__menu-item {
@@ -940,16 +1442,18 @@
   }
 
   .header__mega-card-star::before {
-    background: var(--sb-light-neutral-900-50);
+    background: var(--sb-color-neutral-900);
+    opacity: 0.5;
   }
 
   .header__mega-card-star::after {
-    background: var(--sb-light-neutral-900);
+    background: var(--sb-color-neutral-900);
     clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
     -webkit-clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
   }
 
   .header__mega-card-app-links {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-20);
@@ -957,8 +1461,10 @@
   }
 
   .header__mega-card-app-links a {
+    align-self: flex-start;
     display: inline-flex;
     line-height: 0;
+    width: fit-content;
   }
 
   .header__mega-card-app-links a:hover,
@@ -968,7 +1474,7 @@
 
   .header__mega-card-app-links img {
     display: block;
-    height: var(--sb-space-36);
+    height: var(--sb-space-30);
     width: auto;
   }
 
@@ -984,6 +1490,7 @@
   .header__icons--left {
     display: none;
     margin-left: 0;
+    z-index: 3;
   }
 
   .header__icon-link {
@@ -1090,7 +1597,711 @@
     }
   }
 
+  .menu-drawer-container {
+    --sb-drawer-animation-speed: 320ms;
+    inset: 0;
+    pointer-events: none;
+    position: fixed;
+    z-index: 78;
+  }
+
+  .menu-drawer-container.menu-open {
+    pointer-events: auto;
+  }
+
+  .menu-drawer__menu-container > summary {
+    list-style: none;
+  }
+
+  .menu-drawer__menu-container > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .menu-drawer {
+    --sb-drawer-close-offset-top: var(--sb-space-20);
+    --sb-drawer-close-offset-inline: var(--sb-space-20);
+    --sb-drawer-close-size: var(--sb-space-30);
+    --sb-drawer-navigation-top-padding: calc(var(--sb-drawer-close-offset-top) + var(--sb-drawer-close-size) + var(--sb-space-20));
+    background: var(--sb-color-neutral-200);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    left: 0;
+    max-width: 500px;
+    opacity: 0;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    transform: translateX(-100%);
+    transition:
+      transform var(--sb-drawer-animation-speed) ease,
+      visibility var(--sb-drawer-animation-speed) ease,
+      opacity var(--sb-drawer-animation-speed) ease;
+    visibility: hidden;
+    width: min(100vw, 500px);
+    box-shadow: 0 var(--sb-space-4) var(--sb-space-20) 0 var(--sb-color-primary-500);
+    z-index: 79;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .menu-drawer__backdrop {
+    -webkit-backdrop-filter: brightness(0.75);
+    backdrop-filter: brightness(0.75);
+    background: var(--sb-color-always-black-25);
+    border: 0;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    transition: opacity var(--sb-drawer-animation-speed) ease;
+    z-index: 78;
+  }
+
+  .menu-drawer-container.menu-open > .menu-drawer {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .menu-drawer-container.menu-open > .menu-drawer__backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .menu-drawer__backdrop--local {
+    display: block;
+  }
+
+  html.sb-scroll-locked,
+  body.sb-scroll-locked {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .menu-drawer__close-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: var(--sb-space-30);
+    justify-content: center;
+    left: var(--sb-drawer-close-offset-inline);
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: var(--sb-drawer-close-offset-top);
+    width: var(--sb-space-30);
+    z-index: 2;
+  }
+
+  .menu-drawer__close-icon-circle,
+  .menu-drawer__close-icon-x {
+    display: inline-flex;
+    inset: 0;
+    position: absolute;
+  }
+
+  .menu-drawer__close-icon-circle {
+    color: var(--sb-color-neutral-800);
+  }
+
+  .menu-drawer__close-icon-x {
+    color: var(--sb-color-neutral-100);
+  }
+
+  .menu-drawer__close-button:hover .menu-drawer__close-icon-x,
+  .menu-drawer__close-button:focus-visible .menu-drawer__close-icon-x {
+    color: var(--sb-color-primary-500);
+  }
+
+  .menu-drawer__close-icon-circle svg,
+  .menu-drawer__close-icon-x svg {
+    display: block;
+    height: var(--sb-space-30);
+    width: var(--sb-space-30);
+  }
+
+  .menu-drawer__navigation {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--sb-drawer-navigation-top-padding) 0 var(--sb-space-24);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .menu-drawer__menu {
+    list-style: none;
+    margin: 0;
+    padding: 0 var(--sb-space-20);
+  }
+
+  .menu-drawer__menu.has-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .menu-drawer__menu.has-submenu::after {
+    background: var(--sb-color-neutral-600);
+    content: '';
+    display: block;
+    height: 1px;
+  }
+
+  .menu-drawer__list-item {
+    gap: var(--sb-space-20);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: var(--sb-space-20) 0;
+  }
+
+  .menu-drawer__list-item + .menu-drawer__list-item {
+    border-top: 1px solid var(--sb-color-neutral-600);
+  }
+
+  .menu-drawer__menu-item {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--sb-color-neutral-900);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    min-height: 0;
+    padding: 0;
+    text-align: left;
+    text-decoration: none;
+    width: 100%;
+  }
+
+  .menu-drawer__menu-item:hover,
+  .menu-drawer__menu-item:focus-visible {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .menu-drawer__menu-container > .menu-drawer__menu-item:hover,
+  .menu-drawer__menu-container > .menu-drawer__menu-item:focus-visible {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .menu-drawer__list-item > a.menu-drawer__menu-item:hover,
+  .menu-drawer__list-item > a.menu-drawer__menu-item:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .menu-drawer__menu-item--mainlist {
+    min-height: var(--sb-space-20);
+  }
+
+  .menu-drawer__menu-item-text {
+    min-width: 0;
+  }
+
+  .menu-drawer__menu-item-indicator {
+    color: var(--sb-color-primary-500);
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: var(--sb-space-20);
+    line-height: 0;
+    position: relative;
+    width: var(--sb-space-20);
+  }
+
+  .menu-drawer__menu-item-indicator svg {
+    display: block;
+    height: var(--sb-space-20);
+    width: var(--sb-space-20);
+  }
+
+  .menu-drawer__menu-item-indicator svg path:not([fill='none']),
+  .menu-drawer__menu-item-indicator svg circle:not([fill='none']),
+  .menu-drawer__menu-item-indicator svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .menu-drawer__menu-item-indicator svg path:not([stroke='none']),
+  .menu-drawer__menu-item-indicator svg circle:not([stroke='none']),
+  .menu-drawer__menu-item-indicator svg rect:not([stroke='none']) {
+    stroke: currentColor !important;
+  }
+
+  .menu-drawer__menu-item-indicator-plus,
+  .menu-drawer__menu-item-indicator-close {
+    display: inline-flex;
+    inset: 0;
+    position: absolute;
+    transition:
+      opacity 220ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .menu-drawer__menu-item-indicator-plus {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  .menu-drawer__menu-item-indicator-close {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.85);
+  }
+
+  .menu-drawer__menu-container[open] > .menu-drawer__menu-item .menu-drawer__menu-item-indicator-plus {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.85);
+  }
+
+  .menu-drawer__menu-container[open] > .menu-drawer__menu-item .menu-drawer__menu-item-indicator-close {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  .menu-drawer__menu--childlist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-20);
+    margin-top: var(--sb-space-20);
+    padding: 0;
+  }
+
+  .menu-drawer__trustpilot {
+    align-items: center;
+    background: var(--sb-color-neutral-100);
+    border-radius: 12px;
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    gap: var(--sb-space-24);
+    justify-content: center;
+    margin: var(--sb-space-20);
+    padding: var(--sb-space-20);
+  }
+
+  .menu-drawer__trustpilot-link {
+    align-items: center;
+    color: inherit;
+    display: inline-flex;
+    text-decoration: none;
+  }
+
+  .menu-drawer__trustpilot-link--text {
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .menu-drawer__trustpilot-logo,
+  .menu-drawer__trustpilot-stars {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .menu-drawer__trustpilot-logo svg {
+    display: block;
+    height: var(--sb-space-30);
+    width: auto;
+  }
+
+  .menu-drawer__trustpilot-stars svg {
+    display: block;
+    height: var(--sb-space-20);
+    width: auto;
+  }
+
+  .menu-drawer__trustpilot-logo svg > g > g path[fill='white'],
+  .menu-drawer__trustpilot-stars svg > g > path[fill='white'] {
+    fill: currentColor !important;
+  }
+
+  .menu-drawer__trustpilot-link--logo:hover .menu-drawer__trustpilot-logo,
+  .menu-drawer__trustpilot-link--logo:focus-visible .menu-drawer__trustpilot-logo {
+    opacity: 0.75;
+  }
+
+  .menu-drawer__trustpilot-link--stars:hover .menu-drawer__trustpilot-stars,
+  .menu-drawer__trustpilot-link--stars:focus-visible .menu-drawer__trustpilot-stars {
+    opacity: 0.75;
+  }
+
+  .menu-drawer__trustpilot-link--text:hover,
+  .menu-drawer__trustpilot-link--text:focus-visible {
+    text-decoration: underline;
+  }
+
+  .menu-drawer__review {
+    background: var(--sb-color-neutral-100);
+    border-radius: 12px;
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-20);
+    padding: var(--sb-space-20);
+  }
+
+  .menu-drawer__review-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sb-space-24);
+    justify-content: center;
+  }
+
+  .menu-drawer__review-name {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .menu-drawer__review-verified {
+    align-items: center;
+    color: var(--sb-color-primary-500);
+    display: inline-flex;
+    gap: var(--sb-space-8);
+  }
+
+  .menu-drawer__review-verified-icon {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .menu-drawer__review-verified-icon svg {
+    display: block;
+    height: var(--sb-space-20);
+    width: var(--sb-space-20);
+  }
+
+  .menu-drawer__review-verified-icon svg path:not([fill='none']),
+  .menu-drawer__review-verified-icon svg circle:not([fill='none']),
+  .menu-drawer__review-verified-icon svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .menu-drawer__review-stars {
+    color: var(--sb-color-reviews);
+    display: inline-flex;
+    gap: 4px;
+    line-height: 0;
+  }
+
+  .menu-drawer__review-star {
+    background: currentColor;
+    display: inline-block;
+    height: var(--sb-space-16);
+    mask: center / contain no-repeat var(--sb-review-star-icon-url);
+    width: var(--sb-space-16);
+    -webkit-mask: center / contain no-repeat var(--sb-review-star-icon-url);
+  }
+
+  .menu-drawer__review-text {
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-16) 0 0;
+    text-align: center;
+  }
+
+  .menu-drawer__review-date {
+    color: var(--sb-color-neutral-800);
+    margin: var(--sb-space-16) 0 0;
+    text-align: center;
+  }
+
+  .menu-drawer__social {
+    align-items: center;
+    background: var(--sb-color-neutral-100);
+    border-radius: 12px;
+    display: flex;
+    gap: var(--sb-space-36);
+    justify-content: center;
+    margin: var(--sb-space-20);
+    padding: var(--sb-space-20);
+  }
+
+  .menu-drawer__social-link {
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    line-height: 0;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .menu-drawer__social-link:hover,
+  .menu-drawer__social-link:focus-visible {
+    color: var(--sb-color-neutral-900-75);
+    text-decoration: none;
+  }
+
+  .menu-drawer__social-link svg {
+    display: block;
+    height: var(--sb-space-30);
+    width: auto;
+  }
+
+  .menu-drawer__social-link svg path:not([fill='none']),
+  .menu-drawer__social-link svg circle:not([fill='none']),
+  .menu-drawer__social-link svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .menu-drawer__submenu-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-12);
+  }
+
+  .menu-drawer__submenu-card {
+    align-items: stretch;
+    background: var(--sb-color-neutral-100);
+    border-radius: 12px;
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    gap: var(--sb-space-20);
+    min-height: var(--sb-space-128);
+    overflow: visible;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .menu-drawer__submenu-card--app {
+    height: var(--sb-space-128);
+  }
+
+  .menu-drawer__submenu-item > .menu-drawer__submenu-card + .menu-drawer__submenu-card {
+    margin-top: var(--sb-space-12);
+  }
+
+  .menu-drawer__submenu-item > .menu-drawer__submenu-card + .menu-drawer__submenu-card.menu-drawer__submenu-card--has-badge {
+    margin-top: var(--sb-space-24);
+  }
+
+  .menu-drawer__submenu-card:hover,
+  .menu-drawer__submenu-card:focus-visible {
+    background: var(--sb-color-neutral-300);
+    color: var(--sb-color-neutral-900);
+  }
+
+  .menu-drawer__submenu-media {
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
+    display: block;
+    flex: 0 0 var(--sb-space-128);
+    height: var(--sb-space-128);
+    overflow: hidden;
+    position: relative;
+    width: var(--sb-space-128);
+  }
+
+  .menu-drawer__submenu-card--has-badge {
+    --sb-submenu-card-border-color: transparent;
+    margin-top: calc(var(--sb-space-12) + var(--sb-space-2));
+  }
+
+  .menu-drawer__submenu-card--has-badge::after {
+    border: 2px solid var(--sb-submenu-card-border-color);
+    border-radius: 12px;
+    box-sizing: border-box;
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .menu-drawer__submenu-card--bestseller {
+    --sb-submenu-card-border-color: var(--sb-color-red-500);
+  }
+
+  .menu-drawer__submenu-card--new {
+    --sb-submenu-card-border-color: var(--sb-color-primary-500);
+  }
+
+  .menu-drawer__submenu-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .menu-drawer__submenu-badge {
+    border-radius: 12px;
+    color: var(--sb-color-always-white);
+    padding: var(--sb-space-8) var(--sb-space-12);
+    position: absolute;
+    right: var(--sb-space-16);
+    top: var(--sb-space-2);
+    transform: translateY(-50%);
+    z-index: 3;
+  }
+
+  .menu-drawer__submenu-badge--bestseller {
+    background: var(--sb-color-red-500);
+  }
+
+  .menu-drawer__submenu-badge--new {
+    background: var(--sb-color-primary-500);
+  }
+
+  .menu-drawer__submenu-copy {
+    align-items: flex-start;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--sb-space-8);
+    justify-content: center;
+    min-width: 0;
+    padding: var(--sb-space-20) var(--sb-space-20) var(--sb-space-20) 0;
+  }
+
+  .menu-drawer__submenu-card--app .menu-drawer__submenu-copy {
+    align-items: flex-start;
+    gap: 0;
+    justify-content: center;
+    padding: 0 var(--sb-space-20) 0 0;
+    text-align: left;
+  }
+
+  .menu-drawer__submenu-title {
+    color: currentColor;
+    margin: 0;
+  }
+
+  .menu-drawer__submenu-body {
+    color: currentColor;
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .menu-drawer__app-rating {
+    align-items: center;
+    color: currentColor;
+    display: flex;
+    gap: var(--sb-space-8);
+    line-height: 1;
+    margin: var(--sb-space-8) 0 0;
+  }
+
+  .menu-drawer__submenu-card--app .menu-drawer__app-rating {
+    justify-content: flex-start;
+  }
+
+  .menu-drawer__app-stars {
+    display: inline-flex;
+    gap: var(--sb-space-8);
+    line-height: 0;
+    padding-bottom: var(--sb-space-4);
+    transform: translateY(var(--sb-space-4));
+  }
+
+  .menu-drawer__app-star {
+    display: inline-block;
+    height: var(--sb-space-16);
+    position: relative;
+    width: var(--sb-space-16);
+  }
+
+  .menu-drawer__app-star::before,
+  .menu-drawer__app-star::after {
+    content: '';
+    display: block;
+    height: 100%;
+    left: 0;
+    mask: center / contain no-repeat var(--sb-star-icon-url);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    -webkit-mask: center / contain no-repeat var(--sb-star-icon-url);
+  }
+
+  .menu-drawer__app-star::before {
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .menu-drawer__app-star::after {
+    background: currentColor;
+    clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
+    -webkit-clip-path: inset(0 calc(100% - var(--sb-star-fill)) 0 0);
+  }
+
+  .menu-drawer__app-rating-count {
+    color: currentColor;
+    margin: var(--sb-space-8) 0 0;
+  }
+
+  .menu-drawer__submenu-secondary {
+    align-items: center;
+    background: var(--sb-color-neutral-100);
+    box-sizing: border-box;
+    border-radius: 12px;
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    margin-left: var(--sb-space-128);
+    min-height: var(--sb-space-48);
+    padding: 0 var(--sb-space-20);
+    text-decoration: none;
+    width: calc(100% - var(--sb-space-128));
+  }
+
+  .menu-drawer__submenu-secondary:hover,
+  .menu-drawer__submenu-secondary:focus-visible {
+    background: var(--sb-color-neutral-300);
+    color: var(--sb-color-neutral-900);
+  }
+
+  .menu-drawer__submenu-store {
+    align-items: center;
+    display: flex;
+    height: var(--sb-space-48);
+    justify-content: space-between;
+    min-height: var(--sb-space-48);
+  }
+
+  .menu-drawer__submenu-store-badge {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: var(--sb-space-30);
+    justify-content: center;
+  }
+
+  .menu-drawer__submenu-store-badge img {
+    display: block;
+    height: var(--sb-space-30);
+    width: auto;
+  }
+
+  .menu-drawer-container.menu-open .menu-drawer__animated-element {
+    animation: menu-drawer-nav-open var(--sb-drawer-animation-speed) ease-in-out;
+    animation-delay: calc(var(--sb-drawer-animation-speed) + (var(--menu-drawer-animation-index, 1) - 1) * 100ms);
+    animation-fill-mode: backwards;
+  }
+
+  @keyframes menu-drawer-nav-open {
+    0% {
+      visibility: hidden;
+      opacity: 0;
+      transform: translateX(calc(-1 * var(--sb-space-8)));
+    }
+
+    100% {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
   @media screen and (max-width: 989px) {
+    .header {
+      transform: none;
+    }
+
+    .header.is-hidden {
+      transform: none;
+      top: calc(-1 * (var(--sb-header-height) + var(--sb-announcement-min-height)));
+    }
+
     .header__inner {
       justify-content: space-between;
     }
@@ -1275,6 +2486,166 @@
     const header = document.querySelector('.header');
     if (!header || header.dataset.headerInit === 'true') return;
     header.dataset.headerInit = 'true';
+
+    const mobileMenuDrawer = document.querySelector('[data-mobile-menu-drawer]');
+    const mobileMenuToggle = header.querySelector('[data-mobile-menu-toggle]');
+    const mobileMenuCloseControls = mobileMenuDrawer
+      ? mobileMenuDrawer.querySelectorAll('[data-mobile-menu-close]')
+      : [];
+    let mobileMenuCloseTimer = null;
+    const mobileMenuPreloadedSources = new Set();
+    let pageScrollLockY = 0;
+    const isDesktopViewport = () => window.matchMedia('(min-width: 990px)').matches;
+    const isMobileMenuOpen = () => Boolean(mobileMenuDrawer && mobileMenuDrawer.classList.contains('menu-open'));
+    const closeAllMobileAccordions = () => {
+      if (!mobileMenuDrawer) return;
+      mobileMenuDrawer.querySelectorAll('.menu-drawer__menu-container[open]').forEach((accordion) => {
+        accordion.removeAttribute('open');
+      });
+    };
+    const clearMobileMenuCloseTimer = () => {
+      if (!mobileMenuCloseTimer) return;
+      window.clearTimeout(mobileMenuCloseTimer);
+      mobileMenuCloseTimer = null;
+    };
+    const shouldSkipMobileMenuPreload = () => {
+      const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (!connection) return false;
+      if (connection.saveData) return true;
+      const effectiveType = `${connection.effectiveType || ''}`.toLowerCase();
+      return effectiveType.includes('2g');
+    };
+    const preloadMobileMenuImageSource = (source) => {
+      if (!source || mobileMenuPreloadedSources.has(source)) return;
+      mobileMenuPreloadedSources.add(source);
+      const preloadImage = new Image();
+      preloadImage.decoding = 'async';
+      preloadImage.src = source;
+    };
+    const preloadMobileMenuImages = () => {
+      if (!mobileMenuDrawer || isDesktopViewport() || shouldSkipMobileMenuPreload()) return;
+      const imageNodes = mobileMenuDrawer.querySelectorAll('.menu-drawer__submenu-image');
+      imageNodes.forEach((imageNode) => {
+        const source = imageNode.getAttribute('src');
+        preloadMobileMenuImageSource(source);
+      });
+    };
+    const scheduleMobileMenuPreload = () => {
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(() => {
+          preloadMobileMenuImages();
+        }, { timeout: 1200 });
+        return;
+      }
+
+      window.setTimeout(() => {
+        preloadMobileMenuImages();
+      }, 180);
+    };
+    const syncPageScrollLock = () => {
+      const cartDrawerElement = document.querySelector('[data-cart-drawer]');
+      const cartOpen = Boolean(cartDrawerElement && !cartDrawerElement.hasAttribute('hidden'));
+      const shouldLock = isMobileMenuOpen() || cartOpen;
+      if (shouldLock) {
+        if (document.body.dataset.sbScrollLocked === 'true') return;
+        pageScrollLockY = window.scrollY || window.pageYOffset || 0;
+        document.documentElement.classList.add('sb-scroll-locked');
+        document.body.classList.add('sb-scroll-locked');
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${pageScrollLockY}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+        document.body.dataset.sbScrollLocked = 'true';
+        return;
+      }
+
+      if (document.body.dataset.sbScrollLocked !== 'true') return;
+      document.documentElement.classList.remove('sb-scroll-locked');
+      document.body.classList.remove('sb-scroll-locked');
+      document.documentElement.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      delete document.body.dataset.sbScrollLocked;
+      window.scrollTo(0, pageScrollLockY);
+    };
+    const openMobileMenu = () => {
+      if (!mobileMenuDrawer || !mobileMenuToggle || isDesktopViewport()) return;
+      clearMobileMenuCloseTimer();
+      mobileMenuToggle.setAttribute('aria-expanded', 'true');
+      scheduleMobileMenuPreload();
+      mobileMenuDrawer.classList.add('menu-open');
+      document.body.classList.add('is-mobile-menu-open');
+      syncPageScrollLock();
+    };
+    const closeMobileMenu = ({ immediate = false } = {}) => {
+      if (!mobileMenuDrawer || !mobileMenuToggle) return;
+      clearMobileMenuCloseTimer();
+      mobileMenuDrawer.classList.remove('menu-open');
+      mobileMenuToggle.setAttribute('aria-expanded', 'false');
+      const finalizeClose = () => {
+        closeAllMobileAccordions();
+        document.body.classList.remove('is-mobile-menu-open');
+        syncPageScrollLock();
+      };
+      if (immediate) {
+        finalizeClose();
+        return;
+      }
+      finalizeClose();
+    };
+
+    if (mobileMenuDrawer && mobileMenuToggle) {
+      mobileMenuToggle.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (isMobileMenuOpen()) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
+        }
+      });
+
+      mobileMenuCloseControls.forEach((control) => {
+        control.addEventListener('click', () => closeMobileMenu());
+      });
+
+      mobileMenuDrawer.querySelectorAll('.menu-drawer__navigation a').forEach((link) => {
+        link.addEventListener('click', () => closeMobileMenu({ immediate: true }));
+      });
+
+      mobileMenuDrawer.addEventListener('keyup', (event) => {
+        if (event.key !== 'Escape') return;
+        closeMobileMenu();
+      });
+
+      window.addEventListener(
+        'resize',
+        () => {
+          if (isDesktopViewport()) {
+            closeMobileMenu({ immediate: true });
+            return;
+          }
+
+          scheduleMobileMenuPreload();
+        },
+        { passive: true }
+      );
+
+      const preventBackgroundScroll = (event) => {
+        if (!isMobileMenuOpen()) return;
+        const withinDrawer = event.target instanceof Element && event.target.closest('.menu-drawer');
+        if (withinDrawer) return;
+        event.preventDefault();
+      };
+
+      document.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+      document.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+      scheduleMobileMenuPreload();
+    }
 
     const countdownRoot = header.querySelector('[data-announcement-countdown]');
     if (countdownRoot) {
@@ -1899,13 +3270,13 @@
     const openCartDrawer = () => {
       if (!cartDrawer) return;
       cartDrawer.removeAttribute('hidden');
-      document.documentElement.style.overflow = 'hidden';
+      syncPageScrollLock();
     };
 
     const closeCartDrawer = () => {
       if (!cartDrawer) return;
       cartDrawer.setAttribute('hidden', '');
-      document.documentElement.style.overflow = '';
+      syncPageScrollLock();
     };
 
     const refreshCartDrawer = async () => {
@@ -2058,6 +3429,10 @@
 
     document.addEventListener('keydown', (event) => {
       if (event.key !== 'Escape') return;
+      if (isMobileMenuOpen()) {
+        closeMobileMenu();
+        return;
+      }
       if (!cartDrawer || cartDrawer.hasAttribute('hidden')) return;
       closeCartDrawer();
     });
@@ -2102,8 +3477,8 @@
   "settings": [
     {
       "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu",
+      "id": "primary_navigation",
+      "label": "Primary navigation",
       "info": "Top-level navigation. Dropdown content is configured with mega menu items below."
     }
   ],
@@ -2204,9 +3579,33 @@
           "label": "Linked product 1"
         },
         {
+          "type": "image_picker",
+          "id": "related_product_1_image",
+          "label": "Linked product 1 image",
+          "info": "Target minimum 251x251 at 2x export (502x502)."
+        },
+        {
+          "type": "checkbox",
+          "id": "related_product_1_show_on_mobile",
+          "label": "Show linked product 1 on mobile",
+          "default": true
+        },
+        {
           "type": "product",
           "id": "related_product_2",
           "label": "Linked product 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "related_product_2_image",
+          "label": "Linked product 2 image",
+          "info": "Target minimum 251x251 at 2x export (502x502)."
+        },
+        {
+          "type": "checkbox",
+          "id": "related_product_2_show_on_mobile",
+          "label": "Show linked product 2 on mobile",
+          "default": true
         },
         {
           "type": "product",
@@ -2214,9 +3613,16 @@
           "label": "Linked product 3"
         },
         {
-          "type": "collection",
-          "id": "related_collection",
-          "label": "Linked collection"
+          "type": "image_picker",
+          "id": "related_product_3_image",
+          "label": "Linked product 3 image",
+          "info": "Target minimum 251x251 at 2x export (502x502)."
+        },
+        {
+          "type": "checkbox",
+          "id": "related_product_3_show_on_mobile",
+          "label": "Show linked product 3 on mobile",
+          "default": true
         }
       ]
     },
