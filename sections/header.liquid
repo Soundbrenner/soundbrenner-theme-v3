@@ -133,7 +133,7 @@
             assign dropdown_card_count = 0
 
             for block in section.blocks
-              if block.type == 'mega_menu_card'
+              if block.type == 'mega_menu_item_product' or block.type == 'mega_menu_item_collection' or block.type == 'mega_menu_item_page' or block.type == 'mega_menu_item_app'
                 assign card_menu_index = block.settings.menu_item_index | plus: 0
                 if card_menu_index == link_index
                   assign has_mega_cards = true
@@ -165,7 +165,7 @@
                   <div class="header__mega-menu-grid">
                     {% for block in section.blocks %}
                       {% liquid
-                        if block.type != 'mega_menu_card'
+                        if block.type != 'mega_menu_item_product' and block.type != 'mega_menu_item_collection' and block.type != 'mega_menu_item_page' and block.type != 'mega_menu_item_app'
                           continue
                         endif
 
@@ -173,21 +173,21 @@
                         if block_menu_index != link_index
                           continue
                         endif
-                        assign app_mode = block.settings.app_mode
-                        assign source_type = block.settings.source_type | default: 'product'
+                        assign app_mode = false
                         assign card_product = blank
                         assign card_collection = blank
                         assign card_page = blank
-                        if app_mode != true
-                          case source_type
-                            when 'product'
-                              assign card_product = block.settings.product
-                            when 'collection'
-                              assign card_collection = block.settings.collection
-                            when 'page'
-                              assign card_page = block.settings.page
-                          endcase
-                        endif
+
+                        case block.type
+                          when 'mega_menu_item_product'
+                            assign card_product = block.settings.product
+                          when 'mega_menu_item_collection'
+                            assign card_collection = block.settings.collection
+                          when 'mega_menu_item_page'
+                            assign card_page = block.settings.page
+                          when 'mega_menu_item_app'
+                            assign app_mode = true
+                        endcase
                         assign card_image = block.settings.image
                         assign card_title = blank
                         assign card_body = blank
@@ -196,7 +196,7 @@
 
                         if app_mode == true
                           assign card_link = routes.root_url | append: 'pages/the-app'
-                          assign card_title = 'The app'
+                          assign card_title = 'The Metronome app'
                           assign card_body = 'Download for iOS and Android'
                         else
                           if card_product != blank
@@ -1848,8 +1848,8 @@
   ],
   "blocks": [
     {
-      "type": "mega_menu_card",
-      "name": "Mega menu card",
+      "type": "mega_menu_item_product",
+      "name": "Mega menu item (product)",
       "settings": [
         {
           "type": "select",
@@ -1882,33 +1882,7 @@
               "label": "6"
             }
           ],
-          "info": "Assign this card to a top-level menu item by position."
-        },
-        {
-          "type": "checkbox",
-          "id": "app_mode",
-          "label": "App mode",
-          "default": false
-        },
-        {
-          "type": "select",
-          "id": "source_type",
-          "label": "Source type",
-          "default": "product",
-          "options": [
-            {
-              "value": "product",
-              "label": "Product"
-            },
-            {
-              "value": "collection",
-              "label": "Collection"
-            },
-            {
-              "value": "page",
-              "label": "Page"
-            }
-          ]
+          "info": "Assign this item to a top-level menu item by position."
         },
         {
           "type": "product",
@@ -1916,9 +1890,123 @@
           "label": "Product"
         },
         {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Target minimum 584x584 at 1x export (584x584)."
+        },
+        {
+          "type": "text",
+          "id": "link_1_label",
+          "label": "Link 1 label"
+        },
+        {
+          "type": "url",
+          "id": "link_1_url",
+          "label": "Link 1 destination"
+        },
+        {
+          "type": "text",
+          "id": "link_2_label",
+          "label": "Link 2 label"
+        },
+        {
+          "type": "url",
+          "id": "link_2_url",
+          "label": "Link 2 destination"
+        },
+        {
+          "type": "text",
+          "id": "link_3_label",
+          "label": "Link 3 label"
+        },
+        {
+          "type": "url",
+          "id": "link_3_url",
+          "label": "Link 3 destination"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_item_collection",
+      "name": "Mega menu item (collection)",
+      "settings": [
+        {
+          "type": "select",
+          "id": "menu_item_index",
+          "label": "Menu item index",
+          "default": "1",
+          "options": [
+            { "value": "1", "label": "1" },
+            { "value": "2", "label": "2" },
+            { "value": "3", "label": "3" },
+            { "value": "4", "label": "4" },
+            { "value": "5", "label": "5" },
+            { "value": "6", "label": "6" }
+          ],
+          "info": "Assign this item to a top-level menu item by position."
+        },
+        {
           "type": "collection",
           "id": "collection",
           "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Target minimum 584x584 at 1x export (584x584)."
+        },
+        {
+          "type": "text",
+          "id": "link_1_label",
+          "label": "Link 1 label"
+        },
+        {
+          "type": "url",
+          "id": "link_1_url",
+          "label": "Link 1 destination"
+        },
+        {
+          "type": "text",
+          "id": "link_2_label",
+          "label": "Link 2 label"
+        },
+        {
+          "type": "url",
+          "id": "link_2_url",
+          "label": "Link 2 destination"
+        },
+        {
+          "type": "text",
+          "id": "link_3_label",
+          "label": "Link 3 label"
+        },
+        {
+          "type": "url",
+          "id": "link_3_url",
+          "label": "Link 3 destination"
+        }
+      ]
+    },
+    {
+      "type": "mega_menu_item_page",
+      "name": "Mega menu item (page)",
+      "settings": [
+        {
+          "type": "select",
+          "id": "menu_item_index",
+          "label": "Menu item index",
+          "default": "1",
+          "options": [
+            { "value": "1", "label": "1" },
+            { "value": "2", "label": "2" },
+            { "value": "3", "label": "3" },
+            { "value": "4", "label": "4" },
+            { "value": "5", "label": "5" },
+            { "value": "6", "label": "6" }
+          ],
+          "info": "Assign this item to a top-level menu item by position."
         },
         {
           "type": "page",
@@ -1962,6 +2050,33 @@
           "label": "Link 3 destination"
         }
       ]
+    },
+    {
+      "type": "mega_menu_item_app",
+      "name": "Mega menu item (The Metronome app)",
+      "settings": [
+        {
+          "type": "select",
+          "id": "menu_item_index",
+          "label": "Menu item index",
+          "default": "1",
+          "options": [
+            { "value": "1", "label": "1" },
+            { "value": "2", "label": "2" },
+            { "value": "3", "label": "3" },
+            { "value": "4", "label": "4" },
+            { "value": "5", "label": "5" },
+            { "value": "6", "label": "6" }
+          ],
+          "info": "Assign this item to a top-level menu item by position."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Target minimum 584x584 at 1x export (584x584)."
+        }
+      ]
     }
   ],
   "max_blocks": 32,
@@ -1970,10 +2085,9 @@
       "name": "t:general.header",
       "blocks": [
         {
-          "type": "mega_menu_card",
+          "type": "mega_menu_item_product",
           "settings": {
-            "menu_item_index": "1",
-            "source_type": "product"
+            "menu_item_index": "1"
           }
         }
       ]
