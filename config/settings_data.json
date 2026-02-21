@@ -11,39 +11,39 @@
   "current": {
     "type_primary_font": "inter_n4",
     "type_display_font": "merriweather_n4",
+    "seasonal_sale_name": "Spring Sale",
+    "seasonal_sale_end_date": "2026-02-24",
+    "seasonal_announcement_gradient": "linear-gradient(90deg, #A4CF83 0%, #768E57 33%, #768E57 66%, #A4CF83 100%)",
+    "seasonal_announcement_copy": "{{ Seasonal sale name }}: up to XX% off & free shipping in XX over $XX",
+    "seasonal_hero_image_desktop": "shopify://shop_images/Property_1_Valentine_s_Day_Sale_373634bf-b192-4924-829b-7bd67ca9e28b.jpg",
+    "seasonal_hero_image_mobile": "shopify://shop_images/Property_1_Valentine_s_Day_Sale_mobile_024ca7f0-b014-4642-a7fa-c6131d2e30f2.jpg",
+    "seasonal_hero_kicker": "",
+    "seasonal_hero_headline": "{{ Seasonal sale name }}",
+    "seasonal_hero_subheadline": "Save up to XX% and get free shipping in XX on orders over $XX.",
+    "seasonal_hero_button_label": "Explore now",
+    "seasonal_hero_button_link": "shopify://collections/all",
     "theme_mode": "dark",
     "max_page_width": 1240,
     "desktop_page_margin": 60,
     "mobile_page_margin": 16,
     "background_color": "#FFFFFF",
     "foreground_color": "#333333",
+    "input_corner_radius": 4,
+    "seasonal_hero_page_title": "Valentine's Day Sale is here!",
+    "seasonal_hero_page_benefits": "Save up to XX% and get free shipping in XX on orders over XX.",
+    "content_for_index": [],
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#FFFFFF",
+          "background": "#ffffff",
           "background_gradient": "",
           "text": "#000000",
-          "button": "#00B59C",
-          "button_label": "#FFFFFF",
+          "button": "#00b59c",
+          "button_label": "#ffffff",
           "secondary_button_label": "#000000",
           "shadow": "#000000"
         }
       }
-    },
-    "input_corner_radius": 4,
-    "seasonal_hero_image_desktop": "shopify://shop_images/Property_1_Valentine_s_Day_Sale_373634bf-b192-4924-829b-7bd67ca9e28b.jpg",
-    "seasonal_hero_image_mobile": "shopify://shop_images/Property_1_Valentine_s_Day_Sale_mobile_024ca7f0-b014-4642-a7fa-c6131d2e30f2.jpg",
-    "seasonal_hero_kicker": "",
-    "seasonal_hero_headline": "Valentine's Day Sale is here!",
-    "seasonal_hero_subheadline": "Save up to XX and get free shipping in XX on orders over XX.",
-    "seasonal_hero_button_label": "Shop the sale",
-    "seasonal_hero_button_link": "shopify://collections/all",
-    "seasonal_sale_name": "Spring Sale",
-    "seasonal_announcement_copy": "Placeholder seasonal announcement copy",
-    "seasonal_sale_end_date": "2026-02-28",
-    "seasonal_announcement_gradient": "linear-gradient(90deg, #A4CF83 0%, #768E57 33%, #768E57 66%, #A4CF83 100%)",
-    "seasonal_hero_page_title": "Valentine's Day Sale is here!",
-    "seasonal_hero_page_benefits": "Save up to XX% and get free shipping in XX on orders over XX.",
-    "content_for_index": []
+    }
   }
 }
