@@ -128,9 +128,10 @@
           "type": "mega_menu_item_collection",
           "settings": {
             "menu_item_index": "4",
-            "collection": "",
+            "collection": "merch",
             "hide_on_mobile": false,
-            "related_product_1": "",
+            "image": "shopify://shop_images/Property_1_Merch_cc4909a6-b4d9-4817-ae79-27a8d4cbb0bf.jpg",
+            "related_product_1": "gift-card",
             "related_product_2": "",
             "related_product_3": ""
           }
