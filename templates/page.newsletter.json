@@ -12,7 +12,8 @@
     "main": {
       "type": "hero-card",
       "settings": {
-        "use_seasonal_hero_card": false,
+        "use_resource_title_description": true,
+"use_seasonal_hero_card": false,
         "background_image_desktop": "shopify://shop_images/Property_1_Email.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Email_mobile.jpg",
         "kicker": "Newsletter",

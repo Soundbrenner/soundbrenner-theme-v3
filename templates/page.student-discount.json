@@ -13,6 +13,7 @@
       "type": "hero-card",
       "name": "Hero card",
       "settings": {
+        "use_resource_title_description": true,
         "use_seasonal_hero_card": false,
         "background_image_desktop": "shopify://shop_images/Property_1_Student_discount_b5d9b145-679b-4aa4-a39f-fa0a86e12d70.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Student_discount_mobile.jpg",

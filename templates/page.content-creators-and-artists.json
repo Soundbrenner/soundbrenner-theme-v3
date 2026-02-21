@@ -12,6 +12,7 @@
     "hero": {
       "type": "hero-card",
       "settings": {
+        "use_resource_title_description": true,
         "use_seasonal_hero_card": false,
         "background_image_desktop": "shopify://shop_images/Property_1_Content_creators_a0554ba8-e261-4609-a0ca-f5f19f932481.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Content_creators_mobile.jpg",

@@ -12,7 +12,8 @@
     "main": {
       "type": "hero-card",
       "settings": {
-        "background_image_desktop": "shopify://shop_images/Property_1_App_1_6ff69b0f-a787-456a-8986-2636d4ddafe0.jpg",
+        "use_resource_title_description": true,
+"background_image_desktop": "shopify://shop_images/Property_1_App_1_6ff69b0f-a787-456a-8986-2636d4ddafe0.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_App_1_mobile.jpg",
         "kicker": "Manual The Metronome app",
         "headline": "Understand every detail.",
@@ -301,6 +302,7 @@
     "support_cta": {
       "type": "hero-card",
       "settings": {
+        "use_resource_title_description": true,
         "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Contact_us_mobile.jpg",
         "kicker": "Need more help",

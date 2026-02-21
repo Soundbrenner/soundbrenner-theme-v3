@@ -183,19 +183,20 @@
                         assign card_product = blank
                         assign card_collection = blank
                         assign card_page = blank
+                        assign hide_on_mobile = false
 
                         case block.type
                           when 'mega_menu_item_product'
                             assign card_product = block.settings.product
                           when 'mega_menu_item_collection'
                             assign card_collection = block.settings.collection
+                            assign hide_on_mobile = block.settings.hide_on_mobile
                           when 'mega_menu_item_page'
                             assign card_page = block.settings.page
                           when 'mega_menu_item_app'
                             assign app_mode = true
                         endcase
                         assign card_image = block.settings.image
-                        assign hide_on_mobile = block.settings.hide_on_mobile
                         assign card_title = blank
                         assign card_body = blank
                         assign card_link = blank
@@ -631,6 +632,7 @@
 
   .header__inner {
     align-items: center;
+    background-color: var(--sb-color-neutral-200);
     display: flex;
     height: var(--sb-header-height);
     justify-content: space-between;
@@ -641,6 +643,7 @@
       var(--page-width, 1240px),
       calc(100% - (var(--page-margin, 16px) * 2))
     );
+    z-index: 2;
   }
 
   .header a {
@@ -652,6 +655,8 @@
     color: var(--sb-color-neutral-900);
     display: inline-flex;
     line-height: 0;
+    position: relative;
+    z-index: 2;
   }
 
   .header__brand:hover,
@@ -683,6 +688,7 @@
     transform: translate(-50%, -50%);
     white-space: nowrap;
     width: fit-content;
+    z-index: 2;
   }
 
   .header__menu-item {
@@ -741,7 +747,7 @@
       )
     );
     isolation: isolate;
-    z-index: 120;
+    z-index: 0;
     transition: grid-template-rows 460ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -764,7 +770,7 @@
   .header__mega-menu-panel {
     background: var(--sb-color-neutral-200);
     border-radius: var(--sb-space-24);
-    box-shadow: 0 calc(var(--sb-space-8) + var(--sb-space-2)) 90px 0 var(--sb-color-always-black-50, rgba(0, 0, 0, 0.5));
+    box-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-50, rgba(0, 0, 0, 0.5));
     overflow: hidden;
     min-height: 0;
     position: relative;
@@ -971,6 +977,8 @@
     display: flex;
     gap: var(--sb-space-16);
     margin-left: auto;
+    position: relative;
+    z-index: 2;
   }
 
   .header__icons--left {
@@ -2142,12 +2150,6 @@
           "label": "Product"
         },
         {
-          "type": "checkbox",
-          "id": "hide_on_mobile",
-          "label": "Hide on mobile",
-          "default": false
-        },
-        {
           "type": "image_picker",
           "id": "image",
           "label": "Image",
@@ -2186,7 +2188,8 @@
         {
           "type": "checkbox",
           "id": "hide_on_mobile",
-          "label": "Hide on mobile",
+          "label": "Hide umbrella collection on mobile",
+          "info": "Only shows the links below on mobile.",
           "default": false
         },
         {
@@ -2241,12 +2244,6 @@
           "label": "Page"
         },
         {
-          "type": "checkbox",
-          "id": "hide_on_mobile",
-          "label": "Hide on mobile",
-          "default": false
-        },
-        {
           "type": "image_picker",
           "id": "image",
           "label": "Image",
@@ -2271,12 +2268,6 @@
             { "value": "5", "label": "5" },
             { "value": "6", "label": "6" }
           ]
-        },
-        {
-          "type": "checkbox",
-          "id": "hide_on_mobile",
-          "label": "Hide on mobile",
-          "default": false
         },
         {
           "type": "image_picker",

@@ -12,7 +12,8 @@
     "main": {
       "type": "hero-card",
       "settings": {
-        "background_image_desktop": "shopify://shop_images/Footer_flow_desktop.jpg",
+        "use_resource_title_description": true,
+"background_image_desktop": "shopify://shop_images/Footer_flow_desktop.jpg",
         "background_image_mobile": "shopify://shop_images/Footer_flow_mobile.jpg",
         "kicker": "Manual Flow microphone",
         "headline": "Understand every detail.",
@@ -239,6 +240,7 @@
     "hero_card_wRrHA8": {
       "type": "hero-card",
       "settings": {
+        "use_resource_title_description": true,
         "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_Contact_us_mobile.jpg",
         "kicker": "Contact us",

@@ -12,6 +12,7 @@
     "hero_top": {
       "type": "hero-card",
       "settings": {
+        "use_resource_title_description": true,
         "use_seasonal_hero_card": false,
         "background_image_desktop": "shopify://shop_images/shipping-banner.jpg",
         "background_image_mobile": "shopify://shop_images/shipping-banner-mobile.jpg",

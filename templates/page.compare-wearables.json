@@ -1,5 +1,17 @@
 {
   "sections": {
+    "hero_card_main": {
+      "type": "hero-card",
+      "settings": {
+        "use_resource_title_description": true,
+        "use_seasonal_hero_card": false,
+        "show_button": false,
+        "button_label": "",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": ""
+      }
+    },
     "compare": {
       "type": "compare",
       "blocks": {
@@ -34,5 +46,5 @@
       }
     }
   },
-  "order": ["compare"]
+  "order": ["hero_card_main", "compare"]
 }

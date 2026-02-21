@@ -155,6 +155,7 @@
     "hero_card_1": {
       "type": "hero-card",
       "settings": {
+        "use_resource_title_description": true,
         "use_seasonal_hero_card": false,
         "background_image_desktop": "shopify://shop_images/Property_1_App_1_6ff69b0f-a787-456a-8986-2636d4ddafe0.jpg",
         "background_image_mobile": "shopify://shop_images/Property_1_App_1_mobile.jpg",
