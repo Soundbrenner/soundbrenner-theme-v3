@@ -1,9 +1,11 @@
 {% liquid
   assign compare_table = page.metafields.custom.sbv2_compare_table.value | default: page.metafields.custom.sbv2_compare_table
-  assign compare_title = section.settings.title
+  assign compare_title = blank
   assign compare_products = blank
   if compare_table != blank
-    assign compare_title = compare_table.title.value | default: compare_table.title | default: compare_title
+    if section.settings.use_metaobject_title
+      assign compare_title = compare_table.title.value | default: compare_table.title
+    endif
     assign compare_products = compare_table.products.value | default: compare_table.products
   endif
   assign compare_chevron_icon_url = 'icon-chevron-down.svg' | asset_url
@@ -673,39 +675,6 @@
       {% endfor %}
     {% endif %}
 
-    {% if compare_meta_products_rendered == 0 %}
-      {% for block in section.blocks %}
-        <article class="sb-compare__column" data-sb-reveal-item {{ block.shopify_attributes }}>
-          <button
-            type="button"
-            class="sb-compare__selector font-caption weight-semibold"
-            aria-label="Select product"
-            style="--sb-compare-chevron-url: url('{{ compare_chevron_icon_url }}');"
-          >
-            <span class="sb-compare__selector-label">{{ block.settings.selector_label | default: 'Select product' }}</span>
-            <span class="sb-compare__selector-icon" aria-hidden="true"></span>
-          </button>
-
-          {% render 'product-thumbnail',
-            product: block.settings.product,
-            image: block.settings.image,
-            product_name: block.settings.product_name,
-            rating: block.settings.rating,
-            reviews_count_number: block.settings.reviews_count,
-            reviews_count: block.settings.reviews_count,
-            compare_price_text: block.settings.compare_price,
-            price_text: block.settings.price,
-            swatch_1: block.settings.swatch_1,
-            swatch_2: block.settings.swatch_2,
-            swatch_3: block.settings.swatch_3,
-            swatch_4: block.settings.swatch_4,
-            selected_swatch: block.settings.selected_swatch,
-            show_add_to_cart: true,
-            show_compare_add_to_cart_large: true
-          %}
-        </article>
-      {% endfor %}
-    {% endif %}
   </div>
 </section>
 
@@ -2223,110 +2192,15 @@
   "name": "Compare",
   "settings": [
     {
-      "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "Compare"
+      "type": "checkbox",
+      "id": "use_metaobject_title",
+      "label": "Use title from page metaobject",
+      "default": true
     }
   ],
-  "blocks": [
-    {
-      "type": "item",
-      "name": "Comparison item",
-      "settings": [
-        {
-          "type": "text",
-          "id": "selector_label",
-          "label": "Selector label",
-          "default": "Select product"
-        },
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Product"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Thumbnail override",
-          "info": "Target minimum 292x292 at 2x export (584x584)."
-        },
-        {
-          "type": "text",
-          "id": "product_name",
-          "label": "Product name override"
-        },
-        {
-          "type": "range",
-          "id": "rating",
-          "label": "Rating",
-          "min": 0,
-          "max": 5,
-          "step": 0.1,
-          "default": 4.7
-        },
-        {
-          "type": "text",
-          "id": "reviews_count",
-          "label": "Reviews label",
-          "default": "0 reviews"
-        },
-        {
-          "type": "text",
-          "id": "compare_price",
-          "label": "Compare price override"
-        },
-        {
-          "type": "text",
-          "id": "price",
-          "label": "Price override"
-        },
-        {
-          "type": "color",
-          "id": "swatch_1",
-          "label": "Color 1",
-          "default": "#111111"
-        },
-        {
-          "type": "color",
-          "id": "swatch_2",
-          "label": "Color 2",
-          "default": "#888888"
-        },
-        {
-          "type": "color",
-          "id": "swatch_3",
-          "label": "Color 3",
-          "default": "#cccccc"
-        },
-        {
-          "type": "color",
-          "id": "swatch_4",
-          "label": "Color 4",
-          "default": "#e5e5e5"
-        },
-        {
-          "type": "range",
-          "id": "selected_swatch",
-          "label": "Selected color",
-          "min": 1,
-          "max": 4,
-          "step": 1,
-          "default": 1
-        }
-      ]
-    }
-  ],
-  "max_blocks": 4,
   "presets": [
     {
-      "name": "Compare",
-      "blocks": [
-        { "type": "item" },
-        { "type": "item" },
-        { "type": "item" },
-        { "type": "item" }
-      ]
+      "name": "Compare"
     }
   ]
 }
