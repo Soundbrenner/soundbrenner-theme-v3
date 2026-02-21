@@ -129,38 +129,25 @@
               assign is_active_link = true
             endif
 
-            assign has_mega_group = false
             assign has_mega_cards = false
-
-            for block in section.blocks
-              if block.type == 'mega_menu_group'
-                assign group_handle = block.settings.menu_item_handle | strip | handleize
-                if group_handle == link_handle
-                  assign has_mega_group = true
-                endif
-              endif
-            endfor
+            assign dropdown_card_count = 0
 
             for block in section.blocks
               if block.type == 'mega_menu_card'
                 assign card_handle = block.settings.menu_item_handle | strip | handleize
                 if card_handle == link_handle
                   assign has_mega_cards = true
+                  assign dropdown_card_count = dropdown_card_count | plus: 1
                 endif
               endif
             endfor
 
-            assign show_placeholder_menu = false
-            if link_handle == 'in-ear-monitors' and has_mega_cards == false
-              assign show_placeholder_menu = true
+            assign has_dropdown = false
+            if has_mega_cards
+              assign has_dropdown = true
             endif
 
-            assign has_dropdown = false
-            if has_mega_group and has_mega_cards
-              assign has_dropdown = true
-            elsif show_placeholder_menu
-              assign has_dropdown = true
-            endif
+            assign dropdown_card_count = dropdown_card_count | at_least: 1 | at_most: 4
           %}
 
           <div class="header__menu-item{% if has_dropdown %} has-dropdown{% endif %}">
@@ -172,11 +159,9 @@
             </a>
 
             {% if has_dropdown %}
-              <div class="header__mega-menu" aria-label="{{ link.title | escape }}">
+              <div class="header__mega-menu" aria-label="{{ link.title | escape }}" style="--sb-mega-columns: {{ dropdown_card_count }};">
                 <div class="header__mega-menu-panel">
                   <div class="header__mega-menu-grid">
-                    {% assign rendered_cards = 0 %}
-
                     {% for block in section.blocks %}
                       {% liquid
                         if block.type != 'mega_menu_card'
@@ -187,8 +172,6 @@
                         if block_handle != link_handle
                           continue
                         endif
-
-                        assign rendered_cards = rendered_cards | plus: 1
                         assign card_product = block.settings.product
                         assign card_collection = block.settings.collection
                         assign card_page = block.settings.page
@@ -323,111 +306,12 @@
                         {% endif %}
                       </article>
                     {% endfor %}
-
-                    {% if rendered_cards == 0 and show_placeholder_menu %}
-                      {% liquid
-                        assign placeholder_product = all_products['wave-in-ear-monitors']
-                        if placeholder_product == blank
-                          assign placeholder_product = all_products['wave']
-                        endif
-                        assign placeholder_collection = collections['wave-in-ear-monitors']
-                        assign placeholder_collection_url = routes.root_url | append: 'collections/wave-in-ear-monitors'
-                        if placeholder_collection != blank
-                          assign placeholder_collection_url = placeholder_collection.url
-                        endif
-                        assign placeholder_link = placeholder_collection_url
-                        assign placeholder_image_url = blank
-                        if placeholder_product != blank and placeholder_product.featured_image != blank
-                          assign placeholder_image_url = placeholder_product.featured_image | image_url: width: 584
-                          assign placeholder_link = placeholder_product.url
-                        endif
-                      %}
-                      <article class="header__mega-card header__mega-card--placeholder">
-                        <a class="header__mega-card-media" href="{{ placeholder_link }}">
-                          {% if placeholder_image_url != blank %}
-                            <img
-                              class="header__mega-card-image"
-                              src="{{ placeholder_image_url }}"
-                              alt="Wave in-ear monitors"
-                              loading="lazy"
-                              decoding="async"
-                              width="584"
-                              height="584"
-                            >
-                          {% else %}
-                            <span class="header__mega-card-image-placeholder font-caption weight-semibold">Wave</span>
-                          {% endif %}
-                        </a>
-
-                        <a class="header__mega-card-title font-callout weight-bold" href="{{ placeholder_link }}">
-                          Wave in-ear monitors
-                        </a>
-                        <p class="header__mega-card-body font-body weight-regular">Placeholder dropdown card. Replace in Header block settings.</p>
-                        <ul class="header__mega-card-links font-body weight-semibold" role="list">
-                          <li><a href="{{ placeholder_collection_url }}">Accessories</a></li>
-                        </ul>
-                      </article>
-                    {% endif %}
                   </div>
                 </div>
               </div>
             {% endif %}
           </div>
         {% endfor %}
-      {% else %}
-        {% liquid
-          assign placeholder_product = all_products['wave-in-ear-monitors']
-          if placeholder_product == blank
-            assign placeholder_product = all_products['wave']
-          endif
-          assign placeholder_collection = collections['wave-in-ear-monitors']
-          assign placeholder_collection_url = routes.root_url | append: 'collections/wave-in-ear-monitors'
-          if placeholder_collection != blank
-            assign placeholder_collection_url = placeholder_collection.url
-          endif
-          assign placeholder_link = placeholder_collection_url
-          assign placeholder_image_url = blank
-          if placeholder_product != blank and placeholder_product.featured_image != blank
-            assign placeholder_image_url = placeholder_product.featured_image | image_url: width: 584
-            assign placeholder_link = placeholder_product.url
-          endif
-        %}
-
-        <div class="header__menu-item has-dropdown">
-          <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}collections/in-ear-monitors">In-ear monitors</a>
-          <div class="header__mega-menu" aria-label="In-ear monitors">
-            <div class="header__mega-menu-panel">
-              <div class="header__mega-menu-grid">
-                <article class="header__mega-card header__mega-card--placeholder">
-                  <a class="header__mega-card-media" href="{{ placeholder_link }}">
-                    {% if placeholder_image_url != blank %}
-                      <img
-                        class="header__mega-card-image"
-                        src="{{ placeholder_image_url }}"
-                        alt="Wave in-ear monitors"
-                        loading="lazy"
-                        decoding="async"
-                        width="584"
-                        height="584"
-                      >
-                    {% else %}
-                      <span class="header__mega-card-image-placeholder font-caption weight-semibold">Wave</span>
-                    {% endif %}
-                  </a>
-                  <a class="header__mega-card-title font-callout weight-bold" href="{{ placeholder_link }}">Wave in-ear monitors</a>
-                  <p class="header__mega-card-body font-body weight-regular">Placeholder dropdown card. Add menu blocks in Header settings.</p>
-                  <ul class="header__mega-card-links font-body weight-semibold" role="list">
-                    <li><a href="{{ placeholder_collection_url }}">Accessories</a></li>
-                  </ul>
-                </article>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}collections/wearables">Wearables</a>
-        <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}collections/earplugs">Earplugs</a>
-        <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}collections/all">More products</a>
-        <a class="header__menu-link font-caption weight-regular" href="{{ routes.root_url }}pages/support">Support</a>
       {% endif %}
     </nav>
 
@@ -554,7 +438,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--sb-announcement-row-gap);
-    max-width: 100%;
+    max-width: calc(100% - ((var(--sb-space-20) + var(--sb-space-16)) * 2));
     position: relative;
     width: fit-content;
   }
@@ -689,11 +573,14 @@
     align-items: center;
     display: flex;
     gap: var(--sb-space-24);
+    justify-content: center;
     left: 50%;
+    min-width: calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24));
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
     white-space: nowrap;
+    width: fit-content;
   }
 
   .header__menu-item {
@@ -702,8 +589,11 @@
   }
 
   .header__menu-link {
+    align-items: center;
     color: var(--sb-color-neutral-900);
     display: inline-flex;
+    justify-content: center;
+    line-height: 1;
     min-height: var(--sb-space-36);
     position: relative;
     z-index: 2;
@@ -722,17 +612,23 @@
     left: 50%;
     min-width: calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24));
     opacity: 0;
-    padding-top: var(--sb-space-16);
     pointer-events: none;
     position: absolute;
-    top: 100%;
-    transform: translate(-50%, var(--sb-space-12));
+    top: calc(100% + var(--sb-space-16) + ((var(--sb-header-height) - var(--sb-space-36)) / 2));
+    transform: translate(-50%, 0);
     visibility: hidden;
     width: min(
-      var(--page-width, 1240px),
-      calc(100vw - (var(--page-margin, 16px) * 2))
+      calc(100vw - (var(--page-margin, 16px) * 2)),
+      max(
+        calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24)),
+        calc(
+          (var(--sb-space-128) * var(--sb-mega-columns, 4))
+          + (var(--sb-space-36) * (var(--sb-mega-columns, 4) - 1))
+          + (var(--sb-space-64) * 2)
+        )
+      )
     );
-    z-index: 60;
+    z-index: 120;
     transition: opacity 180ms ease, transform 180ms ease, visibility 180ms linear;
   }
 
@@ -753,7 +649,8 @@
   .header__mega-menu-grid {
     display: grid;
     gap: var(--sb-space-36);
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--sb-mega-columns, 4), minmax(0, 1fr));
+    justify-content: center;
   }
 
   .header__mega-card {
@@ -774,6 +671,11 @@
     height: auto;
     object-fit: cover;
     width: 100%;
+  }
+
+  .header__mega-card-media:hover .header__mega-card-image,
+  .header__mega-card-media:focus-visible .header__mega-card-image {
+    opacity: 0.75;
   }
 
   .header__mega-card-image-placeholder {
@@ -808,6 +710,7 @@
     color: var(--sb-color-neutral-900);
     display: block;
     margin-top: var(--sb-space-20);
+    overflow-wrap: anywhere;
   }
 
   .header__mega-card-title:hover,
@@ -818,6 +721,7 @@
   .header__mega-card-body {
     color: var(--sb-color-neutral-900);
     margin: var(--sb-space-12) 0 0;
+    overflow-wrap: anywhere;
   }
 
   .header__mega-card-links {
@@ -831,6 +735,7 @@
 
   .header__mega-card-links a {
     color: var(--sb-color-neutral-900);
+    overflow-wrap: anywhere;
   }
 
   .header__mega-card-links a:hover,
@@ -969,6 +874,23 @@
 
     .header__icons--right .header__icon-link--desktop-only {
       display: none;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .header::after {
+      backdrop-filter: blur(var(--sb-space-8));
+      content: '';
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: fixed;
+      z-index: 100;
+    }
+
+    .header:has(.header__menu-item.has-dropdown:hover > .header__mega-menu)::after,
+    .header:has(.header__menu-item.has-dropdown:focus-within > .header__mega-menu)::after {
+      opacity: 1;
     }
   }
 
@@ -1752,23 +1674,11 @@
     {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu"
+      "label": "t:labels.menu",
+      "info": "Top-level navigation. Dropdown content is configured with mega menu card blocks below."
     }
   ],
   "blocks": [
-    {
-      "type": "mega_menu_group",
-      "name": "Mega menu group",
-      "settings": [
-        {
-          "type": "text",
-          "id": "menu_item_handle",
-          "label": "Menu item handle",
-          "default": "in-ear-monitors",
-          "info": "Match this to the top-level menu item title handle."
-        }
-      ]
-    },
     {
       "type": "mega_menu_card",
       "name": "Mega menu card",
@@ -1863,12 +1773,6 @@
     {
       "name": "t:general.header",
       "blocks": [
-        {
-          "type": "mega_menu_group",
-          "settings": {
-            "menu_item_handle": "in-ear-monitors"
-          }
-        },
         {
           "type": "mega_menu_card",
           "settings": {

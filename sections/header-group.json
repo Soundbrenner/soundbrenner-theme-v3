@@ -13,10 +13,136 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "blocks": {
+        "iem_card_1": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "in-ear-monitors",
+            "title": "Wave in-ear monitors 1",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/in-ear-monitors"
+          }
+        },
+        "iem_card_2": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "in-ear-monitors",
+            "title": "Wave in-ear monitors 2",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/in-ear-monitors"
+          }
+        },
+        "iem_card_3": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "in-ear-monitors",
+            "title": "Wave in-ear monitors 3",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/in-ear-monitors"
+          }
+        },
+        "wearables_card_1": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "wearables",
+            "title": "Wearables 1",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/wearables"
+          }
+        },
+        "wearables_card_2": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "wearables",
+            "title": "Wearables 2",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/wearables"
+          }
+        },
+        "wearables_card_3": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "wearables",
+            "title": "Wearables 3",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/wearables"
+          }
+        },
+        "wearables_card_4": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "wearables",
+            "title": "Wearables 4",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/wearables"
+          }
+        },
+        "earplugs_card_1": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "earplugs",
+            "title": "Earplugs 1",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/earplugs"
+          }
+        },
+        "more_products_card_1": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "more-products",
+            "title": "More products 1",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/all"
+          }
+        },
+        "more_products_card_2": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "more-products",
+            "title": "More products 2",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/all"
+          }
+        },
+        "more_products_card_3": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "more-products",
+            "title": "More products 3",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/all"
+          }
+        },
+        "more_products_card_4": {
+          "type": "mega_menu_card",
+          "settings": {
+            "menu_item_handle": "more-products",
+            "title": "More products 4",
+            "body": "Placeholder card. Replace this content in Header settings.",
+            "card_link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "iem_card_1",
+        "iem_card_2",
+        "iem_card_3",
+        "wearables_card_1",
+        "wearables_card_2",
+        "wearables_card_3",
+        "wearables_card_4",
+        "earplugs_card_1",
+        "more_products_card_1",
+        "more_products_card_2",
+        "more_products_card_3",
+        "more_products_card_4"
+      ],
+      "settings": {
+        "menu": "main-menu"
+      }
     }
   },
   "order": [
     "header"
-  ],
+  ]
 }
