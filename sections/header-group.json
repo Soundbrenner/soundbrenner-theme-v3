@@ -19,7 +19,6 @@
           "settings": {
             "menu_item_index": "1",
             "product": "wave-in-ear-monitors",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Wave_da42df97-aa95-4e5e-abaa-b4cdfdeea57c.jpg",
             "accessories_collection": "wave-in-ear-monitors"
           }
@@ -29,7 +28,6 @@
           "settings": {
             "menu_item_index": "1",
             "product": "wave-pro-in-ear-monitors",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Wave_Pro_3c0d5d48-4280-4572-87b1-3c90ff2ab8fe.jpg",
             "accessories_collection": ""
           }
@@ -39,7 +37,6 @@
           "settings": {
             "menu_item_index": "1",
             "page": "compare-in-ear-monitors",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Compare.jpg"
           }
         },
@@ -48,7 +45,6 @@
           "settings": {
             "menu_item_index": "2",
             "product": "pulse-vibrating-metronome",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Pulse_8cb2c0fd-89f4-43e5-81e9-6e30893edf69.jpg",
             "accessories_collection": "pulse-vibrating-metronome"
           }
@@ -58,7 +54,6 @@
           "settings": {
             "menu_item_index": "2",
             "product": "core-2-practice-companion",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Core_2_823f4bf1-1ad6-45c7-a017-8f388f257b4b.jpg",
             "accessories_collection": "core-2-practice-companion"
           }
@@ -68,7 +63,6 @@
           "settings": {
             "menu_item_index": "2",
             "product": "spark-practice-companion",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Spark_0172773e-038f-4933-8f06-f6760d1a184c.jpg",
             "accessories_collection": "spark-practice-companion"
           }
@@ -78,7 +72,6 @@
           "settings": {
             "menu_item_index": "2",
             "page": "compare-wearables",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Compare.jpg"
           }
         },
@@ -87,7 +80,6 @@
           "settings": {
             "menu_item_index": "3",
             "product": "minuendo-earplugs",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Minuendo_earplugs_9be8f813-597b-4547-83a2-9a5d5be1b12c.jpg",
             "accessories_collection": "minuendo-earplugs"
           }
@@ -96,7 +88,6 @@
           "type": "mega_menu_item_app",
           "settings": {
             "menu_item_index": "4",
-            "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_The_Metronome_app_0df9a720-9ae7-4667-a157-b1b053bc70f9.jpg",
             "app_page": "manual-the-metronome-app"
           }
@@ -109,8 +100,14 @@
             "hide_on_mobile": true,
             "image": "shopify://shop_images/Property_1_Stomp_foot_pedal_dd22d772-417a-485e-8aa1-589baced61dd.jpg",
             "related_product_1": "stomp-foot-pedal",
+            "related_product_1_image": "shopify://shop_images/Property_1_Stomp_foot_pedal_dd22d772-417a-485e-8aa1-589baced61dd.jpg",
+            "related_product_1_show_on_mobile": true,
             "related_product_2": "flow-microphone",
-            "related_product_3": "genki-wave-midi-ring"
+            "related_product_2_image": "shopify://shop_images/Property_1_Flow_microphone_b7dacb29-b98c-4a3b-93f2-121b0cf6f4b9.jpg",
+            "related_product_2_show_on_mobile": true,
+            "related_product_3": "genki-wave-midi-ring",
+            "related_product_3_image": "shopify://shop_images/Property_1_Genki_Wave_4a8c55aa-0c6d-40aa-b3ec-7b887cf609c5.jpg",
+            "related_product_3_show_on_mobile": true
           }
         },
         "mega_menu_item_collection_MWaXRa": {
@@ -121,8 +118,11 @@
             "hide_on_mobile": true,
             "image": "shopify://shop_images/Property_1_Playtronica_f98ae1eb-f6c7-441b-87ec-d7775efaf9b1.jpg",
             "related_product_1": "playtron-midi-instrument",
+            "related_product_1_show_on_mobile": true,
             "related_product_2": "touchme-midi-instrument",
-            "related_product_3": ""
+            "related_product_2_show_on_mobile": true,
+            "related_product_3": "",
+            "related_product_3_show_on_mobile": true
           }
         },
         "mega_menu_item_collection_NMFWmf": {
@@ -133,8 +133,11 @@
             "hide_on_mobile": false,
             "image": "shopify://shop_images/Property_1_Merch_cc4909a6-b4d9-4817-ae79-27a8d4cbb0bf.jpg",
             "related_product_1": "gift-card",
+            "related_product_1_show_on_mobile": true,
             "related_product_2": "",
-            "related_product_3": ""
+            "related_product_2_show_on_mobile": true,
+            "related_product_3": "",
+            "related_product_3_show_on_mobile": true
           }
         }
       },
@@ -153,7 +156,7 @@
         "mega_menu_item_collection_NMFWmf"
       ],
       "settings": {
-        "primary_navigation": "main-menu"
+        "primary_navigation": ""
       }
     }
   },
