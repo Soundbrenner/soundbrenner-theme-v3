@@ -39,11 +39,25 @@
             "link_3_label": "",
             "link_3_url": ""
           }
+        },
+        "mega_menu_item_page_dGDiqC": {
+          "type": "mega_menu_item_page",
+          "settings": {
+            "menu_item_index": "1",
+            "page": "compare-in-ear-monitors",
+            "link_1_label": "",
+            "link_1_url": "",
+            "link_2_label": "",
+            "link_2_url": "",
+            "link_3_label": "",
+            "link_3_url": ""
+          }
         }
       },
       "block_order": [
         "mega_menu_item_product_TGzd8i",
-        "mega_menu_item_product_Ce6kCT"
+        "mega_menu_item_product_Ce6kCT",
+        "mega_menu_item_page_dGDiqC"
       ],
       "settings": {
         "menu": "main-menu"
