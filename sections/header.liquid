@@ -60,39 +60,41 @@
 >
   {% if show_announcement %}
     <div class="header__announcement">
-      <div class="header__announcement-emojis" aria-hidden="true">
-        <span class="header__announcement-emoji header__announcement-emoji--left">
-          <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
-        </span>
-        <span class="header__announcement-emoji header__announcement-emoji--right">
-          <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
-        </span>
-      </div>
-
-      <div class="header__announcement-top">
-        <p class="header__announcement-text font-caption weight-semibold">{{ announcement_text | escape | newline_to_br }}</p>
-      </div>
-
-      {% if show_announcement_countdown %}
-        <div class="header__announcement-countdown" data-announcement-countdown data-sale-end-date="{{ sale_end_date | escape }}">
-          <div class="header__announcement-countdown-group">
-            <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>00</span>
-            <span class="header__announcement-countdown-label font-caption2 weight-semibold">days</span>
-          </div>
-          <div class="header__announcement-countdown-group">
-            <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-hours>00</span>
-            <span class="header__announcement-countdown-label font-caption2 weight-semibold">hours</span>
-          </div>
-          <div class="header__announcement-countdown-group">
-            <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-mins>00</span>
-            <span class="header__announcement-countdown-label font-caption2 weight-semibold">mins</span>
-          </div>
-          <div class="header__announcement-countdown-group">
-            <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-secs>00</span>
-            <span class="header__announcement-countdown-label font-caption2 weight-semibold">secs</span>
-          </div>
+      <div class="header__announcement-content">
+        <div class="header__announcement-emojis" aria-hidden="true">
+          <span class="header__announcement-emoji header__announcement-emoji--left">
+            <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
+          </span>
+          <span class="header__announcement-emoji header__announcement-emoji--right">
+            <img src="{{ announcement_emoji_asset | asset_url }}" alt="" loading="eager" width="20" height="20">
+          </span>
         </div>
-      {% endif %}
+
+        <div class="header__announcement-top">
+          <p class="header__announcement-text font-caption weight-semibold">{{ announcement_text | escape | newline_to_br }}</p>
+        </div>
+
+        {% if show_announcement_countdown %}
+          <div class="header__announcement-countdown" data-announcement-countdown data-sale-end-date="{{ sale_end_date | escape }}" hidden>
+            <div class="header__announcement-countdown-group">
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>00</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">days</span>
+            </div>
+            <div class="header__announcement-countdown-group">
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-hours>00</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">hours</span>
+            </div>
+            <div class="header__announcement-countdown-group">
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-mins>00</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">mins</span>
+            </div>
+            <div class="header__announcement-countdown-group">
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-secs>00</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">secs</span>
+            </div>
+          </div>
+        {% endif %}
+      </div>
     </div>
   {% endif %}
 
@@ -541,19 +543,26 @@
     align-items: center;
     background: var(--sb-announcement-background, var(--sb-gradient-default-1));
     display: flex;
-    flex-direction: column;
-    gap: var(--sb-announcement-row-gap);
     justify-content: center;
     min-height: var(--sb-announcement-min-height);
     padding: var(--sb-space-8) var(--page-margin, 16px);
-    position: relative;
     width: 100%;
+  }
+
+  .header__announcement-content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-announcement-row-gap);
+    max-width: 100%;
+    position: relative;
+    width: fit-content;
   }
 
   .header__announcement-emojis {
     align-items: center;
     display: flex;
-    inset: 0 var(--page-margin, 16px);
+    inset: 0 calc(-1 * (var(--sb-space-20) + var(--sb-space-16)));
     justify-content: space-between;
     pointer-events: none;
     position: absolute;
@@ -561,7 +570,6 @@
 
   .header__announcement-top {
     display: block;
-    padding-inline: calc(var(--sb-space-20) + var(--sb-space-16));
     width: 100%;
   }
 
@@ -598,6 +606,10 @@
     gap: var(--sb-space-12);
     justify-content: center;
     width: 100%;
+  }
+
+  .header__announcement-countdown[hidden] {
+    display: none;
   }
 
   .header__announcement-countdown-group {
