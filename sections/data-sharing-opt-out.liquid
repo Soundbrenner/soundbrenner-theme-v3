@@ -6,6 +6,10 @@
   <div class="sb-data-sharing-opt-out__content rte font-body weight-regular sb-flow-24" data-sb-reveal-item>
     {{ page.content }}
   </div>
+
+  {% unless page.content contains 'pc--optOutFormContainer' or page.content contains 'pc--opt-out-form-container' %}
+    <div id="pc--optOutFormContainer" data-sb-reveal-item></div>
+  {% endunless %}
 </section>
 
 {% stylesheet %}
@@ -81,9 +85,9 @@
     font-family: var(--font-primary--family) !important;
     font-size: var(--font-size-form-input) !important;
     font-weight: 400 !important;
-    height: 48px;
-    line-height: 48px;
-    padding-inline: 20px;
+    height: var(--sb-space-48);
+    line-height: var(--sb-space-48);
+    padding-inline: var(--sb-space-20);
     width: 100%;
     -webkit-appearance: none !important;
     appearance: none !important;
@@ -105,6 +109,20 @@
     width: min(100%, 400px) !important;
   }
 
+  @media (max-width: 989px) {
+    .sb-data-sharing-opt-out #pc--opt-out-form,
+    .sb-data-sharing-opt-out .pc--opt-out-form-container {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .sb-data-sharing-opt-out #pc--opt-out-button.sb-button-radiant {
+      align-self: flex-start !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+
   .sb-data-sharing-opt-out #pc--opt-out-button .sb-button-radiant__label {
     align-items: center;
     display: inline-flex;
@@ -120,8 +138,6 @@
     const root = document.querySelector('.sb-data-sharing-opt-out');
     if (!root) return;
 
-    const arrowSvg = {{ 'arrow-reduced-padding.svg' | inline_asset_content | json }};
-
     const applyOptOutOverrides = () => {
       const button = root.querySelector('#pc--opt-out-button');
       const emailInput = root.querySelector('#pc--opt-out-email_input');
@@ -133,23 +149,6 @@
         if (!emailInput.getAttribute('placeholder')) {
           emailInput.setAttribute('placeholder', 'Email');
         }
-      }
-
-      const existingLabel = button.querySelector('.sb-button-radiant__label');
-      if (!existingLabel) {
-        const labelText = (button.textContent || '').trim() || 'Opt out';
-        button.textContent = '';
-
-        const label = document.createElement('span');
-        label.className = 'sb-button-radiant__label';
-        label.textContent = labelText;
-
-        const icon = document.createElement('span');
-        icon.className = 'sb-button-radiant__icon';
-        icon.setAttribute('aria-hidden', 'true');
-        icon.innerHTML = arrowSvg;
-
-        button.append(label, icon);
       }
     };
 
