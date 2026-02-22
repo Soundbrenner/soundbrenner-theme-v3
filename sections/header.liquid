@@ -12,6 +12,24 @@
 
 {% liquid
   assign primary_navigation = section.settings.primary_navigation
+  assign show_language = section.settings.show_language
+  if show_language == blank
+    assign show_language = true
+  endif
+  if localization.available_languages.size <= 1
+    assign show_language = false
+  endif
+  assign show_country = section.settings.show_country
+  if show_country == blank
+    assign show_country = true
+  endif
+  if localization.available_countries.size <= 1
+    assign show_country = false
+  endif
+  assign show_country_flag = section.settings.country_selector_style
+  if show_country_flag == blank
+    assign show_country_flag = true
+  endif
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
   assign announcement_text = settings.seasonal_announcement_copy | strip
   assign announcement_text = announcement_text | replace: '{{ Seasonal sale name }}', seasonal_sale_name
@@ -64,6 +82,10 @@
       assign announcement_emoji_asset = 'emoji-sale-anniversary.png'
   endcase
 %}
+
+{% if show_country or show_language %}
+  <script src="{{ 'localization.js' | asset_url }}" defer></script>
+{% endif %}
 
 <header
   class="header full-width{% if show_announcement %} has-announcement{% endif %}"
@@ -463,6 +485,58 @@
     </nav>
 
     <div class="header__icons header__icons--right">
+      {% if show_country or show_language %}
+        {% if show_country %}
+          <dropdown-localization-component class="header__localization header__icon-link--desktop-only">
+            <button
+              type="button"
+              class="header__localization-button font-caption2 weight-semibold"
+              aria-expanded="false"
+              aria-controls="HeaderLocalizationPanel-{{ section.id }}"
+              data-localization-ref="button"
+            >
+              {% if show_country_flag %}
+                <span
+                  class="header__localization-flag"
+                  aria-hidden="true"
+                  style="background-image: url('{{ localization.country | image_url: width: 32 }}');"
+                ></span>
+              {% endif %}
+              <span class="header__localization-currency">{{ localization.country.currency.iso_code }}</span>
+              {% if show_language %}
+                <span class="header__localization-divider" aria-hidden="true">/</span>
+                <span class="header__localization-language">{{ localization.language.iso_code | upcase }}</span>
+              {% endif %}
+              <span class="header__localization-caret" aria-hidden="true">
+                {{ 'icon-chevron.svg' | inline_asset_content }}
+              </span>
+              <span class="visually-hidden">Country and language selector</span>
+            </button>
+            <div
+              id="HeaderLocalizationPanel-{{ section.id }}"
+              class="header__localization-panel header__localization-panel--{{ section.settings.localization_position | default: 'right' }}"
+              hidden
+              data-localization-ref="panel"
+            >
+              {% render 'localization-form',
+                show_country: show_country,
+                show_language: show_language,
+                localization_style: 'dropdown',
+                form_id: section.id | append: '-dropdown'
+              %}
+            </div>
+          </dropdown-localization-component>
+        {% elsif show_language %}
+          <div class="header__localization header__localization--language-only header__icon-link--desktop-only">
+            {% render 'localization-form',
+              show_country: false,
+              show_language: show_language,
+              localization_style: 'dropdown',
+              form_id: section.id | append: '-inline'
+            %}
+          </div>
+        {% endif %}
+      {% endif %}
       <a
         class="header__icon-link header__icon-link--search header__icon-link--desktop-only"
         href="{{ routes.search_url }}"
@@ -1509,6 +1583,355 @@
 
   .header__icon-link--cart svg [fill] {
     fill: currentColor;
+  }
+
+  .header__localization {
+    align-items: center;
+    display: inline-flex;
+    position: relative;
+  }
+
+  .header__localization-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--sb-color-neutral-900);
+    cursor: pointer;
+    display: inline-flex;
+    gap: var(--sb-space-4);
+    line-height: 0;
+    padding: 0;
+  }
+
+  .header__localization-button:hover,
+  .header__localization-button:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__localization-flag {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 999px;
+    box-shadow: inset 0 0 var(--sb-space-2) var(--sb-color-always-black-25);
+    display: inline-flex;
+    height: var(--sb-space-16);
+    width: var(--sb-space-16);
+  }
+
+  .header__localization-divider {
+    color: currentColor;
+    line-height: 1;
+  }
+
+  .header__localization-caret {
+    align-items: center;
+    display: inline-flex;
+    height: var(--sb-space-12);
+    justify-content: center;
+    transform: rotate(90deg);
+    width: var(--sb-space-12);
+  }
+
+  .header__localization-caret svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .header__localization-caret svg [fill] {
+    fill: currentColor;
+  }
+
+  dropdown-localization-component[data-open='true'] .header__localization-caret {
+    transform: rotate(-90deg);
+  }
+
+  .header__localization-panel {
+    background: var(--sb-color-neutral-100);
+    border: 1px solid var(--sb-color-neutral-600);
+    border-radius: var(--sb-space-24);
+    box-shadow: 0 var(--sb-space-8) var(--sb-space-24) 0 var(--sb-color-always-black-25);
+    max-width: min(calc(var(--sb-space-128) * 4), calc(100vw - var(--sb-space-32)));
+    min-width: calc(var(--sb-space-128) * 3);
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    top: calc(100% + var(--sb-space-12));
+    transform: translateY(var(--sb-space-8));
+    transition:
+      opacity 220ms ease,
+      transform 220ms ease;
+    z-index: 82;
+  }
+
+  .header__localization-panel.is-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .header__localization-panel--left {
+    left: 0;
+  }
+
+  .header__localization-panel--right {
+    right: 0;
+  }
+
+  localization-form-component {
+    display: block;
+  }
+
+  .localization-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .country-filter {
+    border-bottom: 1px solid var(--sb-color-neutral-600);
+    padding: var(--sb-space-12);
+  }
+
+  .country-filter.is-scrolled {
+    box-shadow: 0 var(--sb-space-2) var(--sb-space-6) 0 var(--sb-color-always-black-25);
+  }
+
+  .country-filter__field {
+    align-items: center;
+    background: var(--sb-color-neutral-200);
+    border: 1px solid var(--sb-color-neutral-600);
+    border-radius: 999px;
+    display: flex;
+    min-height: var(--sb-space-36);
+    padding: 0 var(--sb-space-12);
+  }
+
+  .country-filter__search-icon {
+    align-items: center;
+    color: var(--sb-color-neutral-800);
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: var(--sb-space-14);
+    justify-content: center;
+    width: var(--sb-space-14);
+  }
+
+  .country-filter__search-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .country-filter__search-icon svg [fill] {
+    fill: currentColor;
+  }
+
+  .country-filter__input {
+    background: transparent;
+    border: 0;
+    color: var(--sb-color-neutral-900);
+    flex: 1 1 auto;
+    min-height: var(--sb-space-36);
+    padding: 0 var(--sb-space-8);
+  }
+
+  .country-filter__input::placeholder {
+    color: var(--sb-color-neutral-800);
+  }
+
+  .country-filter__input:focus-visible {
+    outline: none;
+  }
+
+  .country-filter__reset-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--sb-color-neutral-800);
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: var(--sb-space-16);
+    justify-content: center;
+    padding: 0;
+    width: var(--sb-space-16);
+  }
+
+  .country-filter__reset-button svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .country-filter__reset-button svg [fill] {
+    fill: currentColor;
+  }
+
+  .country-selector-form__wrapper {
+    max-height: calc(var(--sb-space-48) * 8);
+    overflow: hidden;
+  }
+
+  .localization-form__list {
+    display: block;
+    max-height: calc(var(--sb-space-48) * 8);
+    overflow-y: auto;
+    padding: var(--sb-space-8);
+  }
+
+  .localization-form__list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .localization-form__list-item {
+    align-items: center;
+    border-radius: var(--sb-space-8);
+    color: var(--sb-color-neutral-900);
+    cursor: pointer;
+    display: grid;
+    gap: var(--sb-space-8);
+    grid-template-columns: var(--sb-space-16) minmax(0, 1fr) auto;
+    min-height: var(--sb-space-36);
+    padding: var(--sb-space-8) var(--sb-space-12);
+  }
+
+  .localization-form__list-item:hover,
+  .localization-form__list-item:focus-visible,
+  .localization-form__list-item[aria-selected='true'],
+  .localization-form__list-item[aria-current='true'] {
+    background: var(--sb-color-neutral-200);
+  }
+
+  .localization-form__list-item[aria-current='true'] {
+    color: var(--sb-color-primary-500);
+  }
+
+  .localization-form__list-item-disabled {
+    cursor: default;
+  }
+
+  .localization-form__list-item[hidden] {
+    display: none;
+  }
+
+  .localization-form__checkmark {
+    align-items: center;
+    color: currentColor;
+    display: inline-flex;
+    height: var(--sb-space-12);
+    justify-content: center;
+    opacity: 0;
+    width: var(--sb-space-12);
+  }
+
+  .localization-form__list-item[aria-current='true'] .localization-form__checkmark {
+    opacity: 1;
+  }
+
+  .localization-form__checkmark svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .localization-form__checkmark svg [fill] {
+    fill: currentColor;
+  }
+
+  .localization-form__currency {
+    color: var(--sb-color-neutral-800);
+    white-space: nowrap;
+  }
+
+  .language-selector {
+    align-items: center;
+    border-top: 1px solid var(--sb-color-neutral-600);
+    display: flex;
+    gap: var(--sb-space-12);
+    justify-content: space-between;
+    padding: var(--sb-space-12);
+  }
+
+  .language-selector__label {
+    color: var(--sb-color-neutral-800);
+  }
+
+  .localization-form__select-wrap {
+    align-items: center;
+    display: inline-flex;
+    position: relative;
+  }
+
+  .localization-form__select {
+    appearance: none;
+    background: var(--sb-color-neutral-200);
+    border: 1px solid var(--sb-color-neutral-600);
+    border-radius: 999px;
+    color: var(--sb-color-neutral-900);
+    min-height: var(--sb-space-36);
+    padding: 0 var(--sb-space-28) 0 var(--sb-space-12);
+  }
+
+  .localization-form__select:focus-visible {
+    outline: none;
+  }
+
+  .localization-form__select-caret {
+    align-items: center;
+    color: var(--sb-color-neutral-800);
+    display: inline-flex;
+    height: var(--sb-space-12);
+    justify-content: center;
+    pointer-events: none;
+    position: absolute;
+    right: var(--sb-space-12);
+    transform: rotate(90deg);
+    width: var(--sb-space-12);
+  }
+
+  .localization-form__select-caret svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .localization-form__select-caret svg [fill] {
+    fill: currentColor;
+  }
+
+  .header__localization--language-only localization-form-component {
+    width: auto;
+  }
+
+  .header__localization--language-only .localization-form {
+    min-width: 0;
+  }
+
+  .header__localization--language-only .language-selector {
+    border-top: 0;
+    padding: 0;
+  }
+
+  .header__localization--language-only .localization-form__select {
+    background: transparent;
+    border: 0;
+    min-height: 0;
+    padding: 0 var(--sb-space-14) 0 0;
+  }
+
+  .header__localization--language-only .localization-form__select-wrap {
+    color: var(--sb-color-neutral-900);
+  }
+
+  .header__localization--language-only .localization-form__select-wrap:hover,
+  .header__localization--language-only .localization-form__select-wrap:focus-within {
+    color: var(--sb-color-primary-500);
+  }
+
+  .header__localization--language-only .localization-form__select-caret {
+    right: 0;
   }
 
   .header [data-header-cart-link] {
@@ -3662,6 +4085,44 @@
       "id": "primary_navigation",
       "label": "Primary navigation",
       "info": "Top-level navigation. Dropdown content is configured with primary navigation items below."
+    },
+    {
+      "type": "header",
+      "content": "Localization"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country",
+      "label": "Show country or region selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "country_selector_style",
+      "label": "Show country flag",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "localization_position",
+      "label": "Localization panel alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
     }
   ],
   "blocks": [
