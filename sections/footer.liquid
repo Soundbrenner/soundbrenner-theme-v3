@@ -663,6 +663,20 @@
     const setImportant = (el, prop, value) => {
       el.style.setProperty(prop, value, 'important');
     };
+    let submitScrubInterval = null;
+    const stopSubmitScrub = () => {
+      if (!submitScrubInterval) return;
+      window.clearInterval(submitScrubInterval);
+      submitScrubInterval = null;
+    };
+    const startSubmitScrub = (callback) => {
+      stopSubmitScrub();
+      const startedAt = Date.now();
+      submitScrubInterval = window.setInterval(() => {
+        callback();
+        if (Date.now() - startedAt > 1400) stopSubmitScrub();
+      }, 40);
+    };
 
     const applyKlaviyoOverrides = () => {
       const root = document.querySelector('.sb-footer__newsletter-klaviyo');
@@ -781,7 +795,19 @@
       button
         .querySelectorAll("[role='progressbar'], progress, [class*='loading' i], [class*='spinner' i], [class*='progress' i]")
         .forEach((node) => node.remove());
+      if (lastComponent) {
+        lastComponent
+          .querySelectorAll("[role='progressbar'], progress, [class*='loading' i], [class*='spinner' i], [class*='progress' i]")
+          .forEach((node) => node.remove());
+      }
       button.querySelectorAll('*').forEach((child) => setImportant(child, 'display', 'none'));
+      if (!button.dataset.sbKlaviyoScrubBound) {
+        button.dataset.sbKlaviyoScrubBound = 'true';
+        button.addEventListener('click', () => {
+          requestApply();
+          startSubmitScrub(requestApply);
+        });
+      }
     };
 
     const requestApply = () => window.requestAnimationFrame(applyKlaviyoOverrides);
