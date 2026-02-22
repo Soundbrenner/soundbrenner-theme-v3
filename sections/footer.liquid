@@ -769,6 +769,18 @@
       setImportant(button, 'background-size', 'var(--sb-space-16) var(--sb-space-16)');
       setImportant(button, 'background-image', `url("${iconUrl}")`);
       button.textContent = '';
+      button.removeAttribute('aria-busy');
+      button.removeAttribute('data-loading');
+      button.disabled = false;
+      Array.from(button.classList).forEach((className) => {
+        const lower = className.toLowerCase();
+        if (lower.includes('loading') || lower.includes('spinner') || lower.includes('progress')) {
+          button.classList.remove(className);
+        }
+      });
+      button
+        .querySelectorAll("[role='progressbar'], progress, [class*='loading' i], [class*='spinner' i], [class*='progress' i]")
+        .forEach((node) => node.remove());
       button.querySelectorAll('*').forEach((child) => setImportant(child, 'display', 'none'));
     };
 

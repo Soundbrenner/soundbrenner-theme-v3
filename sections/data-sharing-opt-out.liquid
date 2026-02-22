@@ -36,9 +36,11 @@
 
   .sb-data-sharing-opt-out #pc--opt-out-form,
   .sb-data-sharing-opt-out .pc--opt-out-form-container {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-20);
+    text-align: left;
     width: 100%;
   }
 
@@ -131,12 +133,40 @@
     line-height: 1 !important;
     text-transform: none !important;
   }
+
+  .sb-data-sharing-opt-out .pc--opt-out-form-message--success {
+    align-items: center;
+    color: var(--sb-color-primary-500) !important;
+    display: inline-flex !important;
+    font-family: var(--font-primary--family) !important;
+    font-size: var(--font-size-body) !important;
+    font-weight: 700 !important;
+    gap: var(--sb-space-12);
+    justify-content: flex-start;
+    margin-top: var(--sb-space-24) !important;
+    text-align: left !important;
+  }
+
+  .sb-data-sharing-opt-out .pc--opt-out-form-message--success .icon-success {
+    display: none !important;
+  }
+
+  .sb-data-sharing-opt-out .pc--opt-out-form-message--success::before {
+    background-color: var(--sb-color-primary-500);
+    content: '';
+    flex: 0 0 auto;
+    height: var(--sb-space-20);
+    width: var(--sb-space-20);
+    -webkit-mask: center / contain no-repeat url('{{ 'icon-check.svg' | asset_url }}');
+    mask: center / contain no-repeat url('{{ 'icon-check.svg' | asset_url }}');
+  }
 {% endstylesheet %}
 
 <script>
   (() => {
     const root = document.querySelector('.sb-data-sharing-opt-out');
     if (!root) return;
+    const arrowSvg = {{ 'arrow-reduced-padding.svg' | inline_asset_content | json }};
 
     const applyOptOutOverrides = () => {
       const button = root.querySelector('#pc--opt-out-button');
@@ -149,6 +179,23 @@
         if (!emailInput.getAttribute('placeholder')) {
           emailInput.setAttribute('placeholder', 'Email');
         }
+      }
+
+      const hasLabel = button.querySelector('.sb-button-radiant__label');
+      if (!hasLabel) {
+        const buttonLabelText = (button.textContent || '').trim() || 'Opt out';
+        button.textContent = '';
+
+        const labelNode = document.createElement('span');
+        labelNode.className = 'sb-button-radiant__label';
+        labelNode.textContent = buttonLabelText;
+
+        const iconNode = document.createElement('span');
+        iconNode.className = 'sb-button-radiant__icon';
+        iconNode.setAttribute('aria-hidden', 'true');
+        iconNode.innerHTML = arrowSvg;
+
+        button.append(labelNode, iconNode);
       }
     };
 
