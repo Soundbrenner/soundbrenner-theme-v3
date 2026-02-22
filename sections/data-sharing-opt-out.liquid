@@ -79,12 +79,14 @@
     box-sizing: border-box;
     color: var(--sb-color-always-black) !important;
     font-family: var(--font-primary--family) !important;
-    font-size: var(--font-size-caption) !important;
+    font-size: var(--font-size-form-input) !important;
     font-weight: 400 !important;
-    height: var(--sb-space-48);
-    line-height: var(--sb-space-48);
-    padding-inline: var(--sb-space-20);
+    height: 48px;
+    line-height: 48px;
+    padding-inline: 20px;
     width: 100%;
+    -webkit-appearance: none !important;
+    appearance: none !important;
   }
 
   .sb-data-sharing-opt-out #pc--opt-out-email_input::placeholder {
@@ -92,9 +94,10 @@
     opacity: 1;
   }
 
+  .sb-data-sharing-opt-out #pc--opt-out-email_input:focus,
   .sb-data-sharing-opt-out #pc--opt-out-email_input:focus-visible {
-    outline: 2px solid var(--sb-color-primary-500);
-    outline-offset: 2px;
+    outline: none !important;
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12) !important;
   }
 
   .sb-data-sharing-opt-out #pc--opt-out-button.sb-button-radiant {
