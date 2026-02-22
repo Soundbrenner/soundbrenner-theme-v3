@@ -468,11 +468,6 @@
     text-align: center !important;
   }
 
-  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child [role='progressbar'],
-  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child progress {
-    display: none !important;
-  }
-
   .sb-footer__list {
     display: flex;
     flex-direction: column;
@@ -674,13 +669,44 @@
       if (!root) return;
 
       const form = root.querySelector('.klaviyo-form');
+      if (!form) return;
+
       const input = root.querySelector('input[type="email"]');
       const button = root.querySelector('button');
+      const formRow = root.querySelector('[data-testid="form-row"]');
       const firstComponent = root.querySelector('[data-testid="form-component"]:first-child');
       const firstComponentInner = firstComponent ? firstComponent.querySelector('div') : null;
       const lastComponent = root.querySelector('[data-testid="form-component"]:last-child');
+      const successNode = root.querySelector("[id^='rich-text-'], .success_message, [data-testid='form-message'], [data-testid='success-message']");
       const iconUrl = {{ 'arrow-reduced-padding.svg' | asset_url | json }};
-      if (!form || !input || !button) return;
+      const hasSubmissionControls = Boolean(input && button);
+
+      if (!hasSubmissionControls && successNode) {
+        if (formRow) {
+          setImportant(formRow, 'align-items', 'center');
+          setImportant(formRow, 'min-height', '48px');
+        }
+        if (firstComponent) {
+          setImportant(firstComponent, 'display', 'flex');
+          setImportant(firstComponent, 'align-items', 'center');
+          setImportant(firstComponent, 'justify-content', 'center');
+          setImportant(firstComponent, 'padding', '0');
+          setImportant(firstComponent, 'min-height', '48px');
+          setImportant(firstComponent, 'flex', '1 1 auto');
+        }
+        if (firstComponentInner) {
+          setImportant(firstComponentInner, 'width', '100%');
+          setImportant(firstComponentInner, 'display', 'flex');
+          setImportant(firstComponentInner, 'align-items', 'center');
+          setImportant(firstComponentInner, 'justify-content', 'center');
+          setImportant(firstComponentInner, 'min-height', '48px');
+          setImportant(firstComponentInner, 'margin', '0');
+        }
+        setImportant(form, 'min-height', '48px');
+        return;
+      }
+
+      if (!hasSubmissionControls) return;
 
       input.classList.add('font-form-input', 'weight-regular');
       button.classList.add('sb-button-radiant', 'sb-button-radiant--medium');
@@ -743,6 +769,7 @@
       setImportant(button, 'background-size', 'var(--sb-space-16) var(--sb-space-16)');
       setImportant(button, 'background-image', `url("${iconUrl}")`);
       button.textContent = '';
+      button.querySelectorAll('*').forEach((child) => setImportant(child, 'display', 'none'));
     };
 
     const requestApply = () => window.requestAnimationFrame(applyKlaviyoOverrides);
