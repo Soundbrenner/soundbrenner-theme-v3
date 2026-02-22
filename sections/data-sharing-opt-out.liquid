@@ -147,12 +147,14 @@
     text-align: left !important;
   }
 
-  .sb-data-sharing-opt-out #pc--opt-out-message.pc--opt-out-form-message--success {
-    margin-top: var(--sb-space-24) !important;
+  .sb-data-sharing-opt-out #pc--opt-out-success {
+    display: none !important;
   }
 
   .sb-data-sharing-opt-out .pc--opt-out-form-message--success .icon-success {
     display: none !important;
+    margin: 0 !important;
+    width: 0 !important;
   }
 
   .sb-data-sharing-opt-out__success-icon {
@@ -160,6 +162,7 @@
     display: inline-flex;
     flex: 0 0 auto;
     height: var(--sb-space-20);
+    min-width: var(--sb-space-20);
     width: var(--sb-space-20);
   }
 
@@ -192,15 +195,17 @@
         secondarySuccessMessage.style.display = 'none';
       }
 
-      root.querySelectorAll('.pc--opt-out-form-message--success').forEach((messageNode) => {
-        const iconAlreadySet = messageNode.querySelector('.sb-data-sharing-opt-out__success-icon');
-        if (iconAlreadySet) return;
+      root.querySelectorAll('.sb-data-sharing-opt-out__success-icon').forEach((iconNode) => iconNode.remove());
+      const activeSuccessMessage = [primarySuccessMessage, secondarySuccessMessage]
+        .find((node) => node && window.getComputedStyle(node).display !== 'none');
+      if (activeSuccessMessage) {
+        activeSuccessMessage.querySelectorAll('.icon-success').forEach((node) => node.remove());
         const iconNode = document.createElement('span');
         iconNode.className = 'sb-data-sharing-opt-out__success-icon';
         iconNode.setAttribute('aria-hidden', 'true');
         iconNode.innerHTML = checkSvg;
-        messageNode.prepend(iconNode);
-      });
+        activeSuccessMessage.prepend(iconNode);
+      }
 
       if (!button) return;
 

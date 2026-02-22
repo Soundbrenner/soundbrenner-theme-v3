@@ -290,16 +290,16 @@
       0 4px 4px 0 var(--sb-color-always-black-25) inset !important;
   }
 
-  .sb-footer__newsletter-klaviyo .klaviyo-form:not(.is-success):hover,
-  .sb-footer__newsletter-klaviyo .klaviyo-form:not(.is-success):active,
-  .sb-footer__newsletter-klaviyo .klaviyo-form:not(.is-success):focus-within {
+  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:hover,
+  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:active,
+  .sb-footer__newsletter-klaviyo:not(.is-success) .klaviyo-form:focus-within {
     background-color: var(--sb-color-neutral-600) !important;
   }
 
-  .sb-footer__newsletter-klaviyo .klaviyo-form.is-success,
-  .sb-footer__newsletter-klaviyo .klaviyo-form.is-success:hover,
-  .sb-footer__newsletter-klaviyo .klaviyo-form.is-success:active,
-  .sb-footer__newsletter-klaviyo .klaviyo-form.is-success:focus-within {
+  .sb-footer__newsletter-klaviyo.is-success .klaviyo-form,
+  .sb-footer__newsletter-klaviyo.is-success .klaviyo-form:hover,
+  .sb-footer__newsletter-klaviyo.is-success .klaviyo-form:active,
+  .sb-footer__newsletter-klaviyo.is-success .klaviyo-form:focus-within {
     background-color: var(--sb-color-neutral-500) !important;
     cursor: default !important;
     pointer-events: none !important;
@@ -709,6 +709,7 @@
       );
       const isSuccessState = successVisible || (!hasSubmissionControls && Boolean(successNode));
       form.classList.toggle('is-success', isSuccessState);
+      root.classList.toggle('is-success', isSuccessState);
       if (isSuccessState) {
         form.setAttribute('aria-disabled', 'true');
       } else {
@@ -718,6 +719,7 @@
       if (isSuccessState && successNode) {
         setImportant(form, 'background-color', 'var(--sb-color-neutral-500)');
         setImportant(form, 'cursor', 'default');
+        setImportant(form, 'pointer-events', 'none');
         if (formRow) {
           setImportant(formRow, 'align-items', 'center');
           setImportant(formRow, 'min-height', '48px');
@@ -741,6 +743,7 @@
         setImportant(form, 'min-height', '48px');
         return;
       }
+      setImportant(form, 'pointer-events', 'auto');
 
       if (!hasSubmissionControls) return;
 
