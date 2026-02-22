@@ -366,6 +366,10 @@
     z-index: 4 !important;
   }
 
+  .sb-footer__newsletter-klaviyo .klaviyo-form button > * {
+    display: none !important;
+  }
+
   .sb-footer__newsletter-klaviyo .klaviyo-form button::before {
     background: var(--sb-color-always-black-25);
     border-radius: 30px;
@@ -454,6 +458,24 @@
     border: 0 !important;
     box-shadow: none !important;
     outline: none !important;
+  }
+
+  .sb-footer__newsletter-success-message {
+    color: var(--sb-color-neutral-900) !important;
+    font-family: var(--font-primary--family) !important;
+    font-size: var(--font-size-form-input) !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child [role='progressbar'],
+  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child progress,
+  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child [class*='loading' i],
+  .sb-footer__newsletter-klaviyo .klaviyo-form [data-testid='form-component']:last-child [class*='spinner' i] {
+    display: none !important;
   }
 
   .sb-footer__list {
@@ -726,6 +748,10 @@
       setImportant(button, 'background-size', 'var(--sb-space-16) var(--sb-space-16)');
       setImportant(button, 'background-image', `url("${iconUrl}")`);
       button.textContent = '';
+
+      root
+        .querySelectorAll("[data-testid*='success' i], [data-testid*='message' i], .success_message")
+        .forEach((node) => node.classList.add('sb-footer__newsletter-success-message'));
     };
 
     const requestApply = () => window.requestAnimationFrame(applyKlaviyoOverrides);

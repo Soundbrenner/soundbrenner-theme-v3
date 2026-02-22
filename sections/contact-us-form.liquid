@@ -1,10 +1,10 @@
 <section class="sb-contact-form" data-sb-reveal>
   <div class="sb-contact-form__inner">
-    {% assign contact_posted_in_query = request.query_string | default: '' | downcase | contains: 'contact_posted=true' %}
+    {% assign contact_query_string = request.query_string | default: '' | downcase %}
     {% form 'contact', class: 'sb-contact-form__form' %}
       <input type="hidden" name="return_to" value="{{ request.path | append: '?contact_posted=true' }}">
 
-      {% if form.posted_successfully? or contact_posted_in_query %}
+      {% if form.posted_successfully? or contact_query_string contains 'contact_posted=true' %}
         <h3 class="sb-contact-form__success-title font-title weight-bold">
           Thank you for contacting us. We'll get back as soon as possible.
         </h3>
