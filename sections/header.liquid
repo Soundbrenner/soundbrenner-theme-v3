@@ -12,35 +12,24 @@
 
 {% liquid
   assign primary_navigation = section.settings.primary_navigation
-  assign show_language = section.settings.show_language
-  if show_language == blank
-    assign show_language = true
-  endif
+  assign show_language = true
   if localization.available_languages.size <= 1
     assign show_language = false
   endif
-  assign show_country = section.settings.show_country
-  if show_country == blank
-    assign show_country = true
-  endif
+  assign show_country = true
   if localization.available_countries.size <= 1
     assign show_country = false
   endif
-  assign show_country_flag = section.settings.country_selector_style
-  if show_country_flag == blank
-    assign show_country_flag = true
-  endif
+  assign show_country_flag = true
+  assign localization_position = 'right'
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
-  assign seasonal_sale_token = '{{ Seasonal sale name }}'
+  assign sale_name_token = '{{ Sale name }}'
+  assign sitewide_discount_depth_token = '{{ Sitewide discount depth }}'
   assign shipping_country_token = '{{ Shipping country }}'
   assign free_shipping_threshold_token = '{{ Free shipping threshold }}'
   assign affiliate_name_token = '{{ Affiliate name }}'
-  assign affiliate_discount_depth_token = '{{ Global affiliate discount depth }}'
-  assign global_affiliate_discount_depth = settings.global_affiliate_discount_depth | default: 20 | strip
-  assign affiliate_announcement_copy = settings.affiliate_announcement_copy | strip
-  if affiliate_announcement_copy == blank
-    assign affiliate_announcement_copy = '{{ Affiliate name }}: {{ Global affiliate discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}'
-  endif
+  assign sitewide_seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 48 | strip
+  assign sitewide_affiliate_discount_depth = settings.sitewide_affiliate_discount_depth | default: 20 | strip
   assign affiliate_announcement_gradient_value = 'linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%)'
   assign header_affiliate_metaobject = blank
   if request.page_type == 'page' and page != blank
@@ -56,12 +45,18 @@
   if header_affiliate_metaobject != blank
     assign is_affiliate_page = true
   endif
+  assign use_affiliate_announcement_override = false
+  if is_affiliate_page
+    assign use_affiliate_announcement_override = true
+  endif
   assign header_affiliate_name = ''
+  assign header_affiliate_discount_code = ''
   if header_affiliate_metaobject != blank
     assign header_affiliate_name = header_affiliate_metaobject.full_name.value | default: header_affiliate_metaobject.full_name | strip
     if header_affiliate_name == blank
       assign header_affiliate_name = header_affiliate_metaobject.discount_name.value | default: header_affiliate_metaobject.discount_name | strip
     endif
+    assign header_affiliate_discount_code = header_affiliate_metaobject.discount_name.value | default: header_affiliate_metaobject.discount_name | strip
   endif
   if header_affiliate_name == blank and page != blank
     assign header_affiliate_name = page.title | strip
@@ -95,44 +90,48 @@
     endif
   endif
 
-  if is_affiliate_page
-    assign announcement_text = affiliate_announcement_copy
-    assign announcement_text = announcement_text | replace: affiliate_name_token, header_affiliate_name
-    assign announcement_text = announcement_text | replace: affiliate_discount_depth_token, global_affiliate_discount_depth
+  assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
+  assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy_no_free_shipping | strip
+  assign announcement_text_blocked = settings.seasonal_announcement_copy_blocked | strip
+  if announcement_text_free_shipping == blank
+    assign announcement_text_free_shipping = '{{ Sale name }}: {{ Sitewide discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}'
+  endif
+  if announcement_text_no_free_shipping == blank
+    assign announcement_text_no_free_shipping = '{{ Sale name }}: {{ Sitewide discount depth }}% off in {{ Shipping country }}'
+  endif
+  if announcement_text_blocked == blank
+    assign announcement_text_blocked = "We're not shipping to {{ Shipping country }}. Select a different country."
+  endif
+
+  if seasonal_shipping_is_blocked
+    assign announcement_text = announcement_text_blocked
+  elsif seasonal_shipping_has_free_shipping
+    assign announcement_text = announcement_text_free_shipping
+  else
+    assign announcement_text = announcement_text_no_free_shipping
+  endif
+
+  if use_affiliate_announcement_override
+    assign resolved_sale_name = header_affiliate_name
+    assign resolved_discount_depth = sitewide_affiliate_discount_depth
     assign announcement_gradient = affiliate_announcement_gradient_value
   else
-    assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
-    assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy_no_free_shipping | strip
-    assign announcement_text_blocked = settings.seasonal_announcement_copy_blocked | strip
-    if announcement_text_free_shipping == blank
-      assign announcement_text_free_shipping = settings.seasonal_announcement_copy | strip
-    endif
-    if announcement_text_no_free_shipping == blank
-      assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy | strip
-    endif
-    if announcement_text_blocked == blank
-      assign announcement_text_blocked = settings.seasonal_announcement_copy | strip
-    endif
-
-    if seasonal_shipping_is_blocked
-      assign announcement_text = announcement_text_blocked
-    elsif seasonal_shipping_has_free_shipping
-      assign announcement_text = announcement_text_free_shipping
-    else
-      assign announcement_text = announcement_text_no_free_shipping
-    endif
-    assign announcement_text = announcement_text | replace: seasonal_sale_token, seasonal_sale_name
+    assign resolved_sale_name = seasonal_sale_name
+    assign resolved_discount_depth = sitewide_seasonal_discount_depth
     assign announcement_gradient = settings.seasonal_announcement_gradient | default: 'linear-gradient(90deg, #E9CC92 0%, #92734F 33%, #92734F 66%, #E9CC92 100%)'
   endif
+  assign announcement_text = announcement_text | replace: sale_name_token, resolved_sale_name
+  assign announcement_text = announcement_text | replace: sitewide_discount_depth_token, resolved_discount_depth
   assign announcement_text = announcement_text | replace: shipping_country_token, seasonal_shipping_country_name
   assign announcement_text = announcement_text | replace: free_shipping_threshold_token, seasonal_free_shipping_threshold_display
+  assign announcement_text = announcement_text | replace: affiliate_name_token, resolved_sale_name
   assign show_announcement = false
   if announcement_text != blank
     assign show_announcement = true
   endif
   assign sale_end_date = settings.seasonal_sale_end_date | strip
   assign show_announcement_countdown = false
-  if show_announcement and sale_end_date != blank and seasonal_shipping_is_blocked == false and is_affiliate_page == false
+  if show_announcement and sale_end_date != blank and seasonal_shipping_is_blocked == false and use_affiliate_announcement_override == false
     assign show_announcement_countdown = true
   endif
   assign announcement_emoji_asset = 'emoji-sale-new-year.png'
@@ -182,6 +181,39 @@
   <script src="{{ 'localization.js' | asset_url }}" defer></script>
 {% endif %}
 <script src="{{ 'cart-system.js' | asset_url }}" defer></script>
+{% if is_affiliate_page and header_affiliate_discount_code != blank %}
+  <script>
+    (() => {
+      const code = {{ header_affiliate_discount_code | json }};
+      if (!code) return;
+      const appliedKey = `sb-affiliate-discount-applied-${code}`;
+      const pendingKey = `sb-affiliate-discount-pending-${code}`;
+
+      try {
+        if (window.sessionStorage.getItem(appliedKey) === '1') return;
+        if (window.sessionStorage.getItem(pendingKey) === '1') {
+          window.sessionStorage.removeItem(pendingKey);
+          window.sessionStorage.setItem(appliedKey, '1');
+          return;
+        }
+      } catch (_) {
+        return;
+      }
+
+      const currentUrl = new URL(window.location.href);
+      const redirectUrl = `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`;
+
+      try {
+        window.sessionStorage.setItem(pendingKey, '1');
+      } catch (_) {
+        return;
+      }
+
+      const destination = `/discount/${encodeURIComponent(code)}?redirect=${encodeURIComponent(redirectUrl)}`;
+      window.location.replace(destination);
+    })();
+  </script>
+{% endif %}
 
 <header
   class="header full-width{% if show_announcement %} has-announcement{% endif %}"
@@ -610,7 +642,7 @@
             </button>
             <div
               id="HeaderLocalizationPanel-{{ section.id }}"
-              class="header__localization-panel header__localization-panel--{{ section.settings.localization_position | default: 'right' }}"
+              class="header__localization-panel header__localization-panel--{{ localization_position }}"
               data-localization-ref="panel"
             >
               <div class="header__localization-panel-surface">
@@ -5250,44 +5282,6 @@
       "id": "primary_navigation",
       "label": "Primary navigation",
       "info": "Top-level navigation. Dropdown content is configured with primary navigation items below."
-    },
-    {
-      "type": "header",
-      "content": "Localization"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_country",
-      "label": "Show country or region selector",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "country_selector_style",
-      "label": "Show country flag",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_language",
-      "label": "Show language selector",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "localization_position",
-      "label": "Localization panel alignment",
-      "options": [
-        {
-          "value": "left",
-          "label": "Left"
-        },
-        {
-          "value": "right",
-          "label": "Right"
-        }
-      ],
-      "default": "right"
     }
   ],
   "blocks": [

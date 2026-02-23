@@ -8,19 +8,25 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
-    "name": "Seasonal sale",
+    "name": "Deal campaign",
     "settings": [
       {
         "type": "text",
         "id": "seasonal_sale_name",
-        "label": "Seasonal sale name",
+        "label": "Seasonal deal name",
         "default": "Spring Sale",
-        "info": "Use {{ Seasonal sale name }} to insert the sale name."
+        "info": "Use {{ Sale name }} to insert the sale name."
       },
       {
         "type": "number",
-        "id": "global_affiliate_discount_depth",
-        "label": "Global affiliate discount depth",
+        "id": "sitewide_seasonal_discount_depth",
+        "label": "Sitewide seasonal discount depth",
+        "default": 48
+      },
+      {
+        "type": "number",
+        "id": "sitewide_affiliate_discount_depth",
+        "label": "Sitewide affiliate discount depth",
         "default": 20
       },
       {
@@ -93,21 +99,15 @@
       },
       {
         "type": "textarea",
-        "id": "affiliate_announcement_copy",
-        "label": "Affiliate page",
-        "default": "{{ Affiliate name }}: {{ Global affiliate discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}"
-      },
-      {
-        "type": "textarea",
         "id": "seasonal_announcement_copy_free_shipping",
         "label": "Free shipping",
-        "default": "{{ Seasonal sale name }}: up to 48% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}"
+        "default": "{{ Sale name }}: {{ Sitewide discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}"
       },
       {
         "type": "textarea",
         "id": "seasonal_announcement_copy_no_free_shipping",
         "label": "No free shipping",
-        "default": "{{ Seasonal sale name }}: up to 48% off in {{ Shipping country }}"
+        "default": "{{ Sale name }}: {{ Sitewide discount depth }}% off in {{ Shipping country }}"
       },
       {
         "type": "textarea",
@@ -130,28 +130,28 @@
       {
         "type": "text",
         "id": "seasonal_hero_kicker",
-        "label": "Seasonal hero card kicker"
+        "label": "Hero card kicker"
       },
       {
         "type": "textarea",
         "id": "seasonal_hero_headline",
-        "label": "Seasonal hero card headline"
+        "label": "Hero card headline"
       },
       {
         "type": "header",
-        "content": "Seasonal hero card subheadline"
+        "content": "Hero card subheadline"
       },
       {
         "type": "textarea",
         "id": "seasonal_hero_subheadline_free_shipping",
         "label": "Free shipping",
-        "default": "Save up to 48% and get free shipping in {{ Shipping country }} on orders over {{ Free shipping threshold }}."
+        "default": "Save up to {{ Sitewide discount depth }}% and get free shipping in {{ Shipping country }} on orders over {{ Free shipping threshold }}."
       },
       {
         "type": "textarea",
         "id": "seasonal_hero_subheadline_no_free_shipping",
         "label": "No free shipping",
-        "default": "Save up to 48% in {{ Shipping country }}."
+        "default": "Save up to {{ Sitewide discount depth }}% in {{ Shipping country }}."
       },
       {
         "type": "textarea",
@@ -162,12 +162,12 @@
       {
         "type": "text",
         "id": "seasonal_hero_button_label",
-        "label": "Seasonal hero card button label"
+        "label": "Hero card button label"
       },
       {
         "type": "url",
         "id": "seasonal_hero_button_link",
-        "label": "Seasonal hero card button link"
+        "label": "Hero card button link"
       }
     ]
   },
