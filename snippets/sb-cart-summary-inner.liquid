@@ -1,5 +1,9 @@
 {% liquid
   assign sb_cart_checkout_mode = checkout_mode | default: 'link'
+  assign sb_cart_show_clear = show_clear
+  if sb_cart_show_clear == blank
+    assign sb_cart_show_clear = true
+  endif
 %}
 
 <div class="header__cart-discount">
@@ -69,5 +73,7 @@
     </a>
   {% endif %}
 
-  <button type="button" class="{{ clear_button_class }}" data-cart-clear>Clear cart</button>
+  {% if sb_cart_show_clear %}
+    <button type="button" class="{{ clear_button_class }}" data-cart-clear>Clear cart</button>
+  {% endif %}
 </div>

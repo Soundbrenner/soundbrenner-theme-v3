@@ -15,20 +15,20 @@
       if item_variant == 'Default Title'
         assign item_variant = blank
       endif
-      assign item_image = item.image | image_url: width: 224
+      assign item_image = item.image | image_url: width: 256
     %}
     <li class="sb-cart-line" data-cart-line="{{ item_line }}">
       <a class="sb-cart-line__media" href="{{ item.url }}">
         {% if item_image != blank %}
-          <img class="sb-cart-line__image" src="{{ item_image }}" alt="{{ item_title | escape }}" loading="lazy" width="112" height="112">
+          <img class="sb-cart-line__image" src="{{ item_image }}" alt="{{ item_title | escape }}" loading="lazy" width="128" height="128">
         {% else %}
           <img
             class="sb-cart-line__image"
             src="{{ sb_cart_placeholder_image }}"
             alt="{{ item_title | escape }}"
             loading="lazy"
-            width="112"
-            height="112"
+            width="128"
+            height="128"
           >
         {% endif %}
       </a>

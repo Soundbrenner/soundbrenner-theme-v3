@@ -684,6 +684,7 @@
       this.itemListNode = this.querySelector('[data-cart-item-list]');
       this.emptyNode = this.querySelector('[data-cart-empty]');
       this.summaryNode = this.querySelector('[data-cart-summary]');
+      this.summaryDividerNode = this.querySelector('[data-cart-summary-divider]');
       this.subtotalNode = this.querySelector('[data-cart-subtotal]');
       this.totalNode = this.querySelector('[data-cart-total]');
       this.discountForm = this.querySelector('[data-cart-discount-form]');
@@ -1007,6 +1008,10 @@
           this.summaryNode.hidden = isEmpty;
         }
 
+        if (this.summaryDividerNode) {
+          this.summaryDividerNode.hidden = isEmpty;
+        }
+
         this.checkoutButtons.forEach((button) => {
           button.toggleAttribute('aria-disabled', isEmpty);
           if (button instanceof HTMLButtonElement || button instanceof HTMLInputElement) {
@@ -1098,7 +1103,7 @@
 
         lineItem.innerHTML = `
           <a class="sb-cart-line__media" href="${productUrl}">
-            <img class="sb-cart-line__image" src="${imageUrl}" alt="${title}" loading="lazy" width="112" height="112">
+            <img class="sb-cart-line__image" src="${imageUrl}" alt="${title}" loading="lazy" width="128" height="128">
           </a>
           <div class="sb-cart-line__content">
             <a class="sb-cart-line__title font-body weight-bold" href="${productUrl}">${title}</a>

@@ -85,6 +85,8 @@
           </div>
         </div>
 
+        <div class="sb-cart-page__divider" data-cart-summary-divider {% if cart.empty? %}hidden{% endif %} aria-hidden="true"></div>
+
         <aside class="sb-cart-page__summary" data-cart-summary {% if cart.empty? %}hidden{% endif %}>
           {% render 'sb-cart-summary-inner',
             discount_input_id: 'CartPageDiscountCode-' | append: section.id,
@@ -349,6 +351,16 @@
     display: none;
   }
 
+  .sb-cart-page__divider {
+    background: var(--sb-color-neutral-600);
+    display: none;
+    width: 1px;
+  }
+
+  .sb-cart-page__divider[hidden] {
+    display: none;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     html:active-view-transition-type(empty-cart-page) .sb-cart-items--page {
       view-transition-name: sb-cart-page-content;
@@ -402,12 +414,28 @@
 
     .sb-cart-page__layout {
       align-items: start;
-      gap: 0;
-      grid-template-columns: minmax(0, 1fr) calc(var(--sb-space-128) * 3 + var(--sb-space-16));
+      column-gap: 0;
+      grid-template-columns:
+        minmax(0, 1fr)
+        var(--sb-space-48)
+        1px
+        var(--sb-space-48)
+        calc(var(--sb-space-128) * 3 + var(--sb-space-16));
+      row-gap: 0;
+    }
+
+    .sb-cart-page__items-wrap {
+      grid-column: 1;
+    }
+
+    .sb-cart-page__divider {
+      align-self: stretch;
+      display: block;
+      grid-column: 3;
     }
 
     .sb-cart-page__summary {
-      border-left: 1px solid var(--sb-color-neutral-600);
+      grid-column: 5;
       max-width: calc(var(--sb-space-128) * 3 + var(--sb-space-16));
       padding: var(--sb-space-48);
       width: calc(var(--sb-space-128) * 3 + var(--sb-space-16));
