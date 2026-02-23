@@ -8,7 +8,7 @@
 - Keep implementations simple, maintainable, and idiomatic to Online Store 2.0.
 - When multiple approaches are possible, choose the one that is most native to Shopify and easiest for merchants to manage in the Theme Editor.
 - Use color variables only for colors in CSS. Do not hard-code color values in sections/components.
-- Use semantic spacing tokens only (for example `--sb-space-2` to `--sb-space-128`) instead of raw pixel/rem spacing values in component styles.
+- Use scaling spacing tokens only when explicitly requested by the user. Otherwise prefer fixed, non-scaling spacing values that match existing component behavior.
 - Use sentence case for UI copy labels and headings (for example `Section title`).
 - Keep Theme Editor helper/documentation copy minimal and direct.
 - When new assets are provided, always rename them to clean, Shopify-safe, usage-based filenames that match the element/component they are used in.

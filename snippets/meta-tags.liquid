@@ -100,7 +100,11 @@
 {%- endif -%}
 
 <title>
-  {%- if request.page_type == '404' -%}
+  {%- if request.page_type == 'cart' -%}
+    {%- assign cart_page_title = 'cart.title' | t -%}
+    {{ cart_page_title }}
+    {%- unless cart_page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  {%- elsif request.page_type == '404' -%}
     404 &ndash; {{ shop.name }}
   {%- else -%}
     {{ page_title }}

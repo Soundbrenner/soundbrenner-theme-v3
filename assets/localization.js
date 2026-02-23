@@ -6,7 +6,6 @@
         this.countryList = this.querySelector('[data-localization-ref="countryList"]');
         this.countryInput = this.querySelector('[data-localization-ref="countryInput"]');
         this.searchInput = this.querySelector('[data-localization-ref="search"]');
-        this.resetButton = this.querySelector('[data-localization-ref="resetButton"]');
         this.liveRegion = this.querySelector('[data-localization-ref="liveRegion"]');
         this.noResultsMessage = this.querySelector('[data-localization-ref="noResultsMessage"]');
         this.languageInput = this.querySelector('[data-localization-ref="languageInput"]');
@@ -16,23 +15,25 @@
         this.handleCountryKeydown = this.handleCountryKeydown.bind(this);
         this.handleSearchKeydown = this.handleSearchKeydown.bind(this);
         this.handleSearchInput = this.handleSearchInput.bind(this);
-        this.handleResetFilter = this.handleResetFilter.bind(this);
         this.handleLanguageChange = this.handleLanguageChange.bind(this);
         this.handleCountryListScroll = this.handleCountryListScroll.bind(this);
+        this.handleCountryListWheel = this.handleCountryListWheel.bind(this);
+        this.handleCountryListTouchStart = this.handleCountryListTouchStart.bind(this);
+        this.handleCountryListTouchMove = this.handleCountryListTouchMove.bind(this);
+        this.touchStartY = 0;
 
         if (this.countryList) {
           this.countryList.addEventListener('click', this.handleCountryClick);
           this.countryList.addEventListener('keydown', this.handleCountryKeydown);
           this.countryList.addEventListener('scroll', this.handleCountryListScroll);
+          this.countryList.addEventListener('wheel', this.handleCountryListWheel, { passive: false });
+          this.countryList.addEventListener('touchstart', this.handleCountryListTouchStart, { passive: true });
+          this.countryList.addEventListener('touchmove', this.handleCountryListTouchMove, { passive: false });
         }
 
         if (this.searchInput) {
           this.searchInput.addEventListener('input', this.handleSearchInput);
           this.searchInput.addEventListener('keydown', this.handleSearchKeydown);
-        }
-
-        if (this.resetButton) {
-          this.resetButton.addEventListener('click', this.handleResetFilter);
         }
 
         if (this.languageInput) {
@@ -45,15 +46,14 @@
           this.countryList.removeEventListener('click', this.handleCountryClick);
           this.countryList.removeEventListener('keydown', this.handleCountryKeydown);
           this.countryList.removeEventListener('scroll', this.handleCountryListScroll);
+          this.countryList.removeEventListener('wheel', this.handleCountryListWheel);
+          this.countryList.removeEventListener('touchstart', this.handleCountryListTouchStart);
+          this.countryList.removeEventListener('touchmove', this.handleCountryListTouchMove);
         }
 
         if (this.searchInput) {
           this.searchInput.removeEventListener('input', this.handleSearchInput);
           this.searchInput.removeEventListener('keydown', this.handleSearchKeydown);
-        }
-
-        if (this.resetButton) {
-          this.resetButton.removeEventListener('click', this.handleResetFilter);
         }
 
         if (this.languageInput) {
@@ -128,10 +128,6 @@
           wrapper.classList.toggle('is-searching', searchValue !== '');
         }
 
-        if (this.resetButton) {
-          this.resetButton.toggleAttribute('hidden', searchValue === '');
-        }
-
         const popularCountries = this.querySelector('.popular-countries');
         if (popularCountries) {
           popularCountries.toggleAttribute('hidden', searchValue !== '');
@@ -192,12 +188,39 @@
         countryFilter.classList.toggle('is-scrolled', target.scrollTop > 0);
       }
 
-      handleResetFilter(event) {
-        event.preventDefault();
-        if (!this.searchInput) return;
-        this.searchInput.value = '';
-        this.filterCountries();
-        this.searchInput.focus();
+      preventBoundaryScroll(event, deltaY) {
+        if (!this.countryList) return;
+        if (!Number.isFinite(deltaY) || deltaY === 0) return;
+
+        const maxScrollTop = this.countryList.scrollHeight - this.countryList.clientHeight;
+        if (maxScrollTop <= 0) {
+          event.preventDefault();
+          return;
+        }
+
+        const isAtTop = this.countryList.scrollTop <= 0;
+        const isAtBottom = this.countryList.scrollTop >= maxScrollTop - 1;
+
+        if ((deltaY < 0 && isAtTop) || (deltaY > 0 && isAtBottom)) {
+          event.preventDefault();
+        }
+      }
+
+      handleCountryListWheel(event) {
+        this.preventBoundaryScroll(event, event.deltaY);
+      }
+
+      handleCountryListTouchStart(event) {
+        const touch = event.touches && event.touches[0];
+        if (!touch) return;
+        this.touchStartY = touch.clientY;
+      }
+
+      handleCountryListTouchMove(event) {
+        const touch = event.touches && event.touches[0];
+        if (!touch) return;
+        const deltaY = this.touchStartY - touch.clientY;
+        this.preventBoundaryScroll(event, deltaY);
       }
 
       handleCountryClick(event) {
@@ -249,68 +272,78 @@
         this.button = this.querySelector('[data-localization-ref="button"]');
         this.panel = this.querySelector('[data-localization-ref="panel"]');
         this.localizationForm = this.querySelector('localization-form-component');
-        this.hideTimer = null;
-
         this.toggleSelector = this.toggleSelector.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
+
+        if (this.panel) this.panel.classList.remove('is-active');
+        if (this.button) this.button.setAttribute('aria-expanded', 'false');
+        this.removeAttribute('data-open');
 
         if (this.button) {
           this.button.addEventListener('click', this.toggleSelector);
         }
+
+        document.addEventListener('sb:header-localization:request-close', this.handleRequestClose);
       }
 
       disconnectedCallback() {
-        if (this.hideTimer) {
-          window.clearTimeout(this.hideTimer);
-          this.hideTimer = null;
-        }
-
         if (this.button) {
           this.button.removeEventListener('click', this.toggleSelector);
         }
 
         document.removeEventListener('click', this.handleDocumentClick);
         document.removeEventListener('keyup', this.handleKeyUp);
+        document.removeEventListener('sb:header-localization:request-close', this.handleRequestClose);
       }
 
       get isOpen() {
-        return Boolean(this.panel && !this.panel.hasAttribute('hidden'));
+        return this.getAttribute('data-open') === 'true';
+      }
+
+      dispatchToggleState(open) {
+        document.dispatchEvent(
+          new CustomEvent('sb:header-localization:toggle', {
+            detail: { open: Boolean(open) }
+          })
+        );
       }
 
       toggleSelector(event) {
         event.preventDefault();
         if (this.isOpen) {
           this.hidePanel();
-        } else {
-          this.showPanel();
+          return;
         }
+        this.showPanel({ focusSearch: false });
       }
 
-      showPanel() {
+      showPanel({ focusSearch = true } = {}) {
         if (!this.panel || !this.button || this.isOpen) return;
 
-        if (this.hideTimer) {
-          window.clearTimeout(this.hideTimer);
-          this.hideTimer = null;
-        }
-
-        this.panel.removeAttribute('hidden');
         this.button.setAttribute('aria-expanded', 'true');
         this.setAttribute('data-open', 'true');
-
+        // Commit collapsed state first so opening transition runs instead of snapping.
+        this.panel.classList.remove('is-active');
+        void this.panel.offsetHeight;
         window.requestAnimationFrame(() => {
+          if (!this.panel || !this.isOpen) return;
           this.panel.classList.add('is-active');
         });
 
         document.addEventListener('click', this.handleDocumentClick);
         document.addEventListener('keyup', this.handleKeyUp);
 
-        window.setTimeout(() => {
-          if (this.localizationForm && typeof this.localizationForm.focusSearchInput === 'function') {
-            this.localizationForm.focusSearchInput();
-          }
-        }, 0);
+        if (focusSearch) {
+          window.setTimeout(() => {
+            if (this.localizationForm && typeof this.localizationForm.focusSearchInput === 'function') {
+              this.localizationForm.focusSearchInput();
+            }
+          }, 0);
+        }
+
+        this.dispatchToggleState(true);
       }
 
       hidePanel() {
@@ -327,15 +360,7 @@
         document.removeEventListener('click', this.handleDocumentClick);
         document.removeEventListener('keyup', this.handleKeyUp);
 
-        if (this.hideTimer) {
-          window.clearTimeout(this.hideTimer);
-        }
-
-        this.hideTimer = window.setTimeout(() => {
-          if (!this.panel.classList.contains('is-active')) {
-            this.panel.setAttribute('hidden', '');
-          }
-        }, 220);
+        this.dispatchToggleState(false);
       }
 
       handleKeyUp(event) {
@@ -352,8 +377,104 @@
         if (this.contains(target)) return;
         this.hidePanel();
       }
+
+      handleRequestClose() {
+        this.hidePanel();
+      }
     }
 
     customElements.define('dropdown-localization-component', DropdownLocalizationComponent);
+  }
+
+  if (!customElements.get('drawer-localization-component')) {
+    class DrawerLocalizationComponent extends HTMLElement {
+      connectedCallback() {
+        this.openButton = this.querySelector('[data-localization-ref="drawerOpenButton"]');
+        this.backButton = this.querySelector('[data-localization-ref="drawerBackButton"]');
+        this.page = this.querySelector('[data-localization-ref="drawerPage"]');
+        this.menuDrawer = this.closest('.menu-drawer');
+        this.localizationForm = this.querySelector('localization-form-component');
+        this.handleOpenClick = this.handleOpenClick.bind(this);
+        this.handleBackClick = this.handleBackClick.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
+
+        if (this.page) this.page.hidden = true;
+        if (this.openButton) this.openButton.setAttribute('aria-expanded', 'false');
+        this.classList.remove('menu-open');
+
+        if (this.openButton) this.openButton.addEventListener('click', this.handleOpenClick);
+        if (this.backButton) this.backButton.addEventListener('click', this.handleBackClick);
+        this.addEventListener('keyup', this.handleKeyUp);
+      }
+
+      disconnectedCallback() {
+        if (this.openButton) this.openButton.removeEventListener('click', this.handleOpenClick);
+        if (this.backButton) this.backButton.removeEventListener('click', this.handleBackClick);
+        this.removeEventListener('keyup', this.handleKeyUp);
+      }
+
+      get isOpen() {
+        return this.classList.contains('menu-open');
+      }
+
+      handleOpenClick(event) {
+        event.preventDefault();
+        this.openDrawerPage();
+      }
+
+      handleBackClick(event) {
+        event.preventDefault();
+        this.closeDrawerPage();
+      }
+
+      handleKeyUp(event) {
+        if (event.key !== 'Escape' || !this.isOpen) return;
+        this.closeDrawerPage();
+        if (this.openButton) this.openButton.focus();
+      }
+
+      openDrawerPage() {
+        if (!this.page || this.isOpen) return;
+        this.page.hidden = false;
+        void this.page.offsetHeight;
+        this.classList.add('menu-open');
+        if (this.menuDrawer) this.menuDrawer.classList.add('menu-drawer--has-submenu-opened');
+        if (this.openButton) this.openButton.setAttribute('aria-expanded', 'true');
+
+        window.requestAnimationFrame(() => {
+          if (this.localizationForm && typeof this.localizationForm.focusSearchInput === 'function') {
+            this.localizationForm.focusSearchInput();
+          }
+        });
+      }
+
+      closeDrawerPage({ immediate = false } = {}) {
+        if (!this.page) return;
+        if (!this.isOpen) {
+          if (immediate) this.page.hidden = true;
+          return;
+        }
+
+        this.classList.remove('menu-open');
+        if (this.menuDrawer) this.menuDrawer.classList.remove('menu-drawer--has-submenu-opened');
+        if (this.openButton) this.openButton.setAttribute('aria-expanded', 'false');
+        if (this.localizationForm && typeof this.localizationForm.resetForm === 'function') {
+          this.localizationForm.resetForm();
+        }
+
+        const hidePage = () => {
+          if (!this.isOpen && this.page) this.page.hidden = true;
+        };
+
+        if (immediate) {
+          hidePage();
+          return;
+        }
+
+        this.page.addEventListener('transitionend', hidePage, { once: true });
+      }
+    }
+
+    customElements.define('drawer-localization-component', DrawerLocalizationComponent);
   }
 })();

@@ -1,37 +1,376 @@
-{% comment %}
-  This section is used in the cart template to render /cart page with an
-  overview of the items in customer's cart.
+{% liquid
+  assign primary_navigation = linklists['main-menu']
+  assign cart_placeholder_image = 'icon-square-placeholder.svg' | asset_url
+%}
+<script src="{{ 'cart-system.js' | asset_url }}" defer></script>
 
-  https://shopify.dev/docs/storefronts/themes/architecture/templates/cart
-{% endcomment %}
+<section class="sb-cart-page-section">
+  <cart-items-component
+    class="sb-cart-items sb-cart-items--page{% if cart.empty? %} is-empty{% endif %}"
+    data-context="page"
+    data-placeholder-image="{{ cart_placeholder_image }}"
+  >
+    <div class="sb-cart-page">
+      <header class="sb-cart-page__header" data-cart-page-header {% if cart.empty? %}hidden{% endif %}>
+        <h1 class="sb-cart-page__title font-title weight-bold">
+          <span>{{ 'cart.title' | t }}</span>
+          <span class="sb-cart-page__count" data-cart-page-count {% if cart.item_count == 0 %}hidden{% endif %}>
+            {{ cart.item_count }}
+          </span>
+        </h1>
+        <p class="sb-cart-page__status font-caption weight-regular" data-cart-status {% if cart.item_count == 0 %}hidden{% endif %}>
+          {% if cart.item_count > 0 %}
+            {{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %} in cart
+          {% endif %}
+        </p>
+      </header>
 
-<h1>{{ 'cart.title' | t }}</h1>
+      <div class="sb-cart-page__layout">
+        <div class="sb-cart-page__items-wrap">
+          {% render 'sb-cart-line-items',
+            list_class: 'sb-cart-line-list sb-cart-line-list--page',
+            hidden: cart.item_count == 0,
+            placeholder_image: cart_placeholder_image
+          %}
 
-<form action="{{ routes.cart_url }}" method="post">
-  <table>
-    {% for item in cart.items %}
-      <tr>
-        <td>
-          {% render 'image', image: item.image, url: item.url %}
-        </td>
-        <td>
-          <p>{{ item.product.title }}</p>
-          {{ 'cart.remove' | t | link_to: item.url_to_remove }}
-        </td>
-        <td>
-          <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+          <div class="sb-cart-page__empty" data-cart-empty {% unless cart.empty? %}hidden{% endunless %}>
+            <div class="sb-cart-page__empty-text-group">
+              <h2 class="sb-cart-page__empty-title font-title weight-bold">Cart</h2>
+              <p class="sb-cart-page__empty-text font-caption weight-regular">
+                Your cart is empty. Let's fill it with beautifully designed music gear.
+              </p>
+            </div>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
-</form>
+            {% render 'sb-cart-empty-collections',
+              container_class: 'sb-cart-page__empty-collections',
+              grid_class: 'sb-cart-page__empty-collection-grid',
+              item_class: 'sb-cart-page__empty-collection-item',
+              media_class: 'sb-cart-page__empty-collection-media',
+              image_class: 'sb-cart-page__empty-collection-image',
+              title_class: 'sb-cart-page__empty-collection-title',
+              title_font_class: 'font-caption weight-semibold',
+              primary_navigation: primary_navigation,
+              placeholder_image: cart_placeholder_image
+            %}
+
+            {% render 'sb-cart-empty-payments',
+              container_class: 'sb-cart-page__empty-payments',
+              show_shop_all: true,
+              shop_all_class: 'sb-button-radiant sb-button-radiant--large sb-cart-page__empty-shop-all',
+              payment_list_class: 'sb-cart-page__empty-payment-list',
+              payment_item_class: 'sb-cart-page__empty-payment-item'
+            %}
+          </div>
+        </div>
+
+        <aside class="sb-cart-page__summary" data-cart-summary {% if cart.empty? %}hidden{% endif %}>
+          {% render 'sb-cart-summary-inner',
+            discount_input_id: 'CartPageDiscountCode-' | append: section.id,
+            discount_codes: cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title' | uniq,
+            totals_class: 'sb-cart-page__totals',
+            total_row_class: 'sb-cart-page__total-row',
+            total_row_strong_class: 'sb-cart-page__total-row',
+            actions_class: 'sb-cart-page__actions',
+            show_view_cart: false,
+            checkout_mode: 'form',
+            checkout_button_class: 'header__cart-drawer-action header__cart-drawer-action--primary sb-cart-page__checkout',
+            clear_button_class: 'header__cart-drawer-action'
+          %}
+        </aside>
+      </div>
+    </div>
+  </cart-items-component>
+</section>
+
+{% stylesheet %}
+  .sb-cart-page-section {
+    padding-bottom: var(--sb-space-48);
+    padding-top: calc(var(--sb-header-height) + var(--sb-announcement-min-height, 0px) + var(--sb-space-48));
+  }
+
+  .sb-cart-page {
+    margin: 0 auto;
+    max-width: calc(var(--sb-space-128) * 9 + var(--sb-space-32));
+    padding: 0 var(--sb-space-20);
+    width: 100%;
+  }
+
+  .sb-cart-page__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-8);
+    margin-bottom: var(--sb-space-24);
+  }
+
+  .sb-cart-page__header[hidden] {
+    display: none;
+  }
+
+  .sb-cart-page__title {
+    align-items: center;
+    column-gap: var(--sb-space-16);
+    display: inline-flex;
+    margin: 0;
+  }
+
+  .sb-cart-page__count {
+    align-items: center;
+    background: var(--sb-color-primary-500);
+    border-radius: 999px;
+    color: var(--sb-color-always-white);
+    display: inline-flex;
+    font-family: var(--font-display--family);
+    font-size: var(--font-size-body);
+    font-weight: 700;
+    height: var(--sb-space-36);
+    justify-content: center;
+    line-height: 1;
+    min-width: var(--sb-space-36);
+    padding: 0 var(--sb-space-8);
+    text-align: center;
+  }
+
+  .sb-cart-page__count[hidden] {
+    display: none;
+  }
+
+  .sb-cart-page__status {
+    color: var(--sb-color-neutral-800);
+    margin: 0;
+  }
+
+  .sb-cart-page__status[hidden] {
+    display: none;
+  }
+
+  .sb-cart-page__layout {
+    display: grid;
+    gap: var(--sb-space-24);
+    grid-template-columns: 1fr;
+  }
+
+  .sb-cart-page__items-wrap {
+    min-width: 0;
+  }
+
+  .sb-cart-line-list--page {
+    margin-top: 0;
+  }
+
+  .sb-cart-line-list--page[hidden] {
+    display: none;
+  }
+
+  .sb-cart-page__empty {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-48);
+    text-align: center;
+    width: 100%;
+  }
+
+  .sb-cart-page__empty[hidden] {
+    display: none;
+  }
+
+  .sb-cart-page__empty-text-group {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+
+  .sb-cart-page__empty-title {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+  }
+
+  .sb-cart-page__empty-text {
+    border-top: 1px solid var(--sb-color-neutral-600);
+    color: var(--sb-color-neutral-900);
+    margin: var(--sb-space-16) 0 0;
+    padding: var(--sb-space-16) 0 0;
+    width: 100%;
+  }
+
+  .sb-cart-page__empty-collections {
+    width: 100%;
+  }
+
+  .sb-cart-page__empty-collection-grid {
+    column-gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0 auto;
+    max-width: 360px;
+    row-gap: 20px;
+    width: 100%;
+  }
+
+  .sb-cart-page__empty-collection-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-16);
+    min-width: 0;
+  }
+
+  .sb-cart-page__empty-collection-media {
+    border-radius: 24px;
+    display: block;
+    overflow: hidden;
+    transform: scale(1);
+    transform-origin: center;
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sb-cart-page__empty-collection-image {
+    aspect-ratio: 1 / 1;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sb-cart-page__empty-collection-media:hover,
+    .sb-cart-page__empty-collection-media:focus-visible {
+      transform: scale(1.03);
+    }
+  }
+
+  .sb-cart-page__empty-collection-title {
+    color: var(--sb-color-neutral-900);
+    display: block;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .sb-cart-page__empty-collection-title:hover,
+  .sb-cart-page__empty-collection-title:focus-visible {
+    color: var(--sb-color-primary-500);
+  }
+
+  .sb-cart-page__empty-payments {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 360px;
+    width: 100%;
+  }
+
+  .sb-cart-page__empty-shop-all {
+    max-width: 360px;
+    width: 100%;
+  }
+
+  .sb-cart-page__empty-payment-list {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    row-gap: 12px;
+    width: 100%;
+  }
+
+  .sb-cart-page__empty-payment-item {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .sb-cart-page__empty-payment-item svg {
+    display: block;
+    height: var(--sb-space-24);
+    width: auto;
+  }
+
+  .sb-cart-items--page.is-empty .sb-cart-page {
+    background: var(--sb-color-neutral-200);
+    border-radius: 24px;
+    box-sizing: border-box;
+    padding: var(--sb-space-48);
+    width: 100%;
+  }
+
+  .sb-cart-items--page.is-empty .sb-cart-page__header {
+    display: none;
+  }
+
+  .sb-cart-items--page.is-empty .sb-cart-page__layout {
+    gap: 0;
+    grid-template-columns: 1fr;
+  }
+
+  .sb-cart-items--page.is-empty .sb-cart-page__items-wrap {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sb-cart-page__summary {
+    align-self: start;
+    background: var(--sb-color-neutral-200);
+    border: 0;
+    border-radius: var(--sb-space-20);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-20);
+    padding: var(--sb-space-20);
+    position: sticky;
+    top: calc(var(--sb-header-height) + var(--sb-announcement-min-height, 0px) + var(--sb-space-20));
+  }
+
+  .sb-cart-page__summary[hidden] {
+    display: none;
+  }
+
+  .sb-cart-page__totals {
+    border-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-8);
+    padding-top: var(--sb-space-16);
+  }
+
+  .sb-cart-page__total-row {
+    align-items: center;
+    color: var(--sb-color-neutral-900);
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+  }
+
+  .sb-cart-page__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-8);
+  }
+
+  .sb-cart-page__actions form {
+    margin: 0;
+  }
+
+  .sb-cart-page__checkout {
+    width: 100%;
+  }
+
+  @media screen and (min-width: 990px) {
+    .sb-cart-page__layout {
+      align-items: start;
+      grid-template-columns: minmax(0, 1fr) calc(var(--sb-space-128) * 3 + var(--sb-space-16));
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.cart",
+  "name": "Cart",
   "settings": []
 }
 {% endschema %}

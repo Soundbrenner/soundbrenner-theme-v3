@@ -1,0 +1,73 @@
+{% liquid
+  assign sb_cart_checkout_mode = checkout_mode | default: 'link'
+%}
+
+<div class="header__cart-discount">
+  <form class="header__cart-discount-form" data-cart-discount-form>
+    <label class="visually-hidden" for="{{ discount_input_id }}">Discount code</label>
+    <input
+      id="{{ discount_input_id }}"
+      class="header__cart-discount-input font-caption weight-regular"
+      type="text"
+      name="discount"
+      placeholder="Discount code"
+      autocomplete="off"
+      data-cart-discount-input
+    >
+    <button class="header__cart-discount-apply font-caption weight-semibold" type="submit">
+      Apply
+    </button>
+  </form>
+  <p class="header__cart-discount-error font-caption2 weight-semibold" data-cart-discount-error hidden></p>
+  <ul class="sb-cart-discount-list" data-cart-discount-list>
+    {% for discount_code in discount_codes %}
+      <li class="sb-cart-discount-pill font-caption weight-semibold">
+        <span>{{ discount_code }}</span>
+        <button
+          type="button"
+          class="sb-cart-discount-pill__remove"
+          data-cart-discount-remove="{{ discount_code | escape }}"
+          aria-label="Remove {{ discount_code | escape }}"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="{{ totals_class }}">
+  <p class="{{ total_row_class }} font-caption weight-regular">
+    <span>Subtotal</span>
+    <span data-cart-subtotal>{{ cart.items_subtotal_price | money }}</span>
+  </p>
+  <p class="{{ total_row_strong_class }} font-body weight-semibold">
+    <span>Total</span>
+    <span data-cart-total>{{ cart.total_price | money }}</span>
+  </p>
+</div>
+
+<div class="{{ actions_class }}">
+  {% if show_view_cart %}
+    <a class="{{ view_cart_class }}" href="{{ routes.cart_url }}">View cart</a>
+  {% endif %}
+
+  {% if sb_cart_checkout_mode == 'form' %}
+    <form action="{{ routes.cart_url }}" method="post">
+      <button
+        type="submit"
+        class="{{ checkout_button_class }}"
+        name="checkout"
+        data-cart-checkout-button
+      >
+        Checkout
+      </button>
+    </form>
+  {% else %}
+    <a class="{{ checkout_button_class }}" href="/checkout" data-cart-checkout-button>
+      Checkout
+    </a>
+  {% endif %}
+
+  <button type="button" class="{{ clear_button_class }}" data-cart-clear>Clear cart</button>
+</div>

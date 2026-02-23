@@ -1,0 +1,69 @@
+{% liquid
+  assign sb_cart_container_class = container_class
+  assign sb_cart_grid_class = grid_class
+  assign sb_cart_item_class = item_class
+  assign sb_cart_media_class = media_class
+  assign sb_cart_image_class = image_class
+  assign sb_cart_title_class = title_class
+  assign sb_cart_title_font_class = title_font_class | default: 'font-caption weight-semibold'
+  assign sb_cart_placeholder_image = placeholder_image
+  if sb_cart_placeholder_image == blank
+    assign sb_cart_placeholder_image = 'icon-square-placeholder.svg' | asset_url
+  endif
+%}
+
+<div class="{{ sb_cart_container_class }}">
+  <div class="{{ sb_cart_grid_class }}">
+    {% assign cart_empty_collection_count = 0 %}
+    {% if primary_navigation != blank %}
+      {% for collection_link in primary_navigation.links %}
+        {% if cart_empty_collection_count >= 4 %}
+          {% break %}
+        {% endif %}
+        {% if collection_link.type == 'collection_link' and collection_link.object != blank %}
+          {% liquid
+            assign cart_empty_collection = collection_link.object
+            assign cart_empty_collection_image = cart_empty_collection.featured_image
+            if cart_empty_collection_image == blank and cart_empty_collection.products_count > 0
+              assign cart_empty_collection_image = cart_empty_collection.products.first.featured_image
+            endif
+          %}
+          <div class="{{ sb_cart_item_class }}">
+            <a class="{{ sb_cart_media_class }}" href="{{ collection_link.url }}">
+              {% if cart_empty_collection_image != blank %}
+                <img
+                  class="{{ sb_cart_image_class }}"
+                  src="{{ cart_empty_collection_image | image_url: width: 660, height: 660, crop: 'center' }}"
+                  srcset="
+                    {{ cart_empty_collection_image | image_url: width: 220, height: 220, crop: 'center' }} 220w,
+                    {{ cart_empty_collection_image | image_url: width: 440, height: 440, crop: 'center' }} 440w,
+                    {{ cart_empty_collection_image | image_url: width: 660, height: 660, crop: 'center' }} 660w,
+                    {{ cart_empty_collection_image | image_url: width: 880, height: 880, crop: 'center' }} 880w
+                  "
+                  sizes="(max-width: 520px) calc((100vw - 80px) / 2), 220px"
+                  alt="{{ cart_empty_collection.title | escape }}"
+                  loading="lazy"
+                  width="220"
+                  height="220"
+                >
+              {% else %}
+                <img
+                  class="{{ sb_cart_image_class }}"
+                  src="{{ sb_cart_placeholder_image }}"
+                  alt="{{ cart_empty_collection.title | escape }}"
+                  loading="lazy"
+                  width="220"
+                  height="220"
+                >
+              {% endif %}
+            </a>
+            <a class="{{ sb_cart_title_class }} {{ sb_cart_title_font_class }}" href="{{ collection_link.url }}">
+              {{ cart_empty_collection.title }}
+            </a>
+          </div>
+          {% assign cart_empty_collection_count = cart_empty_collection_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

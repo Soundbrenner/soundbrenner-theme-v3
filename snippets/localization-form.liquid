@@ -24,14 +24,12 @@
 
 <localization-form-component
   class="header-localization-form"
-  data-label-results-count="Found [count] country or region results."
   data-show-filter="{{ show_country_filter }}"
 >
   {%- form 'localization', id: localization_form_id, class: 'localization-form', return_to: request.path -%}
     {% if show_country %}
       {% if show_country_filter %}
         <div class="country-filter">
-          <label class="visually-hidden" for="country-filter-input-{{ form_identifier }}">Find your country or region</label>
           <div class="country-filter__field">
             <span class="country-filter__search-icon" aria-hidden="true">
               {{ 'icon-search.svg' | inline_asset_content }}
@@ -39,7 +37,7 @@
             <input
               id="country-filter-input-{{ form_identifier }}"
               class="country-filter__input font-caption weight-regular"
-              type="search"
+              type="text"
               name="country_filter"
               value=""
               placeholder="Search"
@@ -48,36 +46,18 @@
               aria-controls="{{ localization_style }}-country-results-{{ form_identifier }}"
               aria-haspopup="listbox"
               aria-autocomplete="list"
-              aria-label="Find your country or region"
+              aria-label="Search"
               autocorrect="off"
               autocomplete="off"
               autocapitalize="off"
               spellcheck="false"
               data-localization-ref="search"
             >
-            <button
-              type="reset"
-              class="country-filter__reset-button"
-              aria-label="Reset country filter"
-              data-localization-ref="resetButton"
-              hidden
-            >
-              {{ 'icon-cancel.svg' | inline_asset_content }}
-            </button>
           </div>
         </div>
       {% endif %}
 
       <div class="country-selector-form__wrapper">
-        {% if show_country_filter %}
-          <div
-            id="sr-country-search-results-{{ form_identifier }}"
-            class="visually-hidden"
-            aria-live="polite"
-            data-localization-ref="liveRegion"
-          ></div>
-        {% endif %}
-
         <div
           class="localization-form__list"
           id="{{ localization_style }}-country-results-{{ form_identifier }}"
@@ -118,7 +98,7 @@
                     {{ 'icon-check.svg' | inline_asset_content }}
                   </span>
                   <span class="country font-caption weight-regular">{{ country.name }}</span>
-                  <span class="localization-form__currency font-caption2 weight-regular" {% unless show_currencies %}hidden{% endunless %}>
+                  <span class="localization-form__currency font-caption weight-regular" {% unless show_currencies %}hidden{% endunless %}>
                     {{ country.currency.iso_code }} {{ country.currency.symbol }}
                   </span>
                 </li>
@@ -162,7 +142,7 @@
                   {{ 'icon-check.svg' | inline_asset_content }}
                 </span>
                 <span class="country font-caption weight-regular">{{ country.name }}</span>
-                <span class="localization-form__currency font-caption2 weight-regular" {% unless show_currencies %}hidden{% endunless %}>
+                <span class="localization-form__currency font-caption weight-regular" {% unless show_currencies %}hidden{% endunless %}>
                   {{ country.currency.iso_code }} {{ country.currency.symbol }}
                 </span>
               </li>
@@ -177,12 +157,15 @@
     {% if show_language %}
       <div class="language-selector{% if show_country == false %} language-selector--inline{% endif %}">
         {% if show_country %}
-          <span class="language-selector__label font-caption2 weight-semibold">Language</span>
+          <span class="language-selector__label font-caption weight-regular">Language</span>
         {% endif %}
         <div class="localization-form__select-wrap">
+          <span class="localization-form__select-value font-caption weight-regular" aria-hidden="true">
+            {{ localization.language.endonym_name | capitalize }}
+          </span>
           <select
             id="{{ localization_style }}-language-{{ form_identifier }}"
-            class="localization-form__select font-caption weight-semibold"
+            class="localization-form__select font-caption weight-regular"
             name="language_code"
             aria-label="Language"
             data-localization-ref="languageInput"

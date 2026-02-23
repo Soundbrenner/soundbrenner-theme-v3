@@ -1,0 +1,55 @@
+<ul class="{{ list_class }}" role="list">
+  {% if shop.enabled_payment_types contains 'american_express' %}
+    <li class="{{ item_class }}">
+      {{ 'american_express' | payment_type_svg_tag }}
+    </li>
+  {% elsif shop.enabled_payment_types contains 'amex' %}
+    <li class="{{ item_class }}">
+      {{ 'amex' | payment_type_svg_tag }}
+    </li>
+  {% endif %}
+
+  {% if shop.enabled_payment_types contains 'visa' %}
+    <li class="{{ item_class }}">
+      {{ 'visa' | payment_type_svg_tag }}
+    </li>
+  {% endif %}
+
+  {% if shop.enabled_payment_types contains 'master' %}
+    <li class="{{ item_class }}">
+      {{ 'master' | payment_type_svg_tag }}
+    </li>
+  {% elsif shop.enabled_payment_types contains 'mastercard' %}
+    <li class="{{ item_class }}">
+      {{ 'mastercard' | payment_type_svg_tag }}
+    </li>
+  {% endif %}
+
+  {% if shop.enabled_payment_types contains 'shopify_pay' %}
+    <li class="{{ item_class }}">
+      {{ 'shopify_pay' | payment_type_svg_tag }}
+    </li>
+  {% elsif shop.enabled_payment_types contains 'shop_pay' %}
+    <li class="{{ item_class }}">
+      {{ 'shop_pay' | payment_type_svg_tag }}
+    </li>
+  {% endif %}
+
+  {% if shop.enabled_payment_types contains 'apple_pay' %}
+    <li class="{{ item_class }}">
+      {{ 'apple_pay' | payment_type_svg_tag }}
+    </li>
+  {% endif %}
+
+  {% if shop.enabled_payment_types contains 'google_pay' %}
+    <li class="{{ item_class }}">
+      {{ 'google_pay' | payment_type_svg_tag }}
+    </li>
+  {% endif %}
+
+  {% if shop.enabled_payment_types contains 'paypal' %}
+    <li class="{{ item_class }}">
+      {{ 'paypal' | payment_type_svg_tag }}
+    </li>
+  {% endif %}
+</ul>

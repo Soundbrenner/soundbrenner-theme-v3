@@ -1,0 +1,9 @@
+<div class="{{ container_class }}" aria-label="Accepted payment methods">
+  {% if show_shop_all %}
+    <a class="{{ shop_all_class }}" href="{{ routes.all_products_collection_url }}">
+      <span class="sb-button-radiant__label">Shop all products</span>
+    </a>
+  {% endif %}
+
+  {% render 'sb-cart-payment-icons', list_class: payment_list_class, item_class: payment_item_class %}
+</div>
