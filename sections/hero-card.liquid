@@ -24,8 +24,6 @@
   {% assign hero_card_entry_ship_to = hero_card_shipping_entry.ship_to_it.value | default: hero_card_shipping_entry.ship_to_it | append: '' | downcase %}
   {% assign hero_card_entry_has_free_shipping = hero_card_shipping_entry.free_shipping_available.value | default: hero_card_shipping_entry.free_shipping_available | append: '' | downcase %}
   {% assign hero_card_entry_threshold = hero_card_shipping_entry.free_shipping_threshold_in_local_currency.value | default: hero_card_shipping_entry.free_shipping_threshold_in_local_currency %}
-  {% assign hero_card_entry_currency_code = hero_card_shipping_entry.shopify_currency.value | default: hero_card_shipping_entry.shopify_currency %}
-  {% assign hero_card_entry_currency_symbol = localization.country.currency.symbol | default: '' %}
 
   {% if hero_card_entry_ship_to == 'false' or hero_card_entry_ship_to == '0' or hero_card_entry_ship_to == 'no' %}
     {% assign hero_card_shipping_is_blocked = true %}
@@ -34,13 +32,8 @@
     {% assign hero_card_shipping_has_free_shipping = true %}
   {% endif %}
   {% if hero_card_entry_threshold != blank %}
-    {% if hero_card_entry_currency_symbol != blank %}
-      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_currency_symbol | append: hero_card_entry_threshold %}
-    {% elsif hero_card_entry_currency_code != blank %}
-      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold | append: ' ' | append: hero_card_entry_currency_code %}
-    {% else %}
-      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold %}
-    {% endif %}
+    {% assign hero_card_entry_threshold_cents = hero_card_entry_threshold | times: 100 %}
+    {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold_cents | money %}
   {% endif %}
 {% endif %}
 
