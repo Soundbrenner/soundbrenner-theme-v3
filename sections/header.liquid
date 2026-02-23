@@ -61,8 +61,11 @@
         assign seasonal_threshold_currency_symbol = seasonal_threshold_currency_prefix | append: '$'
       endif
       if seasonal_threshold_currency_symbol != blank
-        assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | replace_first: '$ ', seasonal_threshold_currency_symbol
-        assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | replace_first: '$', seasonal_threshold_currency_symbol
+        if seasonal_free_shipping_threshold_display contains '$ '
+          assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | replace_first: '$ ', seasonal_threshold_currency_symbol
+        else
+          assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | replace_first: '$', seasonal_threshold_currency_symbol
+        endif
       endif
     endif
   endif

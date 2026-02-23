@@ -241,8 +241,11 @@
         assign shopper_threshold_currency_symbol = shopper_threshold_currency_prefix | append: '$'
       endif
       if shopper_threshold_currency_symbol != blank
-        assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | replace_first: '$ ', shopper_threshold_currency_symbol
-        assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | replace_first: '$', shopper_threshold_currency_symbol
+        if shopper_country_free_shipping_threshold_display contains '$ '
+          assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | replace_first: '$ ', shopper_threshold_currency_symbol
+        else
+          assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | replace_first: '$', shopper_threshold_currency_symbol
+        endif
       endif
     endif
   endif
