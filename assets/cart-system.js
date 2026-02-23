@@ -931,8 +931,8 @@
       this.classList.toggle('is-empty', isEmpty);
 
       if (this.statusNode) {
-        this.statusNode.hidden = isEmpty;
-        this.statusNode.textContent = `${itemCount} item${itemCount === 1 ? '' : 's'} in cart`;
+        this.statusNode.hidden = true;
+        this.statusNode.textContent = '';
       }
 
       if (this.pageHeaderNode) {

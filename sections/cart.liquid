@@ -36,11 +36,6 @@
             {{ cart.item_count }}
           </span>
         </h1>
-        <p class="sb-cart-page__status font-caption weight-regular" data-cart-status {% if cart.item_count == 0 %}hidden{% endif %}>
-          {% if cart.item_count > 0 %}
-            {{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %} in cart
-          {% endif %}
-        </p>
         {% render 'sb-cart-free-shipping-progress',
           available: cart_free_shipping_available,
           threshold_cents: cart_free_shipping_threshold_cents,
@@ -158,15 +153,6 @@
   }
 
   .sb-cart-page__count[hidden] {
-    display: none;
-  }
-
-  .sb-cart-page__status {
-    color: var(--sb-color-neutral-800);
-    margin: 0;
-  }
-
-  .sb-cart-page__status[hidden] {
     display: none;
   }
 
