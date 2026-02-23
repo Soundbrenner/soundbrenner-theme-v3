@@ -67,16 +67,28 @@
   assign seasonal_shipping_is_blocked = false
   assign seasonal_shipping_has_free_shipping = false
   assign seasonal_free_shipping_threshold_display = ''
+  assign seasonal_shipping_taxes_included = false
+  assign seasonal_shipping_advertised_min_time = blank
+  assign seasonal_shipping_advertised_max_time = blank
+  assign cart_summary_shipping_text = 'Ships worldwide'
+  assign cart_summary_taxes_text = 'May be due on delivery'
   assign seasonal_shipping_entry = shop.metaobjects['database_localized_shipping_info'][seasonal_shipping_country_handle]
   if seasonal_shipping_entry != blank and seasonal_shipping_country_iso != blank
     assign seasonal_entry_ship_to = seasonal_shipping_entry.ship_to_it.value | default: seasonal_shipping_entry.ship_to_it | append: '' | downcase
     assign seasonal_entry_has_free_shipping = seasonal_shipping_entry.free_shipping_available.value | default: seasonal_shipping_entry.free_shipping_available | append: '' | downcase
+    assign seasonal_entry_taxes_included = seasonal_shipping_entry.taxes_included_in_price.value | default: seasonal_shipping_entry.taxes_included_in_price | append: '' | downcase
     assign seasonal_entry_threshold = seasonal_shipping_entry.free_shipping_threshold_in_local_currency.value | default: seasonal_shipping_entry.free_shipping_threshold_in_local_currency
+    assign seasonal_shipping_advertised_min_time = seasonal_shipping_entry.advertised_min_time.value | default: seasonal_shipping_entry.advertised_min_time
+    assign seasonal_shipping_advertised_max_time = seasonal_shipping_entry.advertised_max_time.value | default: seasonal_shipping_entry.advertised_max_time
     if seasonal_entry_ship_to == 'false' or seasonal_entry_ship_to == '0' or seasonal_entry_ship_to == 'no'
       assign seasonal_shipping_is_blocked = true
     endif
     if seasonal_entry_has_free_shipping == 'true' or seasonal_entry_has_free_shipping == '1' or seasonal_entry_has_free_shipping == 'yes'
       assign seasonal_shipping_has_free_shipping = true
+    endif
+    if seasonal_entry_taxes_included == 'true' or seasonal_entry_taxes_included == '1' or seasonal_entry_taxes_included == 'yes'
+      assign seasonal_shipping_taxes_included = true
+      assign cart_summary_taxes_text = 'Included in price'
     endif
     if seasonal_entry_threshold != blank
       assign seasonal_entry_threshold_cents = seasonal_entry_threshold | times: 100
@@ -88,6 +100,17 @@
         assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold_cents | money
       endif
     endif
+  endif
+  assign seasonal_shipping_advertised_min_time_number = seasonal_shipping_advertised_min_time | plus: 0
+  assign seasonal_shipping_advertised_max_time_number = seasonal_shipping_advertised_max_time | plus: 0
+  if seasonal_shipping_entry == blank
+    assign cart_summary_shipping_text = 'Ships worldwide'
+  elsif seasonal_shipping_is_blocked
+    assign cart_summary_shipping_text = "We're not shipping to " | append: seasonal_shipping_country_name
+  elsif seasonal_shipping_advertised_min_time != blank and seasonal_shipping_advertised_max_time != blank and seasonal_shipping_advertised_min_time_number < 11 and seasonal_shipping_advertised_max_time_number < 12
+    assign cart_summary_shipping_text = seasonal_shipping_advertised_min_time | append: '-' | append: seasonal_shipping_advertised_max_time | append: ' days delivery in ' | append: seasonal_shipping_country_name
+  else
+    assign cart_summary_shipping_text = 'Ships to ' | append: seasonal_shipping_country_name
   endif
 
   assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
@@ -1336,18 +1359,18 @@
 
         <div class="header__cart-drawer-summary" data-cart-summary {% if cart.empty? %}hidden{% endif %}>
           {% render 'sb-cart-summary-inner',
+            summary_class: 'header__cart-drawer-summary-inner sb-cart-summary',
+            show_top_divider: true,
+            shipping_text: cart_summary_shipping_text,
+            taxes_text: cart_summary_taxes_text,
             discount_input_id: 'HeaderCartDiscountCode-' | append: section.id,
             discount_codes: cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title' | uniq,
-            totals_class: 'header__cart-totals',
-            total_row_class: 'header__cart-total-row',
-            total_row_strong_class: 'header__cart-total-row',
-            actions_class: 'header__cart-drawer-actions',
-            show_view_cart: false,
-            view_cart_class: 'header__cart-drawer-action',
             checkout_mode: 'link',
-            checkout_button_class: 'header__cart-drawer-action header__cart-drawer-action--primary',
+            checkout_button_class: '',
             clear_button_class: 'header__cart-drawer-action',
-            show_clear: false
+            show_clear: false,
+            payment_list_class: 'header__cart-summary-payment-list',
+            payment_item_class: 'header__cart-summary-payment-item'
           %}
         </div>
       </cart-items-component>
@@ -3921,11 +3944,13 @@
   .sb-cart-free-shipping__bar--intro {
     border-radius: 999px 0 0 999px;
     flex: 1 1 auto;
+    margin-right: calc(var(--sb-space-24) * -1);
   }
 
   .sb-cart-free-shipping__bar--outro {
     border-radius: 0 999px 999px 0;
     flex: 0 0 var(--sb-space-64);
+    margin-left: calc(var(--sb-space-24) * -1);
     width: var(--sb-space-64);
   }
 
@@ -3961,7 +3986,7 @@
     gap: var(--sb-space-8);
     position: relative;
     width: var(--sb-space-48);
-    z-index: 2;
+    z-index: 3;
   }
 
   .sb-cart-free-shipping__milestone {
@@ -4112,6 +4137,15 @@
     min-height: 0;
   }
 
+  :root {
+    --sb-cart-quantity-plus-icon: url('{{ 'icon-accordion-add.svg' | asset_url }}');
+    --sb-cart-quantity-minus-icon: url('{{ 'icon-quantity-remove.svg' | asset_url }}');
+    --sb-cart-remove-icon: url('{{ 'icon-cart-delete.svg' | asset_url }}');
+    --sb-cart-summary-shipping-icon: url('{{ 'icon-purchase-guarantee-shipping.svg' | asset_url }}');
+    --sb-cart-summary-discount-icon: url('{{ 'icon-discount-tag-outline.svg' | asset_url }}');
+    --sb-cart-summary-lock-icon: url('{{ 'icon-checkout-lock.svg' | asset_url }}');
+  }
+
   .header__cart-drawer-content {
     display: flex;
     flex: 1 1 auto;
@@ -4191,7 +4225,7 @@
     max-width: var(--sb-cart-thumb-size);
     min-height: var(--sb-cart-thumb-size);
     min-width: var(--sb-cart-thumb-size);
-    overflow: hidden;
+    overflow: visible;
     transform: scale(1);
     transform-origin: center;
     transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -4199,6 +4233,7 @@
   }
 
   .sb-cart-line__image {
+    border-radius: var(--sb-space-12);
     display: block;
     height: 100%;
     object-fit: cover;
@@ -4221,12 +4256,26 @@
   .sb-cart-line__content {
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-6);
     min-width: 0;
+  }
+
+  .sb-cart-line__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .sb-cart-line__price-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .sb-cart-line__title {
     color: var(--sb-color-neutral-900);
+    line-height: 1.2;
+    margin: 0;
     text-decoration: none;
   }
 
@@ -4236,25 +4285,86 @@
   }
 
   .sb-cart-line__price {
-    color: var(--sb-color-neutral-900);
+    color: var(--sb-color-neutral-800);
     margin: 0;
+  }
+
+  .sb-cart-line__discount-price {
+    color: var(--sb-color-blue-500);
+    margin: 0;
+  }
+
+  .sb-cart-shimmer-text {
+    --sb-cart-shimmer-text-color: var(--sb-color-neutral-700);
+    --sb-cart-shimmer-color-light: var(--sb-color-neutral-400);
+    --sb-cart-shimmer-speed: 1.25s;
+    display: inline-block;
+    position: relative;
+  }
+
+  .sb-cart-line__discount-price.sb-cart-shimmer-text {
+    --sb-cart-shimmer-text-color: var(--sb-color-blue-500);
+    --sb-cart-shimmer-color-light: var(--sb-color-neutral-400);
+  }
+
+  .sb-cart-shimmer-text::after {
+    background-clip: text;
+    background-image: linear-gradient(
+      -85deg,
+      var(--sb-cart-shimmer-text-color) 10%,
+      var(--sb-cart-shimmer-color-light) 50%,
+      var(--sb-cart-shimmer-text-color) 90%
+    );
+    background-position: 100% 0;
+    background-size: 200% 100%;
+    color: transparent;
+    content: attr(data-shimmer-value);
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    -webkit-background-clip: text;
+  }
+
+  .sb-cart-shimmer-text[shimmer] {
+    color: transparent;
+  }
+
+  .sb-cart-shimmer-text[shimmer]::after {
+    animation: sb-cart-text-shimmer var(--sb-cart-shimmer-speed) linear infinite;
+    opacity: 1;
+  }
+
+  @keyframes sb-cart-text-shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+
+    100% {
+      background-position: -100% 0;
+    }
   }
 
   .sb-cart-line__controls {
     align-items: center;
     display: flex;
-    gap: var(--sb-space-12);
-    justify-content: space-between;
-    margin-top: auto;
+    gap: 24px;
+    margin-top: 12px;
   }
 
   .sb-cart-quantity {
     align-items: center;
+    background: var(--sb-color-neutral-400);
     border: 0;
-    border-radius: 999px;
+    border-radius: 8px;
     display: inline-flex;
-    min-height: var(--sb-space-36);
-    padding: 0 var(--sb-space-6);
+    height: 36px;
+    width: 100px;
+  }
+
+  .sb-cart-quantity:hover,
+  .sb-cart-quantity:focus-within {
+    background: var(--sb-color-neutral-600);
   }
 
   .sb-cart-quantity__button {
@@ -4264,24 +4374,50 @@
     color: var(--sb-color-neutral-900);
     cursor: pointer;
     display: inline-flex;
-    font-family: inherit;
-    font-size: var(--sb-space-16);
-    height: var(--sb-space-24);
+    height: 36px;
     justify-content: center;
-    min-width: var(--sb-space-24);
-    padding: 0;
+    padding: 12px;
+    width: 36px;
+  }
+
+  .sb-cart-quantity__button:disabled {
+    color: var(--sb-color-neutral-800);
+    cursor: default;
+  }
+
+  .sb-cart-quantity__icon {
+    background-color: currentColor;
+    display: block;
+    height: 12px;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    width: 12px;
+  }
+
+  .sb-cart-quantity__icon--plus {
+    -webkit-mask-image: var(--sb-cart-quantity-plus-icon);
+    mask-image: var(--sb-cart-quantity-plus-icon);
+  }
+
+  .sb-cart-quantity__icon--minus {
+    -webkit-mask-image: var(--sb-cart-quantity-minus-icon);
+    mask-image: var(--sb-cart-quantity-minus-icon);
   }
 
   .sb-cart-quantity__input {
     background: transparent;
     border: 0;
     color: var(--sb-color-neutral-900);
-    font-family: inherit;
-    font-size: var(--sb-space-14);
-    min-width: var(--sb-space-36);
+    flex: 1 1 auto;
+    margin: 0;
+    min-width: 0;
     padding: 0;
     text-align: center;
-    width: var(--sb-space-36);
+    width: 28px;
   }
 
   .sb-cart-quantity__input::-webkit-inner-spin-button,
@@ -4291,12 +4427,36 @@
   }
 
   .sb-cart-line__remove {
+    align-items: center;
     background: transparent;
     border: 0;
-    color: var(--sb-color-neutral-800);
+    color: var(--sb-color-neutral-900);
     cursor: pointer;
+    display: inline-flex;
+    height: 16px;
+    justify-content: center;
     padding: 0;
-    text-decoration: underline;
+    width: 16px;
+  }
+
+  .sb-cart-line__remove-icon {
+    background-color: currentColor;
+    display: block;
+    height: 16px;
+    -webkit-mask-image: var(--sb-cart-remove-icon);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-image: var(--sb-cart-remove-icon);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    width: 16px;
+  }
+
+  .sb-cart-line__remove:hover,
+  .sb-cart-line__remove:focus-visible {
+    color: var(--sb-color-red-500);
   }
 
   .header__cart-empty {
@@ -4411,7 +4571,7 @@
     border-top: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-20);
+    gap: 0;
     margin-top: auto;
     padding: 20px;
   }
@@ -4430,45 +4590,213 @@
     position: sticky;
   }
 
-  .header__cart-discount {
+  .sb-cart-summary {
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-12);
+    gap: var(--sb-space-16);
+    width: 100%;
   }
 
-  .header__cart-discount-form {
+  .sb-cart-summary__row {
     align-items: center;
     display: flex;
-    gap: var(--sb-space-8);
+    justify-content: space-between;
+    margin: 0;
   }
 
-  .header__cart-discount-input {
-    background: var(--sb-color-neutral-100);
-    border: 0;
-    border-radius: 999px;
-    color: var(--sb-color-neutral-900);
-    flex: 1 1 auto;
+  .sb-cart-summary__row > :last-child {
+    margin-left: var(--sb-space-8);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .sb-cart-summary__row-leading {
+    align-items: center;
+    display: inline-flex;
+    gap: var(--sb-space-8);
+    min-width: 0;
+  }
+
+  .sb-cart-summary__row-leading > span:last-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .sb-cart-summary__icon {
+    background-color: currentColor;
+    display: block;
+    flex: 0 0 auto;
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+  }
+
+  .sb-cart-summary__icon--shipping,
+  .sb-cart-summary__icon--discount {
+    height: var(--sb-space-16);
+    width: var(--sb-space-16);
+  }
+
+  .sb-cart-summary__icon--shipping {
+    -webkit-mask-image: var(--sb-cart-summary-shipping-icon);
+    mask-image: var(--sb-cart-summary-shipping-icon);
+  }
+
+  .sb-cart-summary__icon--discount {
+    -webkit-mask-image: var(--sb-cart-summary-discount-icon);
+    mask-image: var(--sb-cart-summary-discount-icon);
+  }
+
+  .sb-cart-summary__divider {
+    background: var(--sb-color-neutral-600);
+    height: 1px;
+    width: 100%;
+  }
+
+  .sb-cart-summary__row--discount-auto {
+    background: var(--sb-color-blue-500);
+    border-radius: var(--sb-space-12);
+    color: var(--sb-color-always-white);
     min-height: var(--sb-space-36);
+    padding: var(--sb-space-8) var(--sb-space-12);
+  }
+
+  .sb-cart-summary__row--discount-auto [data-cart-auto-discount-text] {
+    text-transform: uppercase;
+  }
+
+  .sb-cart-summary__discount {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-16);
+  }
+
+  .sb-cart-summary__discount > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .sb-cart-summary__discount > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .sb-cart-summary__row--discount-toggle {
+    background: var(--sb-color-neutral-100);
+    border-radius: 999px;
+    min-height: 36px;
     padding: 0 var(--sb-space-12);
   }
 
-  .header__cart-discount-input::placeholder {
+  .sb-cart-summary__toggle-icon {
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    height: 12px;
+    line-height: 0;
+    position: relative;
+    width: 12px;
+  }
+
+  .sb-cart-summary__toggle-icon svg {
+    display: block;
+    height: 12px;
+    width: 12px;
+  }
+
+  .sb-cart-summary__toggle-icon svg path:not([fill='none']),
+  .sb-cart-summary__toggle-icon svg circle:not([fill='none']),
+  .sb-cart-summary__toggle-icon svg rect:not([fill='none']) {
+    fill: currentColor !important;
+  }
+
+  .sb-cart-summary__toggle-icon svg path:not([stroke='none']),
+  .sb-cart-summary__toggle-icon svg circle:not([stroke='none']),
+  .sb-cart-summary__toggle-icon svg rect:not([stroke='none']) {
+    stroke: currentColor !important;
+  }
+
+  .sb-cart-summary__toggle-icon-plus,
+  .sb-cart-summary__toggle-icon-close {
+    display: inline-flex;
+    inset: 0;
+    position: absolute;
+    transition:
+      opacity 220ms ease,
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sb-cart-summary__toggle-icon-plus {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  .sb-cart-summary__toggle-icon-close {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.85);
+  }
+
+  .sb-cart-summary__discount[open] .sb-cart-summary__toggle-icon-plus {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.85);
+  }
+
+  .sb-cart-summary__discount[open] .sb-cart-summary__toggle-icon-close {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  .sb-cart-summary__discount-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sb-cart-summary__discount[open] .sb-cart-summary__discount-body {
+    grid-template-rows: 1fr;
+  }
+
+  .sb-cart-summary__discount-body-inner {
+    display: grid;
+    gap: var(--sb-space-12);
+    min-height: 0;
+    overflow: hidden;
+    padding-top: var(--sb-space-16);
+  }
+
+  .sb-cart-summary__discount-form {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+  }
+
+  .sb-cart-summary__discount-input {
+    background: var(--sb-color-always-white);
+    border: 0;
+    border-radius: var(--sb-space-12);
+    box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
+    color: var(--sb-color-always-black);
+    flex: 1 1 auto;
+    height: 36px;
+    min-height: 36px;
+    padding: 0 var(--sb-space-12);
+  }
+
+  .sb-cart-summary__discount-input::placeholder {
     color: var(--sb-color-neutral-800);
   }
 
-  .header__cart-discount-apply {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    border-radius: 999px;
-    color: var(--sb-color-neutral-900);
-    cursor: pointer;
-    display: inline-flex;
-    min-height: var(--sb-space-36);
-    padding: 0 var(--sb-space-12);
+  .sb-cart-summary__discount-apply {
+    flex: 0 0 auto;
+    min-height: 36px;
   }
 
-  .header__cart-discount-error {
+  .sb-cart-summary__discount-apply .sb-button-radiant__label {
+    white-space: nowrap;
+  }
+
+  .sb-cart-summary__discount-error {
     color: var(--sb-color-primary-500);
     margin: 0;
   }
@@ -4508,50 +4836,63 @@
     width: var(--sb-space-16);
   }
 
-  .header__cart-totals {
-    border-top: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--sb-space-8);
-    padding-top: var(--sb-space-16);
-  }
-
-  .header__cart-total-row {
-    align-items: center;
+  .sb-cart-summary__row--total {
     color: var(--sb-color-neutral-900);
-    display: flex;
-    justify-content: space-between;
-    margin: 0;
   }
 
-  .header__cart-drawer-actions {
+  .sb-cart-summary__checkout-group {
     display: grid;
-    gap: var(--sb-space-8);
-    grid-template-columns: 1fr 1fr;
+    gap: var(--sb-space-20);
+    margin-top: var(--sb-space-8);
   }
 
-  .header__cart-drawer-action {
+  .sb-cart-summary__checkout-form {
+    margin: 0;
+    width: 100%;
+  }
+
+  .sb-cart-summary__checkout-button {
+    width: 100%;
+  }
+
+  .sb-cart-summary__checkout-icon {
+    background: currentColor;
+    display: block;
+    height: var(--sb-space-16);
+    -webkit-mask-image: var(--sb-cart-summary-lock-icon);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-image: var(--sb-cart-summary-lock-icon);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    width: var(--sb-space-16);
+  }
+
+  .header__cart-summary-payment-list,
+  .sb-cart-page__summary-payment-list {
     align-items: center;
-    background: transparent;
-    border: 0;
-    border-radius: 999px;
-    color: var(--sb-color-neutral-900);
-    cursor: pointer;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .header__cart-summary-payment-item,
+  .sb-cart-page__summary-payment-item {
     display: inline-flex;
-    justify-content: center;
-    min-height: var(--sb-space-36);
-    padding: 0 var(--sb-space-12);
-    text-decoration: none;
+    line-height: 0;
   }
 
-  .header__cart-drawer-action--primary {
-    background: var(--sb-color-primary-500);
-    border-color: var(--sb-color-primary-500);
-    color: var(--sb-color-always-white);
-  }
-
-  .header__cart-drawer-actions [data-cart-clear] {
-    grid-column: 1 / -1;
+  .header__cart-summary-payment-item svg,
+  .sb-cart-page__summary-payment-item svg {
+    display: block;
+    height: var(--sb-space-24);
+    width: auto;
   }
 
   .shopify-section:has(> .header) {

@@ -371,8 +371,8 @@ video.sb-product-main__media-asset {
 }
 
 .sb-button-radiant--medium {
-  --sb-button-radiant-height: var(--sb-space-36);
-  --sb-button-radiant-padding-inline: var(--sb-space-16);
+  --sb-button-radiant-height: 36px;
+  --sb-button-radiant-padding-inline: 16px;
   --sb-button-hover-lift: -2px;
 }
 

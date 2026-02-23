@@ -2,76 +2,202 @@
   assign sb_cart_checkout_mode = checkout_mode | default: 'link'
   assign sb_cart_show_clear = show_clear
   if sb_cart_show_clear == blank
-    assign sb_cart_show_clear = true
+    assign sb_cart_show_clear = false
   endif
+  assign sb_cart_show_top_divider = show_top_divider | default: false
+  assign sb_cart_shipping_text = shipping_text | default: 'Ships worldwide'
+  assign sb_cart_taxes_text = taxes_text | default: 'May be due on delivery'
+  assign sb_cart_summary_class = summary_class | default: 'sb-cart-summary'
+  assign sb_cart_payment_list_class = payment_list_class | default: 'sb-cart-summary__payment-list'
+  assign sb_cart_payment_item_class = payment_item_class | default: 'sb-cart-summary__payment-item'
+
+  assign sb_cart_original_subtotal_cents = cart.original_total_price | default: cart.items_subtotal_price | plus: 0
+  assign sb_cart_final_total_cents = cart.total_price | plus: 0
+  assign sb_cart_discount_amount_cents = sb_cart_original_subtotal_cents | minus: sb_cart_final_total_cents
+  if sb_cart_discount_amount_cents < 0
+    assign sb_cart_discount_amount_cents = 0
+  endif
+  assign sb_cart_discount_percentage_source_cents = cart.total_discount | default: 0 | plus: 0
+  assign sb_cart_has_auto_discount = false
+  if sb_cart_discount_amount_cents > 0
+    assign sb_cart_has_auto_discount = true
+  endif
+
+  assign sb_cart_discount_code = ''
+  if cart.discount_codes != blank and cart.discount_codes.size > 0
+    assign sb_cart_first_discount = cart.discount_codes | first
+    assign sb_cart_discount_code = sb_cart_first_discount.code | default: sb_cart_first_discount
+  endif
+  if sb_cart_discount_code == blank
+    assign sb_cart_discount_code = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title' | first
+  endif
+  assign sb_cart_discount_code = sb_cart_discount_code | upcase | strip
+  if sb_cart_discount_code == blank
+    assign sb_cart_discount_code = 'DISCOUNT'
+  endif
+
+  assign sb_cart_discount_percent = blank
+  for discount_application in cart.cart_level_discount_applications
+    assign discount_type = discount_application.type | default: '' | downcase
+    assign discount_title = discount_application.title | default: '' | upcase | strip
+    if discount_type == 'discount_code' or discount_title == sb_cart_discount_code
+      assign discount_value_type = discount_application.value_type | default: '' | downcase
+      if discount_value_type == 'percentage'
+        assign sb_cart_discount_percent = discount_application.value | round
+        break
+      endif
+    endif
+  endfor
+  if sb_cart_discount_percent == blank and sb_cart_discount_percentage_source_cents > 0
+    assign sb_cart_discount_percent_base = cart.original_total_price | default: cart.items_subtotal_price | plus: 0
+    if sb_cart_discount_percent_base > 0
+      assign sb_cart_discount_percent = sb_cart_discount_percentage_source_cents | times: 100.0 | divided_by: sb_cart_discount_percent_base | round
+    endif
+  endif
+
+  assign sb_cart_auto_discount_text = sb_cart_discount_code
+  if sb_cart_discount_percent != blank
+    assign sb_cart_auto_discount_text = sb_cart_auto_discount_text | append: ' (' | append: sb_cart_discount_percent | append: '% OFF)'
+  endif
+  assign sb_cart_auto_discount_amount = sb_cart_discount_amount_cents | money
+  assign sb_cart_subtotal_display = sb_cart_original_subtotal_cents | money
 %}
 
-<div class="header__cart-discount">
-  <form class="header__cart-discount-form" data-cart-discount-form>
-    <label class="visually-hidden" for="{{ discount_input_id }}">Discount code</label>
-    <input
-      id="{{ discount_input_id }}"
-      class="header__cart-discount-input font-caption weight-regular"
-      type="text"
-      name="discount"
-      placeholder="Discount code"
-      autocomplete="off"
-      data-cart-discount-input
-    >
-    <button class="header__cart-discount-apply font-caption weight-semibold" type="submit">
-      Apply
-    </button>
-  </form>
-  <p class="header__cart-discount-error font-caption2 weight-semibold" data-cart-discount-error hidden></p>
-  <ul class="sb-cart-discount-list" data-cart-discount-list>
-    {% for discount_code in discount_codes %}
-      <li class="sb-cart-discount-pill font-caption weight-semibold">
-        <span>{{ discount_code }}</span>
-        <button
-          type="button"
-          class="sb-cart-discount-pill__remove"
-          data-cart-discount-remove="{{ discount_code | escape }}"
-          aria-label="Remove {{ discount_code | escape }}"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
-
-<div class="{{ totals_class }}">
-  <p class="{{ total_row_class }} font-caption weight-regular">
-    <span>Subtotal</span>
-    <span data-cart-subtotal>{{ cart.items_subtotal_price | money }}</span>
-  </p>
-  <p class="{{ total_row_strong_class }} font-body weight-semibold">
-    <span>Total</span>
-    <span data-cart-total>{{ cart.total_price | money }}</span>
-  </p>
-</div>
-
-<div class="{{ actions_class }}">
-  {% if show_view_cart %}
-    <a class="{{ view_cart_class }}" href="{{ routes.cart_url }}">View cart</a>
+<div class="{{ sb_cart_summary_class }}">
+  {% if sb_cart_show_top_divider %}
+    <div class="sb-cart-summary__divider" aria-hidden="true"></div>
   {% endif %}
 
-  {% if sb_cart_checkout_mode == 'form' %}
-    <form action="{{ routes.cart_url }}" method="post">
-      <button
-        type="submit"
-        class="{{ checkout_button_class }}"
-        name="checkout"
+  <p class="sb-cart-summary__row sb-cart-summary__row--shipping font-caption weight-regular">
+    <span class="sb-cart-summary__row-leading">
+      <span class="sb-cart-summary__icon sb-cart-summary__icon--shipping" aria-hidden="true"></span>
+      <span>{{ sb_cart_shipping_text }}</span>
+    </span>
+  </p>
+
+  <p class="sb-cart-summary__row font-caption weight-regular">
+    <span>Subtotal</span>
+    <span class="sb-cart-shimmer-text" data-cart-subtotal data-shimmer-value="{{ sb_cart_subtotal_display | escape }}">
+      {{ sb_cart_subtotal_display }}
+    </span>
+  </p>
+
+  <p class="sb-cart-summary__row font-caption weight-regular">
+    <span>Taxes and duties</span>
+    <span>{{ sb_cart_taxes_text }}</span>
+  </p>
+
+  <div
+    class="sb-cart-summary__divider"
+    data-cart-auto-discount-divider
+    aria-hidden="true"
+    {% unless sb_cart_has_auto_discount %}
+      hidden
+    {% endunless %}
+  ></div>
+
+  <p
+    class="sb-cart-summary__row sb-cart-summary__row--discount-auto font-caption weight-bold"
+    data-cart-auto-discount-row
+    {% unless sb_cart_has_auto_discount %}
+      hidden
+    {% endunless %}
+  >
+    <span class="sb-cart-summary__row-leading">
+      <span class="sb-cart-summary__icon sb-cart-summary__icon--discount" aria-hidden="true"></span>
+      <span data-cart-auto-discount-text>{{ sb_cart_auto_discount_text }}</span>
+    </span>
+    <span class="sb-cart-shimmer-text" data-cart-auto-discount-amount data-shimmer-value="-{{ sb_cart_auto_discount_amount | escape }}">
+      -{{ sb_cart_auto_discount_amount }}
+    </span>
+  </p>
+
+  <div class="sb-cart-summary__divider" aria-hidden="true"></div>
+
+  <details class="sb-cart-summary__discount" data-cart-discount-disclosure>
+    <summary class="sb-cart-summary__row sb-cart-summary__row--discount-toggle font-caption weight-regular">
+      <span>Discount</span>
+      <span class="sb-cart-summary__toggle-icon" aria-hidden="true">
+        <span class="sb-cart-summary__toggle-icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+        <span class="sb-cart-summary__toggle-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+      </span>
+    </summary>
+    <div class="sb-cart-summary__discount-body">
+      <div class="sb-cart-summary__discount-body-inner">
+        <form class="sb-cart-summary__discount-form" data-cart-discount-form>
+          <label class="visually-hidden" for="{{ discount_input_id }}">Discount code</label>
+          <input
+            id="{{ discount_input_id }}"
+            class="sb-cart-summary__discount-input font-caption weight-regular"
+            type="text"
+            name="discount"
+            placeholder="Discount code"
+            autocomplete="off"
+            data-cart-discount-input
+          >
+          <button class="sb-cart-summary__discount-apply sb-button-radiant sb-button-radiant--medium font-caption weight-bold" type="submit">
+            <span class="sb-button-radiant__label">Apply</span>
+          </button>
+        </form>
+        <p class="sb-cart-summary__discount-error font-caption2 weight-semibold" data-cart-discount-error hidden></p>
+        <ul class="sb-cart-discount-list" data-cart-discount-list>
+          {% for discount_code in discount_codes %}
+            <li class="sb-cart-discount-pill font-caption weight-semibold">
+              <span>{{ discount_code }}</span>
+              <button
+                type="button"
+                class="sb-cart-discount-pill__remove"
+                data-cart-discount-remove="{{ discount_code | escape }}"
+                aria-label="Remove {{ discount_code | escape }}"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <div class="sb-cart-summary__divider" aria-hidden="true"></div>
+
+  <p class="sb-cart-summary__row sb-cart-summary__row--total font-caption weight-bold">
+    <span>Total</span>
+    <span class="sb-cart-shimmer-text" data-cart-total data-shimmer-value="{{ cart.total_price | money | escape }}">
+      {{ cart.total_price | money }}
+    </span>
+  </p>
+
+  <div class="sb-cart-summary__checkout-group">
+    {% if sb_cart_checkout_mode == 'form' %}
+      <form action="{{ routes.cart_url }}" method="post" class="sb-cart-summary__checkout-form">
+        <button
+          type="submit"
+          class="{{ checkout_button_class }} sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold sb-cart-summary__checkout-button"
+          name="checkout"
+          data-cart-checkout-button
+        >
+          <span class="sb-button-radiant__icon" aria-hidden="true">
+            <span class="sb-cart-summary__checkout-icon"></span>
+          </span>
+          <span class="sb-button-radiant__label">Secure checkout</span>
+        </button>
+      </form>
+    {% else %}
+      <a
+        class="{{ checkout_button_class }} sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold sb-cart-summary__checkout-button"
+        href="/checkout"
         data-cart-checkout-button
       >
-        Checkout
-      </button>
-    </form>
-  {% else %}
-    <a class="{{ checkout_button_class }}" href="/checkout" data-cart-checkout-button>
-      Checkout
-    </a>
-  {% endif %}
+        <span class="sb-button-radiant__icon" aria-hidden="true">
+          <span class="sb-cart-summary__checkout-icon"></span>
+        </span>
+        <span class="sb-button-radiant__label">Secure checkout</span>
+      </a>
+    {% endif %}
+
+    {% render 'sb-cart-payment-icons', list_class: sb_cart_payment_list_class, item_class: sb_cart_payment_item_class %}
+  </div>
 
   {% if sb_cart_show_clear %}
     <button type="button" class="{{ clear_button_class }}" data-cart-clear>Clear cart</button>

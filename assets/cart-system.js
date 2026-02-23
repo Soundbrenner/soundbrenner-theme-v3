@@ -181,6 +181,69 @@
     return [...new Set(codes)];
   };
 
+  const getCartDiscountSummary = (cart, currency = 'USD') => {
+    const originalSubtotalCents = Number.isFinite(Number(cart && cart.original_total_price))
+      ? Number(cart.original_total_price)
+      : Number(cart && cart.items_subtotal_price) || 0;
+    const finalTotalCents = Number.isFinite(Number(cart && cart.total_price))
+      ? Number(cart.total_price)
+      : 0;
+    const combinedSavingsCents = Math.max(0, originalSubtotalCents - finalTotalCents);
+    const explicitDiscountCents = Number.isFinite(Number(cart && cart.total_discount))
+      ? Math.max(0, Number(cart.total_discount))
+      : 0;
+    const discountAmountCents = Math.max(combinedSavingsCents, explicitDiscountCents);
+    const hasDiscount = discountAmountCents > 0;
+
+    const appliedCodes = getAppliedDiscountCodes(cart || {});
+    let code = `${appliedCodes[0] || ''}`.trim();
+
+    const applications = Array.isArray(cart && cart.cart_level_discount_applications)
+      ? cart.cart_level_discount_applications
+      : [];
+    if (!code && applications.length) {
+      const firstTitle = `${applications[0] && applications[0].title ? applications[0].title : ''}`.trim();
+      if (firstTitle) code = firstTitle;
+    }
+
+    if (!code) code = 'DISCOUNT';
+    code = code.toUpperCase();
+
+    let percentage = null;
+    for (const application of applications) {
+      if (!application || typeof application !== 'object') continue;
+      const title = `${application.title || ''}`.trim().toUpperCase();
+      const appType = `${application.type || ''}`.trim().toLowerCase();
+      const isMatch = title === code || (!title && appType === 'discount_code') || appType === 'discount_code';
+      if (!isMatch) continue;
+      const valueType = `${application.value_type || ''}`.trim().toLowerCase();
+      if (valueType === 'percentage') {
+        const value = Number(application.value);
+        if (Number.isFinite(value)) {
+          percentage = Math.round(value);
+          break;
+        }
+      }
+    }
+
+    if (!Number.isFinite(percentage)) {
+      if (originalSubtotalCents > 0 && explicitDiscountCents > 0) {
+        percentage = Math.round((explicitDiscountCents / originalSubtotalCents) * 100);
+      }
+    }
+
+    const text = Number.isFinite(percentage)
+      ? `${code} (${percentage}% OFF)`
+      : code;
+
+    return {
+      hasDiscount,
+      amountCents: discountAmountCents,
+      amountText: `-${formatMoney(discountAmountCents, currency)}`,
+      text,
+    };
+  };
+
   const getItemVariantTitle = (item) => {
     if (!item) return '';
     const value = `${item.variant_title || ''}`.trim();
@@ -198,6 +261,26 @@
     }
 
     return '';
+  };
+
+  const setShimmerValue = (node, value = '') => {
+    if (!(node instanceof HTMLElement)) return;
+    node.setAttribute('data-shimmer-value', `${value == null ? '' : value}`);
+  };
+
+  const startTextShimmer = (node) => {
+    if (!(node instanceof HTMLElement)) return;
+    setShimmerValue(node, `${node.textContent || ''}`.trim());
+    node.setAttribute('shimmer', '');
+  };
+
+  const resetTextShimmer = (container = document.body) => {
+    if (!(container instanceof Element || container instanceof Document || container instanceof DocumentFragment)) {
+      return;
+    }
+    container.querySelectorAll('[shimmer]').forEach((node) => {
+      if (node instanceof HTMLElement) node.removeAttribute('shimmer');
+    });
   };
 
   const dispatchCartEvents = (cart, source = 'unknown', itemCount = 0) => {
@@ -691,6 +774,10 @@
       this.discountInput = this.querySelector('[data-cart-discount-input]');
       this.discountListNode = this.querySelector('[data-cart-discount-list]');
       this.discountErrorNode = this.querySelector('[data-cart-discount-error]');
+      this.autoDiscountRowNode = this.querySelector('[data-cart-auto-discount-row]');
+      this.autoDiscountTextNode = this.querySelector('[data-cart-auto-discount-text]');
+      this.autoDiscountAmountNode = this.querySelector('[data-cart-auto-discount-amount]');
+      this.autoDiscountDividerNode = this.querySelector('[data-cart-auto-discount-divider]');
       this.drawerCountNode = this.messageScopeNode.querySelector('[data-cart-drawer-count]');
       this.pageCountNode = this.messageScopeNode.querySelector('[data-cart-page-count]');
       this.freeShippingNode = this.messageScopeNode.querySelector('[data-cart-free-shipping]');
@@ -762,12 +849,9 @@
         if (!line) return;
         const input = this.querySelector(`[data-cart-line="${line}"] [data-cart-qty-input]`);
         if (!(input instanceof HTMLInputElement)) return;
-        const nextValue = Math.max(0, clampCount(input.value) - 1);
-        if (nextValue === 0) {
-          const row = minusButton.closest('[data-cart-line]');
-          this.removeLine(line, row);
-          return;
-        }
+        const currentValue = Math.max(1, clampCount(input.value));
+        if (currentValue <= 1) return;
+        const nextValue = currentValue - 1;
         this.updateLine(line, nextValue);
         return;
       }
@@ -809,13 +893,8 @@
       const line = this.getLineFromNode(target);
       if (!line) return;
 
-      const nextValue = clampCount(target.value);
-      if (nextValue <= 0) {
-        const row = target.closest('[data-cart-line]');
-        this.removeLine(line, row);
-        return;
-      }
-
+      const nextValue = Math.max(1, clampCount(target.value));
+      target.value = `${nextValue}`;
       this.updateLine(line, nextValue);
     }
 
@@ -885,14 +964,34 @@
 
       this.setLinePending(line, true);
       hideAnyDiscountError(this);
+      this.startPriceShimmer(line);
 
       changeLine(line, quantity, {
         source: `${this.context}-line-change`,
       }).catch(() => {
+        this.stopPriceShimmer();
         this.showStatus('Unable to update quantity.');
       }).finally(() => {
+        this.stopPriceShimmer();
         this.setLinePending(line, false);
       });
+    }
+
+    startPriceShimmer(line) {
+      const row = this.querySelector(`[data-cart-line="${line}"]`);
+      if (row instanceof HTMLElement) {
+        row.querySelectorAll('[data-cart-line-price], [data-cart-line-discount-price]').forEach((node) => {
+          startTextShimmer(node);
+        });
+      }
+
+      startTextShimmer(this.subtotalNode);
+      startTextShimmer(this.totalNode);
+      startTextShimmer(this.autoDiscountAmountNode);
+    }
+
+    stopPriceShimmer() {
+      resetTextShimmer(this);
     }
 
     removeLine(line, rowNode) {
@@ -1026,21 +1125,28 @@
         });
 
         if (this.subtotalNode) {
-          this.subtotalNode.textContent = formatMoney(
-            cart && cart.items_subtotal_price ? cart.items_subtotal_price : 0,
+          const subtotalCents = Number.isFinite(Number(cart && cart.original_total_price))
+            ? Number(cart.original_total_price)
+            : (cart && cart.items_subtotal_price ? cart.items_subtotal_price : 0);
+          const subtotalText = formatMoney(
+            subtotalCents,
             currency
           );
+          this.subtotalNode.textContent = subtotalText;
+          setShimmerValue(this.subtotalNode, subtotalText);
         }
 
         if (this.totalNode) {
-          this.totalNode.textContent = formatMoney(
+          const totalText = formatMoney(
             cart && cart.total_price ? cart.total_price : 0,
             currency
           );
+          this.totalNode.textContent = totalText;
+          setShimmerValue(this.totalNode, totalText);
         }
 
         this.renderFreeShipping(cart || {}, currency, isEmpty);
-        this.renderDiscounts(cart || {});
+        this.renderDiscounts(cart || {}, currency);
         this.renderItems(cart || {}, currency);
 
         const drawer = this.closest('cart-drawer-component');
@@ -1058,7 +1164,26 @@
       applyRenderState();
     }
 
-    renderDiscounts(cart) {
+    renderDiscounts(cart, currency = 'USD') {
+      const summary = getCartDiscountSummary(cart || {}, currency);
+
+      if (this.autoDiscountRowNode) {
+        this.autoDiscountRowNode.hidden = !summary.hasDiscount;
+      }
+
+      if (this.autoDiscountDividerNode) {
+        this.autoDiscountDividerNode.hidden = !summary.hasDiscount;
+      }
+
+      if (this.autoDiscountTextNode) {
+        this.autoDiscountTextNode.textContent = summary.text;
+      }
+
+      if (this.autoDiscountAmountNode) {
+        this.autoDiscountAmountNode.textContent = summary.amountText;
+        setShimmerValue(this.autoDiscountAmountNode, summary.amountText);
+      }
+
       if (!this.discountListNode) return;
 
       const discountCodes = getAppliedDiscountCodes(cart);
@@ -1098,37 +1223,78 @@
         const productUrl = escapeHtml(item.url || '#');
         const variantTitle = escapeHtml(getItemVariantTitle(item));
         const imageUrl = escapeHtml(getItemImageUrl(item) || this.placeholderImage);
-        const linePrice = formatMoney(item.final_line_price || 0, currency);
         const quantity = clampCount(item.quantity || 0);
+        const effectiveQuantity = Math.max(1, quantity);
+        const originalLinePriceCents = Number.isFinite(Number(item.original_line_price))
+          ? Number(item.original_line_price)
+          : 0;
+        const finalLinePriceCents = Number.isFinite(Number(item.final_line_price))
+          ? Number(item.final_line_price)
+          : 0;
+        const hasDiscount = originalLinePriceCents > finalLinePriceCents;
+        const regularLinePrice = formatMoney(hasDiscount ? originalLinePriceCents : finalLinePriceCents, currency);
+        const discountedLinePrice = hasDiscount ? formatMoney(finalLinePriceCents, currency) : '';
+        const minusButtonAttributes = effectiveQuantity <= 1 ? 'disabled aria-disabled="true"' : '';
 
         lineItem.innerHTML = `
           <a class="sb-cart-line__media" href="${productUrl}">
             <img class="sb-cart-line__image" src="${imageUrl}" alt="${title}" loading="lazy" width="128" height="128">
           </a>
           <div class="sb-cart-line__content">
-            <a class="sb-cart-line__title font-body weight-bold" href="${productUrl}">${title}</a>
-            ${
-              variantTitle
-                ? `<p class="sb-cart-line__variant font-caption weight-regular">${variantTitle}</p>`
-                : ''
-            }
-            <p class="sb-cart-line__price font-caption weight-semibold">${escapeHtml(linePrice)}</p>
+            <div class="sb-cart-line__meta">
+              <a class="sb-cart-line__title font-caption weight-bold" href="${productUrl}">${title}</a>
+              ${
+                variantTitle
+                  ? `<p class="sb-cart-line__variant font-caption weight-regular">${variantTitle}</p>`
+                  : ''
+              }
+              <div class="sb-cart-line__price-group">
+                <p
+                  class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
+                  data-cart-line-price
+                  data-shimmer-value="${escapeHtml(regularLinePrice)}"
+                >
+                  ${escapeHtml(regularLinePrice)}
+                </p>
+                ${
+                  hasDiscount
+                    ? `<p
+                        class="sb-cart-line__discount-price sb-cart-shimmer-text font-caption weight-regular"
+                        data-cart-line-discount-price
+                        data-shimmer-value="${escapeHtml(discountedLinePrice)}"
+                      >${escapeHtml(discountedLinePrice)}</p>`
+                    : ''
+                }
+              </div>
+            </div>
             <div class="sb-cart-line__controls">
               <div class="sb-cart-quantity" role="group" aria-label="Quantity">
-                <button type="button" class="sb-cart-quantity__button" data-cart-qty-minus aria-label="Decrease quantity">-</button>
+                <button
+                  type="button"
+                  class="sb-cart-quantity__button"
+                  data-cart-qty-minus
+                  aria-label="Decrease quantity"
+                  ${minusButtonAttributes}
+                >
+                  <span class="sb-cart-quantity__icon sb-cart-quantity__icon--minus" aria-hidden="true"></span>
+                </button>
                 <input
-                  class="sb-cart-quantity__input"
+                  class="sb-cart-quantity__input font-caption weight-bold"
                   data-cart-qty-input
                   type="number"
-                  min="0"
+                  min="1"
                   step="1"
                   inputmode="numeric"
-                  value="${quantity}"
+                  value="${effectiveQuantity}"
                   aria-label="Quantity"
                 >
-                <button type="button" class="sb-cart-quantity__button" data-cart-qty-plus aria-label="Increase quantity">+</button>
+                <button type="button" class="sb-cart-quantity__button" data-cart-qty-plus aria-label="Increase quantity">
+                  <span class="sb-cart-quantity__icon sb-cart-quantity__icon--plus" aria-hidden="true"></span>
+                </button>
               </div>
-              <button type="button" class="sb-cart-line__remove font-caption2 weight-semibold" data-cart-remove>Remove</button>
+              <button type="button" class="sb-cart-line__remove" data-cart-remove aria-label="Remove item">
+                <span class="sb-cart-line__remove-icon" aria-hidden="true"></span>
+              </button>
             </div>
           </div>
         `;
@@ -1275,12 +1441,6 @@
     refreshCart({ source: 'external', animateBadge: false }).catch(() => {
       // no-op
     });
-  });
-
-  document.addEventListener('sb:cart-badge:debug-bump', (event) => {
-    const requestedCount = event && event.detail ? Number.parseInt(`${event.detail.count}`, 10) : NaN;
-    const nextCount = Number.isFinite(requestedCount) ? Math.max(0, requestedCount) : Math.max(1, previousCartCount + 1);
-    setHeaderCartCount(nextCount, { animate: true });
   });
 
   document.addEventListener('submit', (event) => {

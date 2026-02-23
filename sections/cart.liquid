@@ -2,15 +2,32 @@
   assign primary_navigation = linklists['main-menu']
   assign cart_placeholder_image = 'icon-square-placeholder.svg' | asset_url
   assign cart_shipping_country_iso = localization.country.iso_code | upcase | strip
+  assign cart_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: 'your country'
   assign cart_shipping_country_handle = cart_shipping_country_iso | downcase
   assign cart_shipping_entry = shop.metaobjects['database_localized_shipping_info'][cart_shipping_country_handle]
   assign cart_free_shipping_available = false
   assign cart_free_shipping_threshold_cents = 0
+  assign cart_shipping_is_blocked = false
+  assign cart_shipping_taxes_included = false
+  assign cart_shipping_advertised_min_time = blank
+  assign cart_shipping_advertised_max_time = blank
+  assign cart_shipping_text = 'Ships worldwide'
+  assign cart_taxes_text = 'May be due on delivery'
   if cart_shipping_entry != blank and cart_shipping_country_iso != blank
     assign cart_entry_ship_to = cart_shipping_entry.ship_to_it.value | default: cart_shipping_entry.ship_to_it | append: '' | downcase
     assign cart_entry_has_free_shipping = cart_shipping_entry.free_shipping_available.value | default: cart_shipping_entry.free_shipping_available | append: '' | downcase
+    assign cart_entry_taxes_included = cart_shipping_entry.taxes_included_in_price.value | default: cart_shipping_entry.taxes_included_in_price | append: '' | downcase
     assign cart_entry_threshold = cart_shipping_entry.free_shipping_threshold_in_local_currency.value | default: cart_shipping_entry.free_shipping_threshold_in_local_currency
-    if cart_entry_ship_to != 'false' and cart_entry_ship_to != '0' and cart_entry_ship_to != 'no'
+    assign cart_shipping_advertised_min_time = cart_shipping_entry.advertised_min_time.value | default: cart_shipping_entry.advertised_min_time
+    assign cart_shipping_advertised_max_time = cart_shipping_entry.advertised_max_time.value | default: cart_shipping_entry.advertised_max_time
+    if cart_entry_ship_to == 'false' or cart_entry_ship_to == '0' or cart_entry_ship_to == 'no'
+      assign cart_shipping_is_blocked = true
+    endif
+    if cart_entry_taxes_included == 'true' or cart_entry_taxes_included == '1' or cart_entry_taxes_included == 'yes'
+      assign cart_shipping_taxes_included = true
+      assign cart_taxes_text = 'Included in price'
+    endif
+    if cart_shipping_is_blocked == false
       if cart_entry_has_free_shipping == 'true' or cart_entry_has_free_shipping == '1' or cart_entry_has_free_shipping == 'yes'
         assign cart_free_shipping_available = true
         if cart_entry_threshold != blank
@@ -18,6 +35,17 @@
         endif
       endif
     endif
+  endif
+  assign cart_shipping_advertised_min_time_number = cart_shipping_advertised_min_time | plus: 0
+  assign cart_shipping_advertised_max_time_number = cart_shipping_advertised_max_time | plus: 0
+  if cart_shipping_entry == blank
+    assign cart_shipping_text = 'Ships worldwide'
+  elsif cart_shipping_is_blocked
+    assign cart_shipping_text = "We're not shipping to " | append: cart_shipping_country_name
+  elsif cart_shipping_advertised_min_time != blank and cart_shipping_advertised_max_time != blank and cart_shipping_advertised_min_time_number < 11 and cart_shipping_advertised_max_time_number < 12
+    assign cart_shipping_text = cart_shipping_advertised_min_time | append: '-' | append: cart_shipping_advertised_max_time | append: ' days delivery in ' | append: cart_shipping_country_name
+  else
+    assign cart_shipping_text = 'Ships to ' | append: cart_shipping_country_name
   endif
 %}
 <script src="{{ 'cart-system.js' | asset_url }}" defer></script>
@@ -89,16 +117,18 @@
 
         <aside class="sb-cart-page__summary" data-cart-summary {% if cart.empty? %}hidden{% endif %}>
           {% render 'sb-cart-summary-inner',
+            summary_class: 'sb-cart-page__summary-inner sb-cart-summary',
+            show_top_divider: false,
+            shipping_text: cart_shipping_text,
+            taxes_text: cart_taxes_text,
             discount_input_id: 'CartPageDiscountCode-' | append: section.id,
             discount_codes: cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title' | uniq,
-            totals_class: 'sb-cart-page__totals',
-            total_row_class: 'sb-cart-page__total-row',
-            total_row_strong_class: 'sb-cart-page__total-row',
-            actions_class: 'sb-cart-page__actions',
-            show_view_cart: false,
             checkout_mode: 'form',
-            checkout_button_class: 'header__cart-drawer-action header__cart-drawer-action--primary sb-cart-page__checkout',
-            clear_button_class: 'header__cart-drawer-action'
+            checkout_button_class: 'sb-cart-page__checkout',
+            clear_button_class: 'header__cart-drawer-action',
+            show_clear: false,
+            payment_list_class: 'sb-cart-page__summary-payment-list',
+            payment_item_class: 'sb-cart-page__summary-payment-item'
           %}
         </aside>
       </div>
@@ -108,7 +138,7 @@
 
 {% stylesheet %}
   .sb-cart-page-section {
-    padding-bottom: var(--sb-space-48);
+    padding-bottom: 0;
     padding-top: calc(var(--sb-header-height) + var(--sb-announcement-min-height, 0px) + var(--sb-space-48));
   }
 
@@ -419,7 +449,7 @@
         minmax(0, 1fr)
         var(--sb-space-48)
         1px
-        var(--sb-space-48)
+        var(--sb-space-96)
         calc(var(--sb-space-128) * 3 + var(--sb-space-16));
       row-gap: 0;
     }

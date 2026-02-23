@@ -16,6 +16,10 @@
         assign item_variant = blank
       endif
       assign item_image = item.image | image_url: width: 256
+      assign item_has_discount = false
+      if item.original_line_price > item.final_line_price
+        assign item_has_discount = true
+      endif
     %}
     <li class="sb-cart-line" data-cart-line="{{ item_line }}">
       <a class="sb-cart-line__media" href="{{ item.url }}">
@@ -33,27 +37,69 @@
         {% endif %}
       </a>
       <div class="sb-cart-line__content">
-        <a class="sb-cart-line__title font-body weight-bold" href="{{ item.url }}">{{ item_title }}</a>
-        {% if item_variant != blank %}
-          <p class="sb-cart-line__variant font-caption weight-regular">{{ item_variant }}</p>
-        {% endif %}
-        <p class="sb-cart-line__price font-caption weight-semibold">{{ item.final_line_price | money }}</p>
+        <div class="sb-cart-line__meta">
+          <a class="sb-cart-line__title font-caption weight-bold" href="{{ item.url }}">{{ item_title }}</a>
+          {% if item_variant != blank %}
+            <p class="sb-cart-line__variant font-caption weight-regular">{{ item_variant }}</p>
+          {% endif %}
+          <div class="sb-cart-line__price-group">
+            {% if item_has_discount %}
+              <p
+                class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
+                data-cart-line-price
+                data-shimmer-value="{{ item.original_line_price | money | escape }}"
+              >
+                {{ item.original_line_price | money }}
+              </p>
+              <p
+                class="sb-cart-line__discount-price sb-cart-shimmer-text font-caption weight-regular"
+                data-cart-line-discount-price
+                data-shimmer-value="{{ item.final_line_price | money | escape }}"
+              >
+                {{ item.final_line_price | money }}
+              </p>
+            {% else %}
+              <p
+                class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
+                data-cart-line-price
+                data-shimmer-value="{{ item.final_line_price | money | escape }}"
+              >
+                {{ item.final_line_price | money }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
         <div class="sb-cart-line__controls">
           <div class="sb-cart-quantity" role="group" aria-label="Quantity">
-            <button type="button" class="sb-cart-quantity__button" data-cart-qty-minus aria-label="Decrease quantity">-</button>
+            <button
+              type="button"
+              class="sb-cart-quantity__button"
+              data-cart-qty-minus
+              aria-label="Decrease quantity"
+              {% if item.quantity <= 1 %}
+                disabled
+                aria-disabled="true"
+              {% endif %}
+            >
+              <span class="sb-cart-quantity__icon sb-cart-quantity__icon--minus" aria-hidden="true"></span>
+            </button>
             <input
-              class="sb-cart-quantity__input"
+              class="sb-cart-quantity__input font-caption weight-bold"
               data-cart-qty-input
               type="number"
-              min="0"
+              min="1"
               step="1"
               inputmode="numeric"
               value="{{ item.quantity }}"
               aria-label="Quantity"
             >
-            <button type="button" class="sb-cart-quantity__button" data-cart-qty-plus aria-label="Increase quantity">+</button>
+            <button type="button" class="sb-cart-quantity__button" data-cart-qty-plus aria-label="Increase quantity">
+              <span class="sb-cart-quantity__icon sb-cart-quantity__icon--plus" aria-hidden="true"></span>
+            </button>
           </div>
-          <button type="button" class="sb-cart-line__remove font-caption2 weight-semibold" data-cart-remove>Remove</button>
+          <button type="button" class="sb-cart-line__remove" data-cart-remove aria-label="Remove item">
+            <span class="sb-cart-line__remove-icon" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
     </li>
