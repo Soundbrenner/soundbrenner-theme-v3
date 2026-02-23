@@ -206,6 +206,11 @@
 
   let cachedCart = null;
   let fetchInFlight = null;
+  const isCartLikePayload = (value) => {
+    if (!value || typeof value !== 'object') return false;
+    if (!Array.isArray(value.items)) return false;
+    return Number.isFinite(Number(value.item_count));
+  };
 
   const fetchCart = async () => {
     const response = await fetch(cartUrl('cart.js'), {
@@ -1211,7 +1216,7 @@
     const detail = event && event.detail ? event.detail : null;
     if (detail && detail.sourceId === 'sb-cart-system') return;
 
-    if (detail && detail.resource) {
+    if (detail && detail.resource && isCartLikePayload(detail.resource)) {
       const source = detail.data && detail.data.source ? detail.data.source : 'external';
       updateCartAndDispatch(detail.resource, source, {
         animateBadge: false,
