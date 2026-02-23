@@ -31,6 +31,15 @@
   if sb_cart_discount_code == blank
     assign sb_cart_discount_code = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title' | first
   endif
+  if sb_cart_discount_code == blank
+    for discount_application in cart.cart_level_discount_applications
+      assign discount_title_fallback = discount_application.title | default: '' | strip
+      if discount_title_fallback != blank
+        assign sb_cart_discount_code = discount_title_fallback
+        break
+      endif
+    endfor
+  endif
   assign sb_cart_discount_code = sb_cart_discount_code | upcase | strip
   if sb_cart_discount_code == blank
     assign sb_cart_discount_code = 'DISCOUNT'
@@ -150,7 +159,7 @@
           data-shipping-discount-error="{{ 'cart.shipping_discount_error' | t | escape }}"
           hidden
         >
-          <span class="sb-cart-summary__discount-error-icon" aria-hidden="true">
+          <span class="sb-cart-summary__discount-error-icon" data-cart-discount-error-icon aria-hidden="true" hidden>
             {{ 'icon-error.svg' | inline_asset_content }}
           </span>
           <span data-cart-discount-error-text></span>

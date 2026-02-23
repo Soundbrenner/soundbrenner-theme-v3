@@ -86,7 +86,7 @@
           <div class="sb-cart-page__empty" data-cart-empty {% unless cart.empty? %}hidden{% endunless %}>
             <div class="sb-cart-page__empty-text-group">
               <h2 class="sb-cart-page__empty-title font-title weight-bold">Cart</h2>
-              <p class="sb-cart-page__empty-text font-caption weight-regular" data-cart-empty-message>
+              <p class="sb-cart-page__empty-text font-body weight-regular" data-cart-empty-message>
                 Your cart is empty. Let's fill it with beautifully designed music gear.
               </p>
             </div>
@@ -277,7 +277,7 @@
   .sb-cart-page__empty-collection-media {
     border-radius: 24px;
     display: block;
-    overflow: hidden;
+    overflow: visible;
     transform: scale(1);
     transform-origin: center;
     transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -285,6 +285,7 @@
 
   .sb-cart-page__empty-collection-image {
     aspect-ratio: 1 / 1;
+    border-radius: 24px;
     display: block;
     height: auto;
     object-fit: cover;

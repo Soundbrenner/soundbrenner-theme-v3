@@ -196,14 +196,22 @@
     const hasDiscount = discountAmountCents > 0;
 
     const appliedCodes = getAppliedDiscountCodes(cart || {});
-    let code = `${appliedCodes[0] || ''}`.trim();
-
     const applications = Array.isArray(cart && cart.cart_level_discount_applications)
       ? cart.cart_level_discount_applications
       : [];
-    if (!code && applications.length) {
-      const firstTitle = `${applications[0] && applications[0].title ? applications[0].title : ''}`.trim();
-      if (firstTitle) code = firstTitle;
+    let code = `${appliedCodes[0] || ''}`.trim();
+
+    // If no manual discount code is active, use the first active cart discount title
+    // (automatic discounts included) instead of falling back to a generic label.
+    if (!code) {
+      for (const application of applications) {
+        if (!application || typeof application !== 'object') continue;
+        const title = `${application.title || ''}`.trim();
+        if (title) {
+          code = title;
+          break;
+        }
+      }
     }
 
     if (!code) code = 'DISCOUNT';
@@ -764,6 +772,7 @@
       this.pendingLines = new Set();
       this.renderedDiscountError = false;
       this.removalTimers = new Map();
+      this.lastRenderedItemsSignature = '';
       this.messageScopeNode =
         this.context === 'drawer'
           ? this.closest('[data-cart-drawer-panel]') || this
@@ -784,6 +793,7 @@
       this.discountListNode = this.querySelector('[data-cart-discount-list]');
       this.discountErrorNode = this.querySelector('[data-cart-discount-error]');
       this.discountErrorTextNode = this.querySelector('[data-cart-discount-error-text]');
+      this.discountErrorIconNode = this.querySelector('[data-cart-discount-error-icon]');
       this.discountCodeErrorMessage =
         (this.discountErrorNode && this.discountErrorNode.dataset.discountCodeError) ||
         'Discount code cannot be applied to your cart';
@@ -1026,6 +1036,8 @@
       if (this.pendingLines.has(line)) return;
 
       this.setLinePending(line, true);
+      hideAnyDiscountError(this);
+      this.startPriceShimmer(line);
 
       const row = rowNode instanceof HTMLElement ? rowNode : this.querySelector(`[data-cart-line="${line}"]`);
       if (row instanceof HTMLElement) {
@@ -1045,10 +1057,12 @@
           source: `${this.context}-line-remove`,
         })
           .catch(() => {
+            this.stopPriceShimmer();
             clearRemovalState();
             this.showStatus('Unable to remove item.');
           })
           .finally(() => {
+            this.stopPriceShimmer();
             this.setLinePending(line, false);
           });
       }, CART_ROW_REMOVE_DELAY);
@@ -1240,6 +1254,24 @@
       if (!this.itemListNode) return;
 
       const items = Array.isArray(cart.items) ? cart.items : [];
+      const nextItemsSignature = items
+        .map((item) => {
+          const key = `${item && item.key ? item.key : ''}`;
+          const quantity = clampCount(item && item.quantity ? item.quantity : 0);
+          const originalLinePrice = Number.isFinite(Number(item && item.original_line_price))
+            ? Number(item.original_line_price)
+            : 0;
+          const finalLinePrice = Number.isFinite(Number(item && item.final_line_price))
+            ? Number(item.final_line_price)
+            : 0;
+          const image = `${getItemImageUrl(item) || this.placeholderImage}`;
+          return [key, quantity, originalLinePrice, finalLinePrice, image].join('|');
+        })
+        .join('||');
+
+      // Prevent unnecessary full list re-renders (image flash) when cart content is unchanged.
+      if (nextItemsSignature === this.lastRenderedItemsSignature) return;
+
       const fragment = document.createDocumentFragment();
 
       items.forEach((item, index) => {
@@ -1267,7 +1299,7 @@
 
         lineItem.innerHTML = `
           <a class="sb-cart-line__media" href="${productUrl}">
-            <img class="sb-cart-line__image" src="${imageUrl}" alt="${title}" loading="lazy" width="128" height="128">
+            <img class="sb-cart-line__image" src="${imageUrl}" alt="${title}" loading="eager" width="128" height="128">
           </a>
           <div class="sb-cart-line__content">
             <div class="sb-cart-line__meta">
@@ -1345,6 +1377,7 @@
 
       this.itemListNode.innerHTML = '';
       this.itemListNode.appendChild(fragment);
+      this.lastRenderedItemsSignature = nextItemsSignature;
     }
 
     renderFreeShipping(cart, currency, isEmpty) {
@@ -1399,10 +1432,18 @@
 
     showDiscountError(message) {
       if (!this.discountErrorNode) return;
+      const normalizedMessage = `${message || ''}`.trim();
+      if (!normalizedMessage) {
+        this.hideDiscountError();
+        return;
+      }
       if (this.discountErrorTextNode) {
-        this.discountErrorTextNode.textContent = message;
+        this.discountErrorTextNode.textContent = normalizedMessage;
       } else {
-        this.discountErrorNode.textContent = message;
+        this.discountErrorNode.textContent = normalizedMessage;
+      }
+      if (this.discountErrorIconNode) {
+        this.discountErrorIconNode.hidden = false;
       }
       this.discountErrorNode.hidden = false;
       this.renderedDiscountError = true;
@@ -1411,6 +1452,9 @@
     hideDiscountError() {
       if (!this.discountErrorNode) return;
       this.discountErrorNode.hidden = true;
+      if (this.discountErrorIconNode) {
+        this.discountErrorIconNode.hidden = true;
+      }
       if (this.discountErrorTextNode) {
         this.discountErrorTextNode.textContent = '';
       } else {
