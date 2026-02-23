@@ -10,6 +10,26 @@
   const CART_OPEN_CLASS = 'is-open';
   const CART_ROW_REMOVE_DELAY = 170;
   const CART_ROW_REMOVE_FALLBACK = 360;
+  const prefersReducedMotion = () =>
+    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const supportsViewTransitions = () =>
+    typeof document !== 'undefined' &&
+    'startViewTransition' in document &&
+    typeof document.startViewTransition === 'function';
+
+  const startViewTransition = (callback, types = []) => {
+    if (!supportsViewTransitions() || prefersReducedMotion()) {
+      callback();
+      return;
+    }
+
+    const transition = document.startViewTransition(callback);
+    if (transition && transition.types && Array.isArray(types)) {
+      types.forEach((type) => {
+        if (type) transition.types.add(type);
+      });
+    }
+  };
 
   const shopRoot = (() => {
     const root =
@@ -932,87 +952,105 @@
       const itemCount = clampCount(cart && cart.item_count ? cart.item_count : 0);
       const isEmpty = itemCount === 0;
       const currency = `${cart && cart.currency ? cart.currency : 'USD'}`;
+      const wasEmpty = this.classList.contains('is-empty');
+      const shouldAnimateToEmpty = !wasEmpty && isEmpty;
 
-      this.classList.toggle('is-empty', isEmpty);
+      const applyRenderState = () => {
+        this.classList.toggle('is-empty', isEmpty);
 
-      if (this.statusNode) {
-        this.statusNode.hidden = true;
-        this.statusNode.textContent = '';
-      }
-
-      if (this.pageHeaderNode) {
-        this.pageHeaderNode.hidden = isEmpty;
-      }
-
-      this.emptyMessageNodes.forEach((node) => {
-        node.hidden = !isEmpty;
-      });
-
-      this.filledMessageNodes.forEach((node) => {
-        node.hidden = isEmpty;
-      });
-
-      if (this.drawerCountNode) {
-        if (isEmpty) {
-          this.drawerCountNode.textContent = '';
-          this.drawerCountNode.hidden = true;
-        } else {
-          this.drawerCountNode.textContent = itemCount > 99 ? '99+' : `${itemCount}`;
-          this.drawerCountNode.hidden = false;
+        if (this.statusNode) {
+          this.statusNode.hidden = true;
+          this.statusNode.textContent = '';
         }
-      }
 
-      if (this.pageCountNode) {
-        if (isEmpty) {
-          this.pageCountNode.textContent = '';
-          this.pageCountNode.hidden = true;
-        } else {
-          this.pageCountNode.textContent = `${itemCount}`;
-          this.pageCountNode.hidden = false;
+        if (this.pageHeaderNode) {
+          this.pageHeaderNode.hidden = isEmpty;
         }
-      }
 
-      if (this.emptyNode) {
-        this.emptyNode.hidden = !isEmpty;
-      }
+        this.emptyMessageNodes.forEach((node) => {
+          node.hidden = !isEmpty;
+        });
 
-      if (this.itemListNode) {
-        this.itemListNode.hidden = isEmpty;
-      }
+        this.filledMessageNodes.forEach((node) => {
+          node.hidden = isEmpty;
+        });
 
-      if (this.summaryNode) {
-        this.summaryNode.hidden = isEmpty;
-      }
-
-      this.checkoutButtons.forEach((button) => {
-        button.toggleAttribute('aria-disabled', isEmpty);
-        if (button instanceof HTMLButtonElement || button instanceof HTMLInputElement) {
-          button.disabled = isEmpty;
+        if (this.drawerCountNode) {
+          if (isEmpty) {
+            this.drawerCountNode.textContent = '';
+            this.drawerCountNode.hidden = true;
+          } else {
+            this.drawerCountNode.textContent = itemCount > 99 ? '99+' : `${itemCount}`;
+            this.drawerCountNode.hidden = false;
+          }
         }
-      });
 
-      this.clearButtons.forEach((button) => {
-        if (button instanceof HTMLButtonElement || button instanceof HTMLInputElement) {
-          button.disabled = isEmpty;
+        if (this.pageCountNode) {
+          if (isEmpty) {
+            this.pageCountNode.textContent = '';
+            this.pageCountNode.hidden = true;
+          } else {
+            this.pageCountNode.textContent = `${itemCount}`;
+            this.pageCountNode.hidden = false;
+          }
         }
-      });
 
-      if (this.subtotalNode) {
-        this.subtotalNode.textContent = formatMoney(cart && cart.items_subtotal_price ? cart.items_subtotal_price : 0, currency);
+        if (this.emptyNode) {
+          this.emptyNode.hidden = !isEmpty;
+        }
+
+        if (this.itemListNode) {
+          this.itemListNode.hidden = isEmpty;
+        }
+
+        if (this.summaryNode) {
+          this.summaryNode.hidden = isEmpty;
+        }
+
+        this.checkoutButtons.forEach((button) => {
+          button.toggleAttribute('aria-disabled', isEmpty);
+          if (button instanceof HTMLButtonElement || button instanceof HTMLInputElement) {
+            button.disabled = isEmpty;
+          }
+        });
+
+        this.clearButtons.forEach((button) => {
+          if (button instanceof HTMLButtonElement || button instanceof HTMLInputElement) {
+            button.disabled = isEmpty;
+          }
+        });
+
+        if (this.subtotalNode) {
+          this.subtotalNode.textContent = formatMoney(
+            cart && cart.items_subtotal_price ? cart.items_subtotal_price : 0,
+            currency
+          );
+        }
+
+        if (this.totalNode) {
+          this.totalNode.textContent = formatMoney(
+            cart && cart.total_price ? cart.total_price : 0,
+            currency
+          );
+        }
+
+        this.renderFreeShipping(cart || {}, currency, isEmpty);
+        this.renderDiscounts(cart || {});
+        this.renderItems(cart || {}, currency);
+
+        const drawer = this.closest('cart-drawer-component');
+        if (drawer && typeof drawer.updateStickyState === 'function') {
+          drawer.updateStickyState();
+        }
+      };
+
+      if (shouldAnimateToEmpty) {
+        const transitionType = this.context === 'drawer' ? 'empty-cart-drawer' : 'empty-cart-page';
+        startViewTransition(applyRenderState, [transitionType]);
+        return;
       }
 
-      if (this.totalNode) {
-        this.totalNode.textContent = formatMoney(cart && cart.total_price ? cart.total_price : 0, currency);
-      }
-
-      this.renderFreeShipping(cart || {}, currency, isEmpty);
-      this.renderDiscounts(cart || {});
-      this.renderItems(cart || {}, currency);
-
-      const drawer = this.closest('cart-drawer-component');
-      if (drawer && typeof drawer.updateStickyState === 'function') {
-        drawer.updateStickyState();
-      }
+      applyRenderState();
     }
 
     renderDiscounts(cart) {

@@ -351,6 +351,22 @@
     display: none;
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    html:active-view-transition-type(empty-cart-page) .sb-cart-items--page {
+      view-transition-name: sb-cart-page-content;
+    }
+  }
+
+  ::view-transition-old(sb-cart-page-content) {
+    transform-origin: 50% 33%;
+    animation: sb-cart-contents-old 280ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  ::view-transition-new(sb-cart-page-content) {
+    transform-origin: top center;
+    animation: sb-cart-contents-new 280ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
   .sb-cart-page__totals {
     border-top: 0;
     display: flex;
