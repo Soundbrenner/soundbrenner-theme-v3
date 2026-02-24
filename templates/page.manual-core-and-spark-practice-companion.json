@@ -348,6 +348,16 @@
             "text": "<p><strong>Power off</strong></p><ol><li>Hold the top button for 3 seconds until the power off prompt appears.</li></ol>"
           }
         },
+        "image_fnMLty": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_6Kej6h": {
+          "type": "text",
+          "settings": {
+            "text": "<p>2. Select yes, by pressing the bottom button.</p>"
+          }
+        },
         "divider_xrGQeX": {
           "type": "divider",
           "settings": {}
@@ -449,6 +459,8 @@
         "text_mkJcQC",
         "image_Dzc8kq",
         "text_9cDw6H",
+        "image_fnMLty",
+        "text_6Kej6h",
         "divider_xrGQeX",
         "chapter_6",
         "accordion_item_1",
