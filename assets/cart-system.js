@@ -114,11 +114,6 @@
           }
         }
 
-        .sb-atc-button {
-          position: relative;
-          overflow: visible;
-        }
-
         .sb-atc-burst {
           position: absolute;
           inset: 50% auto auto 50%;
@@ -380,7 +375,18 @@
   }
 
   const formatMoney = (cents, currency = 'USD') => {
-    const amount = Number.isFinite(Number(cents)) ? Number(cents) : 0;
+    const amount = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
+    try {
+      if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+        const shopifyFormatted = window.Shopify.formatMoney(amount);
+        if (`${shopifyFormatted || ''}`.trim() !== '') {
+          return shopifyFormatted;
+        }
+      }
+    } catch (_) {
+      // no-op
+    }
+
     const locale = `${document.documentElement.getAttribute('lang') || ''}`.trim() || undefined;
     try {
       return new Intl.NumberFormat(locale, {
@@ -726,6 +732,9 @@
     let burst = button.querySelector('[data-sb-atc-burst]');
     if (burst) return burst;
     ensureAtcAnimationStyles();
+    if (window.getComputedStyle(button).position === 'static') {
+      button.style.position = 'relative';
+    }
     button.classList.add('sb-atc-button');
     burst = document.createElement('span');
     burst.className = 'sb-atc-burst';
@@ -1378,7 +1387,15 @@
       if (!(this.itemListNode instanceof HTMLElement)) return false;
 
       const serverRows = this.itemListNode.querySelectorAll('[data-cart-line]').length;
-      if (itemCount === 0) {
+      if (serverRows <= 0) {
+        return itemCount === 0;
+      }
+
+      if (itemCount <= 0) {
+        return false;
+      }
+
+      if (itemCount === serverRows) {
         return true;
       }
 
@@ -1930,7 +1947,6 @@
       if (
         preserveInitialMarkup &&
         source === 'initial' &&
-        items.length === 0 &&
         `${this.lastRenderedItemsSignature || ''}`.trim() !== ''
       ) {
         return;

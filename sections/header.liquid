@@ -398,14 +398,9 @@
         data-mobile-menu-toggle
       >
         <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-hamburger-padded.svg' | inline_asset_content }}
+          {{ 'icon-primary-navigation-menu.svg' | inline_asset_content }}
         </span>
       </button>
-      <a class="header__icon-link header__icon-link--search" href="{{ routes.search_url }}" aria-label="Search">
-        <span class="header__icon-asset" aria-hidden="true">
-          {{ 'icon-search-padded.svg' | inline_asset_content }}
-        </span>
-      </a>
     </div>
 
     <a class="header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
@@ -746,26 +741,16 @@
             <button
               type="button"
               class="header__localization-button font-caption2 weight-semibold"
-              aria-label="Country and language selector"
+              aria-label="Region selector"
               aria-expanded="false"
               aria-controls="HeaderLocalizationPanel-{{ section.id }}"
               data-localization-ref="button"
             >
-              {% if show_country_flag %}
-                <span
-                  class="header__localization-flag"
-                  aria-hidden="true"
-                  style="background-image: url('{{ localization.country | image_url: width: 32 }}');"
-                ></span>
-              {% endif %}
-              <span class="header__localization-currency">{{ localization.country.currency.iso_code }}</span>
-              {% if show_language %}
-                <span class="header__localization-divider" aria-hidden="true">/</span>
-                <span class="header__localization-language">{{ localization.language.iso_code | upcase }}</span>
-              {% endif %}
-              <span class="header__localization-caret" aria-hidden="true">
-                {{ 'icon-chevron.svg' | inline_asset_content }}
-              </span>
+              <span
+                class="header__localization-flag"
+                aria-hidden="true"
+                style="background-image: url('{{ localization.country | image_url: width: 40 }}');"
+              ></span>
             </button>
             <div
               id="HeaderLocalizationPanel-{{ section.id }}"
@@ -797,21 +782,6 @@
       {% endif %}
       <div class="header__utility-icons">
         <a
-          class="header__icon-link header__icon-link--search header__icon-link--desktop-only"
-          href="{{ routes.search_url }}"
-          aria-label="Search"
-        >
-          <span class="header__icon-asset" aria-hidden="true">
-            {{ 'icon-search-padded.svg' | inline_asset_content }}
-          </span>
-        </a>
-        <a class="header__icon-link header__icon-link--account" href="{{ routes.account_url }}" aria-label="Account">
-          <span class="header__icon-asset" aria-hidden="true">
-            {{ 'icon-account-padded.svg' | inline_asset_content }}
-          </span>
-        </a>
-
-        <a
           class="header__icon-link header__icon-link--cart"
           href="{{ routes.cart_url }}"
           data-header-cart-link
@@ -823,7 +793,7 @@
             {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
           </span>
           <span class="header__icon-asset" aria-hidden="true">
-            {{ 'icon-cart-padded.svg' | inline_asset_content }}
+            {{ 'icon-primary-navigation-cart.svg' | inline_asset_content }}
           </span>
         </a>
       </div>
@@ -1772,7 +1742,8 @@
 
   .header.is-primary-switching .header__menu-item.has-dropdown.is-open > .header__primary-menu {
     grid-template-rows: 1fr;
-    transition: width var(--sb-menu-unroll-duration) var(--sb-menu-unroll-ease);
+    transition-duration: 0s;
+    transition-delay: 0s;
   }
 
   .header__primary-menu-panel {
@@ -1987,7 +1958,7 @@
   .header__icons {
     align-items: center;
     display: flex;
-    gap: var(--sb-space-16);
+    gap: var(--sb-space-24);
     margin-left: auto;
     position: relative;
     z-index: 2;
@@ -1997,9 +1968,10 @@
     align-items: center;
     display: inline-flex;
     flex: 0 0 auto;
-    gap: var(--sb-space-16);
+    gap: var(--sb-space-24);
     justify-content: flex-end;
-    width: calc((var(--sb-space-24) * 2) + var(--sb-space-16));
+    min-width: 0;
+    width: auto;
   }
 
   .header__icons--left {
@@ -2071,15 +2043,17 @@
     color: var(--sb-color-neutral-900);
     cursor: pointer;
     display: inline-flex;
-    gap: 4px;
+    gap: 0;
+    height: var(--sb-space-24);
     line-height: 1;
-    min-height: 36px;
+    min-height: var(--sb-space-24);
     padding: 0;
+    width: var(--sb-space-24);
   }
 
   .header__localization-button:hover,
   .header__localization-button:focus-visible {
-    color: var(--sb-color-primary-500);
+    color: var(--sb-color-neutral-900);
   }
 
   .header__localization-flag {
@@ -2089,8 +2063,13 @@
     border-radius: 999px;
     box-shadow: inset 0 0 2px var(--sb-color-always-black-25);
     display: inline-flex;
-    height: 16px;
-    width: 16px;
+    height: 100%;
+    width: 100%;
+  }
+
+  .header__localization-button:hover .header__localization-flag,
+  .header__localization-button:focus-visible .header__localization-flag {
+    opacity: 0.75;
   }
 
   .header__localization-divider {
@@ -2672,11 +2651,37 @@
     min-width: var(--sb-space-20);
     padding: 0 var(--sb-space-4);
     position: absolute;
-    right: calc(-1 * var(--sb-space-6));
-    top: calc(-1 * var(--sb-space-6));
+    right: calc(-1 * var(--sb-space-12));
+    top: calc(-1 * var(--sb-space-12));
     transform: scale(1);
     transform-origin: center;
     z-index: 1;
+  }
+
+  @media screen and (min-width: 750px) {
+    .header__icons {
+      gap: var(--sb-space-24);
+    }
+
+    .header__utility-icons {
+      gap: var(--sb-space-24);
+    }
+
+    .header__icon-asset {
+      height: var(--sb-space-20);
+      width: var(--sb-space-20);
+    }
+
+    .header__localization-button {
+      height: var(--sb-space-20);
+      min-height: var(--sb-space-20);
+      width: var(--sb-space-20);
+    }
+
+    .header__cart-count-badge {
+      right: calc(-1 * var(--sb-space-8));
+      top: calc(-1 * var(--sb-space-8));
+    }
   }
 
   .header__cart-count-badge[hidden] {
@@ -3915,6 +3920,7 @@
     .header__icons--right .header__icon-link--desktop-only {
       display: none;
     }
+
   }
 
   .header__primary-backdrop {
@@ -3927,7 +3933,8 @@
 
   @media screen and (min-width: 990px) {
     .header__utility-icons {
-      width: calc((var(--sb-space-24) * 3) + (var(--sb-space-16) * 2));
+      min-width: 0;
+      width: auto;
     }
 
     .header__primary-backdrop {
@@ -4312,10 +4319,10 @@
     flex-direction: column;
     gap: 0;
     list-style: none;
-    margin: var(--sb-space-16) 0;
+    margin: 0;
     min-height: 0;
     overflow: auto;
-    padding: 0 var(--sb-space-8);
+    padding: 0;
     scrollbar-color: var(--sb-color-neutral-600) transparent;
     scrollbar-width: thin;
   }
@@ -4326,7 +4333,7 @@
 
   .sb-cart-line-list::-webkit-scrollbar-track {
     background: transparent;
-    margin-block: var(--sb-space-16);
+    margin-block: 0;
   }
 
   .sb-cart-line-list::-webkit-scrollbar-thumb {
@@ -4348,10 +4355,6 @@
     grid-template-columns: var(--sb-cart-thumb-size) minmax(0, 1fr);
     padding: var(--sb-space-24) 0 0;
     transition: opacity 160ms ease;
-  }
-
-  .sb-cart-line:first-child {
-    padding-top: 0;
   }
 
   .sb-cart-line:last-child {
@@ -5770,7 +5773,6 @@
       let pointerX = 0;
       let pointerY = 0;
       const menuSafePadding = 8;
-      const primarySwitchDuration = 460;
       const headerInner = header.querySelector('.header__inner');
       const headerMenu = header.querySelector('.header__menu');
       const dropdownMenuLinks = Array.from(dropdownMenuItems)
@@ -5799,9 +5801,9 @@
           menu.style.removeProperty('width');
         });
       };
-      const endPrimarySwitchMode = (menuElement) => {
-        if (menuElement) menuElement.style.removeProperty('width');
+      const endPrimarySwitchMode = () => {
         header.classList.remove('is-primary-switching');
+        clearPrimarySwitchInlineWidths();
       };
       const triggerPrimarySwitchMode = (fromItem, toItem) => {
         if (!fromItem || !toItem) return;
@@ -5809,27 +5811,12 @@
         const toMenu = toItem.querySelector('.header__primary-menu');
         if (!fromMenu || !toMenu) return;
 
-        const fromWidth = fromMenu.getBoundingClientRect().width;
-        const toWidth = toMenu.getBoundingClientRect().width;
-        if (!(fromWidth > 0) || !(toWidth > 0)) return;
-
-        const widthDiff = Math.abs(fromWidth - toWidth);
-        if (widthDiff < 1) {
-          clearPrimarySwitchTimer();
-          header.classList.remove('is-primary-switching');
-          toMenu.style.removeProperty('width');
-          return;
-        }
-
         clearPrimarySwitchTimer();
         header.classList.add('is-primary-switching');
-        toMenu.style.width = `${fromWidth}px`;
-        window.requestAnimationFrame(() => {
-          toMenu.style.width = `${toWidth}px`;
-        });
         primarySwitchTimer = window.setTimeout(() => {
-          endPrimarySwitchMode(toMenu);
-        }, primarySwitchDuration);
+          endPrimarySwitchMode();
+          primarySwitchTimer = null;
+        }, 0);
       };
       const syncPrimaryBackdropTop = () => {
         if (!headerInner || primaryBackdrops.length === 0) return;

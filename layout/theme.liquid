@@ -30,6 +30,21 @@
   {% endif %}
 >
   <head>
+    <script>
+      (() => {
+        const root = document.documentElement;
+        if (root.hasAttribute('data-theme-locked')) return;
+        try {
+          const savedThemeMode = window.localStorage ? window.localStorage.getItem('sb_theme_debug_mode') : '';
+          if (savedThemeMode === 'light' || savedThemeMode === 'dark') {
+            root.setAttribute('data-theme', savedThemeMode);
+          }
+        } catch (_) {
+          // no-op
+        }
+      })();
+    </script>
+
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
 
