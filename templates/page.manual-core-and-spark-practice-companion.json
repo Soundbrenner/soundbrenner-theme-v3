@@ -163,8 +163,8 @@
           "type": "divider",
           "settings": {}
         },
-        "heading_eWJh4B": {
-          "type": "heading",
+        "subheading_C8GVdi": {
+          "type": "subheading",
           "settings": {
             "heading": "App & compatibility"
           }
@@ -355,7 +355,7 @@
         "body_5",
         "heading_small_DqeFGT",
         "divider_5",
-        "heading_eWJh4B",
+        "subheading_C8GVdi",
         "text_HPx7dM",
         "heading_small_xffCmT",
         "text_4MqtCq",
