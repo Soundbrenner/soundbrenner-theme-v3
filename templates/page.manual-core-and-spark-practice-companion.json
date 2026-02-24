@@ -119,8 +119,8 @@
           "type": "divider",
           "settings": {}
         },
-        "chapter_4": {
-          "type": "heading",
+        "subheading_fEQfTx": {
+          "type": "subheading",
           "settings": {
             "heading": "Plus subscription"
           }
@@ -347,7 +347,7 @@
         "button_rF6dEJ",
         "button_9nmwUx",
         "divider_3",
-        "chapter_4",
+        "subheading_fEQfTx",
         "heading_small_DAHEkY",
         "body_4",
         "divider_4",
