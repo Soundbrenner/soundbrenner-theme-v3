@@ -39,6 +39,9 @@
       {% if item_key != blank %}
         data-cart-item-key="{{ item_key | escape }}"
       {% endif %}
+      {% if item.variant_id != blank %}
+        data-cart-variant-id="{{ item.variant_id }}"
+      {% endif %}
       {% if item_hover_image != blank %}
         data-cart-hover-image="{{ item_hover_image | escape }}"
       {% endif %}

@@ -332,6 +332,33 @@ body .shopify-policy__body .rte > * + * {
   background: var(--sb-color-neutral-200);
 }
 
+.sb-product-thumbnail__carousel {
+  background: var(--sb-color-neutral-200);
+}
+
+.sb-product-thumbnail__carousel-track {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.sb-product-thumbnail__carousel-slide {
+  overflow: hidden;
+}
+
+.sb-product-thumbnail__carousel-slide > .sb-product-thumbnail__media-item {
+  display: block;
+  height: 100%;
+  margin-left: calc((var(--sb-space-2) / 2) * -1);
+  max-width: none;
+  width: calc(100% + var(--sb-space-2));
+}
+
+.sb-product-thumbnail__carousel-slide > .sb-product-thumbnail__video.sb-product-thumbnail__media-item {
+  background: var(--sb-color-neutral-200);
+}
+
 /* Keep video edges from showing default black compositor background */
 .sb-product-thumbnail__video.sb-product-thumbnail__media-item,
 video.sb-product-main__media-asset {
