@@ -290,6 +290,12 @@
             "heading": "Changing the watch straps"
           }
         },
+        "subheading_k7g7gq": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Changing the watch straps"
+          }
+        },
         "text_NytJdp": {
           "type": "text",
           "settings": {
@@ -401,6 +407,7 @@
         "button_afyijz",
         "divider_U4X9T7",
         "heading_ThEjbn",
+        "subheading_k7g7gq",
         "text_NytJdp",
         "button_xMyAQB",
         "heading_small_9UPCLh",
