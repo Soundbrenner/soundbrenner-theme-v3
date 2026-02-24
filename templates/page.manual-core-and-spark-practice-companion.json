@@ -196,6 +196,16 @@
             "link": "https://support.soundbrenner.com/hc/en-us/articles/900001230686-Soundbrenner-wearables-compatibility"
           }
         },
+        "divider_6c6AAp": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_TKWCaD": {
+          "type": "heading",
+          "settings": {
+            "heading": "Wear & care"
+          }
+        },
         "chapter_6": {
           "type": "heading",
           "settings": {
@@ -266,6 +276,8 @@
         "heading_small_xffCmT",
         "text_4MqtCq",
         "button_86rHwW",
+        "divider_6c6AAp",
+        "heading_TKWCaD",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
