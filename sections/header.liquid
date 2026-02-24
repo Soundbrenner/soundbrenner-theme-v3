@@ -1485,6 +1485,13 @@
     --sb-header-height: 60px;
     --sb-announcement-min-height: 0px;
     --sb-announcement-row-gap: 6px;
+    --sb-announcement-padding-block: 8px;
+    --sb-announcement-emoji-size: 20px;
+    --sb-announcement-emoji-offset: 36px;
+    --sb-announcement-countdown-gap: 12px;
+    --sb-announcement-countdown-group-gap: 6px;
+    --sb-announcement-countdown-pill-size: 24px;
+    --sb-announcement-countdown-pill-padding: 2px;
     --sb-menu-unroll-duration: 420ms;
     --sb-menu-unroll-ease: cubic-bezier(0.22, 1, 0.36, 1);
     --sb-menu-surface-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25);
@@ -1509,7 +1516,7 @@
     display: flex;
     justify-content: center;
     min-height: var(--sb-announcement-min-height);
-    padding: var(--sb-space-8) var(--page-margin, 16px);
+    padding: var(--sb-announcement-padding-block) var(--page-margin, 16px);
     width: 100%;
   }
 
@@ -1518,7 +1525,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--sb-announcement-row-gap);
-    max-width: calc(100% - ((var(--sb-space-20) + var(--sb-space-16)) * 2));
+    max-width: calc(100% - (var(--sb-announcement-emoji-offset) * 2));
     position: relative;
     width: fit-content;
   }
@@ -1526,7 +1533,7 @@
   .header__announcement-emojis {
     align-items: center;
     display: flex;
-    inset: 0 calc(-1 * (var(--sb-space-20) + var(--sb-space-16)));
+    inset: 0 calc(-1 * var(--sb-announcement-emoji-offset));
     justify-content: space-between;
     pointer-events: none;
     position: absolute;
@@ -1541,10 +1548,10 @@
     align-items: center;
     display: inline-flex;
     flex: 0 0 auto;
-    height: var(--sb-space-20);
+    height: var(--sb-announcement-emoji-size);
     justify-content: center;
     overflow: hidden;
-    width: var(--sb-space-20);
+    width: var(--sb-announcement-emoji-size);
   }
 
   .header__announcement-emoji img {
@@ -1567,7 +1574,7 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--sb-space-12);
+    gap: var(--sb-announcement-countdown-gap);
     justify-content: center;
     width: 100%;
   }
@@ -1580,7 +1587,7 @@
     align-items: center;
     color: var(--sb-color-always-white);
     display: inline-flex;
-    gap: var(--sb-space-6);
+    gap: var(--sb-announcement-countdown-group-gap);
   }
 
   .header__announcement-countdown-value {
@@ -1592,10 +1599,10 @@
     font-variant-numeric: tabular-nums;
     justify-content: center;
     line-height: 1;
-    min-width: var(--sb-space-24);
-    padding: var(--sb-space-2);
+    min-width: var(--sb-announcement-countdown-pill-size);
+    padding: var(--sb-announcement-countdown-pill-padding);
     text-align: center;
-    width: var(--sb-space-24);
+    width: var(--sb-announcement-countdown-pill-size);
   }
 
   .header__announcement-countdown-label {
