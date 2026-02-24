@@ -316,7 +316,7 @@
         </div>
 
         {% if show_announcement_countdown %}
-          <div class="header__announcement-countdown is-initializing" data-announcement-countdown data-sale-end-date="{{ sale_end_date | escape }}">
+          <div class="header__announcement-countdown" data-announcement-countdown data-sale-end-date="{{ sale_end_date | escape }}">
             <div class="header__announcement-countdown-group">
               <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>00</span>
               <span class="header__announcement-countdown-label font-caption2 weight-semibold">days</span>
@@ -1550,11 +1550,6 @@
     gap: var(--sb-space-12);
     justify-content: center;
     width: 100%;
-  }
-
-  .header__announcement-countdown.is-initializing {
-    opacity: 0;
-    visibility: hidden;
   }
 
   .header__announcement-countdown[hidden] {
@@ -5639,7 +5634,6 @@
 
           if (shouldShowCountdown) {
             countdownRoot.removeAttribute('hidden');
-            countdownRoot.classList.remove('is-initializing');
           } else {
             countdownRoot.setAttribute('hidden', '');
           }
