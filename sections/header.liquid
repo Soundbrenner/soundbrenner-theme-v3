@@ -213,6 +213,49 @@
 {% if show_country or show_language %}
   <script src="{{ 'localization.js' | asset_url }}" defer></script>
 {% endif %}
+<script>
+  (() => {
+    if (window.__sbOverscrollObserverBound) return;
+    window.__sbOverscrollObserverBound = true;
+
+    const root = document.documentElement;
+
+    const setAtTopState = (atTop) => {
+      root.classList.toggle('sb-overscroll-at-top', Boolean(atTop));
+    };
+
+    const initOverscrollObserver = () => {
+      const sentinel = document.querySelector('[data-sb-overscroll-sentinel]');
+      if (!sentinel || typeof IntersectionObserver !== 'function') {
+        setAtTopState(window.scrollY <= 0);
+        window.addEventListener(
+          'scroll',
+          () => setAtTopState(window.scrollY <= 0),
+          { passive: true }
+        );
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          setAtTopState(Boolean(entry && entry.isIntersecting));
+        },
+        { threshold: 0 }
+      );
+
+      observer.observe(sentinel);
+      setAtTopState(window.scrollY <= 0);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initOverscrollObserver, { once: true });
+      return;
+    }
+
+    initOverscrollObserver();
+  })();
+</script>
 <script src="{{ 'cart-system.js' | asset_url }}" defer></script>
 {% if is_affiliate_page and header_affiliate_discount_code != blank %}
   <script>
@@ -247,6 +290,8 @@
     })();
   </script>
 {% endif %}
+
+<div class="header__overscroll-sentinel" data-sb-overscroll-sentinel aria-hidden="true"></div>
 
 <header
   class="header full-width{% if show_announcement %} has-announcement{% endif %}"
@@ -725,7 +770,7 @@
         aria-expanded="false"
       >
         <sup class="header__cart-count-badge font-caption weight-bold" data-header-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
-          {{ cart.item_count }}
+          {% if cart.item_count > 99 %}99+{% else %}{{ cart.item_count }}{% endif %}
         </sup>
         <span class="header__icon-asset" aria-hidden="true">
           {{ 'icon-cart-padded.svg' | inline_asset_content }}
@@ -1390,7 +1435,19 @@
 
 {% stylesheet %}
   html {
+    background: var(--sb-color-always-black);
+  }
+
+  html.sb-overscroll-at-top {
     background: var(--sb-overscroll-top-background, var(--sb-color-neutral-200));
+  }
+
+  .header__overscroll-sentinel {
+    display: block;
+    height: var(--sb-space-2);
+    margin-bottom: calc(-1 * var(--sb-space-2));
+    pointer-events: none;
+    width: 100%;
   }
 
   :root {
@@ -1408,7 +1465,7 @@
     --sb-announcement-row-gap: 6px;
     --sb-menu-unroll-duration: 420ms;
     --sb-menu-unroll-ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --sb-menu-surface-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-red-500);
+    --sb-menu-surface-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25);
     background-color: var(--sb-color-neutral-200);
     border-bottom: 1px solid var(--sb-color-neutral-600);
     left: 0;

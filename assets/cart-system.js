@@ -328,7 +328,9 @@
   const headerCartCountNode = document.querySelector('[data-header-cart-count]');
   let previousCartCount = (() => {
     if (!headerCartCountNode) return 0;
-    const parsed = Number.parseInt(`${headerCartCountNode.textContent || '0'}`, 10);
+    const raw = `${headerCartCountNode.textContent || '0'}`.trim();
+    if (raw.endsWith('+')) return 100;
+    const parsed = Number.parseInt(raw, 10);
     return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
   })();
 
