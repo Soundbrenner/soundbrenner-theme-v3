@@ -2,6 +2,7 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
+  assign sb_debug_version = '1.1'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -98,6 +99,9 @@
     {% sections 'footer-group' %}
 
     <div class="sb-theme-debug" data-sb-theme-debug>
+      <span class="sb-theme-debug__version font-caption2 weight-semibold" aria-label="Theme version">
+        {{ sb_debug_version }}
+      </span>
       <button
         type="button"
         class="sb-theme-debug__button sb-theme-debug__button--icon"
@@ -113,11 +117,17 @@
       .sb-theme-debug {
         align-items: center;
         display: inline-flex;
+        gap: var(--sb-space-8);
         right: var(--sb-space-16);
         position: fixed;
         top: 50%;
         transform: translateY(-50%);
         z-index: 1000;
+      }
+
+      .sb-theme-debug__version {
+        color: var(--sb-color-neutral-900);
+        line-height: 1;
       }
 
       .sb-theme-debug__button {
