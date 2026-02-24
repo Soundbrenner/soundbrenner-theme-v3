@@ -1035,38 +1035,18 @@
 
         root.querySelectorAll('[data-add-to-cart]').forEach((button) => {
           const resetToDefault = () => {
-            const resetLabel = button.querySelector('[data-add-to-cart-label]');
-            const resetIcon = button.querySelector('.sb-product-thumbnail__add-to-cart-icon-image');
-            const defaultLabel = button.dataset.labelDefault || 'Add';
-            if (resetLabel) resetLabel.textContent = defaultLabel;
-            if (resetIcon && resetIcon.dataset.addIcon) resetIcon.setAttribute('src', resetIcon.dataset.addIcon);
             button.classList.remove('is-added');
-            button.setAttribute('aria-label', defaultLabel);
-          };
-
-          const scheduleReset = () => {
-            const existingTimer = Number.parseInt(button.dataset.resetTimerId || '', 10);
-            if (Number.isFinite(existingTimer)) clearTimeout(existingTimer);
-            const timerId = window.setTimeout(() => {
-              delete button.dataset.resetTimerId;
-              resetToDefault();
-            }, 1400);
-            button.dataset.resetTimerId = `${timerId}`;
           };
 
           button.addEventListener('click', async (event) => {
             event.preventDefault();
             event.stopPropagation();
-            if (button.classList.contains('is-loading')) return;
+            if (button.disabled) return;
 
             const variantId = Number.parseInt(button.dataset.variantId || '', 10);
             if (!Number.isFinite(variantId) || variantId <= 0) return;
 
-            const label = button.querySelector('[data-add-to-cart-label]');
-            const icon = button.querySelector('.sb-product-thumbnail__add-to-cart-icon-image');
-            const labelAdded = button.dataset.labelAdded || 'Added';
-
-            button.classList.add('is-loading');
+            button.disabled = true;
             try {
               if (window.SBCart && typeof window.SBCart.add === 'function') {
                 await window.SBCart.add(variantId, {
@@ -1082,16 +1062,10 @@
                 });
                 if (!response.ok) throw new Error('Add to cart failed');
               }
-
-              if (label) label.textContent = labelAdded;
-              if (icon && icon.dataset.checkIcon) icon.setAttribute('src', icon.dataset.checkIcon);
-              button.classList.add('is-added');
-              button.setAttribute('aria-label', labelAdded);
-              scheduleReset();
             } catch (_) {
               resetToDefault();
             } finally {
-              button.classList.remove('is-loading');
+              button.disabled = false;
             }
           });
         });

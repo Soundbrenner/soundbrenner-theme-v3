@@ -93,7 +93,7 @@ body {
 }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: 2px solid var(--sb-color-primary-700);
+  outline: 2px solid var(--sb-color-primary-500);
   outline-offset: 2px;
 }
 

@@ -601,8 +601,6 @@
         if (!variantId) return;
 
         submitButton.disabled = true;
-        const originalLabel = buttonLabel.textContent;
-        buttonLabel.textContent = 'Adding...';
 
         try {
           if (window.SBCart && typeof window.SBCart.add === 'function') {
@@ -616,14 +614,9 @@
           } else {
             throw new Error('SBCart unavailable');
           }
-
-          buttonLabel.textContent = 'Added';
-          window.setTimeout(() => {
-            buttonLabel.textContent = originalLabel;
-            submitButton.disabled = false;
-          }, 1200);
         } catch (_) {
-          buttonLabel.textContent = originalLabel;
+          // no-op
+        } finally {
           submitButton.disabled = false;
         }
       });

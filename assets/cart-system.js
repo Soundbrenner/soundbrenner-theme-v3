@@ -125,11 +125,11 @@
           width: var(--sb-space-32);
           height: var(--sb-space-32);
           translate: -50% -50%;
-          color: var(--sb-color-always-white);
+          color: currentColor;
           pointer-events: none;
           opacity: 0;
           overflow: visible;
-          z-index: 1;
+          z-index: 6;
         }
 
         .sb-atc-burst .burst {
@@ -607,6 +607,7 @@
 
   let cachedCart = null;
   let fetchInFlight = null;
+  let nextAddSourceElement = null;
   const isCartLikePayload = (value) => {
     if (!value || typeof value !== 'object') return false;
     if (!Array.isArray(value.items)) return false;
@@ -2044,6 +2045,14 @@
     fetch: fetchCart,
     refresh: refreshCart,
     add: addToCart,
+    setNextAddSourceElement: (element) => {
+      if (element instanceof Element) nextAddSourceElement = element;
+    },
+    consumeNextAddSourceElement: () => {
+      const element = nextAddSourceElement;
+      nextAddSourceElement = null;
+      return element instanceof Element ? element : null;
+    },
     animateButtonSuccess,
     animateFlyToCart,
     clear: clearCart,
@@ -2111,9 +2120,14 @@
       submitter.disabled = true;
     }
 
+    const overrideSourceElement =
+      window.SBCart && typeof window.SBCart.consumeNextAddSourceElement === 'function'
+        ? window.SBCart.consumeNextAddSourceElement()
+        : null;
+
     addToCart(variantId, {
       quantity,
-      sourceElement: submitter || form,
+      sourceElement: overrideSourceElement || submitter || form,
     })
       .catch(() => {
         // no-op

@@ -10,8 +10,30 @@
 {
   "sections": {
     "main": {
-      "type": "blog",
-      "settings": {}
+      "type": "main-blog",
+      "blocks": {
+        "sidebar_item_YzQXrh": {
+          "type": "sidebar_item",
+          "settings": {
+            "content_type": "article",
+            "article": "",
+            "product": "",
+            "title": "",
+            "url": "",
+            "image": "",
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "sidebar_item_YzQXrh"
+      ],
+      "settings": {
+        "show_blog_title": true,
+        "posts_per_page": 12,
+        "mobile_insert_after": 2,
+        "sidebar_heading": "Top articles and product picks"
+      }
     }
   },
   "order": [

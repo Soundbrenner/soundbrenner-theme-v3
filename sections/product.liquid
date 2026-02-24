@@ -3305,6 +3305,9 @@
       if (stickyAddButton && addButton) {
         stickyAddButton.addEventListener('click', () => {
           if (addButton.disabled) return;
+          if (window.SBCart && typeof window.SBCart.setNextAddSourceElement === 'function') {
+            window.SBCart.setNextAddSourceElement(stickyAddButton);
+          }
           addButton.click();
         });
       }
@@ -4323,7 +4326,6 @@
           if (!variantId || addButtonElement.disabled) return;
 
           addButtonElement.disabled = true;
-          if (addButtonLabelElement) addButtonLabelElement.textContent = 'Added';
 
           try {
             if (window.SBCart && typeof window.SBCart.add === 'function') {
@@ -4339,15 +4341,10 @@
               throw new Error('SBCart unavailable');
             }
           } catch (error) {
-            if (addButtonLabelElement) addButtonLabelElement.textContent = 'Add';
             addButtonElement.disabled = false;
             return;
           }
-
-          window.setTimeout(() => {
-            addButtonElement.disabled = false;
-            if (addButtonLabelElement) addButtonLabelElement.textContent = 'Add';
-          }, 1200);
+          addButtonElement.disabled = false;
         });
 
         if (imageLinkElement) {
