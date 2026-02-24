@@ -306,6 +306,10 @@
           "type": "image",
           "settings": {}
         },
+        "divider_xADNhy": {
+          "type": "divider",
+          "settings": {}
+        },
         "subheading_d3imP4": {
           "type": "subheading",
           "settings": {
@@ -318,11 +322,23 @@
             "text": "<p><strong>Top button</strong></p><ul><li>Go backward</li><li>Stop editing selection</li><li>Power on & power off (long press)</li></ul><p><strong>Bottom button</strong></p><ul><li>Go forward</li><li>Start editing selection</li><li>Open app dock</li></ul><p><strong>Wheel</strong></p><ul><li>Navigate the app dock</li><li>Change values while editing a selection</li></ul><p><strong>Touch surface</strong></p><ul><li>Tap the soundwave twice quickly to start or pause a feature while inside an app</li><li>Tap the soundwave three or more times to tap tempo while inside the \"Metronome\" app</li></ul>"
           }
         },
-        "divider_xADNhy": {
+        "divider_8GrH8j": {
           "type": "divider",
           "settings": {}
         },
-        "divider_8GrH8j": {
+        "subheading_iL8Qey": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Power on & power off"
+          }
+        },
+        "text_mkJcQC": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Power on</strong><br/>Hold the top button for 1 second to turn on the Core.</p>"
+          }
+        },
+        "divider_xrGQeX": {
           "type": "divider",
           "settings": {}
         },
@@ -415,10 +431,13 @@
         "heading_RV3Y7M",
         "subheading_rjzpdY",
         "image_rxgnT8",
+        "divider_xADNhy",
         "subheading_d3imP4",
         "text_dydTbg",
-        "divider_xADNhy",
         "divider_8GrH8j",
+        "subheading_iL8Qey",
+        "text_mkJcQC",
+        "divider_xrGQeX",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
