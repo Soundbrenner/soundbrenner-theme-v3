@@ -345,7 +345,7 @@
         "text_9cDw6H": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Power off</strong></p><ol><li>Hold the top button for 3 seconds until the power off prompt appears.</li></ol>"
+            "text": "<p><strong>Power off</strong></p><p>1. Hold the top button for 3 seconds until the power off prompt appears.</p>"
           }
         },
         "image_fnMLty": {
@@ -359,6 +359,20 @@
           }
         },
         "divider_xrGQeX": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_8r8K8r": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Navigation hierarchy"
+          }
+        },
+        "image_bxUAQc": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_eGmUQA": {
           "type": "divider",
           "settings": {}
         },
@@ -462,6 +476,9 @@
         "image_fnMLty",
         "text_6Kej6h",
         "divider_xrGQeX",
+        "subheading_8r8K8r",
+        "image_bxUAQc",
+        "divider_eGmUQA",
         "chapter_6",
         "accordion_item_1",
         "accordion_item_2",
