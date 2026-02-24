@@ -678,6 +678,22 @@
     const setImportant = (el, prop, value) => {
       el.style.setProperty(prop, value, 'important');
     };
+    const newsletterCopy = {
+      placeholder: {{ section.settings.newsletter_placeholder | json }},
+      buttonLabel: {{ section.settings.newsletter_button_label | json }},
+      successText: {{ section.settings.newsletter_success_text | json }},
+      invalidEmailText: {{ section.settings.newsletter_invalid_email_text | json }},
+      genericErrorText: {{ section.settings.newsletter_generic_error_text | json }},
+    };
+    const successMessageSelector = ".success_message, [data-testid='success-message'], [id^='rich-text-']";
+    const errorMessageSelector = "[data-testid='form-message'], [data-testid='field-message'], .klaviyo-form [role='alert']";
+    const normalizeText = (value) => `${value || ''}`.trim();
+    const setNodeText = (node, value) => {
+      const next = normalizeText(value);
+      if (!next) return;
+      if (normalizeText(node.textContent) === next) return;
+      node.textContent = next;
+    };
     let submitScrubInterval = null;
     const stopSubmitScrub = () => {
       if (!submitScrubInterval) return;
@@ -706,14 +722,55 @@
       const firstComponent = root.querySelector('[data-testid="form-component"]:first-child');
       const firstComponentInner = firstComponent ? firstComponent.querySelector('div') : null;
       const lastComponent = root.querySelector('[data-testid="form-component"]:last-child');
-      const successNode = root.querySelector("[id^='rich-text-'], .success_message, [data-testid='form-message'], [data-testid='success-message']");
+      const successNode = root.querySelector(successMessageSelector);
       const iconUrl = {{ 'arrow-reduced-padding.svg' | asset_url | json }};
       const hasSubmissionControls = Boolean(input && button);
+      if (input) {
+        const localizedPlaceholder = normalizeText(newsletterCopy.placeholder);
+        if (localizedPlaceholder) {
+          input.setAttribute('placeholder', localizedPlaceholder);
+          input.setAttribute('aria-label', localizedPlaceholder);
+        }
+      }
+      if (button) {
+        const localizedButtonLabel = normalizeText(newsletterCopy.buttonLabel);
+        if (localizedButtonLabel) {
+          button.setAttribute('aria-label', localizedButtonLabel);
+        }
+      }
       const successVisible = Boolean(
         successNode
         && window.getComputedStyle(successNode).display !== 'none'
       );
       const isSuccessState = successVisible || (!hasSubmissionControls && Boolean(successNode));
+      if (successNode) {
+        if (!successNode.dataset.sbKlaviyoOriginalText) {
+          successNode.dataset.sbKlaviyoOriginalText = normalizeText(successNode.textContent);
+        }
+        if (isSuccessState) {
+          setNodeText(
+            successNode,
+            normalizeText(newsletterCopy.successText) || successNode.dataset.sbKlaviyoOriginalText
+          );
+        }
+      }
+      if (!isSuccessState) {
+        const errorNodes = root.querySelectorAll(errorMessageSelector);
+        errorNodes.forEach((node) => {
+          if (successNode && node === successNode) return;
+          if (!node.dataset.sbKlaviyoOriginalText) {
+            node.dataset.sbKlaviyoOriginalText = normalizeText(node.textContent);
+          }
+          const original = normalizeText(node.dataset.sbKlaviyoOriginalText || node.textContent);
+          if (!original) return;
+          const isInvalidEmailLike = /email|e-mail|valid|required|invalid/i.test(original);
+          const replacement = isInvalidEmailLike
+            ? normalizeText(newsletterCopy.invalidEmailText)
+            : normalizeText(newsletterCopy.genericErrorText) || normalizeText(newsletterCopy.invalidEmailText);
+          if (!replacement) return;
+          setNodeText(node, replacement);
+        });
+      }
       form.classList.toggle('is-success', isSuccessState);
       root.classList.toggle('is-success', isSuccessState);
       if (isSuccessState) {
@@ -755,7 +812,6 @@
 
       input.classList.add('font-form-input', 'weight-regular');
       button.classList.add('sb-button-radiant', 'sb-button-radiant--medium');
-      button.setAttribute('aria-label', {{ section.settings.newsletter_button_label | json }});
 
       setImportant(form, 'border-radius', '999px');
       setImportant(form, 'overflow', 'visible');
@@ -891,6 +947,18 @@
       "id": "newsletter_success_text",
       "label": "Newsletter success message",
       "default": "Thanks for subscribing."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_invalid_email_text",
+      "label": "Newsletter invalid email message",
+      "default": "Please enter a valid email address."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_generic_error_text",
+      "label": "Newsletter generic error message",
+      "default": "Something went wrong. Please try again."
     },
     {
       "type": "text",
