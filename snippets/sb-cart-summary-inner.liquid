@@ -12,12 +12,79 @@
   assign sb_cart_payment_item_class = payment_item_class | default: 'sb-cart-summary__payment-item'
 
   assign sb_cart_original_subtotal_cents = cart.original_total_price | default: cart.items_subtotal_price | plus: 0
-  assign sb_cart_final_total_cents = cart.total_price | plus: 0
-  assign sb_cart_discount_amount_cents = sb_cart_original_subtotal_cents | minus: sb_cart_final_total_cents
-  if sb_cart_discount_amount_cents < 0
-    assign sb_cart_discount_amount_cents = 0
+  assign sb_cart_primary_discount_title = ''
+  assign sb_cart_primary_discount_value_type = ''
+  assign sb_cart_primary_discount_value = blank
+  assign sb_cart_discount_amount_cents = 0
+
+  for discount_application in cart.cart_level_discount_applications
+    assign discount_title = discount_application.title | default: '' | strip
+    if discount_title == blank
+      continue
+    endif
+    assign discount_title_upcase = discount_title | upcase
+    assign discount_type = discount_application.type | default: '' | downcase
+    assign discount_amount_cents = 0
+    for item in cart.items
+      for allocation in item.line_level_discount_allocations
+        assign allocation_title = allocation.discount_application.title | default: '' | strip
+        assign allocation_title_upcase = allocation_title | upcase
+        assign allocation_type = allocation.discount_application.type | default: '' | downcase
+        if allocation_title_upcase == discount_title_upcase and allocation_type == discount_type
+          assign discount_amount_cents = discount_amount_cents | plus: allocation.amount
+        endif
+      endfor
+    endfor
+    if discount_amount_cents <= 0
+      assign discount_total_allocated_amount_cents = discount_application.total_allocated_amount | plus: 0
+      if discount_total_allocated_amount_cents > 0
+        assign discount_amount_cents = discount_total_allocated_amount_cents
+      endif
+    endif
+    if discount_type == 'discount_code' and discount_amount_cents > 0
+      assign sb_cart_primary_discount_title = discount_title
+      assign sb_cart_primary_discount_value_type = discount_application.value_type | default: '' | downcase
+      assign sb_cart_primary_discount_value = discount_application.value
+      assign sb_cart_discount_amount_cents = discount_amount_cents | round
+      break
+    endif
+  endfor
+
+  if sb_cart_discount_amount_cents <= 0
+    for discount_application in cart.cart_level_discount_applications
+      assign discount_title = discount_application.title | default: '' | strip
+      if discount_title == blank
+        continue
+      endif
+      assign discount_title_upcase = discount_title | upcase
+      assign discount_type = discount_application.type | default: '' | downcase
+      assign discount_amount_cents = 0
+      for item in cart.items
+        for allocation in item.line_level_discount_allocations
+          assign allocation_title = allocation.discount_application.title | default: '' | strip
+          assign allocation_title_upcase = allocation_title | upcase
+          assign allocation_type = allocation.discount_application.type | default: '' | downcase
+          if allocation_title_upcase == discount_title_upcase and allocation_type == discount_type
+            assign discount_amount_cents = discount_amount_cents | plus: allocation.amount
+          endif
+        endfor
+      endfor
+      if discount_amount_cents <= 0
+        assign discount_total_allocated_amount_cents = discount_application.total_allocated_amount | plus: 0
+        if discount_total_allocated_amount_cents > 0
+          assign discount_amount_cents = discount_total_allocated_amount_cents
+        endif
+      endif
+      if discount_amount_cents > 0
+        assign sb_cart_primary_discount_title = discount_title
+        assign sb_cart_primary_discount_value_type = discount_application.value_type | default: '' | downcase
+        assign sb_cart_primary_discount_value = discount_application.value
+        assign sb_cart_discount_amount_cents = discount_amount_cents | round
+        break
+      endif
+    endfor
   endif
-  assign sb_cart_discount_percentage_source_cents = cart.total_discount | default: 0 | plus: 0
+
   assign sb_cart_has_auto_discount = false
   if sb_cart_discount_amount_cents > 0
     assign sb_cart_has_auto_discount = true
@@ -36,10 +103,9 @@
   endfor
   assign sb_cart_discount_codes = sb_cart_discount_codes | uniq
 
-  assign sb_cart_discount_code = ''
-  assign sb_cart_discount_code = sb_cart_discount_codes | first | default: ''
+  assign sb_cart_discount_code = sb_cart_primary_discount_title | default: '' | upcase | strip
   if sb_cart_discount_code == blank
-    assign sb_cart_discount_code = cart.cart_level_discount_applications | where: 'type', 'discount_code' | map: 'title' | first
+    assign sb_cart_discount_code = sb_cart_discount_codes | first | default: ''
   endif
   if sb_cart_discount_code == blank
     for discount_application in cart.cart_level_discount_applications
@@ -70,21 +136,19 @@
   endif
 
   assign sb_cart_discount_percent = blank
-  for discount_application in cart.cart_level_discount_applications
-    assign discount_type = discount_application.type | default: '' | downcase
-    assign discount_title = discount_application.title | default: '' | upcase | strip
-    if discount_type == 'discount_code' or discount_title == sb_cart_discount_code
-      assign discount_value_type = discount_application.value_type | default: '' | downcase
-      if discount_value_type == 'percentage'
-        assign sb_cart_discount_percent = discount_application.value | round
-        break
-      endif
+  if sb_cart_primary_discount_value_type == 'percentage'
+    assign sb_cart_primary_discount_value_number = sb_cart_primary_discount_value | plus: 0
+    if sb_cart_primary_discount_value_number > 0
+      assign sb_cart_discount_percent = sb_cart_primary_discount_value_number | round
     endif
-  endfor
-  if sb_cart_discount_percent == blank and sb_cart_discount_percentage_source_cents > 0
-    assign sb_cart_discount_percent_base = cart.original_total_price | default: cart.items_subtotal_price | plus: 0
+  endif
+  if sb_cart_discount_percent == blank and sb_cart_discount_amount_cents > 0
+    assign sb_cart_discount_percent_base = cart.items_subtotal_price | plus: 0
+    if sb_cart_discount_percent_base <= 0
+      assign sb_cart_discount_percent_base = sb_cart_original_subtotal_cents
+    endif
     if sb_cart_discount_percent_base > 0
-      assign sb_cart_discount_percent = sb_cart_discount_percentage_source_cents | times: 100.0 | divided_by: sb_cart_discount_percent_base | round
+      assign sb_cart_discount_percent = sb_cart_discount_amount_cents | times: 100.0 | divided_by: sb_cart_discount_percent_base | round
     endif
   endif
 

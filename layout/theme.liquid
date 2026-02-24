@@ -2,7 +2,7 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
-  assign sb_debug_version = '3.3'
+  assign sb_debug_version = '3.4'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -216,6 +216,10 @@
           return Math.min(1, Math.max(0, value));
         };
 
+        const thumbnailFallbackGlobalRate = clampDiscountRate(
+          Number({{ settings.sitewide_seasonal_discount_depth | default: 0 | json }}) / 100
+        );
+
         const formatMoneyCents = (cents) => {
           const normalizedCents = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
           if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
@@ -263,6 +267,10 @@
             if (originalTotalPrice > 0 && finalTotalPrice >= 0 && finalTotalPrice < originalTotalPrice) {
               globalRate = clampDiscountRate((originalTotalPrice - finalTotalPrice) / originalTotalPrice);
             }
+          }
+
+          if (globalRate <= 0 && thumbnailFallbackGlobalRate > 0) {
+            globalRate = thumbnailFallbackGlobalRate;
           }
 
           const items = Array.isArray(cart?.items) ? cart.items : [];

@@ -455,78 +455,124 @@
     return [...new Set(codes)];
   };
 
-  const getCartDiscountSummary = (cart, currency = 'USD') => {
-    const originalSubtotalCents = Number.isFinite(Number(cart && cart.original_total_price))
-      ? Number(cart.original_total_price)
-      : Number(cart && cart.items_subtotal_price) || 0;
-    const finalTotalCents = Number.isFinite(Number(cart && cart.total_price))
-      ? Number(cart.total_price)
-      : 0;
-    const combinedSavingsCents = Math.max(0, originalSubtotalCents - finalTotalCents);
-    const explicitDiscountCents = Number.isFinite(Number(cart && cart.total_discount))
-      ? Math.max(0, Number(cart.total_discount))
-      : 0;
-    const discountAmountCents = Math.max(combinedSavingsCents, explicitDiscountCents);
-    const hasDiscount = discountAmountCents > 0;
+  const normalizeDiscountTitle = (value) => `${value == null ? '' : value}`.trim().toUpperCase();
+  const normalizeDiscountType = (value) => `${value == null ? '' : value}`.trim().toLowerCase();
 
-    const appliedCodes = getAppliedDiscountCodes(cart || {});
-    const applications = Array.isArray(cart && cart.cart_level_discount_applications)
-      ? cart.cart_level_discount_applications
-      : [];
-    let code = `${appliedCodes[0] || ''}`.trim();
+  const doesDiscountAllocationMatchApplication = (allocation, application) => {
+    if (!allocation || !application) return false;
+    const allocationApplication = allocation.discount_application || null;
+    if (!allocationApplication) return false;
 
-    // If no manual discount code is active, use the first active cart discount title
-    // (automatic discounts included) instead of falling back to a generic label.
-    if (!code) {
-      for (const application of applications) {
-        if (!application || typeof application !== 'object') continue;
-        const title = `${application.title || ''}`.trim();
-        if (title) {
-          code = title;
-          break;
-        }
+    const targetType = normalizeDiscountType(application.type);
+    const targetTitle = normalizeDiscountTitle(application.title);
+    const allocationType = normalizeDiscountType(allocationApplication.type);
+    const allocationTitle = normalizeDiscountTitle(allocationApplication.title);
+
+    if (targetType && allocationType && targetType !== allocationType) return false;
+    if (targetTitle) return allocationTitle === targetTitle;
+    return true;
+  };
+
+  const getCartLevelApplicationAmountCents = (cart, application) => {
+    if (!application || !cart || !Array.isArray(cart.items)) return 0;
+
+    let amountCents = 0;
+    cart.items.forEach((item) => {
+      const allocations = Array.isArray(item && item.line_level_discount_allocations)
+        ? item.line_level_discount_allocations
+        : [];
+      allocations.forEach((allocation) => {
+        if (!doesDiscountAllocationMatchApplication(allocation, application)) return;
+        const allocationAmount = Number(allocation && allocation.amount);
+        if (!Number.isFinite(allocationAmount) || allocationAmount <= 0) return;
+        amountCents += allocationAmount;
+      });
+    });
+
+    if (amountCents <= 0) {
+      const totalAllocatedAmount = Number(application && application.total_allocated_amount);
+      if (Number.isFinite(totalAllocatedAmount) && totalAllocatedAmount > 0) {
+        amountCents = totalAllocatedAmount;
       }
     }
 
-    if (!code && cart && Array.isArray(cart.items)) {
-      for (const item of cart.items) {
-        if (!item || !Array.isArray(item.line_level_discount_allocations)) continue;
-        for (const allocation of item.line_level_discount_allocations) {
-          const application =
-            allocation && allocation.discount_application ? allocation.discount_application : null;
-          const title = `${application && application.title ? application.title : ''}`.trim();
-          if (title) {
-            code = title;
-            break;
-          }
-        }
-        if (code) break;
-      }
+    return Math.max(0, Math.round(amountCents));
+  };
+
+  const getCartLevelApplicationSummaries = (cart) => {
+    const applications = Array.isArray(cart && cart.cart_level_discount_applications)
+      ? cart.cart_level_discount_applications
+      : [];
+
+    return applications
+      .map((application) => {
+        const title = `${application && application.title ? application.title : ''}`.trim();
+        const type = normalizeDiscountType(application && application.type);
+        const amountCents = getCartLevelApplicationAmountCents(cart, application);
+        return {
+          application,
+          title,
+          titleUpper: title.toUpperCase(),
+          type,
+          amountCents,
+        };
+      })
+      .filter((entry) => Boolean(entry.application));
+  };
+
+  const selectPrimaryCartLevelDiscountApplicationSummary = (cart) => {
+    const summaries = getCartLevelApplicationSummaries(cart);
+    if (!summaries.length) return null;
+
+    const discountCodeWithAmount = summaries.find(
+      (summary) => summary.type === 'discount_code' && summary.title && summary.amountCents > 0
+    );
+    if (discountCodeWithAmount) return discountCodeWithAmount;
+
+    const withAmount = summaries.find((summary) => summary.title && summary.amountCents > 0);
+    if (withAmount) return withAmount;
+
+    const discountCodeWithTitle = summaries.find(
+      (summary) => summary.type === 'discount_code' && summary.title
+    );
+    if (discountCodeWithTitle) return discountCodeWithTitle;
+
+    const withTitle = summaries.find((summary) => summary.title);
+    return withTitle || summaries[0];
+  };
+
+  const getCartDiscountSummary = (cart, currency = 'USD') => {
+    const primarySummary = selectPrimaryCartLevelDiscountApplicationSummary(cart);
+    const primaryApplication = primarySummary && primarySummary.application ? primarySummary.application : null;
+    const discountAmountCents =
+      primarySummary && Number.isFinite(primarySummary.amountCents)
+        ? Math.max(0, Math.round(primarySummary.amountCents))
+        : 0;
+    const hasDiscount = discountAmountCents > 0 && Boolean(primaryApplication);
+    const appliedCodes = getAppliedDiscountCodes(cart || {});
+    let code = primarySummary && primarySummary.title ? `${primarySummary.title}`.trim() : '';
+    if (!code) {
+      code = `${appliedCodes[0] || ''}`.trim();
     }
 
     if (!code) code = 'DISCOUNT';
     code = code.toUpperCase();
 
     let percentage = null;
-    for (const application of applications) {
-      if (!application || typeof application !== 'object') continue;
-      const title = `${application.title || ''}`.trim().toUpperCase();
-      const appType = `${application.type || ''}`.trim().toLowerCase();
-      const isMatch = title === code || (!title && appType === 'discount_code') || appType === 'discount_code';
-      if (!isMatch) continue;
-      const valueType = `${application.value_type || ''}`.trim().toLowerCase();
+    if (primaryApplication && typeof primaryApplication === 'object') {
+      const valueType = `${primaryApplication.value_type || ''}`.trim().toLowerCase();
       if (valueType === 'percentage') {
-        const value = Number(application.value);
-        if (Number.isFinite(value)) {
-          percentage = Math.round(value);
-          break;
-        }
+        const value = Number(primaryApplication.value);
+        if (Number.isFinite(value)) percentage = Math.round(value);
       }
     }
 
     if (!Number.isFinite(percentage)) {
-      if (originalSubtotalCents > 0 && explicitDiscountCents > 0) {
-        percentage = Math.round((explicitDiscountCents / originalSubtotalCents) * 100);
+      const baseCents = Number.isFinite(Number(cart && cart.items_subtotal_price))
+        ? Number(cart.items_subtotal_price)
+        : 0;
+      if (baseCents > 0 && discountAmountCents > 0) {
+        percentage = Math.round((discountAmountCents / baseCents) * 100);
       }
     }
 
