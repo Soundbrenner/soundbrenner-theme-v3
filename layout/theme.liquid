@@ -2,7 +2,7 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
-  assign sb_debug_version = '1.3'
+  assign sb_debug_version = '1.7'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -920,8 +920,25 @@
         const klaviyoStarPath =
           'M3.825 19.5L5.45 12.475L0 7.75L7.2 7.125L10 0.5L12.8 7.125L20 7.75L14.55 12.475L16.175 19.5L10 15.775L3.825 19.5Z';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
+        const ratingFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
         let formattingObserver = null;
         let widgetObserver = null;
+
+        const parseRatingNumber = (value) => {
+          const match = String(value).match(/(\d+(?:[.,]\d+)?)/);
+          if (!match) return null;
+          const numeric = Number(match[1].replace(',', '.'));
+          return Number.isFinite(numeric) ? numeric : null;
+        };
+
+        const formatRatingValue = (value) => {
+          const numeric = parseRatingNumber(value);
+          if (!Number.isFinite(numeric)) return `${value}`;
+          return ratingFormatter.format(numeric);
+        };
 
         const applyCustomStarPaths = (scope = document) => {
           const stars = scope.querySelectorAll('path.kl_reviews__star');
@@ -1026,8 +1043,7 @@
             const rawCount = (countFromAria && countFromAria[1]) || (countFromLabel && countFromLabel[1]) || '0';
             const countNumber = Number(String(rawCount).replace(/,/g, ''));
             const formattedCount = Number.isFinite(countNumber) ? numberFormatter.format(countNumber) : rawCount;
-            const ratingNumber = Number(String(ratingMatch[1]).replace(',', '.'));
-            const formattedRating = Number.isFinite(ratingNumber) ? ratingNumber.toFixed(1) : ratingMatch[1];
+            const formattedRating = formatRatingValue(ratingMatch[1]);
 
             const copy = `${formattedRating} (by ${formattedCount} musicians)`;
 
@@ -1131,7 +1147,7 @@
             const reviewsMatch = nextText.match(/(\d[\d,]*)\s+reviews\b/i);
 
             if (ratingMatch && reviewsMatch) {
-              const ratingValue = ratingMatch[1];
+              const ratingValue = formatRatingValue(ratingMatch[1]);
               const reviewsValue = reviewsMatch[1];
               const nextHtml =
                 `<span class="sb-klaviyo-rating-value">${ratingValue}</span>` +
@@ -1154,6 +1170,16 @@
             const compact = currentText.replace(/\s+/g, ' ').trim();
             const deduped = compact.replace(/^(.+?)\s+\1+$/, '$1').trim();
             if (deduped !== compact) target.textContent = deduped;
+          });
+
+          const summaryAverageValues = root.querySelectorAll('.kl_reviews__summary__average_value');
+          summaryAverageValues.forEach((target) => {
+            const currentText = (target.textContent || '').trim();
+            if (!currentText) return;
+            const formatted = formatRatingValue(currentText);
+            if (formatted !== currentText) {
+              target.textContent = formatted;
+            }
           });
 
           applyCustomStarPaths(root);

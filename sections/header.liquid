@@ -453,7 +453,7 @@
               <div class="header__primary-menu" aria-label="{{ link.title | escape }}" style="--sb-primary-columns: {{ dropdown_card_count }};">
                 <div class="header__primary-menu-panel">
                   <div class="header__primary-menu-panel-inner">
-                  <a class="header__primary-menu-title font-title weight-bold" href="{{ link.url }}">{{ link.title }}</a>
+                  <a class="header__primary-menu-title font-callout weight-bold" href="{{ link.url }}">{{ link.title }}</a>
                   <div class="header__primary-menu-grid">
                     {% for block in section.blocks %}
                       {% liquid
@@ -586,7 +586,7 @@
                           {% endif %}
                         </a>
 
-                        <p class="header__primary-card-title font-callout weight-bold">
+                        <p class="header__primary-card-title font-body weight-bold">
                           <a class="header__primary-card-title-link" href="{{ card_link | default: '#' }}">{{ card_title | default: link.title }}</a>
                         </p>
 
@@ -632,7 +632,7 @@
                           </div>
                         {% else %}
                           {% if card_body != blank %}
-                            <p class="header__primary-card-body font-body weight-regular">{{ card_body }}</p>
+                            <p class="header__primary-card-body font-caption weight-regular">{{ card_body }}</p>
                           {% endif %}
 
                           {% if block_type_key == 'primary_item_product' %}
@@ -651,7 +651,7 @@
                               {% endif %}
                             {% endif %}
                             {% if accessories_collection != blank %}
-                              <ul class="header__primary-card-links font-body weight-semibold" role="list">
+                              <ul class="header__primary-card-links font-caption weight-semibold" role="list">
                                 <li>
                                   <a href="{{ accessories_collection.url }}">Accessories</a>
                                 </li>
@@ -666,7 +666,7 @@
                               {% assign has_card_links = true %}
                             {% endif %}
                             {% if has_card_links %}
-                              <ul class="header__primary-card-links font-body weight-semibold" role="list">
+                              <ul class="header__primary-card-links font-caption weight-semibold" role="list">
                                 {% if linked_product_1 != blank %}
                                   {% assign linked_product_1_settings = linked_product_1.metafields.custom.sbv2_product_settings.value | default: linked_product_1.metafields.custom.sbv2_product_settings %}
                                   {% assign linked_product_1_tagline = blank %}
@@ -1778,7 +1778,7 @@
   }
 
   .header__primary-menu-panel-inner {
-    padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-48);
+    padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-36);
   }
 
   .header__primary-menu-grid {
@@ -1793,6 +1793,7 @@
     align-items: center;
     color: var(--sb-color-neutral-900);
     display: flex;
+    font-family: var(--font-display--family);
     justify-content: center;
     margin: 0 auto;
     text-align: center;
@@ -1852,7 +1853,7 @@
   }
 
   .header__primary-card-title {
-    margin: var(--sb-space-20) 0 0;
+    margin: var(--sb-space-16) 0 0;
   }
 
   .header__primary-card-title-link {
@@ -1869,16 +1870,16 @@
 
   .header__primary-card-body {
     color: var(--sb-color-neutral-900);
-    margin: var(--sb-space-12) 0 0;
+    margin: var(--sb-space-16) 0 0;
     overflow-wrap: anywhere;
   }
 
   .header__primary-card-links {
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-20);
+    gap: var(--sb-space-16);
     list-style: none;
-    margin: var(--sb-space-20) 0 0;
+    margin: var(--sb-space-16) 0 0;
     padding: 0;
   }
 
@@ -1896,14 +1897,14 @@
     display: flex;
     flex-direction: column;
     gap: var(--sb-space-6);
-    margin-top: var(--sb-space-12);
+    margin-top: var(--sb-space-16);
   }
 
   .header__primary-card-rating {
     align-items: center;
     color: var(--sb-color-neutral-900);
     display: flex;
-    gap: var(--sb-space-12);
+    gap: var(--sb-space-8);
     margin: 0;
   }
 
@@ -1921,9 +1922,9 @@
 
   .header__primary-card-star {
     display: inline-block;
-    height: var(--sb-space-20);
+    height: var(--sb-space-16);
     position: relative;
-    width: var(--sb-space-20);
+    width: var(--sb-space-16);
   }
 
   .header__primary-card-star::before,
@@ -1955,8 +1956,8 @@
     align-items: flex-start;
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-20);
-    margin-top: var(--sb-space-20);
+    gap: var(--sb-space-16);
+    margin-top: var(--sb-space-16);
   }
 
   .header__primary-card-app-links a {
@@ -4508,11 +4509,6 @@
       opacity: 1;
       visibility: visible;
     }
-  }
-
-  .sb-cart-line-list--page {
-    padding-bottom: var(--sb-space-24);
-    padding-top: var(--sb-space-24);
   }
 
   @media screen and (min-width: 990px) {
