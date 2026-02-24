@@ -122,22 +122,19 @@
         "chapter_4": {
           "type": "heading",
           "settings": {
-            "heading": "Tech specs"
+            "heading": "Plus subscription"
+          }
+        },
+        "heading_small_DAHEkY": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "INSERT IMAGE"
           }
         },
         "body_4": {
           "type": "text",
           "settings": {
-            "text": "<p>View the full specifications on the product page.</p>"
-          }
-        },
-        "button_CN7gAg": {
-          "type": "button",
-          "settings": {
-            "label": "View tech specs",
-            "button_size": "large",
-            "icon_position": "none",
-            "link": "shopify://products/wave-in-ear-monitors"
+            "text": "<p>Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of our app. While the Core itself provides a complete experience on its own, Plus offers extras such as cloud storage of your songs and setlists, among other features. Our subscription model supports the rollout of multiple significant app updates annually, so get ready for a continuous stream of exciting new features!</p><p>Your Core comes with a free 3-month trial that you can redeem by following the in-app instructions after connecting your wearable!</p>"
           }
         },
         "divider_4": {
@@ -147,13 +144,19 @@
         "chapter_5": {
           "type": "heading",
           "settings": {
-            "heading": "Product care"
+            "heading": "Charging the Core"
           }
         },
         "body_5": {
           "type": "text",
           "settings": {
-            "text": "<p>Keep the earphones and ear tips clean and dry when not in use. Never submerge them in water or expose them to extreme temperatures.<br/><br/>To clean ear tips, remove them, rinse with warm water, and let them air dry completely before reuse. Wipe the earphones and ear tips with a mild antiseptic. Do not use alcohol-based cleaners.</p>"
+            "text": "<p>To charge your Core, attach the cable to the magnetic port located on the side of the device. The Core takes 1.5 hours to fully charge.</p><p><strong>Battery life</strong></p><ul><li>4+ days in watch mode, or</li><li>3+ hours metronome playback</li></ul><p><strong>Charging light</strong></p><ul><li>Orange light = charging</li><li>Green light = fully charged</li></ul>"
+          }
+        },
+        "heading_small_DqeFGT": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "INSERT IMAGE"
           }
         },
         "divider_5": {
@@ -218,11 +221,12 @@
         "button_9nmwUx",
         "divider_3",
         "chapter_4",
+        "heading_small_DAHEkY",
         "body_4",
-        "button_CN7gAg",
         "divider_4",
         "chapter_5",
         "body_5",
+        "heading_small_DqeFGT",
         "divider_5",
         "chapter_6",
         "accordion_item_1",
