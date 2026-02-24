@@ -106,6 +106,15 @@
             "link": "shopify://products/core-2-practice-companion"
           }
         },
+        "button_9nmwUx": {
+          "type": "button",
+          "settings": {
+            "label": "Spark in the box",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": "shopify://products/spark-practice-companion"
+          }
+        },
         "divider_3": {
           "type": "divider",
           "settings": {}
@@ -206,6 +215,7 @@
         "subheading_QhB4a6",
         "body_3",
         "button_rF6dEJ",
+        "button_9nmwUx",
         "divider_3",
         "chapter_4",
         "body_4",
