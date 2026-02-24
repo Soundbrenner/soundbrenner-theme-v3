@@ -592,7 +592,7 @@
 
                         {% if app_mode == true %}
                           <div class="header__primary-card-app">
-                            <p class="header__primary-card-rating font-body weight-semibold">
+                            <p class="header__primary-card-rating font-caption weight-semibold">
                               <span class="header__primary-card-stars" aria-hidden="true">
                                 {% for star_index in (1..5) %}
                                   {% assign prior_stars = star_index | minus: 1 %}
@@ -607,7 +607,7 @@
                               </span>
                               <span>{{ card_rating_display }}</span>
                             </p>
-                            <p class="header__primary-card-rating-count font-body weight-regular">{{ card_rating_count_display }} ratings</p>
+                            <p class="header__primary-card-rating-count font-caption weight-regular">{{ card_rating_count_display }} ratings</p>
 
                             <div class="header__primary-card-app-links">
                               <a href="{{ card_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
@@ -1778,12 +1778,12 @@
   }
 
   .header__primary-menu-panel-inner {
-    padding: var(--sb-space-36) var(--sb-space-64) var(--sb-space-36);
+    padding: var(--sb-space-30) var(--sb-space-48);
   }
 
   .header__primary-menu-grid {
     display: grid;
-    margin-top: var(--sb-space-36);
+    margin-top: var(--sb-space-30);
     gap: var(--sb-space-36);
     grid-template-columns: repeat(var(--sb-primary-columns, 4), minmax(0, 1fr));
     justify-content: center;
@@ -1870,7 +1870,7 @@
 
   .header__primary-card-body {
     color: var(--sb-color-neutral-900);
-    margin: var(--sb-space-16) 0 0;
+    margin: var(--sb-space-12) 0 0;
     overflow-wrap: anywhere;
   }
 
@@ -1896,8 +1896,8 @@
   .header__primary-card-app {
     display: flex;
     flex-direction: column;
-    gap: var(--sb-space-6);
-    margin-top: var(--sb-space-16);
+    gap: 0;
+    margin-top: var(--sb-space-12);
   }
 
   .header__primary-card-rating {
@@ -1910,14 +1910,14 @@
 
   .header__primary-card-rating-count {
     color: var(--sb-color-neutral-900);
-    margin: 0;
+    margin: var(--sb-space-6) 0 0;
   }
 
   .header__primary-card-stars {
     display: inline-flex;
     gap: var(--sb-space-4);
     line-height: 0;
-    transform: translateY(calc(-1 * var(--sb-space-2)));
+    transform: translateY(0);
   }
 
   .header__primary-card-star {
