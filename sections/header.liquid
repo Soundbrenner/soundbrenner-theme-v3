@@ -2659,14 +2659,14 @@
     font-family: var(--font-display--family);
     font-size: var(--font-size-caption);
     font-weight: 700;
-    height: var(--sb-space-20);
+    height: 20px;
     justify-content: center;
     line-height: 1;
-    min-width: var(--sb-space-20);
-    padding: 0 var(--sb-space-4);
+    min-width: 20px;
+    padding: 0 4px;
     position: absolute;
-    right: calc(-1 * var(--sb-space-12));
-    top: calc(-1 * var(--sb-space-12));
+    right: -8px;
+    top: -8px;
     transform: scale(1);
     transform-origin: center;
     z-index: 1;
@@ -2697,10 +2697,6 @@
       width: var(--sb-space-20);
     }
 
-    .header__cart-count-badge {
-      right: calc(-1 * var(--sb-space-8));
-      top: calc(-1 * var(--sb-space-8));
-    }
   }
 
   .header__cart-count-badge[hidden] {
@@ -2708,7 +2704,7 @@
   }
 
   .header__cart-count-badge.is-double-digit {
-    padding: 0 var(--sb-space-6);
+    padding: 0 6px;
   }
 
   .header__cart-count-badge.is-bump {
