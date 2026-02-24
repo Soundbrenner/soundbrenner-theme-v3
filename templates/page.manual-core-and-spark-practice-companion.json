@@ -296,6 +296,28 @@
             "heading": "Navigating the device"
           }
         },
+        "subheading_rjzpdY": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Device overview"
+          }
+        },
+        "image_rxgnT8": {
+          "type": "image",
+          "settings": {}
+        },
+        "subheading_d3imP4": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Device controls"
+          }
+        },
+        "text_dydTbg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
         "divider_xADNhy": {
           "type": "divider",
           "settings": {}
@@ -391,6 +413,10 @@
         "heading_small_9UPCLh",
         "divider_pCzwPk",
         "heading_RV3Y7M",
+        "subheading_rjzpdY",
+        "image_rxgnT8",
+        "subheading_d3imP4",
+        "text_dydTbg",
         "divider_xADNhy",
         "divider_8GrH8j",
         "chapter_6",
