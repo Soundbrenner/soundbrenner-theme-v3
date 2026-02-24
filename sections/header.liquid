@@ -152,10 +152,6 @@
   if announcement_text != blank
     assign show_announcement = true
   endif
-  assign overscroll_top_background = 'var(--sb-color-neutral-200)'
-  if show_announcement
-    assign overscroll_top_background = announcement_gradient
-  endif
   assign sale_end_date = settings.seasonal_sale_end_date | strip
   assign show_announcement_countdown = false
   if show_announcement and sale_end_date != blank and seasonal_shipping_is_blocked == false and use_affiliate_announcement_override == false
@@ -246,58 +242,9 @@
   endcase
 %}
 
-<style>
-  :root {
-    --sb-overscroll-top-background: {{ overscroll_top_background }};
-  }
-</style>
-
 {% if show_country or show_language %}
   <script src="{{ 'localization.js' | asset_url }}" defer></script>
 {% endif %}
-<script>
-  (() => {
-    if (window.__sbOverscrollObserverBound) return;
-    window.__sbOverscrollObserverBound = true;
-
-    const root = document.documentElement;
-
-    const setAtTopState = (atTop) => {
-      root.classList.toggle('sb-overscroll-at-top', Boolean(atTop));
-    };
-
-    const initOverscrollObserver = () => {
-      const sentinel = document.querySelector('[data-sb-overscroll-sentinel]');
-      if (!sentinel || typeof IntersectionObserver !== 'function') {
-        setAtTopState(window.scrollY <= 0);
-        window.addEventListener(
-          'scroll',
-          () => setAtTopState(window.scrollY <= 0),
-          { passive: true }
-        );
-        return;
-      }
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          setAtTopState(Boolean(entry && entry.isIntersecting));
-        },
-        { threshold: 0 }
-      );
-
-      observer.observe(sentinel);
-      setAtTopState(window.scrollY <= 0);
-    };
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initOverscrollObserver, { once: true });
-      return;
-    }
-
-    initOverscrollObserver();
-  })();
-</script>
 <script src="{{ 'cart-system.js' | asset_url }}" defer></script>
 {% if is_affiliate_page and header_affiliate_discount_code != blank %}
   <script>
@@ -332,8 +279,6 @@
     })();
   </script>
 {% endif %}
-
-<div class="header__overscroll-sentinel" data-sb-overscroll-sentinel aria-hidden="true"></div>
 
 <header
   class="header full-width{% if show_announcement %} has-announcement{% endif %}"
@@ -1458,19 +1403,7 @@
 
 {% stylesheet %}
   html {
-    background: var(--sb-color-always-black);
-  }
-
-  html.sb-overscroll-at-top {
-    background: var(--sb-overscroll-top-background, var(--sb-color-neutral-200));
-  }
-
-  .header__overscroll-sentinel {
-    display: block;
-    height: var(--sb-space-2);
-    margin-bottom: calc(-1 * var(--sb-space-2));
-    pointer-events: none;
-    width: 100%;
+    background: var(--sb-color-neutral-100);
   }
 
   :root {
@@ -1723,7 +1656,7 @@
       (
         var(--sb-primary-max-width)
         - (var(--sb-space-36) * 3)
-        - (var(--sb-space-64) * 2)
+        - (var(--sb-space-48) * 2)
       ) / 4
     );
     --sb-primary-min-width: calc((var(--sb-space-128) * 4) + var(--sb-space-64) + var(--sb-space-24));
@@ -1741,7 +1674,7 @@
       calc(
         (var(--sb-primary-card-width) * var(--sb-primary-columns, 4))
         + (var(--sb-space-36) * (var(--sb-primary-columns, 4) - 1))
-        + (var(--sb-space-64) * 2)
+        + (var(--sb-space-48) * 2)
       )
     );
     isolation: isolate;
@@ -5934,6 +5867,7 @@
       let primarySwitchTimer = null;
       let pointerX = 0;
       let pointerY = 0;
+      let allowHoverPrimaryMenuOpen = false;
       const menuSafePadding = 8;
       const headerInner = header.querySelector('.header__inner');
       const headerMenu = header.querySelector('.header__menu');
@@ -6139,12 +6073,19 @@
         }, 120);
       };
 
+      const isPointerInPrimaryHoverZone = () => Boolean(
+        header.querySelector('.header__menu-item.has-dropdown:hover')
+        || header.querySelector('.header__menu-item:not(.has-dropdown):hover')
+        || header.querySelector('.header__primary-menu:hover')
+      );
+
       dropdownMenuItems.forEach((menuItem) => {
         const menuLink = menuItem.querySelector('.header__menu-link');
         const primaryMenu = menuItem.querySelector('.header__primary-menu');
         if (menuLink) {
           menuLink.addEventListener('mouseenter', () => {
             triggerPrimaryMenuPreload();
+            if (!allowHoverPrimaryMenuOpen) return;
             clearCloseMenuTimer();
             setActiveDropdownItem(menuItem);
           });
@@ -6167,6 +6108,7 @@
 
         if (primaryMenu) {
           primaryMenu.addEventListener('mouseenter', () => {
+            if (!allowHoverPrimaryMenuOpen && !activeDropdownItem) return;
             clearCloseMenuTimer();
             setActiveDropdownItem(menuItem);
           });
@@ -6192,6 +6134,7 @@
 
       header.addEventListener('mouseleave', () => {
         scheduleCloseActiveDropdown();
+        allowHoverPrimaryMenuOpen = true;
       });
 
       if (headerInner) {
@@ -6226,9 +6169,19 @@
         (event) => {
           pointerX = event.clientX;
           pointerY = event.clientY;
+          if (event.pointerType !== 'mouse') return;
+          if (allowHoverPrimaryMenuOpen) return;
+          if (isPointerInPrimaryHoverZone()) return;
+          allowHoverPrimaryMenuOpen = true;
         },
         { passive: true }
       );
+
+      window.addEventListener('pageshow', () => {
+        allowHoverPrimaryMenuOpen = false;
+        clearCloseMenuTimer();
+        closeActiveDropdown();
+      });
 
       window.addEventListener(
         'resize',

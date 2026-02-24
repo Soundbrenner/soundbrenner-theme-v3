@@ -2,7 +2,7 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
-  assign sb_debug_version = '2.5'
+  assign sb_debug_version = '3.1'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -196,6 +196,212 @@
           'product-thumbnail-swatch-focus',
         ]);
 
+        const storefrontMoneyFormat = {{ shop.money_format | json }};
+        const thumbnailShopRoot = (() => {
+          const rootPath =
+            window.Shopify && window.Shopify.routes && typeof window.Shopify.routes.root === 'string'
+              ? window.Shopify.routes.root
+              : '/';
+          return rootPath.endsWith('/') ? rootPath : `${rootPath}/`;
+        })();
+        const thumbnailCartUrl = (path) => `${thumbnailShopRoot}${path}`;
+
+        const parseCents = (value) => {
+          const nextValue = Number.parseInt(`${value ?? ''}`.trim(), 10);
+          return Number.isFinite(nextValue) ? nextValue : null;
+        };
+
+        const clampDiscountRate = (value) => {
+          if (!Number.isFinite(value)) return 0;
+          return Math.min(1, Math.max(0, value));
+        };
+
+        const formatMoneyCents = (cents) => {
+          const normalizedCents = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
+          if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
+            return window.Shopify.formatMoney(normalizedCents, storefrontMoneyFormat);
+          }
+
+          const activeCurrency = `${window.Shopify?.currency?.active || 'USD'}`.trim().toUpperCase();
+          return new Intl.NumberFormat(document.documentElement.lang || undefined, {
+            style: 'currency',
+            currency: activeCurrency,
+          }).format(normalizedCents / 100);
+        };
+
+        const thumbnailDiscountState = {
+          globalRate: 0,
+          variantRateById: new Map(),
+        };
+        let thumbnailDiscountHydrationPromise = null;
+
+        const readCartDiscountState = (cart) => {
+          const nextVariantRateById = new Map();
+          const cartLevelDiscountApplications = Array.isArray(cart?.cart_level_discount_applications)
+            ? cart.cart_level_discount_applications
+            : [];
+
+          let hasCartLevelPercentageDiscount = false;
+          let percentageMultiplier = 1;
+
+          cartLevelDiscountApplications.forEach((discountApplication) => {
+            const valueType = `${discountApplication?.value_type || ''}`.trim().toLowerCase();
+            const value = Number(discountApplication?.value);
+            if (valueType !== 'percentage' || !Number.isFinite(value) || value <= 0) return;
+            hasCartLevelPercentageDiscount = true;
+            percentageMultiplier *= 1 - clampDiscountRate(value / 100);
+          });
+
+          let globalRate = hasCartLevelPercentageDiscount
+            ? 1 - percentageMultiplier
+            : 0;
+
+          if (!hasCartLevelPercentageDiscount && cartLevelDiscountApplications.length > 0) {
+            const originalTotalPrice = Number(cart?.original_total_price || cart?.items_subtotal_price || 0);
+            const finalTotalPrice = Number(cart?.total_price || 0);
+            if (originalTotalPrice > 0 && finalTotalPrice >= 0 && finalTotalPrice < originalTotalPrice) {
+              globalRate = clampDiscountRate((originalTotalPrice - finalTotalPrice) / originalTotalPrice);
+            }
+          }
+
+          const items = Array.isArray(cart?.items) ? cart.items : [];
+          items.forEach((item) => {
+            const variantId = `${item?.variant_id || item?.id || ''}`.trim();
+            if (!variantId) return;
+
+            const originalLinePrice = Number(item?.original_line_price);
+            const finalLinePrice = Number(item?.final_line_price);
+            if (!Number.isFinite(originalLinePrice) || originalLinePrice <= 0) return;
+            if (!Number.isFinite(finalLinePrice) || finalLinePrice >= originalLinePrice) return;
+
+            const lineRate = clampDiscountRate((originalLinePrice - finalLinePrice) / originalLinePrice);
+            if (lineRate <= 0) return;
+
+            const existingRate = nextVariantRateById.get(variantId);
+            if (!Number.isFinite(existingRate) || lineRate > existingRate) {
+              nextVariantRateById.set(variantId, lineRate);
+            }
+          });
+
+          return {
+            globalRate: clampDiscountRate(globalRate),
+            variantRateById: nextVariantRateById,
+          };
+        };
+
+        const setThumbnailDiscountStateFromCart = (cart) => {
+          if (!cart || typeof cart !== 'object') return;
+          const nextState = readCartDiscountState(cart);
+          thumbnailDiscountState.globalRate = nextState.globalRate;
+          thumbnailDiscountState.variantRateById = nextState.variantRateById;
+        };
+
+        const getThumbnailDiscountRate = (variantId) => {
+          const normalizedVariantId = `${variantId || ''}`.trim();
+          if (normalizedVariantId) {
+            const variantRate = thumbnailDiscountState.variantRateById.get(normalizedVariantId);
+            if (Number.isFinite(variantRate) && variantRate > 0) return variantRate;
+          }
+          return thumbnailDiscountState.globalRate;
+        };
+
+        const applyThumbnailDiscountPricing = (thumbnail, purchaseState = {}) => {
+          if (!(thumbnail instanceof HTMLElement)) return;
+
+          const priceRow = thumbnail.querySelector('[data-thumbnail-price-row]');
+          const currentPriceElement = thumbnail.querySelector('[data-thumbnail-price-current]');
+          const comparePriceElement = thumbnail.querySelector('[data-thumbnail-price-compare]');
+          if (!priceRow || !currentPriceElement || !comparePriceElement) return;
+
+          const nextVariantId = `${purchaseState.variantId || thumbnail.dataset.thumbnailVariantId || ''}`.trim();
+          const currentPriceCents = parseCents(
+            purchaseState.currentPriceCents ?? thumbnail.dataset.thumbnailPriceCents
+          );
+          const comparePriceCents = parseCents(
+            purchaseState.comparePriceCents ?? thumbnail.dataset.thumbnailComparePriceCents
+          );
+
+          const currentPriceText = `${purchaseState.currentPriceText || ''}`.trim();
+          const comparePriceText = `${purchaseState.comparePriceText || ''}`.trim();
+
+          if (Number.isFinite(currentPriceCents) && currentPriceCents > 0) {
+            const discountRate = getThumbnailDiscountRate(nextVariantId);
+            const hasDiscount = discountRate > 0;
+            const discountedPriceCents = hasDiscount
+              ? Math.max(0, Math.round(currentPriceCents * (1 - discountRate)))
+              : currentPriceCents;
+
+            if (hasDiscount) {
+              comparePriceElement.textContent = formatMoneyCents(currentPriceCents);
+              comparePriceElement.hidden = false;
+              currentPriceElement.textContent = formatMoneyCents(discountedPriceCents);
+              currentPriceElement.hidden = false;
+            } else {
+              const hasComparePrice = Number.isFinite(comparePriceCents) && comparePriceCents > currentPriceCents;
+              if (hasComparePrice) {
+                comparePriceElement.textContent = formatMoneyCents(comparePriceCents);
+                comparePriceElement.hidden = false;
+              } else {
+                comparePriceElement.textContent = '';
+                comparePriceElement.hidden = true;
+              }
+              currentPriceElement.textContent = formatMoneyCents(currentPriceCents);
+              currentPriceElement.hidden = false;
+            }
+
+            priceRow.hidden = false;
+            return;
+          }
+
+          if (currentPriceText) {
+            currentPriceElement.textContent = currentPriceText;
+            currentPriceElement.hidden = false;
+          } else {
+            currentPriceElement.textContent = '';
+            currentPriceElement.hidden = true;
+          }
+
+          if (comparePriceText) {
+            comparePriceElement.textContent = comparePriceText;
+            comparePriceElement.hidden = false;
+          } else {
+            comparePriceElement.textContent = '';
+            comparePriceElement.hidden = true;
+          }
+
+          priceRow.hidden = currentPriceElement.hidden && comparePriceElement.hidden;
+        };
+
+        const syncThumbnailDiscountPricingScope = (scope = document) => {
+          if (!(scope instanceof Element || scope instanceof Document)) return;
+          scope.querySelectorAll('.sb-product-thumbnail').forEach((thumbnail) => {
+            applyThumbnailDiscountPricing(thumbnail);
+          });
+        };
+
+        const hydrateThumbnailDiscountState = () => {
+          if (thumbnailDiscountHydrationPromise) return thumbnailDiscountHydrationPromise;
+
+          thumbnailDiscountHydrationPromise = fetch(thumbnailCartUrl('cart.js'), {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+            credentials: 'same-origin',
+          })
+            .then((response) => {
+              if (!response.ok) throw new Error('Cart pricing hydration failed');
+              return response.json();
+            })
+            .then((cart) => {
+              setThumbnailDiscountStateFromCart(cart);
+              syncThumbnailDiscountPricingScope(document);
+            })
+            .catch(() => {
+              // Keep default thumbnail pricing if cart fetch is unavailable.
+            });
+
+          return thumbnailDiscountHydrationPromise;
+        };
+
         const getSelectedSwatch = (row) =>
           row.querySelector('.sb-product-thumbnail__swatch.is-selected') || row.querySelector('.sb-product-thumbnail__swatch');
 
@@ -267,32 +473,29 @@
           const comparePriceElement = thumbnail.querySelector('[data-thumbnail-price-compare]');
           const nextCurrentPrice = String(button.dataset.thumbnailPrice || '').trim();
           const nextComparePrice = String(button.dataset.thumbnailComparePrice || '').trim();
+          const nextCurrentPriceCents = parseCents(button.dataset.thumbnailPriceCents);
+          const nextComparePriceCents = parseCents(button.dataset.thumbnailComparePriceCents);
 
-          if (currentPriceElement) {
-            if (nextCurrentPrice) {
-              currentPriceElement.textContent = nextCurrentPrice;
-              currentPriceElement.hidden = false;
-            } else {
-              currentPriceElement.textContent = '';
-              currentPriceElement.hidden = true;
-            }
+          if (Number.isFinite(nextCurrentPriceCents) && nextCurrentPriceCents > 0) {
+            thumbnail.dataset.thumbnailPriceCents = `${nextCurrentPriceCents}`;
+          } else {
+            delete thumbnail.dataset.thumbnailPriceCents;
           }
 
-          if (comparePriceElement) {
-            if (nextComparePrice) {
-              comparePriceElement.textContent = nextComparePrice;
-              comparePriceElement.hidden = false;
-            } else {
-              comparePriceElement.textContent = '';
-              comparePriceElement.hidden = true;
-            }
+          if (Number.isFinite(nextComparePriceCents) && nextComparePriceCents > 0) {
+            thumbnail.dataset.thumbnailComparePriceCents = `${nextComparePriceCents}`;
+          } else {
+            delete thumbnail.dataset.thumbnailComparePriceCents;
           }
 
-          if (priceRow) {
-            const hasVisiblePrice =
-              (currentPriceElement && !currentPriceElement.hidden) ||
-              (comparePriceElement && !comparePriceElement.hidden);
-            priceRow.hidden = !hasVisiblePrice;
+          if (priceRow || currentPriceElement || comparePriceElement) {
+            applyThumbnailDiscountPricing(thumbnail, {
+              variantId: nextVariantId,
+              currentPriceCents: nextCurrentPriceCents,
+              comparePriceCents: nextComparePriceCents,
+              currentPriceText: nextCurrentPrice,
+              comparePriceText: nextComparePrice,
+            });
           }
 
           const linkNodes = thumbnail.querySelectorAll('[data-thumbnail-link]');
@@ -884,6 +1087,8 @@
               }
             });
           });
+
+          syncThumbnailDiscountPricingScope(scope);
         };
 
         document.addEventListener(ThemeEvents.variantUpdate, (event) => {
@@ -898,6 +1103,13 @@
           syncThumbnailPurchaseState(button);
         });
 
+        document.addEventListener('cart:update', (event) => {
+          const cart = event?.detail?.resource;
+          if (!cart || typeof cart !== 'object') return;
+          setThumbnailDiscountStateFromCart(cart);
+          syncThumbnailDiscountPricingScope(document);
+        });
+
         window.SBProductThumbnail = {
           ThemeEvents,
           dispatchSwatchVariantEvents,
@@ -905,9 +1117,11 @@
           initSwatchInteractionScope,
           initThumbnailMediaScope,
           syncThumbnailPurchaseState,
+          syncThumbnailDiscountPricingScope,
         };
 
         initThumbnailMediaScope(document, { initSwatchInteractions: true });
+        hydrateThumbnailDiscountState();
         document.addEventListener('shopify:section:load', (event) => {
           initThumbnailMediaScope(event.target, { initSwatchInteractions: true });
         });

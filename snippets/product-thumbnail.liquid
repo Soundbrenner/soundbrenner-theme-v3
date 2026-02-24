@@ -57,6 +57,8 @@
 
   assign thumbnail_price = price_text
   assign thumbnail_compare_price = compare_price_text
+  assign thumbnail_price_cents = blank
+  assign thumbnail_compare_price_cents = blank
   assign thumbnail_badge_label = blank
   assign thumbnail_badge_type = blank
   assign thumbnail_variant_id = blank
@@ -72,6 +74,10 @@
     assign selected_variant = product.selected_or_first_available_variant
     if selected_variant != blank
       assign thumbnail_variant_id = selected_variant.id
+      assign thumbnail_price_cents = selected_variant.price | plus: 0
+      if selected_variant.compare_at_price > selected_variant.price
+        assign thumbnail_compare_price_cents = selected_variant.compare_at_price | plus: 0
+      endif
       if selected_variant.featured_image != blank
         assign thumbnail_image = selected_variant.featured_image
       endif
@@ -235,7 +241,13 @@
   endif
 %}
 
-<article class="sb-product-thumbnail" data-thumbnail-variant-id="{{ thumbnail_variant_id }}" data-thumbnail-base-url="{{ thumbnail_url }}">
+<article
+  class="sb-product-thumbnail"
+  data-thumbnail-variant-id="{{ thumbnail_variant_id }}"
+  data-thumbnail-base-url="{{ thumbnail_url }}"
+  {% if thumbnail_price_cents != blank %}data-thumbnail-price-cents="{{ thumbnail_price_cents }}"{% endif %}
+  {% if thumbnail_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ thumbnail_compare_price_cents }}"{% endif %}
+>
   <div
     class="sb-product-thumbnail__media-wrap"
     data-gallery-index="0"
@@ -365,6 +377,47 @@
     {% assign has_swatches = true %}
   {% endif %}
 
+  {% assign swatch_1_variant_id_resolved = swatch_1_variant_id | default: thumbnail_variant_id %}
+  {% assign swatch_2_variant_id_resolved = swatch_2_variant_id | default: thumbnail_variant_id %}
+  {% assign swatch_3_variant_id_resolved = swatch_3_variant_id | default: thumbnail_variant_id %}
+  {% assign swatch_4_variant_id_resolved = swatch_4_variant_id | default: thumbnail_variant_id %}
+  {% assign swatch_1_price_cents = blank %}
+  {% assign swatch_2_price_cents = blank %}
+  {% assign swatch_3_price_cents = blank %}
+  {% assign swatch_4_price_cents = blank %}
+  {% assign swatch_1_compare_price_cents = blank %}
+  {% assign swatch_2_compare_price_cents = blank %}
+  {% assign swatch_3_compare_price_cents = blank %}
+  {% assign swatch_4_compare_price_cents = blank %}
+  {% if product != blank and has_swatches %}
+    {% for swatch_variant in product.variants %}
+      {% if swatch_1_variant_id_resolved != blank and swatch_variant.id == swatch_1_variant_id_resolved %}
+        {% assign swatch_1_price_cents = swatch_variant.price | plus: 0 %}
+        {% if swatch_variant.compare_at_price > swatch_variant.price %}
+          {% assign swatch_1_compare_price_cents = swatch_variant.compare_at_price | plus: 0 %}
+        {% endif %}
+      {% endif %}
+      {% if swatch_2_variant_id_resolved != blank and swatch_variant.id == swatch_2_variant_id_resolved %}
+        {% assign swatch_2_price_cents = swatch_variant.price | plus: 0 %}
+        {% if swatch_variant.compare_at_price > swatch_variant.price %}
+          {% assign swatch_2_compare_price_cents = swatch_variant.compare_at_price | plus: 0 %}
+        {% endif %}
+      {% endif %}
+      {% if swatch_3_variant_id_resolved != blank and swatch_variant.id == swatch_3_variant_id_resolved %}
+        {% assign swatch_3_price_cents = swatch_variant.price | plus: 0 %}
+        {% if swatch_variant.compare_at_price > swatch_variant.price %}
+          {% assign swatch_3_compare_price_cents = swatch_variant.compare_at_price | plus: 0 %}
+        {% endif %}
+      {% endif %}
+      {% if swatch_4_variant_id_resolved != blank and swatch_variant.id == swatch_4_variant_id_resolved %}
+        {% assign swatch_4_price_cents = swatch_variant.price | plus: 0 %}
+        {% if swatch_variant.compare_at_price > swatch_variant.price %}
+          {% assign swatch_4_compare_price_cents = swatch_variant.compare_at_price | plus: 0 %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
   <div class="sb-product-thumbnail__swatches{% unless has_swatches %} is-empty{% endunless %}" aria-label="Color selector">
     {% if has_swatches %}
       {% if swatch_1 != blank %}
@@ -375,9 +428,11 @@
         data-thumbnail-image="{{ swatch_1_image }}"
         data-thumbnail-hover-image="{{ swatch_1_hover_image }}"
         data-thumbnail-gallery="{{ swatch_1_gallery }}"
-        data-thumbnail-variant-id="{{ swatch_1_variant_id | default: thumbnail_variant_id }}"
+        data-thumbnail-variant-id="{{ swatch_1_variant_id_resolved }}"
         data-thumbnail-price="{{ swatch_1_price_text | default: thumbnail_price }}"
         data-thumbnail-compare-price="{{ swatch_1_compare_price_text }}"
+        {% if swatch_1_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_1_price_cents }}"{% endif %}
+        {% if swatch_1_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_1_compare_price_cents }}"{% endif %}
         aria-label="Color 1"
       >
         <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
@@ -391,9 +446,11 @@
         data-thumbnail-image="{{ swatch_2_image }}"
         data-thumbnail-hover-image="{{ swatch_2_hover_image }}"
         data-thumbnail-gallery="{{ swatch_2_gallery }}"
-        data-thumbnail-variant-id="{{ swatch_2_variant_id | default: thumbnail_variant_id }}"
+        data-thumbnail-variant-id="{{ swatch_2_variant_id_resolved }}"
         data-thumbnail-price="{{ swatch_2_price_text | default: thumbnail_price }}"
         data-thumbnail-compare-price="{{ swatch_2_compare_price_text }}"
+        {% if swatch_2_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_2_price_cents }}"{% endif %}
+        {% if swatch_2_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_2_compare_price_cents }}"{% endif %}
         aria-label="Color 2"
       >
         <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
@@ -407,9 +464,11 @@
         data-thumbnail-image="{{ swatch_3_image }}"
         data-thumbnail-hover-image="{{ swatch_3_hover_image }}"
         data-thumbnail-gallery="{{ swatch_3_gallery }}"
-        data-thumbnail-variant-id="{{ swatch_3_variant_id | default: thumbnail_variant_id }}"
+        data-thumbnail-variant-id="{{ swatch_3_variant_id_resolved }}"
         data-thumbnail-price="{{ swatch_3_price_text | default: thumbnail_price }}"
         data-thumbnail-compare-price="{{ swatch_3_compare_price_text }}"
+        {% if swatch_3_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_3_price_cents }}"{% endif %}
+        {% if swatch_3_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_3_compare_price_cents }}"{% endif %}
         aria-label="Color 3"
       >
         <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
@@ -423,9 +482,11 @@
         data-thumbnail-image="{{ swatch_4_image }}"
         data-thumbnail-hover-image="{{ swatch_4_hover_image }}"
         data-thumbnail-gallery="{{ swatch_4_gallery }}"
-        data-thumbnail-variant-id="{{ swatch_4_variant_id | default: thumbnail_variant_id }}"
+        data-thumbnail-variant-id="{{ swatch_4_variant_id_resolved }}"
         data-thumbnail-price="{{ swatch_4_price_text | default: thumbnail_price }}"
         data-thumbnail-compare-price="{{ swatch_4_compare_price_text }}"
+        {% if swatch_4_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_4_price_cents }}"{% endif %}
+        {% if swatch_4_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_4_compare_price_cents }}"{% endif %}
         aria-label="Color 4"
       >
         <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>

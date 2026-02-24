@@ -685,8 +685,8 @@
       invalidEmailText: {{ section.settings.newsletter_invalid_email_text | json }},
       genericErrorText: {{ section.settings.newsletter_generic_error_text | json }},
     };
-    const successMessageSelector = ".success_message, [data-testid='success-message'], [id^='rich-text-']";
-    const errorMessageSelector = "[data-testid='form-message'], [data-testid='field-message'], .klaviyo-form [role='alert']";
+    const successMessageSelector = ".success_message, [data-testid='success-message'], [id^='rich-text-'], .klaviyo-form [role='status']";
+    const errorMessageSelector = "[data-testid='form-message'], [data-testid='field-message'], [data-testid='error-message'], .error_message, .klaviyo-form [role='alert'], .klaviyo-form [aria-live='assertive']";
     const normalizeText = (value) => `${value || ''}`.trim();
     const setNodeText = (node, value) => {
       const next = normalizeText(value);
