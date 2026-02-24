@@ -125,6 +125,12 @@
             "heading": "Plus subscription"
           }
         },
+        "heading_small_DAHEkY": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "INSERT IMAGE"
+          }
+        },
         "body_4": {
           "type": "text",
           "settings": {
@@ -138,7 +144,7 @@
         "chapter_5": {
           "type": "heading",
           "settings": {
-            "heading": "Product care"
+            "heading": "Charging the Core"
           }
         },
         "body_5": {
@@ -209,6 +215,7 @@
         "button_9nmwUx",
         "divider_3",
         "chapter_4",
+        "heading_small_DAHEkY",
         "body_4",
         "divider_4",
         "chapter_5",
