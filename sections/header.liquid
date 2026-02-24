@@ -161,6 +161,48 @@
   if show_announcement and sale_end_date != blank and seasonal_shipping_is_blocked == false and use_affiliate_announcement_override == false
     assign show_announcement_countdown = true
   endif
+  assign countdown_initial_days = '00'
+  assign countdown_initial_hours = '00'
+  assign countdown_initial_mins = '00'
+  assign countdown_initial_secs = '00'
+  assign countdown_initial_show = false
+  assign countdown_display_threshold_seconds = 432000
+  if show_announcement_countdown
+    assign countdown_now_timestamp = 'now' | date: '%s' | plus: 0
+    assign countdown_end_timestamp = sale_end_date | append: ' 23:59:59' | date: '%s' | plus: 0
+    if countdown_end_timestamp > 0
+      assign countdown_remaining_seconds = countdown_end_timestamp | minus: countdown_now_timestamp
+      if countdown_remaining_seconds < 0
+        assign countdown_remaining_seconds = 0
+      endif
+      if countdown_remaining_seconds > 0 and countdown_remaining_seconds <= countdown_display_threshold_seconds
+        assign countdown_initial_show = true
+      endif
+
+      assign countdown_days_number = countdown_remaining_seconds | divided_by: 86400
+      assign countdown_hours_number = countdown_remaining_seconds | modulo: 86400 | divided_by: 3600
+      assign countdown_mins_number = countdown_remaining_seconds | modulo: 3600 | divided_by: 60
+      assign countdown_secs_number = countdown_remaining_seconds | modulo: 60
+
+      if countdown_days_number > 99
+        assign countdown_days_number = 99
+      endif
+      if countdown_hours_number > 99
+        assign countdown_hours_number = 99
+      endif
+      if countdown_mins_number > 99
+        assign countdown_mins_number = 99
+      endif
+      if countdown_secs_number > 99
+        assign countdown_secs_number = 99
+      endif
+
+      assign countdown_initial_days = countdown_days_number | prepend: '0' | slice: -2, 2
+      assign countdown_initial_hours = countdown_hours_number | prepend: '0' | slice: -2, 2
+      assign countdown_initial_mins = countdown_mins_number | prepend: '0' | slice: -2, 2
+      assign countdown_initial_secs = countdown_secs_number | prepend: '0' | slice: -2, 2
+    endif
+  endif
   assign announcement_emoji_asset = 'emoji-sale-new-year.png'
   assign trustpilot_entry = metaobjects.trustpilot.values | first
   assign trustpilot_url = 'https://www.trustpilot.com/review/soundbrenner.com'
@@ -316,21 +358,28 @@
         </div>
 
         {% if show_announcement_countdown %}
-          <div class="header__announcement-countdown" data-announcement-countdown data-sale-end-date="{{ sale_end_date | escape }}">
+          <div
+            class="header__announcement-countdown"
+            data-announcement-countdown
+            data-sale-end-date="{{ sale_end_date | escape }}"
+            {% unless countdown_initial_show %}
+              hidden
+            {% endunless %}
+          >
             <div class="header__announcement-countdown-group">
-              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>00</span>
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>{{ countdown_initial_days }}</span>
               <span class="header__announcement-countdown-label font-caption2 weight-semibold">days</span>
             </div>
             <div class="header__announcement-countdown-group">
-              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-hours>00</span>
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-hours>{{ countdown_initial_hours }}</span>
               <span class="header__announcement-countdown-label font-caption2 weight-semibold">hours</span>
             </div>
             <div class="header__announcement-countdown-group">
-              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-mins>00</span>
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-mins>{{ countdown_initial_mins }}</span>
               <span class="header__announcement-countdown-label font-caption2 weight-semibold">mins</span>
             </div>
             <div class="header__announcement-countdown-group">
-              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-secs>00</span>
+              <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-secs>{{ countdown_initial_secs }}</span>
               <span class="header__announcement-countdown-label font-caption2 weight-semibold">secs</span>
             </div>
           </div>
