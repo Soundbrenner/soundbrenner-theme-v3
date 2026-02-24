@@ -2033,7 +2033,12 @@
   .header__localization {
     align-items: center;
     display: inline-flex;
+    flex: 0 0 auto;
+    height: var(--sb-space-24);
+    justify-content: center;
+    line-height: 0;
     position: relative;
+    width: var(--sb-space-24);
   }
 
   .header__localization-button {
@@ -2045,7 +2050,8 @@
     display: inline-flex;
     gap: 0;
     height: var(--sb-space-24);
-    line-height: 1;
+    justify-content: center;
+    line-height: 0;
     min-height: var(--sb-space-24);
     padding: 0;
     width: var(--sb-space-24);
@@ -2062,8 +2068,9 @@
     background-size: cover;
     border-radius: 999px;
     box-shadow: inset 0 0 2px var(--sb-color-always-black-25);
-    display: inline-flex;
+    display: block;
     height: 100%;
+    transform: translateZ(0);
     width: 100%;
   }
 
@@ -2675,6 +2682,11 @@
     .header__localization-button {
       height: var(--sb-space-20);
       min-height: var(--sb-space-20);
+      width: var(--sb-space-20);
+    }
+
+    .header__localization {
+      height: var(--sb-space-20);
       width: var(--sb-space-20);
     }
 
