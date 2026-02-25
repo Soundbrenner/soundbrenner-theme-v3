@@ -984,6 +984,13 @@
             "question": "FCC compliance statement",
             "answer": "<p>The device complies with part 15 of the FCC rules. Operation is subject to the following two conditions:</p><ul><li>This device may not cause harmful interference</li><li>This device must accept any interference received, including interference that may cause undesired operation</li></ul>"
           }
+        },
+        "accordion_item_6aQ7C7": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Bluetooth information",
+            "answer": "<p>The Bluetooth® word mark and logos are registered trademarks owned by Bluetooth SIG, Inc. and any use of such marks by Soundbrenner Limited is under license. Other trademarks and trade names are those of their respective owners.</p>"
+          }
         }
       },
       "block_order": [
@@ -1157,7 +1164,8 @@
         "accordion_item_x6nkte",
         "accordion_item_ebWN9y",
         "accordion_item_9qnJwy",
-        "accordion_item_cBk3Ra"
+        "accordion_item_cBk3Ra",
+        "accordion_item_6aQ7C7"
       ],
       "settings": {}
     },
