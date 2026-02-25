@@ -532,6 +532,22 @@
           "type": "divider",
           "settings": {}
         },
+        "subheading_NydDnh": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Setting up a rhythm"
+          }
+        },
+        "text_pitfrD": {
+          "type": "text",
+          "settings": {
+            "text": "<p>1. Press the bottom button to select the first value.</p>"
+          }
+        },
+        "image_FV98pp": {
+          "type": "image",
+          "settings": {}
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -671,6 +687,9 @@
         "subheading_t9TDDQ",
         "text_3WUEWG",
         "divider_fjemp8",
+        "subheading_NydDnh",
+        "text_pitfrD",
+        "image_FV98pp",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
