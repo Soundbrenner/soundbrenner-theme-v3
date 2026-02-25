@@ -480,6 +480,42 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_3eNxUU": {
+          "type": "heading",
+          "settings": {
+            "heading": "Vibrating metronome"
+          }
+        },
+        "subheading_zTfCrT": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Body strap"
+          }
+        },
+        "text_3VGXjf": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "image_chjewp": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_rgUPrz": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Write your manual content here.</p>"
+          }
+        },
+        "image_E3Fych": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_3w6Xgd": {
+          "type": "divider",
+          "settings": {}
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -609,6 +645,13 @@
         "text_nT77Fi",
         "image_t9EaiU",
         "divider_U7NDz9",
+        "heading_3eNxUU",
+        "subheading_zTfCrT",
+        "text_3VGXjf",
+        "image_chjewp",
+        "text_rgUPrz",
+        "image_E3Fych",
+        "divider_3w6Xgd",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
