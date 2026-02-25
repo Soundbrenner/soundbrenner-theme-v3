@@ -914,6 +914,27 @@
             "question": "Caution: electrical equipment",
             "answer": "<p>Your Soundbrenner Core/Spark and its charging cable are electrical devices and should be handled with care. Never use your device in extremely low or high temperatures.</p><p>Substances in this product and battery may harm the environment or cause injury if handled or disposed of improperly.</p><p>Take your Soundbrenner Core/Spark off if it feels warm or hot.</p>"
           }
+        },
+        "accordion_item_rHqAMQ": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Caution: magnets",
+            "answer": "<p>The Soundbrenner Core/Spark and its charging cable contain magnets. All credit cards, key cards, and any other object containing a magnetic stripe should be stowed safely away from those products.</p>"
+          }
+        },
+        "accordion_item_RrChAK": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Caution: batteries",
+            "answer": "<p>Use only an authorized Soundbrenner charging cable to charge your device to avoid any safety or electrical hazards.</p><p>Always disconnect the charging cable from the electrical socket as soon as your device is fully charged.</p><p>Do not attempt to change the battery on your own. This will void the warranty and could cause injury.</p><p>Never charge your device when moisture is present.</p><p>Never put your device or charging cable near any inflammable or explosive materials.</p>"
+          }
+        },
+        "accordion_item_cJrmFb": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Caution: water",
+            "answer": "<p>Even though your Soundbrenner Core/Spark is sweat proof and partially water-resistant, it should never be submerged in water under any circumstances.</p><p>Do not use your device in the rain or in wet environments for prolonged periods.</p>"
+          }
         }
       },
       "block_order": [
@@ -1077,7 +1098,10 @@
         "accordion_item_YML4rP",
         "accordion_item_EHWHD7",
         "accordion_item_RHcGrL",
-        "accordion_item_qiMi6H"
+        "accordion_item_qiMi6H",
+        "accordion_item_rHqAMQ",
+        "accordion_item_RrChAK",
+        "accordion_item_cJrmFb"
       ],
       "settings": {}
     },
