@@ -935,6 +935,13 @@
             "question": "Caution: water",
             "answer": "<p>Even though your Soundbrenner Core/Spark is sweat proof and partially water-resistant, it should never be submerged in water under any circumstances.</p><p>Do not use your device in the rain or in wet environments for prolonged periods.</p>"
           }
+        },
+        "accordion_item_DxTmxW": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Maintaining your Soundbrenner Core/Spark",
+            "answer": "<p>For optimal performance, we recommend that you don’t use your device until it is fully charged.</p><p>Take care when using skincare products, as they may affect the color or usability of the included straps.</p><p>Store your Soundbrenner Core/Spark in a well-ventilated and dry environment when not in use.</p><p>Make sure you regularly clean your device with a damp cloth to maintain good hygiene.</p><p>Never wash your device in the sink.</p><p>Never store your Soundbrenner Core/Spark for extended periods (over 3 months) with a depleted battery, as this can lead to permanent battery damage.</p><p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/19748176623897-Core-battery-maintenance-guide\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/19748176623897-Core-battery-maintenance-guide\">Battery maintenance guide</a></p>"
+          }
         }
       },
       "block_order": [
@@ -1101,7 +1108,8 @@
         "accordion_item_qiMi6H",
         "accordion_item_rHqAMQ",
         "accordion_item_RrChAK",
-        "accordion_item_cJrmFb"
+        "accordion_item_cJrmFb",
+        "accordion_item_DxTmxW"
       ],
       "settings": {}
     },
