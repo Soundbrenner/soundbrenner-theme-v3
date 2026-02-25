@@ -655,6 +655,30 @@
           "type": "image",
           "settings": {}
         },
+        "divider_UDGGpU": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_DqMpQN": {
+          "type": "heading",
+          "settings": {
+            "heading": "Decibel meter"
+          }
+        },
+        "text_BGtakD": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Sound levels</strong></p><p>If you open the \"Decibel meter\" app, the Core/Spark starts measuring the current, average and maximum sound levels. The Core/Spark can only measure sound levels above 70 dB and uses A-weighting.</p><h4>Tip (Core only)</h4><p>For a more accurate reading, take the Core off its rig and place it on a soft surface (e.g. a cloth or your hand) before opening the \"Decibel meter\" app.</p><p><strong>Volume alarm</strong></p><p>Your Core/Spark listens to the sound levels throughout the day. It will alert you once the volume reaches a risky level based on the World Health Organization’s guidelines:</p><ul><li>80 dB: 5 hours 30 minutes per day</li><li>85 dB: 1 hour 45 minutes per day</li><li>90 dB: 30 minutes per day</li><li>95 dB: 10 minutes per day</li></ul><p>Don’t worry - we respect your privacy and no audio is ever recorded and stored. To turn off the volume alarm and all background measurements, open our mobile app and go to \"Settings\" → select your Core → \"Volume alarm\".</p>"
+          }
+        },
+        "image_fbRE9a": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_NC9YAa": {
+          "type": "divider",
+          "settings": {}
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -817,6 +841,11 @@
         "button_BtwNMt",
         "text_awM8te",
         "image_4Q8cPB",
+        "divider_UDGGpU",
+        "heading_DqMpQN",
+        "text_BGtakD",
+        "image_fbRE9a",
+        "divider_NC9YAa",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
