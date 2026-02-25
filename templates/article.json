@@ -20,7 +20,6 @@
             "product": "",
             "title": "",
             "url": "",
-            "image": "",
             "description": ""
           }
         }
@@ -53,12 +52,12 @@
     "often_bought_together": {
       "type": "often-bought-together",
       "settings": {
-        "title": "Often bought together",
-        "use_manual_products": false,
-        "manual_product_1": "",
-        "manual_product_2": "",
-        "manual_product_3": "",
-        "manual_product_4": ""
+        "title": "Bestsellers",
+        "use_manual_products": true,
+        "manual_product_1": "wave-in-ear-monitors",
+        "manual_product_2": "wave-pro-in-ear-monitors",
+        "manual_product_3": "pulse-vibrating-metronome",
+        "manual_product_4": "core-2-practice-companion"
       }
     }
   },
