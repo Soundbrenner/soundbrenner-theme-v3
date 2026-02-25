@@ -836,6 +836,12 @@
             "video_source": "593163439"
           }
         },
+        "subheading_CEbFYN": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Get help"
+          }
+        },
         "divider_b3iNpz": {
           "type": "divider",
           "settings": {}
@@ -1031,6 +1037,7 @@
         "divider_G4W7PG",
         "heading_8JzcNh",
         "vimeo_video_9C4c6x",
+        "subheading_CEbFYN",
         "divider_b3iNpz",
         "chapter_6",
         "accordion_item_1",
