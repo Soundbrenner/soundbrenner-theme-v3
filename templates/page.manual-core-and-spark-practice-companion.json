@@ -719,7 +719,7 @@
         "text_rAXGi4": {
           "type": "text",
           "settings": {
-            "text": "<p>Write your manual content here.</p>"
+            "text": "<ul><li>Twist the wheel to scroll the text of a notification forward and backward. </li><li>Press the bottom button to delete the current notification and display the next notification. In the top right corner, you see how many notifications are queued up.</li><li>Long-press the bottom button to delete all notifications in the queue.</li><li>Press the top button to send all queued up notifications to the notification center, up to a maximum of 20.</li></ul><p>To access the notification center, twist the wheel to the right when you’re on the watch face.</p>"
           }
         },
         "image_JwgLWG": {
@@ -729,7 +729,7 @@
         "text_nVhP36": {
           "type": "text",
           "settings": {
-            "text": "<p>Write your manual content here.</p>"
+            "text": "<p><strong>Phone calls</strong></p><p>If you get a phone call, the Core/Spark will start vibrating and give you the option to accept or decline the call. Since the Core/Spark has no speaker, you’ll need to use Bluetooth headphones or your phone itself to take the call.</p>"
           }
         },
         "divider_BmnLkM": {
