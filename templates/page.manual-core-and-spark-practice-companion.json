@@ -72,7 +72,7 @@
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use your Core in the shortest time possible. It’s the best way to get started, so we highly recommend you to watch this video!</p>"
+            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use your Core/Spark in the shortest time possible. It’s the best way to get started, so we highly recommend you to watch this video!</p>"
           }
         },
         "vimeo_video_YefAQq": {
@@ -132,7 +132,7 @@
         "body_4": {
           "type": "text",
           "settings": {
-            "text": "<p>Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of our app. While the Core itself provides a complete experience on its own, Plus offers extras such as cloud storage of your songs and setlists, among other features. Our subscription model supports the rollout of multiple significant app updates annually, so get ready for a continuous stream of exciting new features!</p><p>Your Core comes with a free 3-month trial that you can redeem by following the in-app instructions after connecting your wearable!</p>"
+            "text": "<p>Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of our app. While the Core itself provides a complete experience on its own, Plus offers extras such as cloud storage of your songs and setlists, among other features. Our subscription model supports the rollout of multiple significant app updates annually, so get ready for a continuous stream of exciting new features!</p><p>Your Core/Spark comes with a free 3-month trial that you can redeem by following the in-app instructions after connecting your wearable!</p>"
           }
         },
         "divider_4": {
