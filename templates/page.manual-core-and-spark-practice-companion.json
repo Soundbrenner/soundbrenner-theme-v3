@@ -907,6 +907,13 @@
             "question": "Warning: frequent and prolonged usage",
             "answer": "<p>Frequent and prolonged use of the Soundbrenner Core/Spark may cause skin irritation in some users. If you experience itchiness, redness, and/or swelling while using the Soundbrenner Core/Spark, remove the device immediately and stop using it until your skin returns to normal. Consult your doctor should any of the symptoms persist.</p>"
           }
+        },
+        "accordion_item_qiMi6H": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Caution: electrical equipment",
+            "answer": "<p>Your Soundbrenner Core/Spark and its charging cable are electrical devices and should be handled with care. Never use your device in extremely low or high temperatures.</p><p>Substances in this product and battery may harm the environment or cause injury if handled or disposed of improperly.</p><p>Take your Soundbrenner Core/Spark off if it feels warm or hot.</p>"
+          }
         }
       },
       "block_order": [
@@ -1069,7 +1076,8 @@
         "heading_jbn8mk",
         "accordion_item_YML4rP",
         "accordion_item_EHWHD7",
-        "accordion_item_RHcGrL"
+        "accordion_item_RHcGrL",
+        "accordion_item_qiMi6H"
       ],
       "settings": {}
     },
