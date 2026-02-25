@@ -970,6 +970,13 @@
             "question": "Disposal and recycling information",
             "answer": "<p>Your Soundbrenner Core/Spark should be disposed at a recycling center due to the device’s electronic nature in order to encourage sustainable reuse and conservation of resources.</p>"
           }
+        },
+        "accordion_item_9qnJwy": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "EU compliance statement",
+            "answer": "<p>Soundbrenner Limited hereby declares that the Soundbrenner Core/Spark is in compliance with the essential requirements and other relevant provisions of Directive 1995/5/EC.</p>"
+          }
         }
       },
       "block_order": [
@@ -1141,7 +1148,8 @@
         "accordion_item_Q6Gzia",
         "accordion_item_jEVqLT",
         "accordion_item_x6nkte",
-        "accordion_item_ebWN9y"
+        "accordion_item_ebWN9y",
+        "accordion_item_9qnJwy"
       ],
       "settings": {}
     },
