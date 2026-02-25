@@ -594,6 +594,28 @@
           "type": "image",
           "settings": {}
         },
+        "divider_XNKXfy": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_kFjpNR": {
+          "type": "heading",
+          "settings": {
+            "heading": "Chromatic tuner"
+          }
+        },
+        "subheading_bE3ihU": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Microphone tuner (Core 2/Spark only)"
+          }
+        },
+        "text_r7gJrb": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Launch the \"Microphone Tuner\" app and play a note - your device will detect the closest note and the cent deviation to it. As you tune, the LED ring changes from red to green to signal that the note is perfectly tuned.</p><p>Customize the tuning reference from 440 Hz to your preference by pressing the bottom button and twisting the wheel.</p>"
+          }
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -745,6 +767,10 @@
         "subheading_7pAhzQ",
         "text_fE43Up",
         "image_wWCNAW",
+        "divider_XNKXfy",
+        "heading_kFjpNR",
+        "subheading_bE3ihU",
+        "text_r7gJrb",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
