@@ -633,7 +633,22 @@
         "text_hfkATY": {
           "type": "text",
           "settings": {
-            "text": "<p>Core 1 includes the \"Contact tuner\" app pre-installed. For Core 2, purchasing a magnetic tuning accessory is required. You can either get a tuning clip, or tuning mounts with adhesives. Both come with a unique code to unlock the \"Contact tuner\" app on Core 2. Contact tuning is designed to work with guitar, bass guitar, ukulele and violin.</p><h4>Tip</h4><p>If you want to purchase magnetic tuning accessories, go to:</p>"
+            "text": "<p>Core 1 includes the \"Contact tuner\" app pre-installed. For Core 2/Spark, purchasing a magnetic tuning accessory is required. You can either get a tuning clip, or tuning mounts with adhesives. Both come with a unique code to unlock the \"Contact tuner\" app on Core 2/Spark. Contact tuning is designed to work with guitar, bass guitar, ukulele and violin.</p><h4>Tip</h4><p>If you want to purchase magnetic tuning accessories, go to:</p>"
+          }
+        },
+        "button_BtwNMt": {
+          "type": "button",
+          "settings": {
+            "label": "Soundbrenner shop",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": "https://www.soundbrenner.com/shop"
+          }
+        },
+        "text_awM8te": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Attaching a magnetic tuner mount</strong></p><p>Each magnetic tuner mount has an adhesive pre-applied. Peel off the thin layer on the back of the tuner mount and attach the mount to the headstock of your instrument.</p><p>The tuner mount is designed to be left on long-term, so you don't have to remember taking it with you. That said, if you ever want to remove it, it's possible. If you peel off the adhesive, be careful to avoid any damage to your instrument.</p><p><strong>How to use the tuner</strong></p><p>First, open the \"Contact tuner\" app on your device. Next, take the wearable off its rig by twisting it counterclockwise. Finally, stick the magnetic port located on the side of the device to your tuner mount or tuner clip. Once you play a string, the LED ring and the screen of the device will light up. Happy tuning!</p>"
           }
         },
         "image_4Q8cPB": {
@@ -799,6 +814,8 @@
         "divider_pgRMDY",
         "subheading_tTkj9B",
         "text_hfkATY",
+        "button_BtwNMt",
+        "text_awM8te",
         "image_4Q8cPB",
         "divider_yGiD6W",
         "chapter_6",
