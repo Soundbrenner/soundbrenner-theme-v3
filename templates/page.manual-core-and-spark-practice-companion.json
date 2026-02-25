@@ -460,6 +460,26 @@
           "type": "divider",
           "settings": {}
         },
+        "subheading_3gJNCt": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Tracking with our mobile app"
+          }
+        },
+        "text_nT77Fi": {
+          "type": "text",
+          "settings": {
+            "text": "<p>When you track a practice session on your device or our mobile app, any changes you make to things like your goal, instrument or starting time will sync across both devices. All saved sessions will also automatically sync. If synchronization issues arise, you can manually sync in the mobile app inside your device's settings.</p><p>The mobile app offers various options to view your practice data, like a practice calendar, streaks, and more.</p>"
+          }
+        },
+        "image_t9EaiU": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_U7NDz9": {
+          "type": "divider",
+          "settings": {}
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -585,6 +605,10 @@
         "image_NyDj7h",
         "text_Wph8pr",
         "divider_bc3Uzm",
+        "subheading_3gJNCt",
+        "text_nT77Fi",
+        "image_t9EaiU",
+        "divider_U7NDz9",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
