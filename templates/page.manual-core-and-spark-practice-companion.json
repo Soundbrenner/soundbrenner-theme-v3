@@ -570,6 +570,14 @@
             "text": "<p>Because we know every musician is different, you can customize the Core/Spark to your liking with our app.</p><p><strong>LED lights & vibrations</strong></p><p>To customize or turn off the LED lights and vibrations, open our mobile app and go to: \"Settings\" → select your Core → \"Metronome vibrations\" or \"Metronome lights\".</p><p>We recommend to experiment with different vibration intensities and durations to find out what works best for you!</p><p><strong>Sounds</strong></p><p>To customize or turn off the metronome sounds, open our mobile app and go to: \"Settings\" → \"App settings\" → \"Metronome sounds\".</p>"
           }
         },
+        "image_ppDgRj": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_kGcVqV": {
+          "type": "divider",
+          "settings": {}
+        },
         "divider_yGiD6W": {
           "type": "divider",
           "settings": {}
@@ -716,6 +724,8 @@
         "divider_GzhHqt",
         "subheading_nxFYxr",
         "text_PPf9Mq",
+        "image_ppDgRj",
+        "divider_kGcVqV",
         "divider_yGiD6W",
         "chapter_6",
         "accordion_item_1",
