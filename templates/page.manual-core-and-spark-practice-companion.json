@@ -72,7 +72,7 @@
         "body_2": {
           "type": "text",
           "settings": {
-            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use your Core in the shortest time possible. It’s the best way to get started, so we highly recommend you to watch this video!</p>"
+            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use your Core/Spark in the shortest time possible. It’s the best way to get started, so we highly recommend you to watch this video!</p>"
           }
         },
         "vimeo_video_YefAQq": {
@@ -125,16 +125,14 @@
             "heading": "Plus subscription"
           }
         },
-        "heading_small_DAHEkY": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "INSERT IMAGE"
-          }
+        "image_BAXgF7": {
+          "type": "image",
+          "settings": {}
         },
         "body_4": {
           "type": "text",
           "settings": {
-            "text": "<p>Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of our app. While the Core itself provides a complete experience on its own, Plus offers extras such as cloud storage of your songs and setlists, among other features. Our subscription model supports the rollout of multiple significant app updates annually, so get ready for a continuous stream of exciting new features!</p><p>Your Core comes with a free 3-month trial that you can redeem by following the in-app instructions after connecting your wearable!</p>"
+            "text": "<p>Upgrade your practice with Plus, our optional premium service that unlocks the full capabilities of our app. While the Core itself provides a complete experience on its own, Plus offers extras such as cloud storage of your songs and setlists, among other features. Our subscription model supports the rollout of multiple significant app updates annually, so get ready for a continuous stream of exciting new features!</p><p>Your Core/Spark comes with a free 3-month trial that you can redeem by following the in-app instructions after connecting your wearable!</p>"
           }
         },
         "divider_4": {
@@ -144,20 +142,18 @@
         "subheading_zLjb8j": {
           "type": "subheading",
           "settings": {
-            "heading": "Charging the Core"
+            "heading": "Charging the Core/Spark"
           }
         },
         "body_5": {
           "type": "text",
           "settings": {
-            "text": "<p>To charge your Core, attach the cable to the magnetic port located on the side of the device. The Core takes 1.5 hours to fully charge.</p><p><strong>Battery life</strong></p><ul><li>4+ days in watch mode, or</li><li>3+ hours metronome playback</li></ul><p><strong>Charging light</strong></p><ul><li>Orange light = charging</li><li>Green light = fully charged</li></ul>"
+            "text": "<p>To charge your Core/Spark, attach the cable to the magnetic port located on the side of the device. It takes ~1.5 hours to fully charge.</p><p><strong>Battery life</strong></p><ul><li>4+ days in watch mode, or</li><li>3+ hours metronome playback</li></ul><p><strong>Charging light</strong></p><ul><li>Orange light = charging</li><li>Green light = fully charged</li></ul>"
           }
         },
-        "heading_small_DqeFGT": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "INSERT IMAGE"
-          }
+        "image_hPYJx3": {
+          "type": "image",
+          "settings": {}
         },
         "divider_5": {
           "type": "divider",
@@ -172,7 +168,7 @@
         "text_HPx7dM": {
           "type": "text",
           "settings": {
-            "text": "<p>Before you can start using your Core, you need to unlock it in our app first. This helps us check if there are any firmware updates available. Download our app by clicking the buttons below, scanning the QR code or searching for “Soundbrenner” in the Google Play or iOS App Store.</p><p><strong>Download app</strong></p><p>The Metronome by Soundbrenner</p>"
+            "text": "<p>Before you can start using your Core/Spark, you need to unlock it in our app first - this helps us check if there are any firmware updates available. Download our app by clicking the buttons below, scanning the QR code or searching for “Soundbrenner” in the Google Play or iOS App Store.</p><p><strong>Download app</strong></p><p>The Metronome by Soundbrenner</p>"
           }
         },
         "heading_small_xffCmT": {
@@ -209,7 +205,7 @@
         "text_KYQ8qF": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Core</strong></p><p>The Core is splash resistant (IP65). This means it can withstand light rain or water splashes, for example while washing your hands. However, it can not withstand heavy rain, showers or water immersion.</p><p>The Core contains strong magnets that may interfere with some medical devices. Read the \"Safety & regulatory information\" section at the end of this manual for more information.</p><h4>Tip</h4><p>Don't store your Core for extended periods (over 3 months) with an empty battery, as this can lead to permanent battery damage.</p>"
+            "text": "<p>The Core/Spark is splash resistant (IP65). This means it can withstand light rain or water splashes, for example while washing your hands. However, it can not withstand heavy rain, showers or water immersion.</p><p>The Core/Spark contains strong magnets that may interfere with some medical devices. Read the \"Safety & regulatory information\" section at the end of this manual for more information.</p><h4>Tip</h4><p>Don't store your Core/Spark for extended periods (over 3 months) with an empty battery, as this can lead to permanent battery damage.</p>"
           }
         },
         "button_kaepFn": {
@@ -234,7 +230,7 @@
         "subheading_YbafmG": {
           "type": "subheading",
           "settings": {
-            "heading": "Lock system for the rig"
+            "heading": "Lock system for the rig (Core only)"
           }
         },
         "text_HgaFMq": {
@@ -243,11 +239,9 @@
             "text": "<p>To remove the Core from its rig, twist it counterclockwise and take it off.</p>"
           }
         },
-        "heading_small_KqcB8G": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "INSERT IMAGE"
-          }
+        "image_WAHFyi": {
+          "type": "image",
+          "settings": {}
         },
         "text_mfDFqP": {
           "type": "text",
@@ -280,11 +274,9 @@
             "link": "https://www.soundbrenner.com/shop"
           }
         },
-        "heading_small_9UPCLh": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "INSERT IMAGE"
-          }
+        "image_66DxtJ": {
+          "type": "image",
+          "settings": {}
         },
         "divider_pCzwPk": {
           "type": "divider",
@@ -335,7 +327,7 @@
         "text_mkJcQC": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Power on</strong><br/>Hold the top button for 1 second to turn on the Core.</p>"
+            "text": "<p><strong>Power on</strong><br/>Hold the top button for 1 second to turn on the device.</p>"
           }
         },
         "image_Dzc8kq": {
@@ -355,7 +347,7 @@
         "text_6Kej6h": {
           "type": "text",
           "settings": {
-            "text": "<p>2. Select yes, by pressing the bottom button.</p>"
+            "text": "<p>2. Select yes by pressing the bottom button.</p>"
           }
         },
         "divider_xrGQeX": {
@@ -385,7 +377,7 @@
         "text_VAA3iK": {
           "type": "text",
           "settings": {
-            "text": "<p>The Core features a capacitive touch surface. To ensure it can reliably detect your inputs, make sure that you use two fingers flat across the surface. Don’t just use your fingertips!</p><p><strong>Start or pause a feature</strong></p><p>Tap the soundwave twice quickly to start or pause certain features. Works in \"Metronome\" app, \"Timer\" app, \"Stopwatch\" app and the \"Smartphone music remote\".</p>"
+            "text": "<p>The Core/Spark features a capacitive touch surface. To ensure it can reliably detect your inputs, make sure that you use two fingers flat across the surface. Don’t just use your fingertips!</p><p><strong>Start or pause a feature</strong></p><p>Tap the soundwave twice quickly to start or pause certain features. Works in \"Metronome\" app, \"Timer\" app, \"Stopwatch\" app and the \"Smartphone music remote\".</p>"
           }
         },
         "image_mgU7ky": {
@@ -395,7 +387,7 @@
         "text_4aafcq": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. The Core will set a new tempo that matches the average pace of your taps. Works in \"Metronome\" app only.</p>"
+            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. The Core/Spark will set a new tempo that matches the average pace of your taps. Works in \"Metronome\" app only.</p>"
           }
         },
         "image_UGq7br": {
@@ -406,45 +398,598 @@
           "type": "divider",
           "settings": {}
         },
-        "chapter_6": {
+        "subheading_rcLpyC": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Time, date & status icons"
+          }
+        },
+        "text_kBrneM": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Time notation</strong></p><p>Use the app to change the time notation from AM/PM to 24h clock and vice versa.</p><p><strong>Watch face icons</strong></p>"
+          }
+        },
+        "image_J9tiAi": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_Fnahzw": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_KPp8G4": {
           "type": "heading",
           "settings": {
-            "heading": "Compliance"
+            "heading": "Practice tracker (Core 2/Spark only)"
           }
         },
-        "accordion_item_1": {
+        "subheading_4FUbLa": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Tracking on Core/Spark"
+          }
+        },
+        "text_TLzjQj": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Inside the \"Track\" app, set your practice session duration and choose the instrument you'll use. To modify instrument choices on your device, use our mobile app and go to: \"Settings\" → \"User profile\" → \"Instruments\". To start your session, tap the soundwave twice quickly.</p>"
+          }
+        },
+        "image_FfyzYr": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_6R9XD8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If you already practiced for a while but didn't start the session on your device, adjust the start time by pressing the bottom button and rotating the wheel.</p><p>When a practice session is active on your device, the \"Track\" app will automatically open each time you wake the screen for easy access. The LED ring fills with orange to show progress towards your goal. To turn off the orange tracking light, disable it in the Core 2/Spark settings of our mobile app.</p>"
+          }
+        },
+        "image_NyDj7h": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_Wph8pr": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tap twice quickly during an active session to pause or end it. When editing the session, you can delete it or adjust its start and end times.</p>"
+          }
+        },
+        "divider_bc3Uzm": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_3gJNCt": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Tracking with our mobile app"
+          }
+        },
+        "text_nT77Fi": {
+          "type": "text",
+          "settings": {
+            "text": "<p>When you track a practice session on your device or our mobile app, any changes you make to things like your goal, instrument or starting time will sync across both devices. All saved sessions will also automatically sync. If synchronization issues arise, you can manually sync in the mobile app inside your device's settings.</p><p>The mobile app offers various options to view your practice data, like a practice calendar, streaks, and more.</p>"
+          }
+        },
+        "image_t9EaiU": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_U7NDz9": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_3eNxUU": {
+          "type": "heading",
+          "settings": {
+            "heading": "Vibrating metronome"
+          }
+        },
+        "subheading_zTfCrT": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Body strap"
+          }
+        },
+        "text_3VGXjf": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Where you place the Core/Spark on your body can have a big impact on your experience. What works best is different for each musician.</p><p>The included body strap and body strap rig allow you to wear the Core on your wrist, arm or ankle. Add the included extension piece to wear it on your chest, shoulder or thigh.</p><h4>Tip</h4><p>For your first few sessions, try out different locations to see which one feels best. Wearing it on the chest is usually the most effective location.</p><p>Remember to keep the strap tight – the tighter the strap, the stronger the feeling of the vibrations.</p>"
+          }
+        },
+        "image_chjewp": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_rgUPrz": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>If you have thin arms or ankles</strong></p><p>To set the body strap to its smallest setting, align the arms of the rig with the markings on the strap as shown in the illustration below.</p>"
+          }
+        },
+        "image_E3Fych": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_3w6Xgd": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_t9TDDQ": {
+          "type": "subheading",
+          "settings": {
+            "heading": "How to feel the beat"
+          }
+        },
+        "text_3WUEWG": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Using a vibrational metronome is different. When you first start using the Core/Spark, you need to get used to it first. Don’t give up - you’ll get better over time. It’s just like learning to practice with a traditional metronome!</p><p>Over time, the vibration can even become a subconscious feeling that helps you keep the beat without thinking about it.</p>"
+          }
+        },
+        "divider_fjemp8": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_NydDnh": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Setting up a rhythm"
+          }
+        },
+        "text_pitfrD": {
+          "type": "text",
+          "settings": {
+            "text": "<p>1. Press the bottom button to select the first value.</p>"
+          }
+        },
+        "image_FV98pp": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_TqbGXK": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>Tip</h4><p>An alternative way to start the metronome is to long-press the bottom button. Once you release the button, the metronome starts. This makes it easy to sync your device's starting time with the rhythm of something you're listening to.</p>"
+          }
+        },
+        "divider_GzhHqt": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_nxFYxr": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Change LED lights, vibrations & sounds"
+          }
+        },
+        "text_PPf9Mq": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Because we know every musician is different, you can customize the Core/Spark to your liking with our app.</p><p><strong>LED lights & vibrations</strong></p><p>To customize or turn off the LED lights and vibrations, open our mobile app and go to: \"Settings\" → select your Core → \"Metronome vibrations\" or \"Metronome lights\".</p><p>We recommend to experiment with different vibration intensities and durations to find out what works best for you!</p><p><strong>Sounds</strong></p><p>To customize or turn off the metronome sounds, open our mobile app and go to: \"Settings\" → \"App settings\" → \"Metronome sounds\".</p>"
+          }
+        },
+        "image_ppDgRj": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_kGcVqV": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_7pAhzQ": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Multi-player sync"
+          }
+        },
+        "text_fE43Up": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Core/Spark can be synced to other Soundbrenner wearables by connecting all of them to the same mobile device. You can sync up to a total of five devices, allowing you to feel the beat together.</p><p>If you want to connect a Core/Spark to a different mobile device, you need to unpair it from the existing mobile device first. To bring up the unpairing prompt, open the \"Settings\" app on your device, navigate to \"Bluetooth\" and press the bottom button.</p><p>Once the Core/Spark is ready to pair, open the Soundbrenner app on the mobile device you want to use to sync the wearables. Inside the app navigate to: \"Settings\" → \"Add a Soundbrenner wearable\" → now select a Soundbrenner wearable you want to sync.</p>"
+          }
+        },
+        "image_wWCNAW": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_XNKXfy": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_kFjpNR": {
+          "type": "heading",
+          "settings": {
+            "heading": "Chromatic tuner"
+          }
+        },
+        "subheading_bE3ihU": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Microphone tuner (Core 2/Spark only)"
+          }
+        },
+        "text_r7gJrb": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Launch the \"Microphone Tuner\" app and play a note - your device will detect the closest note and the cent deviation to it. As you tune, the LED ring changes from red to green to signal that the note is perfectly tuned.</p><p>Customize the tuning reference from 440 Hz to your preference by pressing the bottom button and twisting the wheel.</p>"
+          }
+        },
+        "image_D7bYPy": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_pgRMDY": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_tTkj9B": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Contact tuner"
+          }
+        },
+        "text_hfkATY": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Core 1 includes the \"Contact tuner\" app pre-installed. For Core 2/Spark, purchasing a magnetic tuning accessory is required. You can either get a tuning clip, or tuning mounts with adhesives. Both come with a unique code to unlock the \"Contact tuner\" app on Core 2/Spark. Contact tuning is designed to work with guitar, bass guitar, ukulele and violin.</p><h4>Tip</h4><p>If you want to purchase magnetic tuning accessories, go to:</p>"
+          }
+        },
+        "button_BtwNMt": {
+          "type": "button",
+          "settings": {
+            "label": "Soundbrenner shop",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": "https://www.soundbrenner.com/shop"
+          }
+        },
+        "text_awM8te": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Attaching a magnetic tuner mount</strong></p><p>Each magnetic tuner mount has an adhesive pre-applied. Peel off the thin layer on the back of the tuner mount and attach the mount to the headstock of your instrument.</p><p>The tuner mount is designed to be left on long-term, so you don't have to remember taking it with you. That said, if you ever want to remove it, it's possible. If you peel off the adhesive, be careful to avoid any damage to your instrument.</p><p><strong>How to use the tuner</strong></p><p>First, open the \"Contact tuner\" app on your device. Next, take the wearable off its rig by twisting it counterclockwise. Finally, stick the magnetic port located on the side of the device to your tuner mount or tuner clip. Once you play a string, the LED ring and the screen of the device will light up. Happy tuning!</p>"
+          }
+        },
+        "image_4Q8cPB": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_UDGGpU": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_DqMpQN": {
+          "type": "heading",
+          "settings": {
+            "heading": "Decibel meter"
+          }
+        },
+        "text_BGtakD": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Sound levels</strong></p><p>If you open the \"Decibel meter\" app, the Core/Spark starts measuring the current, average and maximum sound levels. The Core/Spark can only measure sound levels above 70 dB and uses A-weighting.</p><h4>Tip (Core only)</h4><p>For a more accurate reading, take the Core off its rig and place it on a soft surface (e.g. a cloth or your hand) before opening the \"Decibel meter\" app.</p><p><strong>Volume alarm</strong></p><p>Your Core/Spark listens to the sound levels throughout the day. It will alert you once the volume reaches a risky level based on the World Health Organization’s guidelines:</p><ul><li>80 dB: 5 hours 30 minutes per day</li><li>85 dB: 1 hour 45 minutes per day</li><li>90 dB: 30 minutes per day</li><li>95 dB: 10 minutes per day</li></ul><p>Don’t worry - we respect your privacy and no audio is ever recorded and stored. To turn off the volume alarm and all background measurements, open our mobile app and go to \"Settings\" → select your Core → \"Volume alarm\".</p>"
+          }
+        },
+        "image_fbRE9a": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_NC9YAa": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_w4TnW9": {
+          "type": "heading",
+          "settings": {
+            "heading": "Smartwatch"
+          }
+        },
+        "subheading_nPMqjm": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Smartphone notifications"
+          }
+        },
+        "text_U3HEgD": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Smartphone notifications are supported for iOS and Android mobile devices. The Core/Spark will receive the same notifications as your mobile device and is compatible with all apps. At the moment it’s not possible to enable or disable notifications for particular apps independently from your mobile device.</p><p>For the Core/Spark to receive notifications, iOS and Android require a number of permissions. When you connect your device for the first time to our app, we will ask for these permissions automatically during the device setup. </p><p>If you are unable to receive notifications after the setup, check out our troubleshooting article here:</p>"
+          }
+        },
+        "button_QrUATG": {
+          "type": "button",
+          "settings": {
+            "label": "View article (English only)",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": "https://support.soundbrenner.com/hc/en-us/articles/900003275486-Core-smartphone-notifications-troubleshooting"
+          }
+        },
+        "text_X9Jggx": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Reading notifications</strong></p><p>New notifications automatically appear on the Core/Spark when you wake its screen.</p>"
+          }
+        },
+        "image_pWEwmn": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_rAXGi4": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li>Twist the wheel to scroll the text of a notification forward and backward. </li><li>Press the bottom button to delete the current notification and display the next notification. In the top right corner, you see how many notifications are queued up.</li><li>Long-press the bottom button to delete all notifications in the queue.</li><li>Press the top button to send all queued up notifications to the notification center, up to a maximum of 20.</li></ul><p>To access the notification center, twist the wheel to the right when you’re on the watch face.</p>"
+          }
+        },
+        "image_JwgLWG": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_nVhP36": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Phone calls</strong></p><p>If you get a phone call, the Core/Spark will start vibrating and give you the option to accept or decline the call. Since the Core/Spark has no speaker, you’ll need to use Bluetooth headphones or your phone itself to take the call.</p>"
+          }
+        },
+        "divider_BmnLkM": {
+          "type": "divider",
+          "settings": {}
+        },
+        "subheading_zztz43": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Smartphone music remote (Core 2/Spark only)"
+          }
+        },
+        "text_XgaEYF": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Control any media you play on your mobile device such as music, videos, podcasts, audiobooks and more. Compatible with all apps, for example Apple Music, Spotify or YouTube. To use this feature on Android, our mobile app requires access to your notifications.</p><p>1. Twist the wheel left to access the smartphone music remote.<br/></p><p>2. To start or pause, tap the soundwave twice quickly.</p>"
+          }
+        },
+        "image_iEpim6": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_p6RUM9": {
+          "type": "text",
+          "settings": {
+            "text": "<p>3. Press the bottom button to select the current media you're playing. Twist the wheel forward for next, backward for previous.<br/></p><p>4. Press the bottom button again to select the volume. Twist the wheel forward to increase, backward to decrease.</p>"
+          }
+        },
+        "image_ctxrVb": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_yGiD6W": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_CkQRPN": {
+          "type": "heading",
+          "settings": {
+            "heading": "Other apps"
+          }
+        },
+        "subheading_qcM8GX": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Timer"
+          }
+        },
+        "text_8awQtz": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Press the bottom button to select if you want to edit the hours, minutes or seconds. Once selected, use the wheel to edit the time. Tap the soundwave twice quickly to start or pause the timer.</p>"
+          }
+        },
+        "subheading_wqcpNK": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Stopwatch"
+          }
+        },
+        "text_rfGpyy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tap the soundwave twice quickly to start or pause the stopwatch.</p>"
+          }
+        },
+        "subheading_3rT9jG": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Alarm"
+          }
+        },
+        "text_hdLRXH": {
+          "type": "text",
+          "settings": {
+            "text": "<p>To create an alarm, select \"New alarm\" with the wheel and press the bottom button. Use the wheel to set the time of your alarm. With the bottom button, select which days the alarm should be active and turn each on by twisting the wheel right. The alarm will be active on days that are underlined. If no days are underlined, the alarm will be by default active on all days. </p><p>Change the state of the alarm by selecting \"On\" with the bottom button. Twist the wheel to the right to select \"Off\" or \"Delete\". Confirm your selection by pressing the bottom button.</p>"
+          }
+        },
+        "subheading_8T3AUg": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Settings"
+          }
+        },
+        "text_DcDGni": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Airplane mode</strong></p><p>Disable all radio signals such as Bluetooth. While airplane mode is on, your device won’t be able to communicate with your mobile device.</p><p><strong>Bluetooth</strong></p><p>Shows your current connection status. Press the bottom button to unpair and make your device ready to pair again.</p><p><strong>Factory reset</strong></p><p>This will erase all data and preferences and reset the Core/Spark back to factory settings. The device will be locked until the setup is completed with the Soundbrenner app.</p>"
+          }
+        },
+        "divider_G4W7PG": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_8JzcNh": {
+          "type": "heading",
+          "settings": {
+            "heading": "Troubleshooting"
+          }
+        },
+        "vimeo_video_9C4c6x": {
+          "type": "vimeo_video",
+          "settings": {
+            "video_source": "593163439"
+          }
+        },
+        "subheading_CEbFYN": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Get help"
+          }
+        },
+        "text_bR3bMT": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Connecting to your mobile device</strong></p><p>If you have trouble connecting to your mobile device, follow the steps outlined in the article below.</p>"
+          }
+        },
+        "button_BYVWaA": {
+          "type": "button",
+          "settings": {
+            "label": "Connection troubleshooting",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": "https://support.soundbrenner.com/hc/en-us/articles/14659487836313-Core-Core-2-Spark-connection-troubleshooting"
+          }
+        },
+        "text_6mCaUq": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Soft restart</strong></p><p>If your device shows unexpected behavior, hold both buttons for 5 seconds and keep them pressed until recovery mode launches. Select restart with the bottom button to soft restart. If your device is unresponsive, try performing a hard restart.</p>"
+          }
+        },
+        "image_L8yyXG": {
+          "type": "image",
+          "settings": {}
+        },
+        "text_nGgRmi": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Hard restart</strong></p><p>This only works if your Core/Spark is unresponsive. Make sure the charging cable is connected to a power source. Then attach the charging cable to the magnetic port. Detach it and attach the charging cable a second time to complete the hard restart.</p>"
+          }
+        },
+        "image_7Wy3B7": {
+          "type": "image",
+          "settings": {}
+        },
+        "divider_89iXCF": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_jbn8mk": {
+          "type": "heading",
+          "settings": {
+            "heading": "Safety & regulatory information"
+          }
+        },
+        "accordion_item_YML4rP": {
           "type": "accordion_item",
           "settings": {
-            "question": "Safety",
-            "answer": "<p>Avoid using the earphones in situations where hearing your surroundings is important, such as driving, biking, or walking near traffic.<br/><br/>Keep the product and its accessories out of reach of children. Small parts and cords can pose choking or strangulation hazards.<br/><br/>Always ensure ear tips are firmly attached before inserting the earphones. If a tip becomes lodged in the ear, seek immediate medical assistance.<br/><br/>Stop use and consult a professional if you experience irritation, discomfort, or excessive earwax buildup.<br/><br/>Do not disassemble or modify the device. Avoid applying excessive force or pulling on the cable to prevent damage.</p>"
+            "question": "Warning: medical conditions",
+            "answer": "<p>If you currently have a medical condition or have a history of medical conditions that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical conditions include (but are not limited to):</p><ul><li>White Knuckle Syndrome</li><li>Hand-Arm Vibration Syndrome</li><li>Blackouts</li><li>Epilepsy</li><li>Postural Hypertension</li><li>Allergic Reactions to Silicone</li><li>Any other heart, neurological, or skin conditions</li></ul>"
           }
         },
-        "accordion_item_2": {
+        "accordion_item_EHWHD7": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Warning: medical device interference",
+            "answer": "<p>If you use any medical device that may be affected by the Soundbrenner Core/Spark, consult with your physician before using the product. Medical devices include (but are not limited to):</p><ul><li>Coronary Stents</li><li>Defibrillators</li><li>Pacemakers</li><li>Any other implanted medical device</li></ul><p>Stop using the Soundbrenner Core/Spark if you suspect that it is interfering with your medical device or if you experience any discomfort.</p>"
+          }
+        },
+        "accordion_item_RHcGrL": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Warning: frequent and prolonged usage",
+            "answer": "<p>Frequent and prolonged use of the Soundbrenner Core/Spark may cause skin irritation in some users. If you experience itchiness, redness, and/or swelling while using the Soundbrenner Core/Spark, remove the device immediately and stop using it until your skin returns to normal. Consult your doctor should any of the symptoms persist.</p>"
+          }
+        },
+        "accordion_item_qiMi6H": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Caution: electrical equipment",
+            "answer": "<p>Your Soundbrenner Core/Spark and its charging cable are electrical devices and should be handled with care. Never use your device in extremely low or high temperatures.</p><p>Substances in this product and battery may harm the environment or cause injury if handled or disposed of improperly.</p><p>Take your Soundbrenner Core/Spark off if it feels warm or hot.</p>"
+          }
+        },
+        "accordion_item_rHqAMQ": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Caution: magnets",
+            "answer": "<p>The Soundbrenner Core/Spark and its charging cable contain magnets. All credit cards, key cards, and any other object containing a magnetic stripe should be stowed safely away from those products.</p>"
+          }
+        },
+        "accordion_item_RrChAK": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Caution: batteries",
+            "answer": "<p>Use only an authorized Soundbrenner charging cable to charge your device to avoid any safety or electrical hazards.</p><p>Always disconnect the charging cable from the electrical socket as soon as your device is fully charged.</p><p>Do not attempt to change the battery on your own. This will void the warranty and could cause injury.</p><p>Never charge your device when moisture is present.</p><p>Never put your device or charging cable near any inflammable or explosive materials.</p>"
+          }
+        },
+        "accordion_item_cJrmFb": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Caution: water",
+            "answer": "<p>Even though your Soundbrenner Core/Spark is sweat proof and partially water-resistant, it should never be submerged in water under any circumstances.</p><p>Do not use your device in the rain or in wet environments for prolonged periods.</p>"
+          }
+        },
+        "accordion_item_DxTmxW": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Maintaining your Soundbrenner Core/Spark",
+            "answer": "<p>For optimal performance, we recommend that you don’t use your device until it is fully charged.</p><p>Take care when using skincare products, as they may affect the color or usability of the included straps.</p><p>Store your Soundbrenner Core/Spark in a well-ventilated and dry environment when not in use.</p><p>Make sure you regularly clean your device with a damp cloth to maintain good hygiene.</p><p>Never wash your device in the sink.</p><p>Never store your Soundbrenner Core/Spark for extended periods (over 3 months) with a depleted battery, as this can lead to permanent battery damage.</p><p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/19748176623897-Core-battery-maintenance-guide\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/19748176623897-Core-battery-maintenance-guide\">Battery maintenance guide</a></p>"
+          }
+        },
+        "accordion_item_Q6Gzia": {
           "type": "accordion_item",
           "settings": {
             "question": "Warranty",
-            "answer": "<p>Our warranty terms are available <a href=\"/pages/terms-of-warranty\" title=\"Terms of warranty\">here</a>.</p>"
+            "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001269586-Terms-of-warranty\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001269586-Terms-of-warranty\">Our terms of warranty can be viewed here.</a></p>"
           }
         },
-        "accordion_item_3": {
+        "accordion_item_jEVqLT": {
           "type": "accordion_item",
           "settings": {
-            "question": "Recycling",
-            "answer": "<p>Dispose of this product at an appropriate electronics recycling center to support sustainable reuse and resource conservation.</p>"
+            "question": "Terms of use",
+            "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001248683-Terms-of-use-mobile-app\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001248683-Terms-of-use-mobile-app\">Our mobile app's terms of use can be viewed here.</a></p>"
           }
         },
-        "accordion_item_4": {
+        "accordion_item_x6nkte": {
           "type": "accordion_item",
           "settings": {
-            "question": "EU declaration",
-            "answer": "<p>Soundbrenner Limited hereby declares that this product complies with the essential requirements and all relevant provisions of Directive 1995/5/EC.</p>"
+            "question": "Privacy policy",
+            "answer": "<p><a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001248483-Privacy-policy-mobile-app\" target=\"_blank\" title=\"https://support.soundbrenner.com/hc/en-us/articles/900001248483-Privacy-policy-mobile-app\">Our mobile app's privacy policy can be viewed here.</a></p>"
           }
         },
-        "accordion_item_5": {
+        "accordion_item_ebWN9y": {
           "type": "accordion_item",
           "settings": {
-            "question": "FCC statement",
-            "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
+            "question": "Disposal and recycling information",
+            "answer": "<p>Your Soundbrenner Core/Spark should be disposed at a recycling center due to the device’s electronic nature in order to encourage sustainable reuse and conservation of resources.</p>"
+          }
+        },
+        "accordion_item_9qnJwy": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "EU compliance statement",
+            "answer": "<p>Soundbrenner Limited hereby declares that the Soundbrenner Core/Spark is in compliance with the essential requirements and other relevant provisions of Directive 1995/5/EC.</p>"
+          }
+        },
+        "accordion_item_cBk3Ra": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "FCC compliance statement",
+            "answer": "<p>The device complies with part 15 of the FCC rules. Operation is subject to the following two conditions:</p><ul><li>This device may not cause harmful interference</li><li>This device must accept any interference received, including interference that may cause undesired operation</li></ul>"
+          }
+        },
+        "accordion_item_6aQ7C7": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Bluetooth information",
+            "answer": "<p>The Bluetooth® word mark and logos are registered trademarks owned by Bluetooth SIG, Inc. and any use of such marks by Soundbrenner Limited is under license. Other trademarks and trade names are those of their respective owners.</p>"
           }
         }
       },
@@ -464,12 +1009,12 @@
         "button_9nmwUx",
         "divider_3",
         "subheading_fEQfTx",
-        "heading_small_DAHEkY",
+        "image_BAXgF7",
         "body_4",
         "divider_4",
         "subheading_zLjb8j",
         "body_5",
-        "heading_small_DqeFGT",
+        "image_hPYJx3",
         "divider_5",
         "subheading_C8GVdi",
         "text_HPx7dM",
@@ -484,13 +1029,13 @@
         "divider_ExTXVE",
         "subheading_YbafmG",
         "text_HgaFMq",
-        "heading_small_KqcB8G",
+        "image_WAHFyi",
         "text_mfDFqP",
         "divider_dn4KAP",
         "subheading_k7g7gq",
         "text_NytJdp",
         "button_xMyAQB",
-        "heading_small_9UPCLh",
+        "image_66DxtJ",
         "divider_pCzwPk",
         "heading_RV3Y7M",
         "subheading_rjzpdY",
@@ -515,12 +1060,112 @@
         "text_4aafcq",
         "image_UGq7br",
         "divider_eGmUQA",
-        "chapter_6",
-        "accordion_item_1",
-        "accordion_item_2",
-        "accordion_item_3",
-        "accordion_item_4",
-        "accordion_item_5"
+        "subheading_rcLpyC",
+        "text_kBrneM",
+        "image_J9tiAi",
+        "divider_Fnahzw",
+        "heading_KPp8G4",
+        "subheading_4FUbLa",
+        "text_TLzjQj",
+        "image_FfyzYr",
+        "text_6R9XD8",
+        "image_NyDj7h",
+        "text_Wph8pr",
+        "divider_bc3Uzm",
+        "subheading_3gJNCt",
+        "text_nT77Fi",
+        "image_t9EaiU",
+        "divider_U7NDz9",
+        "heading_3eNxUU",
+        "subheading_zTfCrT",
+        "text_3VGXjf",
+        "image_chjewp",
+        "text_rgUPrz",
+        "image_E3Fych",
+        "divider_3w6Xgd",
+        "subheading_t9TDDQ",
+        "text_3WUEWG",
+        "divider_fjemp8",
+        "subheading_NydDnh",
+        "text_pitfrD",
+        "image_FV98pp",
+        "text_TqbGXK",
+        "divider_GzhHqt",
+        "subheading_nxFYxr",
+        "text_PPf9Mq",
+        "image_ppDgRj",
+        "divider_kGcVqV",
+        "subheading_7pAhzQ",
+        "text_fE43Up",
+        "image_wWCNAW",
+        "divider_XNKXfy",
+        "heading_kFjpNR",
+        "subheading_bE3ihU",
+        "text_r7gJrb",
+        "image_D7bYPy",
+        "divider_pgRMDY",
+        "subheading_tTkj9B",
+        "text_hfkATY",
+        "button_BtwNMt",
+        "text_awM8te",
+        "image_4Q8cPB",
+        "divider_UDGGpU",
+        "heading_DqMpQN",
+        "text_BGtakD",
+        "image_fbRE9a",
+        "divider_NC9YAa",
+        "heading_w4TnW9",
+        "subheading_nPMqjm",
+        "text_U3HEgD",
+        "button_QrUATG",
+        "text_X9Jggx",
+        "image_pWEwmn",
+        "text_rAXGi4",
+        "image_JwgLWG",
+        "text_nVhP36",
+        "divider_BmnLkM",
+        "subheading_zztz43",
+        "text_XgaEYF",
+        "image_iEpim6",
+        "text_p6RUM9",
+        "image_ctxrVb",
+        "divider_yGiD6W",
+        "heading_CkQRPN",
+        "subheading_qcM8GX",
+        "text_8awQtz",
+        "subheading_wqcpNK",
+        "text_rfGpyy",
+        "subheading_3rT9jG",
+        "text_hdLRXH",
+        "subheading_8T3AUg",
+        "text_DcDGni",
+        "divider_G4W7PG",
+        "heading_8JzcNh",
+        "vimeo_video_9C4c6x",
+        "subheading_CEbFYN",
+        "text_bR3bMT",
+        "button_BYVWaA",
+        "text_6mCaUq",
+        "image_L8yyXG",
+        "text_nGgRmi",
+        "image_7Wy3B7",
+        "divider_89iXCF",
+        "heading_jbn8mk",
+        "accordion_item_YML4rP",
+        "accordion_item_EHWHD7",
+        "accordion_item_RHcGrL",
+        "accordion_item_qiMi6H",
+        "accordion_item_rHqAMQ",
+        "accordion_item_RrChAK",
+        "accordion_item_cJrmFb",
+        "accordion_item_DxTmxW",
+        "accordion_item_Q6Gzia",
+        "accordion_item_jEVqLT",
+        "accordion_item_x6nkte",
+        "accordion_item_ebWN9y",
+        "accordion_item_9qnJwy",
+        "accordion_item_cBk3Ra",
+        "accordion_item_6aQ7C7"
       ],
       "settings": {}
     },
