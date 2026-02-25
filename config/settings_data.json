@@ -12,6 +12,7 @@
     "seasonal_sale_name": "Spring Sale",
     "sitewide_seasonal_discount_depth": 48,
     "sitewide_affiliate_discount_depth": 20,
+    "storefront_price_override_product_id_1": "baseball-cap",
     "seasonal_sale_end_date": "2026-02-24",
     "seasonal_announcement_gradient": "linear-gradient(90deg, #A4CF83 0%, #768E57 33%, #768E57 66%, #A4CF83 100%)",
     "seasonal_announcement_copy_free_shipping": "{{ Sale name }}: {{ Sitewide discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}",
