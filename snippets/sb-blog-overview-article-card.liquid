@@ -1,13 +1,39 @@
 {% liquid
   assign card_style_class = card_class | default: ''
-  assign category_text = article.tags.first
-  if category_text == blank
+  assign category_text = blank
+  assign fallback_tag = blank
+  for tag in article.tags
+    assign normalized_tag = tag | downcase
+    if normalized_tag contains 'by_product'
+      assign parsed_category = tag | remove_first: 'By_product: ' | remove_first: 'by_product: ' | remove_first: 'By_product - ' | remove_first: 'by_product - ' | remove_first: 'By_product-' | remove_first: 'by_product-' | remove_first: 'By_product ' | remove_first: 'by_product ' | remove_first: 'By_product' | remove_first: 'by_product' | strip
+      if parsed_category != blank
+        assign category_text = parsed_category
+        break
+      endif
+    elsif normalized_tag contains 'by_instrument'
+      assign parsed_category = tag | remove_first: 'By_instrument: ' | remove_first: 'by_instrument: ' | remove_first: 'By_instrument - ' | remove_first: 'by_instrument - ' | remove_first: 'By_instrument-' | remove_first: 'by_instrument-' | remove_first: 'By_instrument ' | remove_first: 'by_instrument ' | remove_first: 'By_instrument' | remove_first: 'by_instrument' | strip
+      if parsed_category != blank
+        assign category_text = parsed_category
+        break
+      endif
+    elsif fallback_tag == blank
+      assign fallback_tag = tag
+    endif
+  endfor
+
+  if category_text == blank and fallback_tag != blank
+    assign category_text = fallback_tag
+  endif
+
+  if category_text == blank and blog_title != blank
     assign category_text = blog_title
   endif
 
   assign card_title_class = 'font-body weight-bold'
+  assign card_meta_class = 'font-caption weight-semibold'
   if card_style_class == 'sb-blog-overview-card--feature'
     assign card_title_class = 'font-callout weight-bold'
+    assign card_meta_class = 'font-caption weight-semibold'
   endif
 
   assign image_sizes = '(max-width: 989px) calc(100vw - 40px), 800px'
@@ -40,13 +66,13 @@
     </a>
 
     <div class="sb-blog-overview-card__content">
-      <p class="sb-blog-overview-card__category font-caption weight-semibold">{{ category_text }}</p>
+      <p class="sb-blog-overview-card__category {{ card_meta_class }}">{{ category_text }}</p>
 
       <h2 class="sb-blog-overview-card__title {{ card_title_class }}">
         <a href="{{ article.url }}">{{ article.title }}</a>
       </h2>
 
-      <p class="sb-blog-overview-card__date font-caption weight-semibold">
+      <p class="sb-blog-overview-card__date {{ card_meta_class }}">
         {{ article.published_at | date: format: 'abbreviated_date' }}
       </p>
 

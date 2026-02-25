@@ -351,6 +351,7 @@
         this.removeAttribute('data-open');
         this.panel.classList.add('is-closing');
         this.panel.classList.remove('is-active');
+        this.dispatchToggleState(false);
         let closeSettled = false;
         const finalizeClose = (event) => {
           if (event && event.target !== this.panel) return;
@@ -358,7 +359,6 @@
           if (closeSettled || this.isOpen || !this.panel) return;
           closeSettled = true;
           this.panel.classList.remove('is-closing');
-          this.dispatchToggleState(false);
         };
         this.panel.addEventListener('transitionend', finalizeClose, { once: true });
         window.setTimeout(finalizeClose, 620);

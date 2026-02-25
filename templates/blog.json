@@ -11,41 +11,25 @@
   "sections": {
     "main": {
       "type": "main-blog",
-      "blocks": {
-        "sidebar_item_YzQXrh": {
-          "type": "sidebar_item",
-          "settings": {
-            "content_type": "article",
-            "article": "",
-            "product": "",
-            "title": "",
-            "url": "",
-            "image": "",
-            "description": ""
-          }
-        },
-        "sidebar_item_2": {
-          "type": "sidebar_item",
-          "settings": {
-            "content_type": "custom",
-            "article": "",
-            "product": "",
-            "title": "",
-            "url": "",
-            "image": "",
-            "description": ""
-          }
-        }
-      },
-      "block_order": [
-        "sidebar_item_YzQXrh",
-        "sidebar_item_2"
-      ],
       "settings": {
         "show_blog_title": true,
         "posts_per_page": 18,
         "archive_heading": "Archive",
-        "sidebar_heading": "Top articles and product picks"
+        "sidebar_popular_heading": "Most popular",
+        "sidebar_popular_item_1_title": "",
+        "sidebar_popular_item_1_url": "",
+        "sidebar_popular_item_2_title": "",
+        "sidebar_popular_item_2_url": "",
+        "sidebar_popular_item_3_title": "",
+        "sidebar_popular_item_3_url": "",
+        "sidebar_popular_item_4_title": "",
+        "sidebar_popular_item_4_url": "",
+        "sidebar_popular_item_5_title": "",
+        "sidebar_popular_item_5_url": "",
+        "sidebar_promo_title": "The Metronome app by Soundbrenner",
+        "sidebar_promo_text": "Make music practice addictive. Try it free.",
+        "sidebar_promo_button_label": "Learn now",
+        "sidebar_promo_button_link": ""
       }
     },
     "seasonal_hero": {
