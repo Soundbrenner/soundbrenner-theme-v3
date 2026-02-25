@@ -11,8 +11,6 @@
   "sections": {
     "main": {
       "type": "main-blog",
-<<<<<<< HEAD
-=======
       "blocks": {
         "sidebar_item_YzQXrh": {
           "type": "sidebar_item",
@@ -41,7 +39,6 @@
         "sidebar_item_YzQXrh",
         "sidebar_item_2"
       ],
->>>>>>> 73ab2543254bd42f77d0b40eec13dc0429b7298c
       "settings": {
         "show_blog_title": true,
         "posts_per_page": 18,
