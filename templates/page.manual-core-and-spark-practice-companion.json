@@ -820,6 +820,22 @@
             "text": "<p><strong>Airplane mode</strong></p><p>Disable all radio signals such as Bluetooth. While airplane mode is on, your device won’t be able to communicate with your mobile device.</p><p><strong>Bluetooth</strong></p><p>Shows your current connection status. Press the bottom button to unpair and make your device ready to pair again.</p><p><strong>Factory reset</strong></p><p>This will erase all data and preferences and reset the Core/Spark back to factory settings. The device will be locked until the setup is completed with the Soundbrenner app.</p>"
           }
         },
+        "divider_G4W7PG": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_8JzcNh": {
+          "type": "heading",
+          "settings": {
+            "heading": "Troubleshooting"
+          }
+        },
+        "vimeo_video_9C4c6x": {
+          "type": "vimeo_video",
+          "settings": {
+            "video_source": "593163439"
+          }
+        },
         "divider_b3iNpz": {
           "type": "divider",
           "settings": {}
@@ -1012,6 +1028,9 @@
         "text_hdLRXH",
         "subheading_8T3AUg",
         "text_DcDGni",
+        "divider_G4W7PG",
+        "heading_8JzcNh",
+        "vimeo_video_9C4c6x",
         "divider_b3iNpz",
         "chapter_6",
         "accordion_item_1",
