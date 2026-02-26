@@ -131,9 +131,12 @@
     <p class="sb-collection-overview__collections-label font-body weight-regular">
       Collections
     </p>
-    <p class="sb-collection-overview__bestsellers-label font-body weight-regular">
-      Bestsellers
-    </p>
+    <div class="sb-collection-overview__bestsellers-label-wrap">
+      <p class="sb-collection-overview__bestsellers-label font-body weight-regular">
+        Bestsellers
+      </p>
+      <span class="sb-collection-overview__bestsellers-line" aria-hidden="true"></span>
+    </div>
   </div>
 
   <div class="sb-collection-overview__collections-grid">
@@ -535,8 +538,29 @@
     text-transform: uppercase;
   }
 
-  .sb-collection-overview__bestsellers-label {
+  .sb-collection-overview__bestsellers-label-wrap {
+    align-items: center;
+    display: flex;
+    gap: 24px;
     padding-left: var(--sb-collection-overview-products-offset);
+  }
+
+  .sb-collection-overview__bestsellers-line {
+    background: var(--sb-color-neutral-600);
+    flex: 1 1 auto;
+    height: 1px;
+    position: relative;
+  }
+
+  .sb-collection-overview__bestsellers-line::after {
+    background: var(--sb-color-neutral-600);
+    content: '';
+    height: 24px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
   }
 
   .sb-collection-overview__collections-grid {
@@ -1221,7 +1245,7 @@
       row-gap: 12px;
     }
 
-    .sb-collection-overview__bestsellers-label {
+    .sb-collection-overview__bestsellers-label-wrap {
       padding-left: 0;
     }
 
