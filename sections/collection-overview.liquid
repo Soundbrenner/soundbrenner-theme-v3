@@ -1,0 +1,222 @@
+{% liquid
+  assign trustpilot_entry = metaobjects.trustpilot.values | first
+
+  assign all_reviews_rating_raw = trustpilot_entry.rating.value | default: trustpilot_entry.rating | default: section.settings.fallback_rating
+  assign all_reviews_rating_number = all_reviews_rating_raw | replace: ',', '.' | plus: 0
+  if all_reviews_rating_number < 0
+    assign all_reviews_rating_number = 0
+  endif
+  if all_reviews_rating_number > 5
+    assign all_reviews_rating_number = 5
+  endif
+
+  assign all_reviews_count_raw = trustpilot_entry.review_count.value | default: trustpilot_entry.review_count
+  if all_reviews_count_raw == blank
+    assign all_reviews_count_raw = trustpilot_entry.reviews_count.value | default: trustpilot_entry.reviews_count
+  endif
+  if all_reviews_count_raw == blank
+    assign all_reviews_count_raw = trustpilot_entry.rating_count.value | default: trustpilot_entry.rating_count
+  endif
+  if all_reviews_count_raw == blank
+    assign all_reviews_count_raw = trustpilot_entry.total_reviews.value | default: trustpilot_entry.total_reviews
+  endif
+  if all_reviews_count_raw == blank
+    assign all_reviews_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count
+  endif
+
+  assign all_reviews_count_number = all_reviews_count_raw | replace: ',', '' | plus: 0
+  if all_reviews_count_number > 0
+    assign all_reviews_count_display = all_reviews_count_number | round: 0 | number_with_delimiter
+  else
+    assign all_reviews_count_display = section.settings.fallback_reviews_count
+  endif
+
+  assign rating_rounded = all_reviews_rating_number | round: 2
+  assign rating_string = rating_rounded | append: ''
+  assign rating_parts = rating_string | split: '.'
+  assign rating_integer = rating_parts[0] | default: '0'
+  assign rating_decimal = rating_parts[1] | default: ''
+  if rating_decimal == blank
+    assign rating_decimal = '00'
+  elsif rating_decimal.size == 1
+    assign rating_decimal = rating_decimal | append: '0'
+  else
+    assign rating_decimal = rating_decimal | slice: 0, 2
+  endif
+  assign rating_display = rating_integer | append: '.' | append: rating_decimal
+
+  assign read_all_url = section.settings.read_all_url | default: '/pages/all-reviews'
+  assign star_icon_url = 'icon-review-star.svg' | asset_url
+  assign arrow_icon_url = 'arrow-reduced-padding.svg' | asset_url
+%}
+
+<section class="sb-collection-overview" data-sb-reveal>
+  <div class="sb-collection-overview__header-wrap">
+    <div class="sb-collection-overview__header" data-sb-reveal-item>
+      <span class="sb-collection-overview__dot" aria-hidden="true"></span>
+
+      <div
+        class="sb-collection-overview__stars"
+        role="img"
+        aria-label="{{ rating_display }} out of 5 stars"
+        style="--sb-collection-overview-star-url: url('{{ star_icon_url }}');"
+      >
+        {% for star_index in (1..5) %}
+          {% liquid
+            assign star_offset = star_index | minus: 1
+            assign star_fill = all_reviews_rating_number | minus: star_offset
+            if star_fill < 0
+              assign star_fill = 0
+            endif
+            if star_fill > 1
+              assign star_fill = 1
+            endif
+            assign star_fill_percent = star_fill | times: 100
+          %}
+          <span class="sb-collection-overview__star" style="--sb-collection-overview-star-fill: {{ star_fill_percent }}%;"></span>
+        {% endfor %}
+      </div>
+
+      <p class="sb-collection-overview__summary font-caption weight-regular">
+        {{ rating_display }} out of {{ all_reviews_count_display }} reviews
+      </p>
+
+      <a class="sb-collection-overview__read-all font-caption2 weight-semibold" href="{{ read_all_url }}">
+        <span>Read all</span>
+        <span
+          class="sb-collection-overview__read-all-arrow"
+          aria-hidden="true"
+          style="--sb-collection-overview-arrow-url: url('{{ arrow_icon_url }}');"
+        ></span>
+      </a>
+
+      <span class="sb-collection-overview__dot" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sb-collection-overview {
+    width: 100%;
+  }
+
+  .sb-collection-overview__header-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sb-collection-overview__header {
+    align-items: center;
+    background: var(--sb-color-neutral-200);
+    border-radius: 999px;
+    display: inline-flex;
+    gap: 8px;
+    max-width: 100%;
+    padding: 12px 8px;
+  }
+
+  .sb-collection-overview__dot {
+    background: var(--sb-color-neutral-800);
+    border-radius: 50%;
+    display: block;
+    flex-shrink: 0;
+    height: 6px;
+    width: 6px;
+  }
+
+  .sb-collection-overview__stars {
+    align-items: center;
+    display: inline-flex;
+    gap: 4px;
+  }
+
+  .sb-collection-overview__star {
+    background: var(--sb-color-neutral-400);
+    display: inline-block;
+    flex-shrink: 0;
+    height: 16px;
+    mask-image: var(--sb-collection-overview-star-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    position: relative;
+    -webkit-mask-image: var(--sb-collection-overview-star-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    width: 16px;
+  }
+
+  .sb-collection-overview__star::before {
+    background: var(--sb-color-neutral-900);
+    content: '';
+    inset: 0 auto 0 0;
+    position: absolute;
+    width: var(--sb-collection-overview-star-fill);
+  }
+
+  .sb-collection-overview__summary {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .sb-collection-overview__read-all {
+    align-items: center;
+    background: var(--sb-color-neutral-400);
+    border-radius: 999px;
+    color: var(--sb-color-neutral-900);
+    display: inline-flex;
+    gap: 4px;
+    padding: 2px 6px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .sb-collection-overview__read-all-arrow {
+    background: currentColor;
+    display: inline-block;
+    flex-shrink: 0;
+    height: 8px;
+    mask-image: var(--sb-collection-overview-arrow-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-image: var(--sb-collection-overview-arrow-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    width: 8px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Collection overview",
+  "settings": [
+    {
+      "type": "url",
+      "id": "read_all_url",
+      "label": "Read all link"
+    },
+    {
+      "type": "text",
+      "id": "fallback_reviews_count",
+      "label": "Fallback reviews count",
+      "default": "X,XXX"
+    },
+    {
+      "type": "number",
+      "id": "fallback_rating",
+      "label": "Fallback rating",
+      "default": 5
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection overview"
+    }
+  ]
+}
+{% endschema %}

@@ -30,6 +30,14 @@
         "show_app_download_china": false
       }
     },
+    "collection_overview_home": {
+      "type": "collection-overview",
+      "settings": {
+        "read_all_url": "shopify://pages/all-reviews",
+        "fallback_reviews_count": "X,XXX",
+        "fallback_rating": 5
+      }
+    },
     "press_ticker_home": {
       "type": "press-ticker",
       "settings": {
@@ -257,6 +265,7 @@
   },
   "order": [
     "main",
+    "collection_overview_home",
     "press_ticker_home",
     "hero_card_HFy7pm",
     "expert_testimonials_AkfimQ",
