@@ -37,6 +37,7 @@
           "type": "collection_item",
           "settings": {
             "collection": "in-ear-monitors",
+            "collection_name_override": "",
             "title": "",
             "description": "",
             "explore_label": "Explore collection",
@@ -47,13 +48,15 @@
             "product_2": "wave-in-ear-monitors",
             "product_3": "usb-c-to-3-5mm-audio-adapter",
             "product_4": "wave-over-ear-cable-2-5m-8-2-ft-with-microphone",
-            "product_5": "foam-ear-tips-3-pack"
+            "product_5": "foam-ear-tips-3-pack",
+            "product_6": ""
           }
         },
         "collection_item_wearables": {
           "type": "collection_item",
           "settings": {
             "collection": "wearables",
+            "collection_name_override": "",
             "title": "Wearables",
             "description": "",
             "explore_label": "Explore collection",
@@ -64,13 +67,15 @@
             "product_2": "",
             "product_3": "",
             "product_4": "",
-            "product_5": ""
+            "product_5": "",
+            "product_6": ""
           }
         },
         "collection_item_earplugs": {
           "type": "collection_item",
           "settings": {
             "collection": "minuendo-earplugs",
+            "collection_name_override": "Earplugs",
             "title": "Earplugs",
             "description": "",
             "explore_label": "Explore collection",
@@ -81,13 +86,15 @@
             "product_2": "",
             "product_3": "",
             "product_4": "",
-            "product_5": ""
+            "product_5": "",
+            "product_6": ""
           }
         },
         "collection_item_more_products": {
           "type": "collection_item",
           "settings": {
             "collection": "more-products",
+            "collection_name_override": "",
             "title": "More products",
             "description": "",
             "explore_label": "Explore collection",
@@ -98,7 +105,8 @@
             "product_2": "",
             "product_3": "",
             "product_4": "",
-            "product_5": ""
+            "product_5": "",
+            "product_6": ""
           }
         }
       },
@@ -267,13 +275,6 @@
             "answer": "<p>When your order is dispatched, you'll receive an email with tracking details.</p>"
           }
         },
-        "accordion_item_HneDrm": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Do you ship to P.O. boxes?",
-            "answer": "<p>Our logistic partners require a signature upon delivery so unfortunately they are unable to make deliveries to P.O. boxes.</p>"
-          }
-        },
         "accordion_item_gNhhK8": {
           "type": "accordion_item",
           "settings": {
@@ -295,7 +296,6 @@
         "accordion_item_Xg9qb8",
         "accordion_item_cwxVmi",
         "accordion_item_xqk77R",
-        "accordion_item_HneDrm",
         "accordion_item_gNhhK8",
         "accordion_item_9h7JaD"
       ],
@@ -310,8 +310,7 @@
       "type": "quote-section",
       "name": "Quote section",
       "settings": {
-        "quote_primary": "Great musicians aren't born. They're crafted.",
-        "quote_secondary": "Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
+        "quote": "Great musicians aren't born. They're crafted.\n\nSuccess is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
       }
     },
     "hero_card_bottom_seasonal": {

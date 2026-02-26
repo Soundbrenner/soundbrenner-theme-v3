@@ -1,18 +1,21 @@
 {% liquid
   assign trustpilot_entry = metaobjects.trustpilot.values | first
-  assign all_reviews_rating_raw = ''
-  assign all_reviews_count_raw = ''
+  assign all_reviews_rating_source = ''
+  assign all_reviews_count_source = ''
 
   if trustpilot_entry != blank
     assign rating_field = trustpilot_entry.combined_klaviyo_product_review_ratings
     assign count_field = trustpilot_entry.combined_klaviyo_product_review_count
 
-    assign all_reviews_rating_raw = rating_field.value | default: rating_field
-    assign all_reviews_count_raw = count_field.value | default: count_field
+    assign all_reviews_rating_source = rating_field.value | default: rating_field
+    assign all_reviews_count_source = count_field.value | default: count_field
   endif
 
-  assign all_reviews_rating_number = all_reviews_rating_raw | replace: ',', '.' | plus: 0
-  assign all_reviews_count_number = all_reviews_count_raw | replace: ',', '' | plus: 0 | round: 0
+  assign all_reviews_rating_string = all_reviews_rating_source | append: '' | replace: '[', '' | replace: ']', '' | replace: '"', '' | split: ',' | first | strip
+  assign all_reviews_count_string = all_reviews_count_source | append: '' | replace: '[', '' | replace: ']', '' | replace: '"', '' | split: ',' | first | strip
+
+  assign all_reviews_rating_number = all_reviews_rating_string | replace: ',', '.' | plus: 0
+  assign all_reviews_count_number = all_reviews_count_string | replace: ',', '' | plus: 0 | round: 0
 
   assign all_reviews_count_display = '0'
   if all_reviews_count_number > 0
@@ -50,6 +53,7 @@
       assign all_reviews_count_display = formatted_count
     endif
   endif
+
   if all_reviews_rating_number < 0
     assign all_reviews_rating_number = 0
   endif
@@ -121,77 +125,26 @@
     </div>
   </div>
 
-  <h2 class="sb-collection-overview__title font-title weight-bold" data-sb-reveal-item>
-    Designed for musicians by Soundbrenner.
-  </h2>
+  <div class="sb-collection-overview__section-divider" aria-hidden="true" data-sb-reveal-item></div>
 
-  <div class="sb-collection-overview__divider" aria-hidden="true" data-sb-reveal-item></div>
-
-  <div class="sb-collection-overview__labels-row" data-sb-reveal-item>
-    <p class="sb-collection-overview__collections-label font-body weight-regular">
-      Collections
-    </p>
-    <div class="sb-collection-overview__bestsellers-label-wrap">
-      <p class="sb-collection-overview__bestsellers-label font-body weight-regular">
-        Bestsellers
-      </p>
-      <span class="sb-collection-overview__bestsellers-line" aria-hidden="true"></span>
-    </div>
-  </div>
-
-  <div class="sb-collection-overview__collections-grid">
+  <div class="sb-collection-overview__rows">
     {% if section.blocks.size > 0 %}
       {% for block in section.blocks %}
         {% liquid
           assign overview_collection = block.settings.collection
-
-          assign collection_title = block.settings.title | strip
+          assign collection_title = block.settings.collection_name_override | strip
           if collection_title == blank
-            assign collection_title = overview_collection.title
+            assign collection_title = overview_collection.title | strip
           endif
           if collection_title == blank
             assign collection_title = 'Collection name'
           endif
 
-          assign collection_description = block.settings.description | strip
-          if collection_description == blank
-            assign collection_description = overview_collection.description | strip_html | strip
-          endif
-          if collection_description == blank
-            assign collection_description = 'Collection description'
-          endif
-
-          assign explore_label = block.settings.explore_label | strip
-          if explore_label == blank
-            assign explore_label = 'Explore collection'
-          endif
-
-          assign compare_label = block.settings.compare_label | strip
-          if compare_label == blank
-            assign compare_label = 'Compare'
-          endif
-
-          assign explore_link = block.settings.explore_link
-          if explore_link == blank
-            assign explore_link = overview_collection.url
-          endif
-          if explore_link == blank
-            assign explore_link = '/collections'
-          endif
-
+          assign explore_link = overview_collection.url | default: '/collections'
           assign compare_link = block.settings.compare_link
-          assign collection_background_url = ''
-          assign collection_background = overview_collection.image
-          if collection_background != blank
-            assign collection_background_request_width = 1275
-            if collection_background.width != blank
-              assign collection_background_request_width = collection_background.width | at_most: 1275
-            endif
-            assign collection_background_url = collection_background | image_url: width: collection_background_request_width
-          endif
 
           assign manual_products_count = 0
-          for product_slot in (1..5)
+          for product_slot in (1..6)
             case product_slot
               when 1
                 assign selected_product = block.settings.product_1
@@ -203,6 +156,8 @@
                 assign selected_product = block.settings.product_4
               when 5
                 assign selected_product = block.settings.product_5
+              when 6
+                assign selected_product = block.settings.product_6
             endcase
             if selected_product != blank
               assign manual_products_count = manual_products_count | plus: 1
@@ -210,193 +165,164 @@
           endfor
         %}
 
-        <article class="sb-collection-overview__collection-row" data-sb-reveal-item {{ block.shopify_attributes }}>
-          <div
-            class="sb-collection-overview__collection-card{% if collection_background_url != blank %} sb-collection-overview__collection-card--with-image{% endif %}"
-            {% if collection_background_url != blank %}
-              style="--sb-collection-overview-collection-bg-image: url('{{ collection_background_url }}');"
-            {% endif %}
-          >
-            <h3 class="sb-collection-overview__collection-title font-title weight-bold">{{ collection_title }}</h3>
-            <p class="sb-collection-overview__collection-body font-body weight-regular">{{ collection_description }}</p>
+        <article class="sb-collection-overview__row{% unless forloop.first %} sb-collection-overview__row--with-divider{% endunless %}" {{ block.shopify_attributes }}>
+          {% unless forloop.first %}
+            <div class="sb-collection-overview__section-divider" aria-hidden="true" data-sb-reveal-item></div>
+          {% endunless %}
 
-            <div class="sb-collection-overview__collection-actions">
+          <div class="sb-collection-overview__heading-row" data-sb-reveal-item>
+            <h2 class="sb-collection-overview__collection-title font-title weight-bold">{{ collection_title }}</h2>
+
+            <div class="sb-collection-overview__actions">
               {% render 'radiant-button',
-                label: explore_label,
+                label: 'Explore collection',
                 link: explore_link,
                 size: 'large',
-                extra_class: 'sb-collection-overview__collection-explore font-caption weight-bold'
+                extra_class: 'sb-collection-overview__explore-button font-caption weight-bold'
               %}
 
               {% if compare_link != blank %}
                 <a class="sb-collection-overview__compare-button font-caption weight-semibold" href="{{ compare_link }}">
-                  {{- compare_label -}}
+                  Compare
                 </a>
               {% endif %}
             </div>
           </div>
 
-          <div class="sb-collection-overview__products-panel">
-            <div class="sb-collection-overview__products-carousel" data-collection-overview-carousel>
-              <div class="sb-collection-overview__products-viewport-wrap">
-                <div class="sb-collection-overview__products-viewport" data-collection-overview-carousel-viewport>
-                  <div class="sb-collection-overview__products-track" data-collection-overview-carousel-track>
-                  {% if manual_products_count > 0 %}
-                    {% for product_slot in (1..5) %}
-                      {% liquid
-                        assign selected_product = blank
-                        case product_slot
-                          when 1
-                            assign selected_product = block.settings.product_1
-                          when 2
-                            assign selected_product = block.settings.product_2
-                          when 3
-                            assign selected_product = block.settings.product_3
-                          when 4
-                            assign selected_product = block.settings.product_4
-                          when 5
-                            assign selected_product = block.settings.product_5
-                        endcase
+          <div class="sb-collection-overview__carousel" data-sb-carousel data-sb-reveal-item>
+            <div class="sb-collection-overview__carousel-viewport" data-sb-carousel-viewport>
+              <div class="sb-collection-overview__carousel-track" data-sb-carousel-track>
+                {% if manual_products_count > 0 %}
+                  {% for product_slot in (1..6) %}
+                    {% liquid
+                      assign selected_product = blank
+                      case product_slot
+                        when 1
+                          assign selected_product = block.settings.product_1
+                        when 2
+                          assign selected_product = block.settings.product_2
+                        when 3
+                          assign selected_product = block.settings.product_3
+                        when 4
+                          assign selected_product = block.settings.product_4
+                        when 5
+                          assign selected_product = block.settings.product_5
+                        when 6
+                          assign selected_product = block.settings.product_6
+                      endcase
+                    %}
+                    {% if selected_product == blank %}
+                      {% continue %}
+                    {% endif %}
+                    <div class="sb-collection-overview__carousel-item" data-sb-carousel-item>
+                      {% render 'often-bought-together-product-card', product_item: selected_product %}
+                    </div>
+                  {% endfor %}
+                {% elsif overview_collection != blank %}
+                  {% for selected_product in overview_collection.products limit: 6 %}
+                    <div class="sb-collection-overview__carousel-item" data-sb-carousel-item>
+                      {% render 'often-bought-together-product-card', product_item: selected_product %}
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  {% for placeholder_index in (1..6) %}
+                    <div class="sb-collection-overview__carousel-item" data-sb-carousel-item>
+                      {% render 'product-thumbnail',
+                        product_name: 'Product',
+                        hide_reviews: true,
+                        show_add_to_cart: false,
+                        show_compare_add_to_cart_large: false
                       %}
-                      {% if selected_product == blank %}
-                        {% continue %}
-                      {% endif %}
-                      <div class="sb-collection-overview__product-item" data-collection-overview-carousel-item>
-                        {% render 'often-bought-together-product-card', product_item: selected_product %}
-                      </div>
-                    {% endfor %}
-                  {% elsif overview_collection != blank %}
-                    {% for selected_product in overview_collection.products limit: 5 %}
-                      <div class="sb-collection-overview__product-item" data-collection-overview-carousel-item>
-                        {% render 'often-bought-together-product-card', product_item: selected_product %}
-                      </div>
-                    {% endfor %}
-                  {% else %}
-                    {% for placeholder_index in (1..5) %}
-                      <div class="sb-collection-overview__product-item" data-collection-overview-carousel-item>
-                        {% render 'product-thumbnail',
-                          product_name: 'Product',
-                          hide_reviews: true,
-                          show_add_to_cart: false,
-                          show_compare_add_to_cart_large: false
-                        %}
-                      </div>
-                    {% endfor %}
-                  {% endif %}
+                    </div>
+                  {% endfor %}
+                {% endif %}
 
-                  <div class="sb-collection-overview__product-item sb-collection-overview__product-item--view-all" data-collection-overview-carousel-item>
-                    <a class="sb-collection-overview__view-all-link" href="{{ explore_link }}">
-                      <div
-                        class="sb-collection-overview__view-all-media"
-                        style="--sb-collection-overview-arrow-url: url('{{ view_all_arrow_icon_url }}');"
-                      >
-                        <p class="sb-collection-overview__view-all-label">View all</p>
-                        <span class="sb-collection-overview__view-all-arrow" aria-hidden="true"></span>
-                      </div>
-                    </a>
-                  </div>
-                  </div>
+                <div class="sb-collection-overview__carousel-item sb-collection-overview__carousel-item--view-all" data-sb-carousel-item>
+                  <a class="sb-collection-overview__view-all-link" href="{{ explore_link }}">
+                    <span class="sb-collection-overview__view-all-card">
+                      <span class="sb-collection-overview__view-all-label font-callout weight-bold">View all</span>
+                      <span
+                        class="sb-collection-overview__view-all-icon"
+                        aria-hidden="true"
+                        style="--sb-collection-overview-view-all-arrow-url: url('{{ view_all_arrow_icon_url }}');"
+                      ></span>
+                    </span>
+                  </a>
                 </div>
               </div>
+            </div>
 
-              <div class="sb-collection-overview__products-controls">
-                <button
-                  type="button"
-                  class="sb-collection-overview__products-arrow"
-                  data-collection-overview-carousel-prev
-                  aria-label="Previous products"
-                  disabled
-                >
-                  <span class="sb-collection-overview__products-arrow-icon sb-collection-overview__products-arrow-icon--left" aria-hidden="true">
-                    {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  class="sb-collection-overview__products-arrow"
-                  data-collection-overview-carousel-next
-                  aria-label="Next products"
-                  disabled
-                >
-                  <span class="sb-collection-overview__products-arrow-icon sb-collection-overview__products-arrow-icon--right" aria-hidden="true">
-                    {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-                  </span>
-                </button>
-              </div>
+            <div class="sb-collection-overview__carousel-controls" data-sb-carousel-controls>
+              <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+                <span class="sb-collection-overview__carousel-arrow-icon sb-collection-overview__carousel-arrow-icon--left" aria-hidden="true">
+                  {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+                </span>
+              </button>
+
+              <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-next aria-label="Next" disabled>
+                <span class="sb-collection-overview__carousel-arrow-icon sb-collection-overview__carousel-arrow-icon--right" aria-hidden="true">
+                  {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+                </span>
+              </button>
             </div>
           </div>
         </article>
       {% endfor %}
     {% else %}
-      <article class="sb-collection-overview__collection-row" data-sb-reveal-item>
-        <div class="sb-collection-overview__collection-card">
-          <h3 class="sb-collection-overview__collection-title font-title weight-bold">Collection name</h3>
-          <p class="sb-collection-overview__collection-body font-body weight-regular">Collection description</p>
-
-          <div class="sb-collection-overview__collection-actions">
+      <article class="sb-collection-overview__row">
+        <div class="sb-collection-overview__heading-row" data-sb-reveal-item>
+          <h2 class="sb-collection-overview__collection-title font-title weight-bold">Collection name</h2>
+          <div class="sb-collection-overview__actions">
             {% render 'radiant-button',
               label: 'Explore collection',
               link: '/collections',
               size: 'large',
-              extra_class: 'sb-collection-overview__collection-explore font-caption weight-bold'
+              extra_class: 'sb-collection-overview__explore-button font-caption weight-bold'
             %}
           </div>
         </div>
 
-        <div class="sb-collection-overview__products-panel">
-          <div class="sb-collection-overview__products-carousel" data-collection-overview-carousel>
-            <div class="sb-collection-overview__products-viewport-wrap">
-              <div class="sb-collection-overview__products-viewport" data-collection-overview-carousel-viewport>
-                <div class="sb-collection-overview__products-track" data-collection-overview-carousel-track>
-                {% for placeholder_index in (1..5) %}
-                  <div class="sb-collection-overview__product-item" data-collection-overview-carousel-item>
-                    {% render 'product-thumbnail',
-                      product_name: 'Product',
-                      hide_reviews: true,
-                      show_add_to_cart: false,
-                      show_compare_add_to_cart_large: false
-                    %}
-                  </div>
-                {% endfor %}
-                <div class="sb-collection-overview__product-item sb-collection-overview__product-item--view-all" data-collection-overview-carousel-item>
-                  <a class="sb-collection-overview__view-all-link" href="/collections">
-                    <div
-                      class="sb-collection-overview__view-all-media"
-                      style="--sb-collection-overview-arrow-url: url('{{ view_all_arrow_icon_url }}');"
-                    >
-                      <p class="sb-collection-overview__view-all-label">View all</p>
-                      <span class="sb-collection-overview__view-all-arrow" aria-hidden="true"></span>
-                    </div>
-                  </a>
+        <div class="sb-collection-overview__carousel" data-sb-carousel data-sb-reveal-item>
+          <div class="sb-collection-overview__carousel-viewport" data-sb-carousel-viewport>
+            <div class="sb-collection-overview__carousel-track" data-sb-carousel-track>
+              {% for placeholder_index in (1..6) %}
+                <div class="sb-collection-overview__carousel-item" data-sb-carousel-item>
+                  {% render 'product-thumbnail',
+                    product_name: 'Product',
+                    hide_reviews: true,
+                    show_add_to_cart: false,
+                    show_compare_add_to_cart_large: false
+                  %}
                 </div>
-                </div>
+              {% endfor %}
+
+              <div class="sb-collection-overview__carousel-item sb-collection-overview__carousel-item--view-all" data-sb-carousel-item>
+                <a class="sb-collection-overview__view-all-link" href="{{ routes.collections_url }}">
+                  <span class="sb-collection-overview__view-all-card">
+                    <span class="sb-collection-overview__view-all-label font-callout weight-bold">View all</span>
+                    <span
+                      class="sb-collection-overview__view-all-icon"
+                      aria-hidden="true"
+                      style="--sb-collection-overview-view-all-arrow-url: url('{{ view_all_arrow_icon_url }}');"
+                    ></span>
+                  </span>
+                </a>
               </div>
             </div>
+          </div>
 
-            <div class="sb-collection-overview__products-controls">
-              <button
-                type="button"
-                class="sb-collection-overview__products-arrow"
-                data-collection-overview-carousel-prev
-                aria-label="Previous products"
-                disabled
-              >
-                <span class="sb-collection-overview__products-arrow-icon sb-collection-overview__products-arrow-icon--left" aria-hidden="true">
-                  {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-                </span>
-              </button>
-              <button
-                type="button"
-                class="sb-collection-overview__products-arrow"
-                data-collection-overview-carousel-next
-                aria-label="Next products"
-                disabled
-              >
-                <span class="sb-collection-overview__products-arrow-icon sb-collection-overview__products-arrow-icon--right" aria-hidden="true">
-                  {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
-                </span>
-              </button>
-            </div>
+          <div class="sb-collection-overview__carousel-controls" data-sb-carousel-controls>
+            <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+              <span class="sb-collection-overview__carousel-arrow-icon sb-collection-overview__carousel-arrow-icon--left" aria-hidden="true">
+                {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+              </span>
+            </button>
+
+            <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-next aria-label="Next" disabled>
+              <span class="sb-collection-overview__carousel-arrow-icon sb-collection-overview__carousel-arrow-icon--right" aria-hidden="true">
+                {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
+              </span>
+            </button>
           </div>
         </div>
       </article>
@@ -406,11 +332,6 @@
 
 {% stylesheet %}
   .sb-collection-overview {
-    --sb-collection-overview-products-offset: 36px;
-    --sb-collection-overview-right-bleed: 0px;
-    align-items: flex-start;
-    display: flex;
-    flex-direction: column;
     width: 100%;
   }
 
@@ -425,9 +346,10 @@
     background: var(--sb-color-neutral-200);
     border-radius: 999px;
     display: inline-flex;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: var(--sb-space-8);
     max-width: 100%;
-    padding: 8px 12px;
+    padding: var(--sb-space-8) var(--sb-space-12);
   }
 
   .sb-collection-overview__dot {
@@ -442,14 +364,14 @@
   .sb-collection-overview__stars {
     align-items: center;
     display: inline-flex;
-    gap: 4px;
+    gap: var(--sb-space-4);
   }
 
   .sb-collection-overview__star {
     background: var(--sb-color-neutral-400);
     display: inline-block;
     flex-shrink: 0;
-    height: 16px;
+    height: var(--sb-space-16);
     mask-image: var(--sb-collection-overview-star-url);
     mask-position: center;
     mask-repeat: no-repeat;
@@ -459,7 +381,7 @@
     -webkit-mask-position: center;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: contain;
-    width: 16px;
+    width: var(--sb-space-16);
   }
 
   .sb-collection-overview__star::before {
@@ -482,8 +404,8 @@
     border-radius: 999px;
     color: var(--sb-color-neutral-900);
     display: inline-flex;
-    gap: 4px;
-    padding: 2px 6px 2px 8px;
+    gap: var(--sb-space-4);
+    padding: var(--sb-space-2) var(--sb-space-6) var(--sb-space-2) var(--sb-space-8);
     text-decoration: none;
     white-space: nowrap;
   }
@@ -497,7 +419,7 @@
     background: currentColor;
     display: inline-block;
     flex-shrink: 0;
-    height: 12px;
+    height: var(--sb-space-12);
     mask-image: var(--sb-collection-overview-arrow-url);
     mask-position: center;
     mask-repeat: no-repeat;
@@ -506,237 +428,104 @@
     -webkit-mask-position: center;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: contain;
-    width: 12px;
+    width: var(--sb-space-12);
   }
 
-  .sb-collection-overview__title {
-    color: var(--sb-color-neutral-900);
-    margin: 36px 0 0;
-    max-width: 50%;
-    width: 100%;
-  }
-
-  .sb-collection-overview__divider {
+  .sb-collection-overview__section-divider {
     background: var(--sb-color-neutral-600);
     height: 1px;
-    margin-top: 36px;
+    margin-top: var(--sb-space-36);
     width: 100%;
   }
 
-  .sb-collection-overview__labels-row {
-    column-gap: 0;
-    display: grid;
-    grid-template-columns: 425px minmax(0, 1fr);
-    margin-top: 36px;
+  .sb-collection-overview__rows {
     width: 100%;
   }
 
-  .sb-collection-overview__collections-label,
-  .sb-collection-overview__bestsellers-label {
-    color: var(--sb-color-neutral-900);
-    margin: 0;
-    text-transform: uppercase;
+  .sb-collection-overview__row--with-divider {
+    margin-top: var(--sb-space-36);
   }
 
-  .sb-collection-overview__bestsellers-label-wrap {
+  .sb-collection-overview__heading-row {
     align-items: center;
     display: flex;
-    gap: 24px;
-    padding-left: var(--sb-collection-overview-products-offset);
-  }
-
-  .sb-collection-overview__bestsellers-line {
-    background: var(--sb-color-neutral-600);
-    flex: 1 1 auto;
-    height: 1px;
-    position: relative;
-  }
-
-  .sb-collection-overview__bestsellers-line::after {
-    background: var(--sb-color-neutral-600);
-    content: '';
-    height: 24px;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1px;
-  }
-
-  .sb-collection-overview__collections-grid {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sb-space-64);
-    margin-top: 36px;
+    gap: var(--sb-space-16) var(--sb-space-24);
+    justify-content: space-between;
+    margin-top: var(--sb-space-36);
     width: 100%;
   }
 
-  .sb-collection-overview__collection-row {
-    display: grid;
-    column-gap: 0;
-    row-gap: 24px;
-    grid-template-columns: 425px minmax(0, 1fr);
-    width: 100%;
-  }
-
-  .sb-collection-overview__collection-card {
-    background-color: var(--sb-color-neutral-200);
-    background-image: var(--sb-collection-overview-collection-bg-image);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 24px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    min-height: 360px;
-    overflow: hidden;
-    padding: 36px;
-    position: relative;
-    width: 100%;
-  }
-
-  .sb-collection-overview__collection-card--with-image::after {
-    background: linear-gradient(
-      180deg,
-      var(--sb-color-always-black-50) 0%,
-      var(--sb-color-always-black-0) 50%,
-      var(--sb-color-always-black-0) 100%
-    );
-    content: '';
-    inset: 0;
-    pointer-events: none;
-    position: absolute;
-    z-index: 0;
-  }
-
-  .sb-collection-overview__collection-card--with-image .sb-collection-overview__collection-title,
-  .sb-collection-overview__collection-card--with-image .sb-collection-overview__collection-body {
-    color: var(--sb-color-always-white);
-  }
-
-  .sb-collection-overview__collection-card > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .sb-collection-overview__collection-title,
-  .sb-collection-overview__collection-body {
+  .sb-collection-overview__collection-title {
     color: var(--sb-color-neutral-900);
     margin: 0;
   }
 
-  .sb-collection-overview__collection-actions {
-    align-items: flex-end;
+  .sb-collection-overview__actions {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
-    margin-top: auto;
-  }
-
-  .sb-collection-overview__collection-explore {
-    flex-shrink: 0;
+    gap: var(--sb-space-16);
   }
 
   .sb-collection-overview__compare-button {
     align-items: center;
-    background: var(--sb-color-neutral-900);
+    background: var(--sb-color-neutral-100);
     border: 0;
     border-radius: 999px;
-    color: var(--sb-color-neutral-100);
+    box-shadow: inset 0 0 0 1px var(--sb-color-neutral-900);
+    color: var(--sb-color-neutral-900);
     display: inline-flex;
-    flex-shrink: 0;
-    height: 48px;
+    height: var(--sb-space-48);
     justify-content: center;
-    min-height: 48px;
-    padding: 0 24px;
+    padding: 0 var(--sb-space-24);
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .sb-collection-overview__compare-button:hover,
   .sb-collection-overview__compare-button:focus-visible {
-    background: var(--sb-color-neutral-100);
-    color: var(--sb-color-neutral-900);
+    background: var(--sb-color-neutral-900);
+    box-shadow: none;
+    color: var(--sb-color-neutral-100);
   }
 
-  .sb-collection-overview__products-panel {
-    min-width: 0;
-    width: calc(100% + var(--sb-collection-overview-right-bleed));
-  }
-
-  .sb-collection-overview__products-carousel {
+  .sb-collection-overview__carousel {
+    --sb-carousel-gap: var(--sb-space-36);
+    --sb-carousel-bleed-inline: var(--page-margin);
+    --sb-carousel-shadow-bleed-top: var(--sb-space-24);
+    margin-top: var(--sb-space-36);
     width: 100%;
   }
 
-  .sb-collection-overview__products-viewport-wrap {
-    overflow: visible;
-    position: relative;
-  }
-
-  .sb-collection-overview__products-viewport-wrap::before {
-    background: var(--sb-color-neutral-100);
-    content: '';
-    inset: 0 auto 0 0;
-    pointer-events: none;
-    position: absolute;
-    width: var(--sb-collection-overview-products-offset);
-    z-index: 0;
-    -webkit-mask-image: linear-gradient(90deg, var(--sb-color-always-black) 0%, var(--sb-color-always-black-0) 100%);
-    mask-image: linear-gradient(90deg, var(--sb-color-always-black) 0%, var(--sb-color-always-black-0) 100%);
-  }
-
-  .sb-collection-overview__products-viewport {
-    --sb-collection-overview-shadow-bleed-top: 24px;
-    -webkit-mask-image: linear-gradient(
-      90deg,
-      transparent 0,
-      var(--sb-color-always-black) var(--sb-collection-overview-products-offset),
-      var(--sb-color-always-black) 100%
-    );
-    mask-image: linear-gradient(
-      90deg,
-      transparent 0,
-      var(--sb-color-always-black) var(--sb-collection-overview-products-offset),
-      var(--sb-color-always-black) 100%
-    );
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    margin-top: calc(var(--sb-collection-overview-shadow-bleed-top) * -1);
+  .sb-collection-overview__carousel-viewport {
+    margin-left: calc(-1 * var(--sb-carousel-bleed-inline));
+    margin-right: calc(-1 * var(--sb-carousel-bleed-inline));
+    margin-top: calc(-1 * var(--sb-carousel-shadow-bleed-top));
     overflow-x: auto;
     overflow-y: hidden;
-    padding-top: var(--sb-collection-overview-shadow-bleed-top);
-    position: relative;
+    padding-left: var(--sb-carousel-bleed-inline);
+    padding-right: var(--sb-carousel-bleed-inline);
+    padding-top: var(--sb-carousel-shadow-bleed-top);
     scrollbar-width: none;
-    width: 100%;
-    z-index: 1;
+    width: calc(100% + (var(--sb-carousel-bleed-inline) * 2));
     -webkit-overflow-scrolling: touch;
   }
 
-  .sb-collection-overview__products-viewport::-webkit-scrollbar {
+  .sb-collection-overview__carousel-viewport::-webkit-scrollbar {
     display: none;
   }
 
-  .sb-collection-overview__products-track {
+  .sb-collection-overview__carousel-track {
     display: flex;
-    gap: 20px;
-    padding-left: var(--sb-collection-overview-products-offset);
+    gap: var(--sb-carousel-gap);
+    padding: 0;
     width: max-content;
   }
 
-  .sb-collection-overview__product-item {
-    flex: 0 0 292px;
-    max-width: 292px;
-    min-width: 292px;
-  }
-
-  .sb-collection-overview__product-item,
-  .sb-collection-overview__product-item .sb-often-bought-together__item,
-  .sb-collection-overview__product-item .sb-product-thumbnail {
-    min-width: 0;
-    width: 100%;
+  .sb-collection-overview__carousel-item {
+    flex: 0 0 283px;
+    max-width: 283px;
+    min-width: 283px;
   }
 
   .sb-collection-overview__view-all-link {
@@ -746,47 +535,116 @@
     width: 100%;
   }
 
-  .sb-collection-overview__view-all-media {
+  .sb-collection-overview__view-all-card {
     align-items: center;
     aspect-ratio: 1 / 1;
     background: var(--sb-color-neutral-200);
-    border-radius: 24px;
+    border-radius: var(--sb-space-24);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--sb-space-16);
     justify-content: center;
+    transform: scale(1);
+    transition: transform 160ms linear, background-color 160ms linear;
     width: 100%;
   }
 
-  .sb-collection-overview__view-all-link:hover .sb-collection-overview__view-all-media,
-  .sb-collection-overview__view-all-link:focus-visible .sb-collection-overview__view-all-media {
+  .sb-collection-overview__view-all-link:hover .sb-collection-overview__view-all-card,
+  .sb-collection-overview__view-all-link:focus-visible .sb-collection-overview__view-all-card {
     background: var(--sb-color-neutral-400);
+    transform: scale(1.04);
   }
 
   .sb-collection-overview__view-all-label {
-    font-family: var(--font-display--family);
-    font-size: var(--font-size-callout);
-    font-weight: 700;
-    line-height: 1.25;
-    margin: 0;
+    color: var(--sb-color-neutral-900);
   }
 
-  .sb-collection-overview__view-all-arrow {
+  .sb-collection-overview__view-all-icon {
     background: currentColor;
+    color: var(--sb-color-neutral-900);
     display: inline-block;
-    height: 20px;
-    mask-image: var(--sb-collection-overview-arrow-url);
+    height: var(--sb-space-20);
+    mask-image: var(--sb-collection-overview-view-all-arrow-url);
     mask-position: center;
     mask-repeat: no-repeat;
     mask-size: contain;
-    -webkit-mask-image: var(--sb-collection-overview-arrow-url);
+    -webkit-mask-image: var(--sb-collection-overview-view-all-arrow-url);
     -webkit-mask-position: center;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: contain;
-    width: 20px;
+    width: var(--sb-space-20);
   }
 
-  .sb-collection-overview__product-item .sb-often-bought-together__item {
+  .sb-collection-overview__carousel-controls {
+    align-items: center;
+    display: none;
+    gap: var(--sb-space-16);
+    justify-content: flex-end;
+    margin-top: var(--sb-space-48);
+  }
+
+  .sb-collection-overview__carousel.is-overflowing .sb-collection-overview__carousel-controls {
+    display: flex;
+  }
+
+  .sb-collection-overview__carousel-arrow {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    height: var(--sb-space-48);
+    justify-content: center;
+    padding: 0;
+    width: var(--sb-space-48);
+  }
+
+  .sb-collection-overview__carousel-arrow[disabled] {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .sb-collection-overview__carousel-arrow-icon {
+    display: inline-flex;
+    height: var(--sb-space-48);
+    width: var(--sb-space-48);
+  }
+
+  .sb-collection-overview__carousel-arrow-icon--right {
+    transform: scaleX(-1);
+  }
+
+  .sb-collection-overview__carousel-arrow-icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .sb-collection-overview__carousel-arrow-icon svg path:first-child {
+    fill: var(--sb-color-neutral-200);
+  }
+
+  .sb-collection-overview__carousel-arrow-icon svg path:last-child {
+    fill: var(--sb-color-neutral-800);
+  }
+
+  .sb-collection-overview__carousel-arrow:hover:not([disabled]) .sb-collection-overview__carousel-arrow-icon svg path:last-child,
+  .sb-collection-overview__carousel-arrow:focus-visible:not([disabled]) .sb-collection-overview__carousel-arrow-icon svg path:last-child {
+    fill: var(--sb-color-primary-500);
+  }
+
+  .sb-collection-overview__carousel.is-not-overflowing .sb-collection-overview__carousel-track {
+    margin-inline: auto;
+  }
+
+  .sb-collection-overview__carousel-item,
+  .sb-collection-overview__carousel-item .sb-often-bought-together__item,
+  .sb-collection-overview__carousel-item .sb-product-thumbnail {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .sb-collection-overview__carousel-item .sb-often-bought-together__item {
     display: flex;
     margin: 0 !important;
     padding: 0 !important;
@@ -807,7 +665,7 @@
 
   .sb-collection-overview .sb-product-thumbnail__media {
     background: var(--sb-color-neutral-100);
-    border-radius: 24px;
+    border-radius: var(--sb-space-24);
     box-shadow: 0 0 10px 0 var(--sb-color-always-black-12);
     display: block;
     overflow: hidden;
@@ -835,13 +693,13 @@
 
   .sb-collection-overview .sb-product-thumbnail__badge {
     align-items: center;
-    border-radius: 12px;
+    border-radius: var(--sb-space-12);
     color: var(--sb-color-always-white);
     display: inline-flex;
-    left: 16px;
-    padding: 8px 12px;
+    left: var(--sb-space-16);
+    padding: var(--sb-space-8) var(--sb-space-12);
     position: absolute;
-    top: 16px;
+    top: var(--sb-space-16);
     white-space: nowrap;
     z-index: 2;
   }
@@ -857,7 +715,7 @@
   .sb-collection-overview .sb-product-thumbnail__name {
     color: var(--sb-color-neutral-900);
     display: block;
-    margin: 16px 0 0;
+    margin: var(--sb-space-16) 0 0;
     text-decoration: none;
     width: 100%;
   }
@@ -871,22 +729,22 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 8px;
+    gap: var(--sb-space-12);
+    margin-top: var(--sb-space-8);
   }
 
   .sb-collection-overview .sb-product-thumbnail__stars {
     align-items: center;
     display: inline-flex;
-    gap: 4px;
-    padding-bottom: 2px;
+    gap: var(--sb-space-4);
+    padding-bottom: var(--sb-space-2);
   }
 
   .sb-collection-overview .sb-product-thumbnail__star {
     display: inline-block;
-    height: 20px;
+    height: var(--sb-space-20);
     position: relative;
-    width: 20px;
+    width: var(--sb-space-20);
   }
 
   .sb-collection-overview .sb-product-thumbnail__star::before,
@@ -921,8 +779,8 @@
   .sb-collection-overview .sb-product-thumbnail__price-row {
     align-items: center;
     display: flex;
-    gap: 8px;
-    margin-top: 8px;
+    gap: var(--sb-space-8);
+    margin-top: var(--sb-space-8);
   }
 
   .sb-collection-overview .sb-product-thumbnail__price {
@@ -941,9 +799,9 @@
   .sb-collection-overview .sb-product-thumbnail__swatches {
     align-items: center;
     display: flex;
-    gap: 8px;
-    margin-top: 8px;
-    min-height: 36px;
+    gap: var(--sb-space-8);
+    margin-top: var(--sb-space-8);
+    min-height: var(--sb-space-36);
   }
 
   .sb-collection-overview .sb-product-thumbnail__swatches.is-empty {
@@ -959,10 +817,10 @@
     box-shadow: inset 0 0 0 2px transparent;
     cursor: pointer;
     display: inline-flex;
-    height: 36px;
+    height: var(--sb-space-36);
     justify-content: center;
-    padding: 4px;
-    width: 36px;
+    padding: var(--sb-space-4);
+    width: var(--sb-space-36);
   }
 
   .sb-collection-overview .sb-product-thumbnail__swatch:hover,
@@ -1017,7 +875,7 @@
     box-shadow: 0 0 24px 0 var(--sb-color-always-black-25);
     cursor: pointer;
     display: inline-flex;
-    height: 36px;
+    height: var(--sb-space-36);
     justify-content: center;
     opacity: 0;
     padding: 0;
@@ -1025,18 +883,18 @@
     position: absolute;
     top: 50%;
     transition: opacity 120ms, transform 120ms;
-    width: 36px;
+    width: var(--sb-space-36);
     z-index: 2;
   }
 
   .sb-collection-overview .sb-product-thumbnail__gallery-nav--left {
-    left: 16px;
-    transform: translate(-8px, -50%);
+    left: var(--sb-space-16);
+    transform: translate(calc(-1 * var(--sb-space-8)), -50%);
   }
 
   .sb-collection-overview .sb-product-thumbnail__gallery-nav--right {
-    right: 16px;
-    transform: translate(8px, -50%);
+    right: var(--sb-space-16);
+    transform: translate(var(--sb-space-8), -50%);
   }
 
   .sb-collection-overview .sb-product-thumbnail__media-wrap:hover .sb-product-thumbnail__gallery-nav,
@@ -1048,8 +906,8 @@
 
   .sb-collection-overview .sb-product-thumbnail__gallery-nav-icon {
     display: block;
-    height: 36px;
-    width: 36px;
+    height: var(--sb-space-36);
+    width: var(--sb-space-36);
   }
 
   .sb-collection-overview .sb-product-thumbnail__gallery-nav--right .sb-product-thumbnail__gallery-nav-icon {
@@ -1077,20 +935,20 @@
 
   .sb-collection-overview .sb-product-thumbnail__add-to-cart {
     --sb-add-label-width: 3ch;
-    --sb-add-gap: 8px;
-    --sb-add-pill-padding: 16px;
+    --sb-add-gap: var(--sb-space-8);
+    --sb-add-pill-padding: var(--sb-space-16);
     align-items: center;
     background: var(--sb-color-always-white);
     border: 0;
     border-radius: 500px;
     box-sizing: border-box;
-    bottom: 16px;
+    bottom: var(--sb-space-16);
     box-shadow: 0 0 24px 0 var(--sb-color-always-black-25);
     color: var(--sb-color-always-black);
     cursor: pointer;
     display: inline-flex;
     gap: 0;
-    height: 36px;
+    height: var(--sb-space-36);
     inline-size: max-content;
     justify-content: center;
     opacity: 0;
@@ -1098,9 +956,9 @@
     padding-inline: 10px;
     pointer-events: none;
     position: absolute;
-    right: 16px;
+    right: var(--sb-space-16);
     transition: width 140ms linear, opacity 140ms linear, gap 140ms linear, padding-inline 140ms linear;
-    width: 36px;
+    width: var(--sb-space-36);
     z-index: 2;
   }
 
@@ -1117,24 +975,24 @@
   .sb-collection-overview .sb-product-thumbnail__add-to-cart.is-loading {
     gap: var(--sb-add-gap);
     padding-inline: var(--sb-add-pill-padding);
-    width: calc((var(--sb-add-pill-padding) * 2) + 16px + var(--sb-add-gap) + var(--sb-add-label-width));
+    width: calc((var(--sb-add-pill-padding) * 2) + var(--sb-space-16) + var(--sb-add-gap) + var(--sb-add-label-width));
   }
 
   .sb-collection-overview .sb-product-thumbnail__add-to-cart.is-added {
     --sb-add-label-width: 5ch;
     gap: var(--sb-add-gap);
     padding-inline: var(--sb-add-pill-padding);
-    width: calc((var(--sb-add-pill-padding) * 2) + 16px + var(--sb-add-gap) + var(--sb-add-label-width));
+    width: calc((var(--sb-add-pill-padding) * 2) + var(--sb-space-16) + var(--sb-add-gap) + var(--sb-add-label-width));
   }
 
   .sb-collection-overview .sb-product-thumbnail__add-to-cart-icon-image {
     display: block;
-    flex: 0 0 16px;
+    flex: 0 0 var(--sb-space-16);
     filter: var(--sb-add-icon-filter, brightness(0));
-    height: 16px;
+    height: var(--sb-space-16);
     max-width: none;
     object-fit: contain;
-    width: 16px;
+    width: var(--sb-space-16);
   }
 
   .sb-collection-overview .sb-product-thumbnail__add-to-cart-label {
@@ -1177,107 +1035,333 @@
     }
   }
 
-  .sb-collection-overview__products-controls {
-    align-items: center;
-    display: none;
-    gap: 16px;
-    justify-content: flex-end;
-    margin-top: 48px;
-  }
+  @media (max-width: 989px) {
+    .sb-collection-overview__heading-row {
+      align-items: flex-start;
+      flex-direction: column;
+    }
 
-  .sb-collection-overview__products-carousel.is-overflowing .sb-collection-overview__products-controls {
-    display: flex;
-  }
-
-  .sb-collection-overview__products-arrow {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    display: inline-flex;
-    height: 48px;
-    justify-content: center;
-    padding: 0;
-    width: 48px;
-  }
-
-  .sb-collection-overview__products-arrow[disabled] {
-    cursor: default;
-    opacity: 0.5;
-  }
-
-  .sb-collection-overview__products-arrow-icon {
-    display: inline-flex;
-    height: 48px;
-    width: 48px;
-  }
-
-  .sb-collection-overview__products-arrow-icon--right {
-    transform: scaleX(-1);
-  }
-
-  .sb-collection-overview__products-arrow-icon svg {
-    display: block;
-    height: 100%;
-    width: 100%;
-  }
-
-  .sb-collection-overview__products-arrow-icon svg path:first-child {
-    fill: var(--sb-color-neutral-200);
-  }
-
-  .sb-collection-overview__products-arrow-icon svg path:last-child {
-    fill: var(--sb-color-neutral-800);
-  }
-
-  .sb-collection-overview__products-arrow:hover:not([disabled]) .sb-collection-overview__products-arrow-icon svg path:last-child,
-  .sb-collection-overview__products-arrow:focus-visible:not([disabled]) .sb-collection-overview__products-arrow-icon svg path:last-child {
-    fill: var(--sb-color-primary-500);
+    .sb-collection-overview__actions {
+      width: 100%;
+    }
   }
 
   @media (max-width: 749px) {
-    .sb-collection-overview__title {
-      max-width: 100%;
+    .sb-collection-overview__header {
+      align-items: center;
+      padding-right: var(--sb-space-8);
     }
 
-    .sb-collection-overview__labels-row {
-      grid-template-columns: 1fr;
-      row-gap: 12px;
-    }
-
-    .sb-collection-overview__bestsellers-label-wrap {
-      padding-left: 0;
-    }
-
-    .sb-collection-overview__collection-row {
-      grid-template-columns: 1fr;
-    }
-
-    .sb-collection-overview__collection-card {
-      min-height: 0;
-    }
-
-    .sb-collection-overview__product-item {
-      flex-basis: 228px;
-      max-width: 228px;
-      min-width: 228px;
-    }
-  }
-
-  @media (min-width: 1361px) {
-    .sb-collection-overview {
-      --sb-collection-overview-right-bleed: calc((100vw - var(--page-width)) / 2);
+    .sb-collection-overview__dot:last-child {
+      display: none;
     }
   }
 {% endstylesheet %}
 
-{% javascript %}
+<script>
   (() => {
-    const initCollectionOverviewAddToCart = (scope = document) => {
+    const initCollectionOverviewThumbnails = (scope = document) => {
       const roots = scope.querySelectorAll('.sb-collection-overview');
       if (!roots.length) return;
+      const variantUpdateEvent = window.SBProductThumbnail?.ThemeEvents?.variantUpdate || 'variant:update';
+
+      const parseGalleryToken = (token) => {
+        const raw = (token || '').trim();
+        if (!raw) return null;
+        const parts = raw.split('::');
+        if (parts.length > 1) {
+          const type = parts[0] === 'video' ? 'video' : 'image';
+          const src = (parts[1] || '').trim();
+          const poster = (parts[2] || '').trim();
+          if (!src) return null;
+          return { type, src, poster };
+        }
+        const lowerRaw = raw.toLowerCase();
+        if (lowerRaw.includes('.mp4') || lowerRaw.includes('.webm') || lowerRaw.includes('.m3u8')) {
+          return { type: 'video', src: raw, poster: '' };
+        }
+        return { type: 'image', src: raw, poster: '' };
+      };
+
+      const buildMediaNode = (item, loading = 'lazy') => {
+        if (!item || !item.src) return null;
+        const baseClassName = 'sb-product-thumbnail__media-item';
+        if (item.type === 'video') {
+          const video = document.createElement('video');
+          video.className = `${baseClassName} sb-product-thumbnail__video`;
+          video.src = item.src;
+          video.autoplay = true;
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute('playsinline', 'true');
+          if (item.poster) video.poster = item.poster;
+          return video;
+        }
+        const image = document.createElement('img');
+        image.className = `${baseClassName} sb-product-thumbnail__image`;
+        image.src = item.src;
+        image.loading = loading;
+        image.decoding = 'async';
+        return image;
+      };
+
+      const getSourceItems = (mediaWrap) => {
+        const fromSources = Array.from(mediaWrap.querySelectorAll('.sb-product-thumbnail__gallery-image-source'))
+          .map((node) => parseGalleryToken(node.dataset.galleryImage || ''))
+          .filter(Boolean);
+        if (fromSources.length) return fromSources;
+
+        const mediaItem = mediaWrap.querySelector('.sb-product-thumbnail__media-item');
+        if (mediaItem instanceof HTMLVideoElement) {
+          return [{ type: 'video', src: mediaItem.currentSrc || mediaItem.src || '', poster: mediaItem.poster || '' }].filter((item) => item.src);
+        }
+        if (mediaItem instanceof HTMLImageElement && mediaItem.src) {
+          return [{ type: 'image', src: mediaItem.src, poster: '' }];
+        }
+        return [];
+      };
+
+      const updateSlide = (mediaWrap, nextIndex) => {
+        const track = mediaWrap.querySelector('.sb-product-thumbnail__carousel-track');
+        if (!track) return;
+        const slides = Array.from(track.children);
+        const total = slides.length;
+        if (!total) return;
+        const wrapped = ((nextIndex % total) + total) % total;
+        track.style.transform = `translate3d(${-wrapped * 100}%, 0, 0)`;
+        slides.forEach((slide, idx) => slide.setAttribute('aria-hidden', idx === wrapped ? 'false' : 'true'));
+        mediaWrap.dataset.galleryIndex = `${wrapped}`;
+      };
+
+      const renderMediaFromSources = (mediaWrap, sourceItems) => {
+        const mediaLink = mediaWrap.querySelector('.sb-product-thumbnail__media');
+        if (!mediaLink) return;
+
+        const normalizedItems = sourceItems.filter((item) => item && item.src);
+        if (!normalizedItems.length) return;
+
+        mediaLink
+          .querySelectorAll(':scope > .sb-product-thumbnail__media-item, :scope > .sb-product-thumbnail__carousel, :scope > .sb-product-thumbnail__image-placeholder')
+          .forEach((node) => node.remove());
+
+        if (normalizedItems.length > 1) {
+          const carousel = document.createElement('div');
+          carousel.className = 'sb-product-thumbnail__carousel';
+          const track = document.createElement('div');
+          track.className = 'sb-product-thumbnail__carousel-track is-instant';
+          carousel.appendChild(track);
+
+          normalizedItems.forEach((item, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'sb-product-thumbnail__carousel-slide';
+            slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
+            const node = buildMediaNode(item, index === 0 ? 'eager' : 'lazy');
+            if (node) slide.appendChild(node);
+            track.appendChild(slide);
+          });
+
+          mediaLink.appendChild(carousel);
+          mediaWrap.dataset.galleryIndex = '0';
+          updateSlide(mediaWrap, 0);
+          requestAnimationFrame(() => track.classList.remove('is-instant'));
+        } else {
+          const node = buildMediaNode(normalizedItems[0], 'eager');
+          if (node) mediaLink.appendChild(node);
+          mediaWrap.dataset.galleryIndex = '0';
+        }
+
+        mediaWrap.querySelectorAll('[data-gallery-nav]').forEach((button) => {
+          button.hidden = normalizedItems.length < 2;
+        });
+      };
+
+      const mediaLoadPromiseCache = new Map();
+      const ensureMediaReady = (item) => {
+        if (!item || !item.src) return Promise.resolve();
+        if (mediaLoadPromiseCache.has(item.src)) return mediaLoadPromiseCache.get(item.src);
+
+        const mediaReadyPromise = new Promise((resolve) => {
+          if (item.type === 'video') {
+            const video = document.createElement('video');
+            const done = () => resolve();
+            video.preload = 'auto';
+            video.muted = true;
+            video.playsInline = true;
+            video.src = item.src;
+            if (item.poster) video.poster = item.poster;
+            video.addEventListener('loadeddata', done, { once: true });
+            video.addEventListener('canplay', done, { once: true });
+            video.addEventListener('error', done, { once: true });
+            video.load();
+            return;
+          }
+
+          const image = new Image();
+          const done = () => resolve();
+          image.decoding = 'async';
+          image.onload = done;
+          image.onerror = done;
+          image.src = item.src;
+          if (image.complete) resolve();
+        });
+
+        mediaLoadPromiseCache.set(item.src, mediaReadyPromise);
+        return mediaReadyPromise;
+      };
+
+      const setFirstSlideImage = (mediaWrap, nextSource) => {
+        const nextSrc = String(nextSource || '').trim();
+        if (!nextSrc) return;
+        const mediaLink = mediaWrap.querySelector('.sb-product-thumbnail__media');
+        if (!mediaLink) return;
+
+        const firstSlide = mediaLink.querySelector('.sb-product-thumbnail__carousel-slide');
+        const standaloneMedia = mediaLink.querySelector(':scope > .sb-product-thumbnail__media-item');
+        const currentMedia = firstSlide
+          ? firstSlide.querySelector('.sb-product-thumbnail__media-item')
+          : standaloneMedia;
+        if (!currentMedia) return;
+
+        const currentSrc = currentMedia.currentSrc || currentMedia.getAttribute('src') || '';
+        if (currentMedia.tagName.toLowerCase() === 'img' && currentSrc === nextSrc) return;
+
+        const token = String((Number(mediaWrap.dataset.firstSlideSwapToken || '0') || 0) + 1);
+        mediaWrap.dataset.firstSlideSwapToken = token;
+        const applyIfCurrent = (callback) => {
+          if (mediaWrap.dataset.firstSlideSwapToken !== token) return;
+          callback();
+        };
+
+        const preload = new Image();
+        preload.decoding = 'async';
+        preload.src = nextSrc;
+
+        const apply = () => {
+          applyIfCurrent(() => {
+            if (currentMedia.tagName.toLowerCase() === 'img') {
+              currentMedia.setAttribute('src', nextSrc);
+              currentMedia.removeAttribute('srcset');
+              currentMedia.setAttribute('loading', 'eager');
+            } else {
+              const replacement = document.createElement('img');
+              replacement.className = 'sb-product-thumbnail__media-item sb-product-thumbnail__image';
+              replacement.loading = 'eager';
+              replacement.decoding = 'async';
+              replacement.src = nextSrc;
+              replacement.alt = currentMedia.getAttribute('aria-label') || '';
+              currentMedia.replaceWith(replacement);
+            }
+          });
+        };
+
+        if (preload.complete) {
+          apply();
+        } else {
+          preload.addEventListener('load', apply, { once: true });
+        }
+      };
+
+      const setGallerySources = (mediaWrap, sourceItems) => {
+        let sourcesContainer = mediaWrap.querySelector('.sb-product-thumbnail__gallery-sources');
+        if (!sourcesContainer) {
+          sourcesContainer = document.createElement('div');
+          sourcesContainer.className = 'sb-product-thumbnail__gallery-sources';
+          sourcesContainer.setAttribute('aria-hidden', 'true');
+          mediaWrap.appendChild(sourcesContainer);
+        }
+
+        sourcesContainer.innerHTML = '';
+        sourceItems.forEach((item) => {
+          if (!item || !item.src) return;
+          const sourceNode = document.createElement('span');
+          sourceNode.className = 'sb-product-thumbnail__gallery-image-source';
+          const token =
+            item.type === 'video'
+              ? `video::${item.src}${item.poster ? `::${item.poster}` : ''}`
+              : `image::${item.src}`;
+          sourceNode.dataset.galleryImage = token;
+          sourcesContainer.appendChild(sourceNode);
+        });
+      };
 
       roots.forEach((root) => {
+        if (root.dataset.sbCollectionOverviewThumbnailsInitialized === 'true') return;
+        root.dataset.sbCollectionOverviewThumbnailsInitialized = 'true';
+
+        if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initThumbnailMediaScope === 'function') {
+          window.SBProductThumbnail.initThumbnailMediaScope(root, { initSwatchInteractions: true });
+        } else {
+          root.querySelectorAll('.sb-product-thumbnail__media-wrap').forEach((mediaWrap) => {
+            renderMediaFromSources(mediaWrap, getSourceItems(mediaWrap));
+
+            if (mediaWrap.dataset.galleryNavBound !== 'true') {
+              mediaWrap.dataset.galleryNavBound = 'true';
+              mediaWrap.querySelectorAll('[data-gallery-nav]').forEach((button) => {
+                button.addEventListener('click', (event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  const delta = Number.parseInt(button.dataset.galleryNav || '0', 10);
+                  if (!Number.isFinite(delta) || delta === 0) return;
+                  const currentIndex = Number.parseInt(mediaWrap.dataset.galleryIndex || '0', 10) || 0;
+                  updateSlide(mediaWrap, currentIndex + delta);
+                });
+              });
+            }
+          });
+
+          root.querySelectorAll('.sb-product-thumbnail__swatches').forEach((row) => {
+            const applySwatchMedia = async (swatchButton, sourceId = '') => {
+              if (!swatchButton) return;
+              const thumbnail = row.closest('.sb-product-thumbnail');
+              if (!thumbnail) return;
+              const mediaWrap = thumbnail.querySelector('.sb-product-thumbnail__media-wrap');
+              if (!mediaWrap) return;
+              const swatchSwapToken = String((Number(mediaWrap.dataset.swatchSwapToken || '0') || 0) + 1);
+              mediaWrap.dataset.swatchSwapToken = swatchSwapToken;
+
+              const nextImage = (swatchButton.dataset.thumbnailImage || '').trim();
+              const nextGallery = (swatchButton.dataset.thumbnailGallery || '').trim();
+              const isPreviewSource =
+                sourceId === 'product-thumbnail-swatch-hover' || sourceId === 'product-thumbnail-swatch-focus';
+
+              if (isPreviewSource) {
+                if (!nextImage) return;
+                await ensureMediaReady({ type: 'image', src: nextImage, poster: '' });
+                if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
+                setFirstSlideImage(mediaWrap, nextImage);
+                return;
+              }
+
+              let nextSourceItems = nextGallery
+                .split('||')
+                .map((token) => parseGalleryToken(token))
+                .filter(Boolean);
+
+              if (!nextSourceItems.length && nextImage) {
+                nextSourceItems = [{ type: 'image', src: nextImage, poster: '' }];
+              }
+
+              if (!nextSourceItems.length) return;
+              await ensureMediaReady(nextSourceItems[0]);
+              if (mediaWrap.dataset.swatchSwapToken !== swatchSwapToken) return;
+              setGallerySources(mediaWrap, nextSourceItems);
+              renderMediaFromSources(mediaWrap, nextSourceItems);
+            };
+
+            row.addEventListener(variantUpdateEvent, (event) => {
+              const swatchButton = event?.detail?.data?.swatchButton;
+              if (!(swatchButton instanceof HTMLElement)) return;
+              if (!row.contains(swatchButton)) return;
+              applySwatchMedia(swatchButton, String(event?.detail?.sourceId || ''));
+            });
+          });
+
+          if (window.SBProductThumbnail && typeof window.SBProductThumbnail.initSwatchInteractionScope === 'function') {
+            window.SBProductThumbnail.initSwatchInteractionScope(root);
+          }
+        }
+
         root.querySelectorAll('[data-add-to-cart]').forEach((button) => {
           if (button.dataset.collectionOverviewAtcBound === 'true') return;
           button.dataset.collectionOverviewAtcBound = 'true';
@@ -1314,133 +1398,15 @@
       });
     };
 
-    const initCollectionOverviewCarousels = (scope = document) => {
-      const roots = scope.querySelectorAll('[data-collection-overview-carousel]');
-      if (!roots.length) return;
-
-      roots.forEach((root) => {
-        if (root.dataset.collectionOverviewCarouselInit === 'true') return;
-        root.dataset.collectionOverviewCarouselInit = 'true';
-
-        const viewport = root.querySelector('[data-collection-overview-carousel-viewport]');
-        const track = root.querySelector('[data-collection-overview-carousel-track]');
-        const prevButton = root.querySelector('[data-collection-overview-carousel-prev]');
-        const nextButton = root.querySelector('[data-collection-overview-carousel-next]');
-
-        if (!viewport || !track || !prevButton || !nextButton) return;
-
-        const epsilon = 2;
-        const getItems = () => Array.from(track.querySelectorAll('[data-collection-overview-carousel-item]'));
-        const getMaxScroll = () => Math.max(0, viewport.scrollWidth - viewport.clientWidth);
-
-        const getSnapPoints = () => {
-          const items = getItems();
-          const maxScroll = getMaxScroll();
-          if (!items.length) return [0];
-
-          const firstLeft = items[0].offsetLeft;
-          const points = items.map((item) => {
-            const offset = item.offsetLeft - firstLeft;
-            return Math.max(0, Math.min(maxScroll, Number(offset.toFixed(2))));
-          });
-          points.push(maxScroll);
-
-          return Array.from(new Set(points)).sort((a, b) => a - b);
-        };
-
-        const syncState = () => {
-          const maxScroll = getMaxScroll();
-          const overflowing = maxScroll > 1;
-
-          root.classList.toggle('is-overflowing', overflowing);
-          root.classList.toggle('is-not-overflowing', !overflowing);
-
-          if (!overflowing) {
-            if (Math.abs(viewport.scrollLeft) > epsilon) viewport.scrollLeft = 0;
-            prevButton.disabled = true;
-            nextButton.disabled = true;
-            return;
-          }
-
-          if (viewport.scrollLeft < epsilon) viewport.scrollLeft = 0;
-          if (viewport.scrollLeft > maxScroll - epsilon) viewport.scrollLeft = maxScroll;
-
-          prevButton.disabled = viewport.scrollLeft <= epsilon;
-          nextButton.disabled = viewport.scrollLeft >= maxScroll - epsilon;
-        };
-
-        const scrollToOffset = (targetOffset) => {
-          const maxScroll = getMaxScroll();
-          let nextOffset = Math.max(0, Math.min(targetOffset, maxScroll));
-          if (nextOffset < epsilon) nextOffset = 0;
-          if (nextOffset > maxScroll - epsilon) nextOffset = maxScroll;
-          viewport.scrollTo({ left: nextOffset, behavior: 'smooth' });
-        };
-
-        const getNextSnap = () => {
-          const current = viewport.scrollLeft;
-          const maxScroll = getMaxScroll();
-          const points = getSnapPoints();
-          for (const point of points) {
-            if (point > current + epsilon) return point;
-          }
-          return maxScroll;
-        };
-
-        const getPrevSnap = () => {
-          const current = viewport.scrollLeft;
-          const points = getSnapPoints();
-          for (let i = points.length - 1; i >= 0; i -= 1) {
-            if (points[i] < current - epsilon) return points[i];
-          }
-          return 0;
-        };
-
-        prevButton.addEventListener('click', () => {
-          scrollToOffset(getPrevSnap());
-        });
-
-        nextButton.addEventListener('click', () => {
-          scrollToOffset(getNextSnap());
-        });
-
-        viewport.addEventListener(
-          'scroll',
-          () => {
-            window.requestAnimationFrame(syncState);
-          },
-          { passive: true }
-        );
-
-        if ('ResizeObserver' in window) {
-          const observer = new ResizeObserver(() => syncState());
-          observer.observe(viewport);
-          observer.observe(track);
-        }
-
-        track.querySelectorAll('img').forEach((image) => {
-          if (image.complete) return;
-          image.addEventListener('load', syncState, { once: true });
-          image.addEventListener('error', syncState, { once: true });
-        });
-
-        window.addEventListener('resize', syncState);
-        window.addEventListener('load', syncState);
-
-        syncState();
-        window.requestAnimationFrame(syncState);
-        window.setTimeout(syncState, 120);
-      });
-    };
-
-    initCollectionOverviewAddToCart(document);
-    initCollectionOverviewCarousels(document);
+    window.SBInitCollectionOverviewThumbnails = initCollectionOverviewThumbnails;
+    initCollectionOverviewThumbnails(document);
     document.addEventListener('shopify:section:load', (event) => {
-      initCollectionOverviewAddToCart(event.target);
-      initCollectionOverviewCarousels(event.target);
+      initCollectionOverviewThumbnails(event.target);
     });
   })();
-{% endjavascript %}
+</script>
+
+{% render 'sb-carousel-init' %}
 
 {% schema %}
 {
@@ -1464,30 +1430,8 @@
         },
         {
           "type": "text",
-          "id": "title",
-          "label": "Title override"
-        },
-        {
-          "type": "textarea",
-          "id": "description",
-          "label": "Description override"
-        },
-        {
-          "type": "text",
-          "id": "explore_label",
-          "label": "Explore button label",
-          "default": "Explore collection"
-        },
-        {
-          "type": "url",
-          "id": "explore_link",
-          "label": "Explore button link"
-        },
-        {
-          "type": "text",
-          "id": "compare_label",
-          "label": "Compare button label",
-          "default": "Compare"
+          "id": "collection_name_override",
+          "label": "Collection name override"
         },
         {
           "type": "url",
@@ -1518,6 +1462,11 @@
           "type": "product",
           "id": "product_5",
           "label": "Product 5"
+        },
+        {
+          "type": "product",
+          "id": "product_6",
+          "label": "Product 6"
         }
       ]
     }

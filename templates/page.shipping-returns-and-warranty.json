@@ -104,13 +104,6 @@
             "answer": "<p>When your order is dispatched, you'll receive an email with tracking details.</p>"
           }
         },
-        "accordion_item_HneDrm": {
-          "type": "accordion_item",
-          "settings": {
-            "question": "Do you ship to P.O. boxes?",
-            "answer": "<p>Our logistic partners require a signature upon delivery so unfortunately they are unable to make deliveries to P.O. boxes.</p>"
-          }
-        },
         "accordion_item_gNhhK8": {
           "type": "accordion_item",
           "settings": {
@@ -132,7 +125,6 @@
         "accordion_item_Xg9qb8",
         "accordion_item_cwxVmi",
         "accordion_item_xqk77R",
-        "accordion_item_HneDrm",
         "accordion_item_gNhhK8",
         "accordion_item_9h7JaD"
       ],

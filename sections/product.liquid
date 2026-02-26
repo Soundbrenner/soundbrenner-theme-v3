@@ -29,6 +29,9 @@
   assign selected_multipack_variant_available = false
   assign selected_multipack_variant_price = blank
   assign selected_multipack_variant_compare_at_price = blank
+  assign product_page_header_ref = product.metafields.custom.sbv2_product_page_header
+  assign product_page_header = product_page_header_ref.value | default: product_page_header_ref.reference.value | default: product_page_header_ref.reference | default: product_page_header_ref
+  assign product_has_page_header = false
   assign use_variant_media_gallery = false
   assign product_media_tokens = blank
   assign show_shop_pay_guarantee = false
@@ -42,6 +45,10 @@
   assign product_usps_root = product_usps_ref.value | default: product_usps_ref.reference | default: product_usps_ref
   assign add_to_cart_icon_type = section.settings.add_to_cart_icon | default: 'cart'
   assign product_module_block_types = '|media_gallery|variant_explainer_box|delivery_explainer_box|video_stories|in_the_box|description|popular_add_ons|'
+
+  if product_page_header != blank
+    assign product_has_page_header = true
+  endif
 
   if product.metafields.reviews.rating.value != blank
     assign rating_value = product.metafields.reviews.rating.value
@@ -428,7 +435,7 @@
   data-selector-list-option-position="{{ selector_list_option_position }}"
 >
   <div class="sb-product-main__sticky-bar-wrap">
-    <div class="sb-product-main__sticky-bar" data-sticky-buy-bar>
+    <div class="sb-product-main__sticky-bar{% unless product_has_page_header %} sb-product-main__sticky-bar--no-segmented{% endunless %}" data-sticky-buy-bar>
       <div class="sb-product-main__sticky-info">
         <div class="sb-product-main__sticky-image-wrap" aria-hidden="true">
           {% if sticky_media_image_url != blank %}
@@ -501,32 +508,34 @@
         </div>
       </div>
 
-      <div class="sb-product-main__sticky-segmented-wrap">
-        <div
-          class="sb-product-main__sticky-segmented"
-          data-sticky-segmented-controls
-          role="tablist"
-          aria-label="Page mode"
-        >
-          <span class="sb-product-main__sticky-segment-indicator" aria-hidden="true"></span>
-          <button
-            class="sb-product-main__sticky-segment-pill is-active font-caption weight-semibold"
-            type="button"
-            data-sticky-segment-option="learn-more"
-            aria-pressed="true"
+      {% if product_has_page_header %}
+        <div class="sb-product-main__sticky-segmented-wrap">
+          <div
+            class="sb-product-main__sticky-segmented"
+            data-sticky-segmented-controls
+            role="tablist"
+            aria-label="Page mode"
           >
-            Learn more
-          </button>
-          <button
-            class="sb-product-main__sticky-segment-pill font-caption weight-medium"
-            type="button"
-            data-sticky-segment-option="buy-now"
-            aria-pressed="false"
-          >
-            Buy now
-          </button>
+            <span class="sb-product-main__sticky-segment-indicator" aria-hidden="true"></span>
+            <button
+              class="sb-product-main__sticky-segment-pill is-active font-caption weight-semibold"
+              type="button"
+              data-sticky-segment-option="learn-more"
+              aria-pressed="true"
+            >
+              Learn more
+            </button>
+            <button
+              class="sb-product-main__sticky-segment-pill font-caption weight-medium"
+              type="button"
+              data-sticky-segment-option="buy-now"
+              aria-pressed="false"
+            >
+              Buy now
+            </button>
+          </div>
         </div>
-      </div>
+      {% endif %}
 
       <button
         class="sb-product-main__sticky-add-button sb-button-radiant sb-button-radiant--medium sb-button-radiant--leading-icon font-caption weight-bold"
@@ -1793,6 +1802,10 @@
       max-width: 1240px;
       padding: var(--sb-space-12) var(--sb-space-24);
       width: min(1240px, calc(100vw - (var(--sb-sticky-inline-margin) * 2)));
+    }
+
+    .sb-product-main__sticky-bar--no-segmented {
+      grid-template-columns: minmax(0, 1fr) auto;
     }
 
     .sb-product-main__sticky-info {
@@ -3831,7 +3844,8 @@
       };
 
       const scrollToReviewsHeading = ({ ensureBuyNow = false } = {}) => {
-        if (ensureBuyNow && normalizeSegment(root.dataset.pageSegment || 'learn-more') !== 'buy-now') {
+        const hasSegmentedControls = Boolean(stickySegmentedControls && stickySegmentButtons.length);
+        if (hasSegmentedControls && ensureBuyNow && normalizeSegment(root.dataset.pageSegment || 'learn-more') !== 'buy-now') {
           applyStickySegment('buy-now', { syncUrl: true });
         }
 
@@ -3852,7 +3866,7 @@
           });
         };
 
-        if (ensureBuyNow) {
+        if (hasSegmentedControls && ensureBuyNow) {
           window.requestAnimationFrame(() => {
             window.requestAnimationFrame(performScroll);
           });

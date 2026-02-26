@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "product_page_hero": {
+      "type": "product-page-hero",
+      "settings": {}
+    },
     "top_feature_highlights": {
       "type": "top-feature-highlights",
       "settings": {
@@ -118,6 +122,7 @@
     }
   },
   "order": [
+    "product_page_hero",
     "top_feature_highlights",
     "press_ticker_product",
     "main",

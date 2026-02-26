@@ -1,12 +1,7 @@
 <section class="sb-quote-section full-width" data-sb-reveal>
   <div class="sb-quote-section__layout">
     <div class="sb-quote-section__copy" data-sb-reveal-item>
-      <p class="sb-quote-section__quote font-hero weight-regular">
-        <span class="sb-quote-section__quote-primary">{{ section.settings.quote_primary | escape }}</span>
-        {% if section.settings.quote_secondary != blank %}
-          <span class="sb-quote-section__quote-secondary">{{ section.settings.quote_secondary | escape | newline_to_br }}</span>
-        {% endif %}
-      </p>
+      <p class="sb-quote-section__quote font-hero weight-regular">{{ section.settings.quote | escape | newline_to_br }}</p>
     </div>
 
     <div class="sb-quote-section__pattern" aria-hidden="true">
@@ -46,16 +41,16 @@
   }
 
   .sb-quote-section__quote {
-    color: var(--sb-color-neutral-900);
+    color: var(--sb-color-neutral-800);
     margin: 0;
   }
 
-  .sb-quote-section__quote-primary {
-    color: var(--sb-color-neutral-900);
+  .sb-quote-section__line-word {
+    color: var(--sb-color-neutral-800);
   }
 
-  .sb-quote-section__quote-secondary {
-    color: var(--sb-color-neutral-800);
+  .sb-quote-section__line-word.is-active {
+    color: var(--sb-color-always-white);
   }
 
   .sb-quote-section__pattern {
@@ -145,21 +140,184 @@
   }
 {% endstylesheet %}
 
+<script>
+  (() => {
+    const SECTION_SELECTOR = '.sb-quote-section';
+    const QUOTE_SELECTOR = '.sb-quote-section__quote';
+    const WORD_CLASS = 'sb-quote-section__line-word';
+    const ACTIVE_CLASS = 'is-active';
+    const sectionStates = new WeakMap();
+    let ticking = false;
+
+    const wrapQuoteWords = (quote) => {
+      if (!quote || quote.dataset.lineRevealWrapped === 'true') return;
+
+      const textNodes = [];
+      const walker = document.createTreeWalker(quote, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) => {
+          if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      while (walker.nextNode()) {
+        textNodes.push(walker.currentNode);
+      }
+
+      textNodes.forEach((node) => {
+        const parts = node.nodeValue.split(/(\s+)/);
+        const fragment = document.createDocumentFragment();
+
+        parts.forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) {
+            fragment.appendChild(document.createTextNode(part));
+            return;
+          }
+
+          const word = document.createElement('span');
+          word.className = WORD_CLASS;
+          word.textContent = part;
+          fragment.appendChild(word);
+        });
+
+        node.parentNode.replaceChild(fragment, node);
+      });
+
+      quote.dataset.lineRevealWrapped = 'true';
+    };
+
+    const buildLineMap = (quote) => {
+      const words = Array.from(quote.querySelectorAll(`.${WORD_CLASS}`));
+      const lineTops = [];
+      const lines = [];
+
+      words.forEach((word) => {
+        const top = Math.round(word.offsetTop);
+        let lineIndex = lineTops.indexOf(top);
+        if (lineIndex === -1) {
+          lineTops.push(top);
+          lineIndex = lineTops.length - 1;
+          lines.push([]);
+        }
+        word.dataset.lineIndex = String(lineIndex);
+        lines[lineIndex].push(word);
+      });
+
+      return { lines, lineCount: lines.length };
+    };
+
+    const prepareSection = (section) => {
+      if (!section || section.dataset.lineRevealInit === 'true') return;
+
+      const quote = section.querySelector(QUOTE_SELECTOR);
+      if (!quote) return;
+
+      wrapQuoteWords(quote);
+      const { lines, lineCount } = buildLineMap(quote);
+
+      sectionStates.set(section, {
+        quote,
+        lines,
+        lineCount,
+        activeLines: -1
+      });
+
+      section.dataset.lineRevealInit = 'true';
+    };
+
+    const rebuildSection = (section) => {
+      const state = sectionStates.get(section);
+      if (!state) return;
+
+      const { lines, lineCount } = buildLineMap(state.quote);
+      state.lines = lines;
+      state.lineCount = lineCount;
+      state.activeLines = -1;
+    };
+
+    const updateSection = (section) => {
+      const state = sectionStates.get(section);
+      if (!state || state.lineCount <= 0) return;
+
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const viewportCenter = viewportHeight * 0.75;
+      let nextActiveLines = 0;
+
+      state.lines.forEach((lineWords, index) => {
+        if (!lineWords.length) return;
+        const firstWordRect = lineWords[0].getBoundingClientRect();
+        const lastWordRect = lineWords[lineWords.length - 1].getBoundingClientRect();
+        const lineTop = Math.min(firstWordRect.top, lastWordRect.top);
+        const lineBottom = Math.max(firstWordRect.bottom, lastWordRect.bottom);
+        const lineCenter = (lineTop + lineBottom) / 2;
+
+        if (lineCenter <= viewportCenter) {
+          nextActiveLines = index + 1;
+        }
+      });
+
+      if (nextActiveLines === state.activeLines) return;
+      state.activeLines = nextActiveLines;
+
+      state.lines.forEach((lineWords, index) => {
+        const isActive = index < nextActiveLines;
+        lineWords.forEach((word) => {
+          word.classList.toggle(ACTIVE_CLASS, isActive);
+        });
+      });
+    };
+
+    const updateAll = () => {
+      ticking = false;
+      document.querySelectorAll(SECTION_SELECTOR).forEach((section) => {
+        updateSection(section);
+      });
+    };
+
+    const scheduleUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateAll);
+    };
+
+    const initScope = (scope = document) => {
+      const sections = scope.querySelectorAll(SECTION_SELECTOR);
+      if (!sections.length) return;
+
+      sections.forEach((section) => {
+        prepareSection(section);
+        rebuildSection(section);
+      });
+
+      scheduleUpdate();
+    };
+
+    initScope(document);
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', () => {
+      initScope(document);
+    });
+    window.addEventListener('load', () => {
+      initScope(document);
+    });
+
+    document.addEventListener('shopify:section:load', (event) => {
+      initScope(event.target);
+    });
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Quote section",
   "settings": [
     {
       "type": "textarea",
-      "id": "quote_primary",
-      "label": "Quote primary text",
-      "default": "Great musicians aren't born. They're crafted."
-    },
-    {
-      "type": "textarea",
-      "id": "quote_secondary",
-      "label": "Quote secondary text",
-      "default": "Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
+      "id": "quote",
+      "label": "Quote text",
+      "default": "Great musicians aren't born. They're crafted.\n\nSuccess is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
     }
   ],
   "presets": [
