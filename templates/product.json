@@ -15,6 +15,12 @@
         "use_product_metaobjects": true
       }
     },
+    "press_ticker_product": {
+      "type": "press-ticker",
+      "settings": {
+        "use_product_metaobject_color": true
+      }
+    },
     "main": {
       "type": "product",
       "blocks": {
@@ -113,6 +119,7 @@
   },
   "order": [
     "top_feature_highlights",
+    "press_ticker_product",
     "main",
     "reviews_heading",
     "177155579933e4f180",

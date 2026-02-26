@@ -1,0 +1,249 @@
+{% liquid
+  assign use_product_metaobject_color = section.settings.use_product_metaobject_color
+  assign background_color_key = section.settings.background_color
+  assign non_product_content_color_key = section.settings.non_product_content_color
+  assign section_background_color = 'var(--sb-color-primary-500)'
+  assign section_content_color = 'var(--sb-color-neutral-900)'
+  assign hide_section = false
+
+  case background_color_key
+    when 'neutral-200'
+      assign section_background_color = 'var(--sb-color-neutral-200)'
+    when 'berry-blue-500'
+      assign section_background_color = 'var(--sb-color-berry-blue-700)'
+  endcase
+
+  if request.page_type != 'product'
+    case non_product_content_color_key
+      when 'neutral-800'
+        assign section_content_color = 'var(--sb-color-neutral-800)'
+    endcase
+  endif
+
+  if request.page_type == 'product' and product != blank
+    assign product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings.reference | default: product.metafields.custom.sbv2_product_settings
+    assign show_press_ticker_value = false
+
+    if product_settings_ref != blank
+      assign show_press_ticker_value = product_settings_ref.show_press_ticker.value | default: product_settings_ref.show_press_ticker
+
+      if use_product_metaobject_color
+        assign product_press_ticker_background_color = product_settings_ref.press_ticker_background_color.value | default: product_settings_ref.press_ticker_background_color
+        if product_press_ticker_background_color != blank
+          assign section_background_color = product_press_ticker_background_color
+        endif
+      endif
+    endif
+
+    if show_press_ticker_value != true and show_press_ticker_value != 'true' and show_press_ticker_value != 1 and show_press_ticker_value != '1'
+      assign hide_section = true
+    endif
+  endif
+%}
+
+{% if hide_section %}
+  <script>
+    (() => {
+      const sectionWrapper = document.currentScript && document.currentScript.closest('.shopify-section');
+      if (sectionWrapper) {
+        sectionWrapper.style.setProperty('display', 'none', 'important');
+      }
+    })();
+  </script>
+{% else %}
+  {% assign press_logo_sources = 'press-ticker-logo-1.svg|222,press-ticker-logo-2.svg|221,press-ticker-logo-3.svg|150,press-ticker-logo-4.svg|203,press-ticker-logo-5.svg|288,press-ticker-logo-6.svg|212' | split: ',' %}
+
+  <section
+    class="sb-press-ticker full-width"
+    style="--sb-press-ticker-background: {{ section_background_color }}; --sb-press-ticker-content-color: {{ section_content_color }};"
+    data-sb-reveal
+  >
+    <div class="sb-press-ticker__inner">
+      <h2 class="sb-press-ticker__title font-title weight-bold" data-sb-reveal-item>As seen on</h2>
+
+      <div class="sb-press-ticker__marquee" aria-label="As seen on logos">
+        <div class="sb-press-ticker__track">
+          {% for duplicate in (1..2) %}
+            <ul class="sb-press-ticker__logos" {% if duplicate == 2 %}aria-hidden="true"{% endif %}>
+              {% for logo_data in press_logo_sources %}
+                {% assign logo_parts = logo_data | split: '|' %}
+                {% assign logo_asset = logo_parts[0] %}
+                {% assign logo_width = logo_parts[1] %}
+
+                <li class="sb-press-ticker__logo-item">
+                  <span
+                    class="sb-press-ticker__logo"
+                    style="--sb-press-logo-width: {{ logo_width }}px; --sb-press-logo-url: url('{{ logo_asset | asset_url }}');"
+                    aria-hidden="true"
+                  ></span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .sb-press-ticker {
+    background: var(--sb-press-ticker-background);
+    width: 100%;
+  }
+
+  .sb-press-ticker__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-48);
+    padding-block: var(--sb-space-64);
+    width: 100%;
+  }
+
+  .sb-press-ticker__title {
+    color: var(--sb-press-ticker-content-color);
+    margin: 0;
+    text-align: center;
+  }
+
+  .sb-press-ticker__marquee {
+    overflow: hidden;
+    width: 100%;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      #000 8%,
+      #000 92%,
+      transparent 100%
+    );
+  }
+
+  .sb-press-ticker__track {
+    animation: sb-press-ticker-scroll 32s linear infinite;
+    display: flex;
+    width: max-content;
+  }
+
+  .sb-press-ticker__logos {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--sb-space-96);
+    list-style: none;
+    margin: 0;
+    padding: 0 var(--sb-space-96) 0 0;
+  }
+
+  .sb-press-ticker__logo-item {
+    align-items: center;
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+  }
+
+  .sb-press-ticker__logo {
+    background: var(--sb-press-ticker-content-color);
+    display: inline-block;
+    flex-shrink: 0;
+    height: var(--sb-space-48);
+    mask-image: var(--sb-press-logo-url);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-image: var(--sb-press-logo-url);
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    width: var(--sb-press-logo-width);
+  }
+
+  @keyframes sb-press-ticker-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sb-press-ticker__marquee {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .sb-press-ticker__marquee::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sb-press-ticker__track {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Press ticker",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_product_metaobject_color",
+      "label": "Use product page metaobject color",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "primary-500",
+      "visible_if": "{{ section.settings.use_product_metaobject_color == false }}",
+      "options": [
+        {
+          "value": "primary-500",
+          "label": "Primary 500"
+        },
+        {
+          "value": "neutral-200",
+          "label": "Neutral 200"
+        },
+        {
+          "value": "berry-blue-500",
+          "label": "Berry blue 500"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "non_product_content_color",
+      "label": "Title and logo color (non-product pages)",
+      "default": "neutral-900",
+      "options": [
+        {
+          "value": "neutral-900",
+          "label": "Neutral 900"
+        },
+        {
+          "value": "neutral-800",
+          "label": "Neutral 800"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Press ticker"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["index", "product"]
+  }
+}
+{% endschema %}

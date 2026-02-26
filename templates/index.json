@@ -120,6 +120,14 @@
         "title": "Why shop on soundbrenner.com"
       }
     },
+    "press_ticker_home": {
+      "type": "press-ticker",
+      "settings": {
+        "use_product_metaobject_color": false,
+        "background_color": "neutral-200",
+        "non_product_content_color": "neutral-800"
+      }
+    },
     "accordion_shipping_returns": {
       "type": "accordion",
       "blocks": {
@@ -233,6 +241,7 @@
     "hero_card_HFy7pm",
     "hero_card_d8GepA",
     "highlights_shipping_returns",
+    "press_ticker_home",
     "accordion_shipping_returns",
     "quote_section_home",
     "hero_card_bottom_seasonal"
