@@ -13,6 +13,9 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": true,
+        "use_affiliate_metaobject": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
         "kicker": "",
         "headline": "",
         "subheadline": "",
@@ -20,11 +23,40 @@
         "button_label": "",
         "button_size": "large",
         "icon_position": "none",
-        "button_link": ""
+        "button_link": "",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
+      }
+    },
+    "hero_card_HFy7pm": {
+      "type": "hero-card",
+      "name": "Hero card",
+      "settings": {
+        "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_The_Metronome_1.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_The_Metronome_1_mobile.jpg",
+        "kicker": "The Metronome app",
+        "headline": "Make music practice addictive.",
+        "subheadline": "",
+        "show_button": true,
+        "button_label": "Learn more",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "shopify://pages/the-metronome-app",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": true,
+        "show_app_download_google_play": true,
+        "show_app_download_china": false
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "hero_card_HFy7pm"
   ]
 }
