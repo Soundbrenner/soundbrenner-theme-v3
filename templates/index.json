@@ -38,18 +38,13 @@
           "settings": {
             "collection": "in-ear-monitors",
             "collection_name_override": "",
-            "title": "",
-            "description": "",
-            "explore_label": "Explore collection",
-            "explore_link": "shopify://collections/in-ear-monitors",
-            "compare_label": "Compare",
             "compare_link": "shopify://pages/compare-in-ear-monitors",
             "product_1": "wave-pro-in-ear-monitors",
             "product_2": "wave-in-ear-monitors",
-            "product_3": "usb-c-to-3-5mm-audio-adapter",
-            "product_4": "wave-over-ear-cable-2-5m-8-2-ft-with-microphone",
-            "product_5": "foam-ear-tips-3-pack",
-            "product_6": ""
+            "product_3": "wave-over-ear-cable-2-5m-8-2-ft-with-microphone",
+            "product_4": "wave-pro-hi-fi-usb-c-connector",
+            "product_5": "usb-c-to-3-5mm-audio-adapter",
+            "product_6": "wave-pro-hi-fi-over-ear-3-5mm-audio-cable-with-microphone-2-5m-8-2-ft"
           }
         },
         "collection_item_wearables": {
@@ -57,11 +52,6 @@
           "settings": {
             "collection": "wearables",
             "collection_name_override": "",
-            "title": "Wearables",
-            "description": "",
-            "explore_label": "Explore collection",
-            "explore_link": "",
-            "compare_label": "Compare",
             "compare_link": "shopify://pages/compare-wearables",
             "product_1": "",
             "product_2": "",
@@ -76,11 +66,6 @@
           "settings": {
             "collection": "minuendo-earplugs",
             "collection_name_override": "Earplugs",
-            "title": "Earplugs",
-            "description": "",
-            "explore_label": "Explore collection",
-            "explore_link": "",
-            "compare_label": "Compare",
             "compare_link": "",
             "product_1": "",
             "product_2": "",
@@ -95,11 +80,6 @@
           "settings": {
             "collection": "more-products",
             "collection_name_override": "",
-            "title": "More products",
-            "description": "",
-            "explore_label": "Explore collection",
-            "explore_link": "",
-            "compare_label": "Compare",
             "compare_link": "",
             "product_1": "",
             "product_2": "",
