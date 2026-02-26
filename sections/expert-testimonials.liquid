@@ -7,16 +7,10 @@
 
   if use_product_metaobjects
     if request.page_type == 'product' and product != blank
-      assign source_testimonials_ref = product.metafields.custom.sbv2_expert_testimonials_carousel.value
-        | default: product.metafields.custom.sbv2_expert_testimonials_carousel.reference.value
-        | default: product.metafields.custom.sbv2_expert_testimonials_carousel.reference
-        | default: product.metafields.custom.sbv2_expert_testimonials_carousel
+      assign source_testimonials_ref = product.metafields.custom.sbv2_expert_testimonials_carousel.value | default: product.metafields.custom.sbv2_expert_testimonials_carousel.reference.value | default: product.metafields.custom.sbv2_expert_testimonials_carousel.reference | default: product.metafields.custom.sbv2_expert_testimonials_carousel
     endif
   else
-    assign source_testimonials_ref = section.settings.testimonials_metaobject.value
-      | default: section.settings.testimonials_metaobject.reference.value
-      | default: section.settings.testimonials_metaobject.reference
-      | default: section.settings.testimonials_metaobject
+    assign source_testimonials_ref = section.settings.testimonials_metaobject.value | default: section.settings.testimonials_metaobject.reference.value | default: section.settings.testimonials_metaobject.reference | default: section.settings.testimonials_metaobject
   endif
 
   if source_testimonials_ref != blank
