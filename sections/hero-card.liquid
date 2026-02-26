@@ -239,12 +239,6 @@
   {% assign hero_card_show_app_download_app_store = section.settings.show_app_download_app_store %}
   {% assign hero_card_show_app_download_google_play = section.settings.show_app_download_google_play %}
   {% assign hero_card_show_app_download_china = section.settings.show_app_download_china %}
-  {% if section.settings.enable_app_download_buttons %}
-    {% assign hero_card_show_app_download_qr = true %}
-    {% assign hero_card_show_app_download_app_store = true %}
-    {% assign hero_card_show_app_download_google_play = true %}
-    {% assign hero_card_show_app_download_china = true %}
-  {% endif %}
   {% if hero_card_show_app_download_qr or hero_card_show_app_download_app_store or hero_card_show_app_download_google_play or hero_card_show_app_download_china %}
     {% assign hero_card_show_app_downloads = true %}
   {% endif %}
@@ -788,13 +782,6 @@
       "label": "Show China download button",
       "default": false,
       "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_app_download_buttons",
-      "label": "Enable app download buttons (legacy)",
-      "default": false,
-      "visible_if": "{{ false }}"
     }
   ],
   "presets": [

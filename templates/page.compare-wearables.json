@@ -25,7 +25,10 @@
         "button_size": "large",
         "icon_position": "none",
         "button_link": "",
-        "enable_app_download_buttons": false
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
       }
     },
     "compare": {

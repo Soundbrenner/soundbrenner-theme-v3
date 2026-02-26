@@ -77,6 +77,27 @@ function normalizeTagName(tag) {
   return t;
 }
 
+function cleanupParagraphBreaks(html) {
+  let output = String(html || '');
+
+  output = output.replace(/<p>([\s\S]*?)<\/p>/gi, (_match, inner) => {
+    let cleanedInner = String(inner || '');
+    cleanedInner = cleanedInner.replace(/^\s*(?:<br\s*\/?>\s*)+/gi, '');
+    cleanedInner = cleanedInner.replace(/(?:<br\s*\/?>\s*)+\s*$/gi, '');
+
+    const plain = cleanedInner
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!plain) return '';
+    return `<p>${cleanedInner}</p>`;
+  });
+
+  return output;
+}
+
 function normalizeHtml(inputHtml) {
   const html = stripDisallowedBlocks(inputHtml);
   const tagRegex = /<\s*\/?\s*([a-zA-Z][\w:-]*)([^>]*)>/g;
@@ -139,6 +160,8 @@ function normalizeHtml(inputHtml) {
   }
 
   output += html.slice(lastIndex);
+
+  output = cleanupParagraphBreaks(output);
 
   return output
     .replace(/<!--[\s\S]*?-->/g, '')
@@ -320,4 +343,3 @@ main().catch((error) => {
   console.error(error instanceof Error ? error.stack || error.message : String(error));
   process.exit(1);
 });
-
