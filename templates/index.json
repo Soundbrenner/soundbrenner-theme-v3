@@ -30,6 +30,14 @@
         "show_app_download_china": false
       }
     },
+    "press_ticker_home": {
+      "type": "press-ticker",
+      "settings": {
+        "use_product_metaobject_color": false,
+        "background_color": "neutral-200",
+        "non_product_content_color": "neutral-800"
+      }
+    },
     "hero_card_HFy7pm": {
       "type": "hero-card",
       "name": "Hero card",
@@ -56,10 +64,21 @@
     },
     "expert_testimonials_AkfimQ": {
       "type": "expert-testimonials",
+      "blocks": {
+        "testimonial_hcKPfm": {
+          "type": "testimonial",
+          "settings": {
+            "testimonial": ""
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_hcKPfm"
+      ],
       "name": "Expert testimonials",
       "settings": {
         "use_product_metaobjects": false,
-        "testimonials_metaobject": "core-2-practice-companion"
+        "title": "Expert testimonials"
       }
     },
     "hero_card_d8GepA": {
@@ -126,14 +145,6 @@
       "settings": {
         "use_product_metaobjects": false,
         "title": "Why shop on soundbrenner.com"
-      }
-    },
-    "press_ticker_home": {
-      "type": "press-ticker",
-      "settings": {
-        "use_product_metaobject_color": false,
-        "background_color": "neutral-200",
-        "non_product_content_color": "neutral-800"
       }
     },
     "accordion_shipping_returns": {
@@ -246,11 +257,11 @@
   },
   "order": [
     "main",
+    "press_ticker_home",
     "hero_card_HFy7pm",
     "expert_testimonials_AkfimQ",
     "hero_card_d8GepA",
     "highlights_shipping_returns",
-    "press_ticker_home",
     "accordion_shipping_returns",
     "quote_section_home",
     "hero_card_bottom_seasonal"
