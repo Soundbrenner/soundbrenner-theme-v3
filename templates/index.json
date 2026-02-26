@@ -54,17 +54,32 @@
         "show_app_download_china": false
       }
     },
-    "quote_section_home": {
-      "type": "quote-section",
-      "name": "Quote section",
+    "hero_card_d8GepA": {
+      "type": "hero-card",
+      "name": "Hero card",
       "settings": {
-        "quote_primary": "Great musicians aren't born. They're crafted.",
-        "quote_secondary": "Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
+        "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
+        "use_resource_title_description": false,
+        "use_product_page_metaobjects": false,
+        "background_image_desktop": "shopify://shop_images/Property_1_About_us.jpg",
+        "background_image_mobile": "shopify://shop_images/Property_1_About_us_mobile.jpg",
+        "kicker": "Why Soundbrenner",
+        "headline": "What makes us unique?",
+        "subheadline": "",
+        "show_button": true,
+        "button_label": "Learn more",
+        "button_size": "large",
+        "icon_position": "none",
+        "button_link": "shopify://pages/about-us",
+        "show_app_download_qr": false,
+        "show_app_download_app_store": false,
+        "show_app_download_google_play": false,
+        "show_app_download_china": false
       }
     },
     "highlights_shipping_returns": {
       "type": "top-feature-highlights",
-      "name": "Top feature highlights",
       "blocks": {
         "item_XhrLhe": {
           "type": "item",
@@ -99,13 +114,14 @@
         "item_3b7Q9L",
         "item_i8WCRx"
       ],
+      "name": "Top feature highlights",
       "settings": {
+        "use_product_metaobjects": false,
         "title": "Why shop on soundbrenner.com"
       }
     },
     "accordion_shipping_returns": {
       "type": "accordion",
-      "name": "Accordion",
       "blocks": {
         "accordion_item_3dBtKD": {
           "type": "accordion_item",
@@ -174,10 +190,19 @@
         "accordion_item_gNhhK8",
         "accordion_item_9h7JaD"
       ],
+      "name": "Accordion",
       "settings": {
         "use_custom_title": false,
         "custom_title": "Frequently asked questions",
         "show_subtitle": true
+      }
+    },
+    "quote_section_home": {
+      "type": "quote-section",
+      "name": "Quote section",
+      "settings": {
+        "quote_primary": "Great musicians aren't born. They're crafted.",
+        "quote_secondary": "Success is simply the sum of every hour you spent in the practice room.\n\nAt Soundbrenner, we don't believe in shortcuts - only better tools for the journey to mastery."
       }
     },
     "hero_card_bottom_seasonal": {
@@ -206,9 +231,10 @@
   "order": [
     "main",
     "hero_card_HFy7pm",
-    "quote_section_home",
+    "hero_card_d8GepA",
     "highlights_shipping_returns",
     "accordion_shipping_returns",
+    "quote_section_home",
     "hero_card_bottom_seasonal"
   ]
 }
