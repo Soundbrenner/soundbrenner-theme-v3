@@ -130,7 +130,9 @@
         },
         "image_BAXgF7": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_1.jpg"
+          }
         },
         "body_4": {
           "type": "text",
@@ -156,7 +158,9 @@
         },
         "image_hPYJx3": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_29.jpg"
+          }
         },
         "divider_5": {
           "type": "divider",
@@ -172,6 +176,15 @@
           "type": "text",
           "settings": {
             "text": "<p>Before you can start using your Core/Spark, you need to unlock it in our app first - this helps us check if there are any firmware updates available. Download our app by clicking the buttons below, scanning the QR code or searching for “Soundbrenner” in the Google Play or iOS App Store.</p><p><strong>Download app</strong></p><p>The Metronome by Soundbrenner</p>"
+          }
+        },
+        "button_Q9xDn7": {
+          "type": "button",
+          "settings": {
+            "label": "Download app",
+            "button_size": "large",
+            "icon_position": "none",
+            "link": "shopify://pages/the-metronome-app"
           }
         },
         "heading_small_xffCmT": {
@@ -1021,6 +1034,7 @@
         "divider_5",
         "subheading_C8GVdi",
         "text_HPx7dM",
+        "button_Q9xDn7",
         "heading_small_xffCmT",
         "text_4MqtCq",
         "button_86rHwW",
