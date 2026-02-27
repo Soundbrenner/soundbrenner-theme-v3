@@ -144,6 +144,12 @@
             "text": "<p>After you take the Pulse out of the box, charge it for at least 30 minutes. A full charge can take up to 2.5 hours and gives you an average of 6 hours metronome playback time.</p><p>Plug the charger into any computer USB port or use a USB wall adapter, including those that ship with a smartphone or tablet. Then align the cable’s magnets with the charging port on the Pulse.</p><p>Don't store your Pulse for extended periods (over 3 months) with an empty battery, as this can lead to permanent battery damage.</p>"
           }
         },
+        "image_K3PQ6p": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_1.jpg"
+          }
+        },
         "heading_small_yn6TBq": {
           "type": "heading_small",
           "settings": {
@@ -224,6 +230,18 @@
             "text": "<p>Insert one side of the Pulse into the band. Next, pull up on the opposite side of the band until it snaps into place.</p>"
           }
         },
+        "image_AMXGYM": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_2.jpg"
+          }
+        },
+        "image_DTTAHQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_3.jpg"
+          }
+        },
         "divider_epqbmW": {
           "type": "divider",
           "settings": {}
@@ -240,6 +258,12 @@
             "text": "<p>The Pulse uses a capacitive touch surface to register your inputs for interactions. Some tips for maximum reliability:</p><ul><li>Always use two fingers flat across the surface. Don’t just use your fingertips!</li><li>Make sure that you touch the surface only for a brief moment for each tap.</li><li>Always make sure you wear the device when using the touch surface. Our sensor is designed to work best when it’s in contact with your skin.</li></ul>"
           }
         },
+        "image_7Y7ixP": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_4.jpg"
+          }
+        },
         "divider_N6Tqzk": {
           "type": "divider",
           "settings": {}
@@ -254,6 +278,12 @@
           "type": "text",
           "settings": {
             "text": "<p>To power your Pulse on or off twist the ring at least 1/4 turn – in either direction – and then hold the touch surface with two fingers for two seconds. Don’t forget to wear the device first before powering it on!</p><p>The light of the soundwave will stay lit until you power the device off. Make sure to power your Pulse off using the same procedure after you’re finished playing.</p>"
+          }
+        },
+        "image_hPgcxR": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_5.jpg"
           }
         },
         "divider_L6b7wJ": {
@@ -278,6 +308,12 @@
             "text": "<p>Tap the soundwave twice quickly to start or pause the metronome.</p>"
           }
         },
+        "image_JRGeCQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_6.jpg"
+          }
+        },
         "heading_small_qxGaTb": {
           "type": "heading_small",
           "settings": {
@@ -288,6 +324,12 @@
           "type": "text",
           "settings": {
             "text": "<p>Tap the soundwave three times or more at a steady pace. The Pulse will set a new tempo that matches the average pace of your taps.</p>"
+          }
+        },
+        "image_mXDBAY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_7.jpg"
           }
         },
         "heading_small_NJN76f": {
@@ -302,6 +344,12 @@
             "text": "<p>Turn the wheel to make fine adjustments to the tempo.</p>"
           }
         },
+        "image_FLNrUT": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_8.jpg"
+          }
+        },
         "divider_qH4tCT": {
           "type": "divider",
           "settings": {}
@@ -312,10 +360,22 @@
             "heading": "Where to wear it"
           }
         },
+        "image_FAEFwi": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_9.jpg"
+          }
+        },
         "text_TGD86k": {
           "type": "text",
           "settings": {
             "text": "<p>Where you place the Pulse on your body can have a big impact on your experience. What works best is different for each musician.</p><p>The included short and long band allow you to wear the Pulse on your wrist, arm or ankle. For your first few sessions, try out different locations to see which one works best.</p><p>Remember to keep the band tight – the tighter the band, the stronger the feeling of the vibrations.</p><p>The hooks on the long band allow you to easily slide it over your arm.</p><p>Did you know we make a body strap for the chest, shoulder and thigh, that allows you to feel the beat even better? It's available here:</p>"
+          }
+        },
+        "image_qgC4HK": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_10.jpg"
           }
         },
         "button_UaWhag": {
@@ -368,6 +428,12 @@
             "link": "shopify://pages/manual-the-metronome-app"
           }
         },
+        "image_HAitk8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_11.jpg"
+          }
+        },
         "divider_ebpqCb": {
           "type": "divider",
           "settings": {}
@@ -398,6 +464,12 @@
           "type": "text",
           "settings": {
             "text": "<p>If your Pulse is not responding, restarting the device will usually help.<br/><br/>To restart the device, you need to first remove the band. Locate the round hole in the recessed area that is usually occupied by the band. Next, insert a pointy item into the hole, like for example a needle. If the restart is successful, your device should light up briefly.</p>"
+          }
+        },
+        "image_fKNeqy": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Pulse_Order_12.jpg"
           }
         },
         "divider_Cf3TTW": {
@@ -479,6 +551,7 @@
         "divider_4",
         "subheading_wXKcBY",
         "body_5",
+        "image_K3PQ6p",
         "heading_small_yn6TBq",
         "text_8iMfyk",
         "heading_small_76mbcf",
@@ -492,23 +565,32 @@
         "divider_5",
         "subheading_pTGeGh",
         "text_HtN3ri",
+        "image_AMXGYM",
+        "image_DTTAHQ",
         "divider_epqbmW",
         "subheading_CpjCgq",
         "text_JA9R9B",
+        "image_7Y7ixP",
         "divider_N6Tqzk",
         "subheading_nncB99",
         "text_qQwfnp",
+        "image_hPgcxR",
         "divider_L6b7wJ",
         "heading_NWcY7r",
         "heading_small_PXEqzz",
         "text_VmJxKr",
+        "image_JRGeCQ",
         "heading_small_qxGaTb",
         "text_pD9eRG",
+        "image_mXDBAY",
         "heading_small_NJN76f",
         "text_yYneXf",
+        "image_FLNrUT",
         "divider_qH4tCT",
         "heading_iGiUqd",
+        "image_FAEFwi",
         "text_TGD86k",
+        "image_qgC4HK",
         "button_UaWhag",
         "divider_Fhk86Q",
         "heading_pbekez",
@@ -517,12 +599,14 @@
         "heading_7eTcFU",
         "text_3dDnyy",
         "button_NGjw3K",
+        "image_HAitk8",
         "divider_ebpqCb",
         "subheading_M8C8Qb",
         "text_fPAj8t",
         "divider_r9CiCP",
         "heading_UbVVPP",
         "text_w4eKbN",
+        "image_fKNeqy",
         "divider_Cf3TTW",
         "heading_pyreUU",
         "accordion_item_1",
