@@ -251,7 +251,9 @@
         },
         "image_WAHFyi": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_3.jpg"
+          }
         },
         "text_mfDFqP": {
           "type": "text",
@@ -286,7 +288,9 @@
         },
         "image_66DxtJ": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_4.jpg"
+          }
         },
         "divider_pCzwPk": {
           "type": "divider",
@@ -306,7 +310,9 @@
         },
         "image_rxgnT8": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_5.jpg"
+          }
         },
         "divider_xADNhy": {
           "type": "divider",
@@ -342,22 +348,20 @@
         },
         "image_Dzc8kq": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_6.jpg"
+          }
         },
         "text_9cDw6H": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Power off</strong></p><p>1. Hold the top button for 3 seconds until the power off prompt appears.</p>"
+            "text": "<p><strong>Power off</strong></p><p>1. Hold the top button for 3 seconds until the power off prompt appears.</p><p>2. Select yes by pressing the bottom button.</p>"
           }
         },
         "image_fnMLty": {
           "type": "image",
-          "settings": {}
-        },
-        "text_6Kej6h": {
-          "type": "text",
           "settings": {
-            "text": "<p>2. Select yes by pressing the bottom button.</p>"
+            "image": "shopify://shop_images/Product_Core_2_Order_7.jpg"
           }
         },
         "divider_xrGQeX": {
@@ -372,7 +376,9 @@
         },
         "image_bxUAQc": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_Order_8.jpg"
+          }
         },
         "divider_JgwgWY": {
           "type": "divider",
@@ -392,7 +398,9 @@
         },
         "image_mgU7ky": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_9.jpg"
+          }
         },
         "text_4aafcq": {
           "type": "text",
@@ -402,7 +410,9 @@
         },
         "image_UGq7br": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_10.jpg"
+          }
         },
         "divider_eGmUQA": {
           "type": "divider",
@@ -422,7 +432,9 @@
         },
         "image_J9tiAi": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_11.jpg"
+          }
         },
         "divider_Fnahzw": {
           "type": "divider",
@@ -431,7 +443,13 @@
         "heading_KPp8G4": {
           "type": "heading",
           "settings": {
-            "heading": "Practice tracker (Core 2/Spark only)"
+            "heading": "Practice tracker"
+          }
+        },
+        "subheading_6FXkVe": {
+          "type": "subheading",
+          "settings": {
+            "heading": "(Core 2/Spark only)"
           }
         },
         "subheading_4FUbLa": {
@@ -1059,7 +1077,6 @@
         "image_Dzc8kq",
         "text_9cDw6H",
         "image_fnMLty",
-        "text_6Kej6h",
         "divider_xrGQeX",
         "subheading_8r8K8r",
         "image_bxUAQc",
@@ -1075,6 +1092,7 @@
         "image_J9tiAi",
         "divider_Fnahzw",
         "heading_KPp8G4",
+        "subheading_6FXkVe",
         "subheading_4FUbLa",
         "text_TLzjQj",
         "image_FfyzYr",
