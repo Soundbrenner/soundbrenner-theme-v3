@@ -466,7 +466,9 @@
         },
         "image_FfyzYr": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_12.jpg"
+          }
         },
         "text_6R9XD8": {
           "type": "text",
@@ -476,7 +478,9 @@
         },
         "image_NyDj7h": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_13.jpg"
+          }
         },
         "text_Wph8pr": {
           "type": "text",
@@ -502,7 +506,9 @@
         },
         "image_t9EaiU": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_14.jpg"
+          }
         },
         "divider_U7NDz9": {
           "type": "divider",
@@ -528,7 +534,9 @@
         },
         "image_chjewp": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_15.jpg"
+          }
         },
         "text_rgUPrz": {
           "type": "text",
@@ -538,7 +546,9 @@
         },
         "image_E3Fych": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_16.jpg"
+          }
         },
         "divider_3w6Xgd": {
           "type": "divider",
@@ -569,12 +579,26 @@
         "text_pitfrD": {
           "type": "text",
           "settings": {
-            "text": "<p>1. Press the bottom button to select the first value.</p>"
+            "text": "<p>1. Press the bottom button to select the first value.</p><p>2. While selected, use the wheel to change the</p>"
           }
         },
         "image_FV98pp": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_17.jpg"
+          }
+        },
+        "text_9XNnh4": {
+          "type": "text",
+          "settings": {
+            "text": "<p>3. Press the bottom button again to edit the next value. Press the top button to go back.<br/></p><p>4. Tap the soundwave twice quickly to start or pause the metronome.</p>"
+          }
+        },
+        "image_ViiDii": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_18.jpg"
+          }
         },
         "text_TqbGXK": {
           "type": "text",
@@ -600,7 +624,9 @@
         },
         "image_ppDgRj": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_19.jpg"
+          }
         },
         "divider_kGcVqV": {
           "type": "divider",
@@ -620,7 +646,9 @@
         },
         "image_wWCNAW": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_20.jpg"
+          }
         },
         "divider_XNKXfy": {
           "type": "divider",
@@ -646,7 +674,9 @@
         },
         "image_D7bYPy": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_21.jpg"
+          }
         },
         "divider_pgRMDY": {
           "type": "divider",
@@ -681,7 +711,9 @@
         },
         "image_4Q8cPB": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_22.jpg"
+          }
         },
         "divider_UDGGpU": {
           "type": "divider",
@@ -701,7 +733,9 @@
         },
         "image_fbRE9a": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_23.jpg"
+          }
         },
         "divider_NC9YAa": {
           "type": "divider",
@@ -742,7 +776,9 @@
         },
         "image_pWEwmn": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_24.jpg"
+          }
         },
         "text_rAXGi4": {
           "type": "text",
@@ -752,7 +788,9 @@
         },
         "image_JwgLWG": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_25.jpg"
+          }
         },
         "text_nVhP36": {
           "type": "text",
@@ -778,7 +816,9 @@
         },
         "image_iEpim6": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_26.jpg"
+          }
         },
         "text_p6RUM9": {
           "type": "text",
@@ -788,7 +828,9 @@
         },
         "image_ctxrVb": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Product_Core_2_Order_27.jpg"
+          }
         },
         "divider_yGiD6W": {
           "type": "divider",
@@ -861,7 +903,7 @@
         "vimeo_video_9C4c6x": {
           "type": "vimeo_video",
           "settings": {
-            "video_source": "593163439"
+            "video_source": "vimeo.com/video/593163439"
           }
         },
         "subheading_CEbFYN": {
@@ -1117,6 +1159,8 @@
         "subheading_NydDnh",
         "text_pitfrD",
         "image_FV98pp",
+        "text_9XNnh4",
+        "image_ViiDii",
         "text_TqbGXK",
         "divider_GzhHqt",
         "subheading_nxFYxr",
