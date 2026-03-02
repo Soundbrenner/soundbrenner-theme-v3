@@ -417,7 +417,6 @@
       const extraCompareSumCents = Number.parseInt(root.dataset.extraCompareSumCents || '0', 10) || 0;
       const currencyCode = root.dataset.currency || 'USD';
       const normalizedCurrencyCode = `${currencyCode}`.trim().toUpperCase();
-      const productId = root.dataset.productId || '';
       const storefrontPricing = window.SBStorefrontPricing || null;
 
       if (!variantsElement || !firstCompareElement || !firstCurrentElement || !totalCompareElement || !totalCurrentElement) return;
@@ -454,32 +453,6 @@
           : fallbackMoneyFormatter.format(amount / 100);
         if (!shouldAppendCurrencyCode) return formatted;
         return `${formatted} ${currencyCode}`;
-      };
-
-      const resolveDisplayPrice = (priceCents, comparePriceCents, overrideProductId = productId) => {
-        if (storefrontPricing && typeof storefrontPricing.resolvePrice === 'function') {
-          const resolved = storefrontPricing.resolvePrice({
-            productId: overrideProductId,
-            priceCents,
-            comparePriceCents,
-          }) || {};
-          const currentPriceCents = Number(resolved.currentPriceCents);
-          const resolvedComparePriceCents = Number(resolved.comparePriceCents);
-          return {
-            currentPriceCents: Number.isFinite(currentPriceCents) ? currentPriceCents : Number(priceCents || 0),
-            comparePriceCents:
-              Number.isFinite(resolvedComparePriceCents) && resolvedComparePriceCents > currentPriceCents
-                ? resolvedComparePriceCents
-                : null,
-          };
-        }
-
-        const normalizedPrice = Number(priceCents) || 0;
-        const normalizedCompare = Number(comparePriceCents) || 0;
-        return {
-          currentPriceCents: normalizedPrice,
-          comparePriceCents: normalizedCompare > normalizedPrice ? normalizedCompare : null,
-        };
       };
 
       const getCurrentVariantId = () => {
@@ -521,9 +494,10 @@
         const variant = variantsById[normalizedVariantId] || getVariantFromSelectorList(normalizedVariantId);
         if (!variant) return;
 
-        const resolvedPricing = resolveDisplayPrice(variant.price, variant.compareAtPrice);
-        const comparablePrice = Number(resolvedPricing.comparePriceCents || resolvedPricing.currentPriceCents || 0);
-        const currentPrice = Number(resolvedPricing.currentPriceCents || 0);
+        // Value breakdown always uses raw variant totals (no storefront discount overrides).
+        const currentPrice = Number(variant.price) || 0;
+        const compareAtPrice = Number(variant.compareAtPrice) || 0;
+        const comparablePrice = compareAtPrice > currentPrice ? compareAtPrice : currentPrice;
         const firstLineComparePrice = Math.max(comparablePrice - extraCompareSumCents, 0);
         const firstLineCurrentPrice = Math.max(currentPrice - extraCompareSumCents, 0);
         firstCompareElement.textContent = formatMoney(firstLineComparePrice);
