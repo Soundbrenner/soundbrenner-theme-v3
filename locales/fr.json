@@ -117,7 +117,181 @@
       "increase_quantity": "Augmenter la quantité",
       "quantity": "Quantité",
       "remove_discount_code": "Supprimer {{ code }}",
-      "remove_item": "Retirer l’article"
+      "remove_item": "Retirer l’article",
+      "secure_checkout": "Paiement sécurisé",
+      "shipping_days_delivery_in": "Livraison en {{ country }} sous {{ min }} à {{ max }} jours",
+      "shipping_not_shipping_to": "Nous n’expédions pas vers {{ country }}",
+      "shipping_ships_to": "Expédié vers {{ country }}",
+      "shipping_ships_worldwide": "Livraison dans le monde entier",
+      "shop_all_products": "Découvre tous les produits",
+      "subtotal": "Sous-total",
+      "taxes_and_duties": "Taxes et droits",
+      "taxes_may_be_due_on_delivery": "Peut être dû à la livraison",
+      "total": "Total",
+      "your_country": "ton pays"
+    },
+    "collection_overview": {
+      "collection_name": "Nom de la collection",
+      "compare": "Comparer",
+      "explore_collection": "Découvre la collection",
+      "product_placeholder": "Produit",
+      "rating_summary": "{{ rating }} sur {{ count }} avis",
+      "read_all": "Tout lire",
+      "view_all": "Voir tout"
+    },
+    "common": {
+      "back": "Retour",
+      "cart_drawer": "Panier",
+      "close_cart": "Fermer le panier",
+      "close_menu": "Fermer le menu",
+      "continue": "Continuer",
+      "days": "jours",
+      "download": "Télécharger",
+      "hours": "heures",
+      "language": "Langue",
+      "menu": "Menu",
+      "mins": "min",
+      "next": "Suivant",
+      "no_results_found": "Aucun résultat trouvé",
+      "previous": "Précédent",
+      "primary": "Principal",
+      "primary_navigation": "Navigation principale",
+      "region_selector": "Sélecteur de région",
+      "search": "Rechercher",
+      "secs": "sec",
+      "verified_buyer": "Acheteur vérifié"
+    },
+    "contact": {
+      "email": "E-mail",
+      "full_name": "Nom complet",
+      "send": "Envoyer",
+      "success_message": "Merci de nous avoir contactés. Nous te répondrons dès que possible."
+    },
+    "footer": {
+      "company": "Entreprise",
+      "partner_with_us": "Deviens notre partenaire",
+      "resources": "Ressources"
+    },
+    "header": {
+      "accessories": "Accessoires",
+      "download_ios_android": "Télécharge sur iOS et Android",
+      "metronome_app": "L’application Métronome",
+      "ratings": "{{ count }} avis",
+      "region_and_language": "Région et langue",
+      "mobile_review_date": "8 janv. 2026",
+      "mobile_review_name": "Wesley G.",
+      "mobile_review_text": "J'ai les écouteurs intra-auriculaires et le Pulse. Ils fonctionnent exactement comme promis. La livraison s'est bien passée, sans mauvaise surprise. Merci Soundbrenner !"
+    },
+    "hero_video": {
+      "play_title": "Joue {{ title }}",
+      "title": "Vidéo principale",
+      "title_index": "Vidéo principale {{ index }}",
+      "video_index": "Vidéo {{ index }}"
+    },
+    "large_feature": {
+      "image_alt": "Grande image en vedette",
+      "kicker": "Kicker"
+    },
+    "manual": {
+      "chapter": "Chapitre",
+      "chapters": "Chapitres",
+      "close_chapters": "Fermer les chapitres",
+      "product_manual": "Manuel du produit",
+      "sticky_navigation": "Navigation manuelle fixe"
+    },
+    "media": {
+      "close_video": "Fermer la vidéo",
+      "play_video": "Regarder la vidéo",
+      "video_player": "Lecteur vidéo",
+      "video_story_player": "Lecteur d’histoires vidéo",
+      "vimeo_video": "Vidéo Vimeo",
+      "vimeo_video_placeholder": "Espace réservé pour vidéo Vimeo",
+      "pause_video": "Mettre la vidéo en pause"
+    },
+    "press_ticker": {
+      "logos_aria_label": "Vu dans les logos",
+      "title": "Vu dans"
+    },
+    "product": {
+      "add": "Ajouter",
+      "add_to_cart": "Ajouter au panier",
+      "added": "Ajouté",
+      "all_taxes_duties_included": "Toutes les taxes et droits sont inclus dans le prix",
+      "buy_now": "Acheter maintenant",
+      "buy_with": "Acheter avec",
+      "color_option": "Couleur {{ index }}",
+      "color_selector": "Sélecteur de couleur",
+      "description": "Description",
+      "free_shipping_over": "Livraison gratuite à partir de {{ threshold }}",
+      "go_to_reviews": "Voir les avis",
+      "in_the_box": "Dans la boîte",
+      "learn_more": "En savoir plus",
+      "money_back_30_day": "Garantie satisfait ou remboursé de 30 jours",
+      "next_image": "Image suivante",
+      "page_mode": "Mode page",
+      "popular_add_ons": "Extensions populaires",
+      "previous_image": "Image précédente",
+      "purchase_guarantees": "Garanties d’achat",
+      "reviews_count": "{{ count }} avis",
+      "save_percent": "Économise {{ percent }} %",
+      "shop_pay_installments_from": "Paiements échelonnés Shop Pay à partir de",
+      "sold_out": "Épuisé",
+      "warranty_1_year": "Garantie 1 an",
+      "badge_bestseller": "Meilleure vente",
+      "badge_new": "Nouveau",
+      "buy_multiple_save_extra": "Achète-en plusieurs et économise encore plus",
+      "product_name": "Nom du produit",
+      "variant": "Variante",
+      "week_fifth": "cinquième",
+      "week_first": "premier",
+      "week_fourth": "quatrième",
+      "week_of_month": "{{ week }} semaine de {{ month }}",
+      "week_second": "seconde",
+      "week_third": "troisième"
+    },
+    "rating": {
+      "out_of_five_stars": "{{ rating }} sur 5 étoiles"
+    },
+    "see_it_in_action": {
+      "media_alt": "Voir les médias en action"
+    },
+    "shogun": {
+      "view_product_page": "Voir la page produit"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "links": "Liens sociaux",
+      "tiktok": "TikTok",
+      "youtube": "YouTube"
+    },
+    "trustpilot": {
+      "logo_link": "Lien vers le logo Trustpilot",
+      "rating_out_of_five": "{{ rating }} sur 5",
+      "read_reviews": "Lis les avis Soundbrenner sur Trustpilot",
+      "stars_link": "Lien vers les étoiles Trustpilot",
+      "metronome_rating_summary": "Note de {{ rating }}, {{ count }} avis",
+      "trustscore_summary": "{{ rating }} TrustScore sur Trustpilot"
+    },
+    "value_breakdown": {
+      "free": "Gratuit",
+      "total": "Total"
+    },
+    "data_sharing": {
+      "opt_out": "Se désabonner"
+    },
+    "feature_carousel": {
+      "media_alt": "Média en vedette",
+      "video_alt": "Vidéo de présentation"
+    },
+    "hero_card": {
+      "affiliate_headline": "Offre spéciale proposée par {{ Affiliate name }}",
+      "placeholder_button": "Espace réservé",
+      "product_mode_headline": "Pas satisfait ? Remboursement garanti !",
+      "product_mode_subheadline": "Teste sans risque avec la garantie satisfait ou remboursé de 30 jours.",
+      "subheadline_blocked": "Nous ne livrons pas vers {{ Shipping country }}. Choisis un autre pays.",
+      "subheadline_free_shipping": "Économise jusqu'à {{ Sitewide discount depth }} % et profite de la livraison gratuite en {{ Shipping country }} pour toute commande supérieure à {{ Free shipping threshold }}.",
+      "subheadline_no_free_shipping": "Économise jusqu'à {{ Sitewide discount depth }} % en {{ Shipping country }}."
     }
   }
 }

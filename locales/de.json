@@ -239,7 +239,59 @@
       "warranty_1_year": "1 Jahr Garantie",
       "badge_bestseller": "Bestseller",
       "badge_new": "Neu",
-      "buy_multiple_save_extra": "Kaufe mehrere und spare extra"
+      "buy_multiple_save_extra": "Kaufe mehrere und spare extra",
+      "product_name": "Produktname",
+      "variant": "Variante",
+      "week_fifth": "fünfte",
+      "week_first": "erste",
+      "week_fourth": "vierte",
+      "week_of_month": "{{ week }} Woche im {{ month }}",
+      "week_second": "Sekunde",
+      "week_third": "dritte"
+    },
+    "rating": {
+      "out_of_five_stars": "{{ rating }} von 5 Sternen"
+    },
+    "see_it_in_action": {
+      "media_alt": "Sieh es dir in Aktion an Medien"
+    },
+    "shogun": {
+      "view_product_page": "Produktseite ansehen"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "links": "Soziale Links",
+      "tiktok": "TikTok",
+      "youtube": "YouTube"
+    },
+    "trustpilot": {
+      "logo_link": "Trustpilot-Logo-Link",
+      "rating_out_of_five": "{{ rating }} von 5",
+      "read_reviews": "Lies Soundbrenner-Bewertungen auf Trustpilot",
+      "stars_link": "Trustpilot-Sterne-Link",
+      "metronome_rating_summary": "{{ rating }} Bewertung, {{ count }} Bewertungen",
+      "trustscore_summary": "{{ rating }} TrustScore auf Trustpilot"
+    },
+    "value_breakdown": {
+      "free": "Kostenlos",
+      "total": "Gesamt"
+    },
+    "data_sharing": {
+      "opt_out": "Abmelden"
+    },
+    "feature_carousel": {
+      "media_alt": "Medien anzeigen",
+      "video_alt": "Feature-Video"
+    },
+    "hero_card": {
+      "affiliate_headline": "Spezialangebot präsentiert von {{ Affiliate name }}",
+      "placeholder_button": "Platzhalter",
+      "product_mode_headline": "Nicht zufrieden? Du bekommst dein Geld zurück!",
+      "product_mode_subheadline": "Teste risikofrei mit 30 Tagen Geld-zurück-Garantie.",
+      "subheadline_blocked": "Wir liefern nicht nach {{ Shipping country }}. Wähle ein anderes Land aus.",
+      "subheadline_free_shipping": "Spare bis zu {{ Sitewide discount depth }} % und erhalte kostenlosen Versand nach {{ Shipping country }} bei Bestellungen über {{ Free shipping threshold }}.",
+      "subheadline_no_free_shipping": "Spare bis zu {{ Sitewide discount depth }} % in {{ Shipping country }}."
     }
   }
 }

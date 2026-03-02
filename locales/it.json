@@ -239,7 +239,59 @@
       "warranty_1_year": "Garanzia di 1 anno",
       "badge_bestseller": "I più venduti",
       "badge_new": "Novità",
-      "buy_multiple_save_extra": "Acquista più pezzi e risparmia di più"
+      "buy_multiple_save_extra": "Acquista più pezzi e risparmia di più",
+      "product_name": "Nome prodotto",
+      "variant": "Variante",
+      "week_fifth": "quinto",
+      "week_first": "primo",
+      "week_fourth": "quarto",
+      "week_of_month": "{{ week }} settimana di {{ month }}",
+      "week_second": "secondo",
+      "week_third": "terzo"
+    },
+    "rating": {
+      "out_of_five_stars": "{{ rating }} su 5 stelle"
+    },
+    "see_it_in_action": {
+      "media_alt": "Guarda i media in azione"
+    },
+    "shogun": {
+      "view_product_page": "Visualizza la pagina del prodotto"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "links": "Link social",
+      "tiktok": "TikTok",
+      "youtube": "YouTube"
+    },
+    "trustpilot": {
+      "logo_link": "Link logo Trustpilot",
+      "rating_out_of_five": "{{ rating }} su 5",
+      "read_reviews": "Leggi le recensioni su Soundbrenner su Trustpilot",
+      "stars_link": "Link stelle Trustpilot",
+      "metronome_rating_summary": "Valutazione {{ rating }}, {{ count }} recensioni",
+      "trustscore_summary": "{{ rating }} TrustScore su Trustpilot"
+    },
+    "value_breakdown": {
+      "free": "Gratis",
+      "total": "Totale"
+    },
+    "data_sharing": {
+      "opt_out": "Annulla iscrizione"
+    },
+    "feature_carousel": {
+      "media_alt": "Media in evidenza",
+      "video_alt": "Video dimostrativo"
+    },
+    "hero_card": {
+      "affiliate_headline": "Offerta speciale presentata da {{ Affiliate name }}",
+      "placeholder_button": "Segnaposto",
+      "product_mode_headline": "Non sei soddisfatto? Ricevi il rimborso!",
+      "product_mode_subheadline": "Prova senza rischi con garanzia di rimborso entro 30 giorni.",
+      "subheadline_blocked": "Non spediamo in {{ Shipping country }}. Seleziona un altro paese.",
+      "subheadline_free_shipping": "Risparmia fino al {{ Sitewide discount depth }}% e ricevi la spedizione gratuita in {{ Shipping country }} per ordini superiori a {{ Free shipping threshold }}.",
+      "subheadline_no_free_shipping": "Risparmia fino al {{ Sitewide discount depth }}% in {{ Shipping country }}."
     }
   }
 }

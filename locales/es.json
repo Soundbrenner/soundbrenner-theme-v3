@@ -239,7 +239,59 @@
       "warranty_1_year": "Garantía de 1 año",
       "badge_bestseller": "Más vendido",
       "badge_new": "Nuevo",
-      "buy_multiple_save_extra": "Compra varios y ahorra más"
+      "buy_multiple_save_extra": "Compra varios y ahorra más",
+      "product_name": "Nombre del producto",
+      "variant": "Variante",
+      "week_fifth": "quinto",
+      "week_first": "primero",
+      "week_fourth": "cuarto",
+      "week_of_month": "{{ week }} semana de {{ month }}",
+      "week_second": "segundo",
+      "week_third": "tercero"
+    },
+    "rating": {
+      "out_of_five_stars": "{{ rating }} de 5 estrellas"
+    },
+    "see_it_in_action": {
+      "media_alt": "Míralo en acción media"
+    },
+    "shogun": {
+      "view_product_page": "Ver página del producto"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "links": "Enlaces sociales",
+      "tiktok": "TikTok",
+      "youtube": "YouTube"
+    },
+    "trustpilot": {
+      "logo_link": "Enlace al logo de Trustpilot",
+      "rating_out_of_five": "{{ rating }} de 5",
+      "read_reviews": "Lee las opiniones sobre Soundbrenner en Trustpilot",
+      "stars_link": "Enlace a las estrellas de Trustpilot",
+      "metronome_rating_summary": "Valoración de {{ rating }}, {{ count }} reseñas",
+      "trustscore_summary": "{{ rating }} de TrustScore en Trustpilot"
+    },
+    "value_breakdown": {
+      "free": "Gratis",
+      "total": "Total"
+    },
+    "data_sharing": {
+      "opt_out": "Darse de baja"
+    },
+    "feature_carousel": {
+      "media_alt": "Destacar medios",
+      "video_alt": "Video destacado"
+    },
+    "hero_card": {
+      "affiliate_headline": "Oferta especial traída para ti por {{ Affiliate name }}",
+      "placeholder_button": "Marcador de posición",
+      "product_mode_headline": "¿No estás satisfecho? ¡Recupera tu dinero!",
+      "product_mode_subheadline": "Pruébalo sin riesgo con garantía de devolución de dinero de 30 días.",
+      "subheadline_blocked": "No hacemos envíos a {{ Shipping country }}. Selecciona otro país.",
+      "subheadline_free_shipping": "Ahorra hasta un {{ Sitewide discount depth }}% y consigue envío gratis a {{ Shipping country }} en pedidos superiores a {{ Free shipping threshold }}.",
+      "subheadline_no_free_shipping": "Ahorra hasta un {{ Sitewide discount depth }}% en {{ Shipping country }}."
     }
   }
 }
