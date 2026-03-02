@@ -52,12 +52,9 @@
 {% endif %}
 
 {% assign first_compare_price_cents = total_compare_price_cents | minus: extra_compare_sum_cents %}
-{% assign first_current_price_cents = total_current_price_cents | minus: extra_compare_sum_cents %}
+{% assign first_current_price_cents = total_current_price_cents %}
 {% if first_compare_price_cents < 0 %}
   {% assign first_compare_price_cents = 0 %}
-{% endif %}
-{% if first_current_price_cents < 0 %}
-  {% assign first_current_price_cents = 0 %}
 {% endif %}
 
 {% if hide_section %}
@@ -499,7 +496,7 @@
         const compareAtPrice = Number(variant.compareAtPrice) || 0;
         const comparablePrice = compareAtPrice > currentPrice ? compareAtPrice : currentPrice;
         const firstLineComparePrice = Math.max(comparablePrice - extraCompareSumCents, 0);
-        const firstLineCurrentPrice = Math.max(currentPrice - extraCompareSumCents, 0);
+        const firstLineCurrentPrice = currentPrice;
         firstCompareElement.textContent = formatMoney(firstLineComparePrice);
         firstCurrentElement.textContent = formatMoney(firstLineCurrentPrice);
         totalCompareElement.textContent = formatMoney(comparablePrice);
