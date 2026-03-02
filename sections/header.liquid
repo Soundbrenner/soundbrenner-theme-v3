@@ -6126,6 +6126,7 @@
     let lastY = normalizeWindowY(getWindowY());
     const topThreshold = 8;
     const upwardRevealThreshold = 20;
+    const scrollDeltaDeadzone = 1;
     let upwardTravel = 0;
     let hiddenOffset = 0;
     let topExitMode = lastY <= topThreshold;
@@ -6651,6 +6652,11 @@
       const delta = normalizedY - lastY;
       const maxOffset = headerHideOffsetLimit();
 
+      if (Math.abs(delta) <= scrollDeltaDeadzone) {
+        lastY = normalizedY;
+        return;
+      }
+
       if (force || normalizedY <= topThreshold) {
         hiddenOffset = 0;
         upwardTravel = 0;
@@ -6672,6 +6678,13 @@
         }
         applyOffset();
       } else if (delta < 0) {
+        if (!shouldHidePrimaryNavigationOnScroll) {
+          upwardTravel = 0;
+          hiddenOffset = maxOffset;
+          applyOffset();
+          lastY = normalizedY;
+          return;
+        }
         upwardTravel += Math.abs(delta);
         if (upwardTravel >= upwardRevealThreshold) {
           hiddenOffset = 0;
