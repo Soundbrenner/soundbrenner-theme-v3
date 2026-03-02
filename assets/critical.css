@@ -1133,15 +1133,15 @@ video.sb-product-main__media-asset {
 
 .sb-button-radiant--leading-icon,
 .sb-button-radiant--trailing-icon {
-  gap: var(--sb-space-8) !important;
+  gap: 8px !important;
   justify-content: center !important;
 }
 
 .sb-button-radiant--leading-icon .sb-button-radiant__icon,
 .sb-button-radiant--trailing-icon .sb-button-radiant__icon {
-  flex: 0 0 var(--sb-space-16);
-  height: var(--sb-space-16);
-  width: var(--sb-space-16);
+  flex: 0 0 16px;
+  height: 16px;
+  width: 16px;
 }
 
 .sb-button-radiant__icon path:not([fill='none']),
@@ -3605,9 +3605,9 @@ button[aria-label='Modal close button']:focus-visible::after {
   content: '' !important;
   display: inline-block !important;
   flex: 0 0 auto !important;
-  height: var(--sb-space-16) !important;
+  height: 16px !important;
   margin-left: 0 !important;
-  width: var(--sb-space-16) !important;
+  width: 16px !important;
 }
 
 /* Collabs strict overrides for page section key: collabs_app */
