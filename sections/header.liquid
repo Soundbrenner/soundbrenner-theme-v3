@@ -6128,27 +6128,14 @@
     };
     let lastY = normalizeWindowY(getWindowY());
     const topThreshold = 8;
-    const upwardRevealThreshold = 20;
     const scrollDeltaDeadzone = 1;
-    const inputIntentWindowMs = 1400;
-    let upwardTravel = 0;
+    const downwardHideThreshold = 20;
+    const upwardRevealThreshold = 20;
     let hiddenOffset = 0;
-    let topExitMode = lastY <= topThreshold;
+    let downwardTravel = 0;
+    let upwardTravel = 0;
+    let isHeaderHidden = false;
     let scrollSyncLocked = false;
-    let lastInputDirection = 0;
-    let lastInputTimestamp = 0;
-    let touchTracking = false;
-    let lastTouchY = null;
-
-    const recordScrollIntent = (direction) => {
-      if (!Number.isFinite(direction) || direction === 0) return;
-      lastInputDirection = direction > 0 ? 1 : -1;
-      lastInputTimestamp = Date.now();
-    };
-    const hasRecentUpwardIntent = () => (
-      lastInputDirection < 0
-      && (Date.now() - lastInputTimestamp) <= inputIntentWindowMs
-    );
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
     const headerSection = header.closest('.shopify-section');
@@ -6208,16 +6195,24 @@
     };
     const captureHeaderState = () => ({
       hiddenOffset,
-      topExitMode,
+      isHeaderHidden,
+      topExitMode: !isHeaderHidden,
       upwardTravel
     });
     const restoreHeaderState = (state) => {
       if (!state || typeof state !== 'object') return;
       const nextOffset = Number.parseFloat(`${state.hiddenOffset}`);
-      hiddenOffset = clamp(Number.isFinite(nextOffset) ? nextOffset : 0, 0, headerHideOffsetLimit());
-      topExitMode = typeof state.topExitMode === 'boolean'
-        ? state.topExitMode
-        : hiddenOffset < headerHideOffsetLimit();
+      const offsetLimit = headerHideOffsetLimit();
+      hiddenOffset = clamp(Number.isFinite(nextOffset) ? nextOffset : 0, 0, offsetLimit);
+      if (typeof state.isHeaderHidden === 'boolean') {
+        isHeaderHidden = state.isHeaderHidden;
+      } else if (typeof state.topExitMode === 'boolean') {
+        isHeaderHidden = !state.topExitMode;
+      } else {
+        isHeaderHidden = hiddenOffset > offsetLimit * 0.5;
+      }
+      hiddenOffset = isHeaderHidden ? offsetLimit : 0;
+      downwardTravel = 0;
       upwardTravel = 0;
       applyOffset();
       lastY = normalizeWindowY(getWindowY());
@@ -6225,8 +6220,7 @@
     const refreshHeaderScrollMode = ({ forceSync = false } = {}) => {
       const nextShouldHidePrimaryNavigation = hasActiveTopAccessory();
       shouldHidePrimaryNavigationOnScroll = nextShouldHidePrimaryNavigation;
-      hiddenOffset = clamp(hiddenOffset, 0, headerHideOffsetLimit());
-      topExitMode = hiddenOffset < headerHideOffsetLimit();
+      hiddenOffset = isHeaderHidden ? headerHideOffsetLimit() : 0;
       if (forceSync) {
         sync(getWindowY(), { force: true });
       } else {
@@ -6662,50 +6656,60 @@
       const nextShouldHidePrimaryNavigation = hasActiveTopAccessory();
       if (nextShouldHidePrimaryNavigation !== shouldHidePrimaryNavigationOnScroll) {
         shouldHidePrimaryNavigationOnScroll = nextShouldHidePrimaryNavigation;
-        hiddenOffset = clamp(hiddenOffset, 0, headerHideOffsetLimit());
-        topExitMode = hiddenOffset < headerHideOffsetLimit();
+        hiddenOffset = isHeaderHidden ? headerHideOffsetLimit() : 0;
       }
 
       const normalizedY = normalizeWindowY(currentY);
       const delta = normalizedY - lastY;
       const maxOffset = headerHideOffsetLimit();
 
+      if (force) {
+        if (normalizedY <= topThreshold) {
+          isHeaderHidden = false;
+        }
+        hiddenOffset = isHeaderHidden ? maxOffset : 0;
+        downwardTravel = 0;
+        upwardTravel = 0;
+        applyOffset();
+        lastY = normalizedY;
+        return;
+      }
+
+      if (normalizedY <= topThreshold) {
+        isHeaderHidden = false;
+        hiddenOffset = 0;
+        downwardTravel = 0;
+        upwardTravel = 0;
+        applyOffset();
+        lastY = normalizedY;
+        return;
+      }
+
       if (Math.abs(delta) <= scrollDeltaDeadzone) {
         lastY = normalizedY;
         return;
       }
 
-      if (force || normalizedY <= topThreshold) {
-        hiddenOffset = 0;
-        upwardTravel = 0;
-        topExitMode = true;
-        applyOffset();
-        lastY = normalizedY;
-        return;
-      }
-
       if (delta > 0) {
-        recordScrollIntent(1);
+        downwardTravel += delta;
         upwardTravel = 0;
-        if (topExitMode) {
-          // Only when leaving the top, follow page scroll.
-          hiddenOffset = clamp(normalizedY, 0, maxOffset);
-          if (hiddenOffset >= maxOffset - 0.5 || normalizedY > maxOffset) topExitMode = false;
-        } else {
-          // Everywhere else, hide instantly on downward scroll.
-          hiddenOffset = maxOffset;
-        }
-        applyOffset();
-      } else if (delta < 0) {
-        if (!hasRecentUpwardIntent()) {
-          upwardTravel = 0;
+        if (!isHeaderHidden && downwardTravel >= downwardHideThreshold) {
+          isHeaderHidden = true;
+          downwardTravel = 0;
           hiddenOffset = maxOffset;
           applyOffset();
-          lastY = normalizedY;
-          return;
+        } else if (isHeaderHidden) {
+          hiddenOffset = maxOffset;
+          applyOffset();
+        }
+      } else if (delta < 0) {
+        downwardTravel = 0;
+        if (!isHeaderHidden) {
+          upwardTravel = 0;
         }
         upwardTravel += Math.abs(delta);
         if (upwardTravel >= upwardRevealThreshold) {
+          isHeaderHidden = false;
           hiddenOffset = 0;
           upwardTravel = 0;
           applyOffset();
@@ -6730,71 +6734,6 @@
     };
 
     window.addEventListener('scroll', onWindowScroll, { passive: true });
-    window.addEventListener(
-      'wheel',
-      (event) => {
-        const deltaY = Number(event.deltaY);
-        if (!Number.isFinite(deltaY) || Math.abs(deltaY) <= 0.5) return;
-        recordScrollIntent(deltaY > 0 ? 1 : -1);
-      },
-      { passive: true }
-    );
-    window.addEventListener(
-      'touchstart',
-      (event) => {
-        const touch = event.touches && event.touches[0];
-        if (!touch) return;
-        touchTracking = true;
-        lastTouchY = touch.clientY;
-      },
-      { passive: true }
-    );
-    window.addEventListener(
-      'touchmove',
-      (event) => {
-        if (!touchTracking) return;
-        const touch = event.touches && event.touches[0];
-        if (!touch) return;
-        const currentTouchY = touch.clientY;
-        if (!Number.isFinite(lastTouchY)) {
-          lastTouchY = currentTouchY;
-          return;
-        }
-        const pointerDelta = currentTouchY - lastTouchY;
-        if (Math.abs(pointerDelta) > 0.5) {
-          // Finger down means page up (upward reveal intent), finger up means page down.
-          recordScrollIntent(pointerDelta > 0 ? -1 : 1);
-        }
-        lastTouchY = currentTouchY;
-      },
-      { passive: true }
-    );
-    const resetTouchIntentTracking = () => {
-      touchTracking = false;
-      lastTouchY = null;
-    };
-    window.addEventListener('touchend', resetTouchIntentTracking, { passive: true });
-    window.addEventListener('touchcancel', resetTouchIntentTracking, { passive: true });
-    document.addEventListener('keydown', (event) => {
-      if (!event || typeof event.key !== 'string') return;
-      switch (event.key) {
-        case 'ArrowUp':
-        case 'PageUp':
-        case 'Home':
-          recordScrollIntent(-1);
-          break;
-        case 'ArrowDown':
-        case 'PageDown':
-        case 'End':
-          recordScrollIntent(1);
-          break;
-        case ' ':
-          recordScrollIntent(event.shiftKey ? -1 : 1);
-          break;
-        default:
-          break;
-      }
-    });
     window.addEventListener(
       'resize',
       () => {
