@@ -11,7 +11,7 @@
   assign sb_cart_payment_list_class = payment_list_class | default: 'sb-cart-summary__payment-list'
   assign sb_cart_payment_item_class = payment_item_class | default: 'sb-cart-summary__payment-item'
 
-  assign sb_cart_original_subtotal_cents = cart.original_total_price | default: cart.items_subtotal_price | plus: 0
+  assign sb_cart_subtotal_cents = cart.items_subtotal_price | default: cart.total_price | default: cart.original_total_price | plus: 0
   assign sb_cart_primary_discount_title = ''
   assign sb_cart_primary_discount_value_type = ''
   assign sb_cart_primary_discount_value = blank
@@ -145,7 +145,7 @@
   if sb_cart_discount_percent == blank and sb_cart_discount_amount_cents > 0
     assign sb_cart_discount_percent_base = cart.items_subtotal_price | plus: 0
     if sb_cart_discount_percent_base <= 0
-      assign sb_cart_discount_percent_base = sb_cart_original_subtotal_cents
+      assign sb_cart_discount_percent_base = sb_cart_subtotal_cents
     endif
     if sb_cart_discount_percent_base > 0
       assign sb_cart_discount_percent = sb_cart_discount_amount_cents | times: 100.0 | divided_by: sb_cart_discount_percent_base | round
@@ -157,7 +157,7 @@
     assign sb_cart_auto_discount_text = sb_cart_auto_discount_text | append: ' (' | append: sb_cart_discount_percent | append: '% OFF)'
   endif
   assign sb_cart_auto_discount_amount = sb_cart_discount_amount_cents | money
-  assign sb_cart_subtotal_display = sb_cart_original_subtotal_cents | money
+  assign sb_cart_subtotal_display = sb_cart_subtotal_cents | money
 %}
 
 <div class="{{ sb_cart_summary_class }}">

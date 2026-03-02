@@ -1904,9 +1904,11 @@
         });
 
         if (this.subtotalNode && !skipInitialValueMutation) {
-          const subtotalCents = Number.isFinite(Number(cart && cart.original_total_price))
-            ? Number(cart.original_total_price)
-            : (cart && cart.items_subtotal_price ? cart.items_subtotal_price : 0);
+          const subtotalCents = Number.isFinite(Number(cart && cart.items_subtotal_price))
+            ? Number(cart.items_subtotal_price)
+            : Number.isFinite(Number(cart && cart.total_price))
+              ? Number(cart.total_price)
+              : (cart && cart.original_total_price ? cart.original_total_price : 0);
           const subtotalText = formatMoney(
             subtotalCents,
             currency
