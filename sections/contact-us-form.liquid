@@ -1,6 +1,7 @@
 <section class="sb-contact-form" data-sb-reveal>
   <div class="sb-contact-form__inner">
     {% assign contact_query_string = request.query_string | default: '' | downcase %}
+    {% assign contact_send_label = 'sb.contact.send' | t %}
     {% form 'contact', class: 'sb-contact-form__form' %}
       <input type="hidden" name="return_to" value="{{ request.path | append: '?contact_posted=true' }}">
 
@@ -79,7 +80,7 @@
 
       <div class="sb-contact-form__submit-row">
         {% render 'radiant-button',
-          label: 'sb.contact.send' | t,
+          label: contact_send_label,
           size: 'large',
           icon_position: 'trailing',
           button_type: 'submit',

@@ -26,6 +26,7 @@
         assign active_instrument_filter_label = ''
         assign active_dropdown_tag_label = ''
         assign popular_heading = 'sb.blog.most_popular' | t
+        assign explore_shop_label = 'sb.blog.explore_shop' | t
         if current_tags != blank
           assign active_tag_handle = current_tags.first | handleize
           case active_tag_handle
@@ -237,7 +238,7 @@
           {%
             render 'radiant-button',
             link: routes.all_products_collection_url,
-            label: 'sb.blog.explore_shop' | t,
+            label: explore_shop_label,
             size: 'medium',
             extra_class: 'sb-blog-overview__sticky-nav-shop-button font-caption weight-bold'
           %}
@@ -340,7 +341,7 @@
           {%
             render 'radiant-button',
             link: routes.all_products_collection_url,
-            label: 'sb.blog.explore_shop' | t,
+            label: explore_shop_label,
             size: 'medium',
             extra_class: 'sb-blog-overview__sticky-nav-shop-button sb-blog-overview__sticky-nav-shop-button--mobile font-caption weight-bold'
           %}

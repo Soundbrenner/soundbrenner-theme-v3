@@ -47,6 +47,7 @@
   if article_excerpt_text == blank
     assign article_excerpt_text = article_plain_text | truncatewords: 36
   endif
+  assign explore_shop_label = 'sb.blog.explore_shop' | t
 
   assign seasonal_sale_name = settings.seasonal_sale_name | strip
   assign sale_name_token = '{{ Sale name }}'
@@ -300,7 +301,7 @@
         {%
           render 'radiant-button',
           link: routes.all_products_collection_url,
-          label: 'sb.blog.explore_shop' | t,
+          label: explore_shop_label,
           size: 'medium',
           extra_class: 'sb-blog-post__sticky-nav-shop-button font-caption weight-bold'
         %}
@@ -403,7 +404,7 @@
         {%
           render 'radiant-button',
           link: routes.all_products_collection_url,
-          label: 'sb.blog.explore_shop' | t,
+          label: explore_shop_label,
           size: 'medium',
           extra_class: 'sb-blog-post__sticky-nav-shop-button sb-blog-post__sticky-nav-shop-button--mobile font-caption weight-bold'
         %}

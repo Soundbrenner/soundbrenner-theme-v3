@@ -80,6 +80,7 @@
   assign star_icon_url = 'icon-review-star.svg' | asset_url
   assign read_all_arrow_icon_url = 'arrow-reduced-padding.svg' | asset_url
   assign view_all_arrow_icon_url = 'collection-overview-view-all-arrow.svg' | asset_url
+  assign explore_collection_label = 'sb.collection_overview.explore_collection' | t
 
 %}
 
@@ -196,7 +197,7 @@
 
             <div class="sb-collection-overview__actions">
               {% render 'radiant-button',
-                label: 'sb.collection_overview.explore_collection' | t,
+                label: explore_collection_label,
                 link: explore_link,
                 size: 'large',
                 extra_class: 'sb-collection-overview__explore-button font-caption weight-bold'
@@ -297,7 +298,7 @@
           <h2 class="sb-collection-overview__collection-title font-title weight-bold">{{ 'sb.collection_overview.collection_name' | t }}</h2>
           <div class="sb-collection-overview__actions">
             {% render 'radiant-button',
-              label: 'sb.collection_overview.explore_collection' | t,
+              label: explore_collection_label,
               link: routes.collections_url,
               size: 'large',
               extra_class: 'sb-collection-overview__explore-button font-caption weight-bold'
