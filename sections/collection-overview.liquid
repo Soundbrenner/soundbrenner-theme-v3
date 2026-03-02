@@ -359,9 +359,9 @@
     border-radius: 999px;
     display: inline-flex;
     flex-wrap: wrap;
-    gap: var(--sb-space-8);
+    gap: 8px;
     max-width: 100%;
-    padding: var(--sb-space-8) var(--sb-space-12);
+    padding: 8px 12px;
   }
 
   .sb-collection-overview__dot {
@@ -376,14 +376,14 @@
   .sb-collection-overview__stars {
     align-items: center;
     display: inline-flex;
-    gap: var(--sb-space-4);
+    gap: 4px;
   }
 
   .sb-collection-overview__star {
     background: var(--sb-color-neutral-400);
     display: inline-block;
     flex-shrink: 0;
-    height: var(--sb-space-16);
+    height: 16px;
     mask-image: var(--sb-collection-overview-star-url);
     mask-position: center;
     mask-repeat: no-repeat;
@@ -393,7 +393,7 @@
     -webkit-mask-position: center;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: contain;
-    width: var(--sb-space-16);
+    width: 16px;
   }
 
   .sb-collection-overview__star::before {
@@ -406,6 +406,8 @@
 
   .sb-collection-overview__summary {
     color: var(--sb-color-neutral-900);
+    font-size: 14px;
+    line-height: 1.3;
     margin: 0;
     white-space: nowrap;
   }
@@ -416,8 +418,10 @@
     border-radius: 999px;
     color: var(--sb-color-neutral-900);
     display: inline-flex;
-    gap: var(--sb-space-4);
-    padding: var(--sb-space-2) var(--sb-space-6) var(--sb-space-2) var(--sb-space-8);
+    font-size: 12px;
+    gap: 4px;
+    line-height: 1.2;
+    padding: 2px 6px 2px 8px;
     text-decoration: none;
     white-space: nowrap;
   }
@@ -431,7 +435,7 @@
     background: currentColor;
     display: inline-block;
     flex-shrink: 0;
-    height: var(--sb-space-12);
+    height: 12px;
     mask-image: var(--sb-collection-overview-arrow-url);
     mask-position: center;
     mask-repeat: no-repeat;
@@ -440,7 +444,7 @@
     -webkit-mask-position: center;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: contain;
-    width: var(--sb-space-12);
+    width: 12px;
   }
 
   .sb-collection-overview__section-divider {
@@ -677,7 +681,7 @@
   @media (max-width: 749px) {
     .sb-collection-overview__header {
       align-items: center;
-      padding-right: var(--sb-space-8);
+      padding-right: 8px;
     }
 
     .sb-collection-overview__dot:last-child {

@@ -802,13 +802,6 @@ body .sb-page-content__body .rte > * + * {
   color: var(--sb-color-blue-500);
 }
 
-@media (hover: none) {
-  [data-sb-thumbnail-section] .sb-product-thumbnail__add-to-cart {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
 /* Shared thumbnail rating tooltip */
 .sb-product-thumbnail__stars[data-rating-tooltip] {
   position: relative;
