@@ -74,13 +74,7 @@
     endif
     if sidebar_entry_threshold != blank
       assign sidebar_entry_threshold_cents = sidebar_entry_threshold | times: 100
-      assign sidebar_threshold_currency_symbol = localization.country.currency.symbol | default: ''
-      assign sidebar_threshold_amount = sidebar_entry_threshold_cents | money_without_currency | strip
-      if sidebar_threshold_currency_symbol != blank
-        assign sidebar_free_shipping_threshold_display = sidebar_threshold_currency_symbol | append: sidebar_threshold_amount
-      else
-        assign sidebar_free_shipping_threshold_display = sidebar_entry_threshold_cents | money_without_trailing_zeros
-      endif
+      assign sidebar_free_shipping_threshold_display = sidebar_entry_threshold_cents | money_without_trailing_zeros
     endif
   endif
 

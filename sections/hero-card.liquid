@@ -62,13 +62,7 @@
   {% endif %}
   {% if hero_card_entry_threshold != blank %}
     {% assign hero_card_entry_threshold_cents = hero_card_entry_threshold | times: 100 %}
-    {% assign hero_card_threshold_currency_symbol = localization.country.currency.symbol | default: '' %}
-    {% assign hero_card_threshold_amount = hero_card_entry_threshold_cents | money_without_currency | strip %}
-    {% if hero_card_threshold_currency_symbol != blank %}
-      {% assign hero_card_free_shipping_threshold_display = hero_card_threshold_currency_symbol | append: hero_card_threshold_amount %}
-    {% else %}
-      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold_cents | money_without_trailing_zeros %}
-    {% endif %}
+    {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold_cents | money_without_trailing_zeros %}
   {% endif %}
 {% endif %}
 
