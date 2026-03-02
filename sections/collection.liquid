@@ -23,7 +23,7 @@
         {% endif %}
         <div class="collection-product__content">
           <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money_without_trailing_zeros }}</p>
+          <p>{% render 'sb-money-no-decimals', amount: product.price %}</p>
         </div>
       </div>
     {% endfor %}

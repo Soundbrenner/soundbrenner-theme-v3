@@ -76,7 +76,10 @@
     endif
     if sidebar_entry_threshold != blank
       assign sidebar_entry_threshold_cents = sidebar_entry_threshold | times: 100
-      assign sidebar_free_shipping_threshold_display = sidebar_entry_threshold_cents | money_without_trailing_zeros
+      capture sidebar_free_shipping_threshold_display
+        render 'sb-money-no-decimals', amount: sidebar_entry_threshold_cents
+      endcapture
+      assign sidebar_free_shipping_threshold_display = sidebar_free_shipping_threshold_display | strip
     endif
   endif
 

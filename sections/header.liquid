@@ -94,7 +94,10 @@
     endif
     if seasonal_entry_threshold != blank
       assign seasonal_entry_threshold_cents = seasonal_entry_threshold | times: 100
-      assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold_cents | money_without_trailing_zeros
+      capture seasonal_free_shipping_threshold_display
+        render 'sb-money-no-decimals', amount: seasonal_entry_threshold_cents
+      endcapture
+      assign seasonal_free_shipping_threshold_display = seasonal_free_shipping_threshold_display | strip
     endif
   endif
   assign seasonal_shipping_advertised_min_time_number = seasonal_shipping_advertised_min_time | plus: 0

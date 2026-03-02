@@ -483,10 +483,10 @@
             hidden
           {% endunless %}
         >
-          {{ hero_selected_variant.compare_at_price | money_without_trailing_zeros }}
+          {% render 'sb-money-no-decimals', amount: hero_selected_variant.compare_at_price %}
         </p>
         <p class="sb-product-page-hero__price sb-product-page-hero__price--current font-body weight-regular" data-product-hero-current-price>
-          {{ hero_selected_variant.price | money_without_trailing_zeros }}
+          {% render 'sb-money-no-decimals', amount: hero_selected_variant.price %}
         </p>
       </div>
 
@@ -518,6 +518,7 @@
       const currentPriceElement = heroRoot.querySelector('[data-product-hero-current-price]');
       const watchVideoButton = heroRoot.querySelector('.sb-product-page-hero__watch-video-button');
       const currencyCode = priceRoot?.dataset.currency || 'USD';
+      const normalizedCurrencyCode = `${currencyCode}`.trim().toUpperCase();
       const productId = priceRoot?.dataset.productId || '';
       const variantIds = String(priceRoot?.dataset.productVariantIds || '')
         .split(',')
@@ -532,10 +533,19 @@
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
       });
+      const usdNoDecimalsFormatter = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
       const initialPriceSample = (currentPriceElement?.textContent || '').trim();
-      const shouldAppendCurrencyCode = currencyCode !== 'USD' && new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
+      const shouldAppendCurrencyCode = normalizedCurrencyCode !== 'USD' && new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
+      const formatUsdNoDecimals = (amountInCents) => {
+        const normalizedCents = Number(amountInCents || 0);
+        return `$${usdNoDecimalsFormatter.format(Math.round(normalizedCents / 100))}`;
+      };
 
       const formatMoney = (amountInCents) => {
+        if (normalizedCurrencyCode === 'USD') return formatUsdNoDecimals(amountInCents);
         const normalizedCents = Number(amountInCents || 0);
         const formatted = storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
           ? storefrontPricing.formatMoney(normalizedCents, currencyCode)

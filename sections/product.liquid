@@ -278,7 +278,10 @@
     endif
     if shopper_country_free_shipping_threshold != blank
       assign shopper_country_free_shipping_threshold_cents = shopper_country_free_shipping_threshold | times: 100
-      assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_cents | money_without_trailing_zeros
+      capture shopper_country_free_shipping_threshold_display
+        render 'sb-money-no-decimals', amount: shopper_country_free_shipping_threshold_cents
+      endcapture
+      assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_display | strip
     endif
   endif
 
@@ -503,10 +506,10 @@
                 hidden
               {% endunless %}
             >
-              {{ current_variant.compare_at_price | money_without_trailing_zeros }}
+              {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price %}
             </span>
             <span class="sb-product-main__sticky-current-price font-caption weight-regular" data-sticky-current-price>
-              {{ current_variant.price | money_without_trailing_zeros }}
+              {% render 'sb-money-no-decimals', amount: current_variant.price %}
             </span>
           </div>
 
@@ -649,10 +652,10 @@
                 hidden
               {% endunless %}
             >
-              {{ current_variant.compare_at_price | money_without_trailing_zeros }}
+              {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price %}
             </span>
             <span class="sb-product-main__sticky-bottom-current-price font-caption weight-regular" data-sticky-bottom-current-price>
-              {{ current_variant.price | money_without_trailing_zeros }}
+              {% render 'sb-money-no-decimals', amount: current_variant.price %}
             </span>
           </div>
 
@@ -1036,11 +1039,11 @@
                       <span class="sb-product-main__selector-list-item-price-row">
                         {% if selector_has_compare %}
                           <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                            {{ selector_variant.compare_at_price | money_without_trailing_zeros }}
+                            {% render 'sb-money-no-decimals', amount: selector_variant.compare_at_price %}
                           </span>
                         {% endif %}
                         <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                          {{ selector_variant.price | money_without_trailing_zeros }}
+                          {% render 'sb-money-no-decimals', amount: selector_variant.price %}
                         </span>
                       </span>
                     </button>
@@ -1070,11 +1073,11 @@
                     <span class="sb-product-main__selector-list-item-price-row">
                       {% if current_product_has_compare %}
                         <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                          {{ current_variant.compare_at_price | money_without_trailing_zeros }}
+                          {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price %}
                         </span>
                       {% endif %}
                       <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                        {{ current_variant.price | money_without_trailing_zeros }}
+                        {% render 'sb-money-no-decimals', amount: current_variant.price %}
                       </span>
                     </span>
                   </button>
@@ -1121,11 +1124,11 @@
                       <span class="sb-product-main__selector-list-item-price-row">
                         {% if multipack_has_compare %}
                           <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                            {{ multipack_variant.compare_at_price | money_without_trailing_zeros }}
+                            {% render 'sb-money-no-decimals', amount: multipack_variant.compare_at_price %}
                           </span>
                         {% endif %}
                         <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                          {{ multipack_variant.price | money_without_trailing_zeros }}
+                          {% render 'sb-money-no-decimals', amount: multipack_variant.price %}
                         </span>
                       </span>
                     </button>
@@ -1237,10 +1240,10 @@
                     hidden
                   {% endunless %}
                 >
-                  {{ current_variant.compare_at_price | money_without_trailing_zeros }}
+                  {% render 'sb-money-no-decimals', amount: current_variant.compare_at_price %}
                 </p>
                 <p class="sb-product-main__price sb-product-main__price--current font-body weight-regular" data-product-current-price>
-                  {{ current_variant.price | money_without_trailing_zeros }}
+                  {% render 'sb-money-no-decimals', amount: current_variant.price %}
                 </p>
               </div>
               <span
@@ -1358,12 +1361,13 @@
                   <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">{{ 'sb.product.warranty_1_year' | t }}</span>
                 </li>
                 {% if show_shop_pay_guarantee %}
+                  {% assign current_variant_monthly_price_cents = current_variant.price | times: 0.01 | divided_by: 4.0 | round | times: 100 %}
                   <li class="sb-product-main__purchase-guarantee-item sb-product-main__purchase-guarantee-item--shop-pay">
                     <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
                       {{ 'icon-purchase-guarantee-pie-chart.svg' | inline_asset_content }}
                     </span>
                     <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">
-                      {{ 'sb.product.shop_pay_installments_from' | t }}&nbsp;<span data-product-monthly-price>{{ current_variant.price | times: 0.01 | divided_by: 4.0 | round | times: 100 | money_without_trailing_zeros }}</span>
+                      {{ 'sb.product.shop_pay_installments_from' | t }}&nbsp;<span data-product-monthly-price>{% render 'sb-money-no-decimals', amount: current_variant_monthly_price_cents %}</span>
                     </span>
                   </li>
                 {% endif %}
@@ -1417,10 +1421,10 @@
 
                   <div class="sb-product-main__addon-price-row" data-addon-price-row>
                     <p class="sb-product-main__addon-price sb-product-main__addon-price--compare font-body weight-regular" data-addon-compare-price{% unless addon_has_compare_price %} hidden{% endunless %}>
-                      {{ addon_selected_variant.compare_at_price | money_without_trailing_zeros }}
+                      {% render 'sb-money-no-decimals', amount: addon_selected_variant.compare_at_price %}
                     </p>
                     <p class="sb-product-main__addon-price sb-product-main__addon-price--current font-body weight-regular" data-addon-current-price>
-                      {{ addon_selected_variant.price | money_without_trailing_zeros }}
+                      {% render 'sb-money-no-decimals', amount: addon_selected_variant.price %}
                     </p>
                   </div>
 
@@ -4049,10 +4053,15 @@
           .replace(/'/g, '&#39;');
 
       const currencyCode = priceRow?.dataset.currency || 'USD';
+      const normalizedCurrencyCode = `${currencyCode}`.trim().toUpperCase();
       const storefrontPricing = window.SBStorefrontPricing || null;
       const fallbackMoneyFormatter = new Intl.NumberFormat(undefined, {
         style: 'currency',
         currency: currencyCode,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
+      const usdNoDecimalsFormatter = new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
       });
@@ -4075,7 +4084,11 @@
         currentPriceElement?.textContent ||
         ''
       ).trim();
-      const shouldAppendCurrencyCode = currencyCode !== 'USD' && new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
+      const shouldAppendCurrencyCode = normalizedCurrencyCode !== 'USD' && new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
+      const formatUsdNoDecimals = (centsValue) => {
+        const amount = Number(centsValue) || 0;
+        return `$${usdNoDecimalsFormatter.format(Math.round(amount / 100))}`;
+      };
 
       const syncStickyReviewCount = () => {
         [stickyReviewCountElement, stickyBottomReviewCountElement].forEach((element) => {
@@ -4467,12 +4480,19 @@
       }
 
       const formatMoney = (centsValue) => {
+        if (normalizedCurrencyCode === 'USD') return formatUsdNoDecimals(centsValue);
         const amount = Number(centsValue) || 0;
         const formatted = storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
           ? storefrontPricing.formatMoney(amount, currencyCode)
           : fallbackMoneyFormatter.format(amount / 100);
         if (!shouldAppendCurrencyCode) return formatted;
         return `${formatted} ${currencyCode}`;
+      };
+      const formatMonthlyMoney = (centsValue) => {
+        const amount = Number(centsValue) || 0;
+        const monthlyCents = Math.round(amount / 4);
+        if (normalizedCurrencyCode === 'USD') return formatUsdNoDecimals(monthlyCents);
+        return monthlyMoneyFormatter.format(monthlyCents / 100);
       };
 
       const resolveDisplayPrice = (purchaseData, overrideProductId = productId) => {
@@ -5463,7 +5483,7 @@
           }
         }
         if (monthlyPriceElement) {
-          monthlyPriceElement.textContent = monthlyMoneyFormatter.format((Number(resolvedPricing.currentPriceCents || 0) / 100) / 4);
+          monthlyPriceElement.textContent = formatMonthlyMoney(resolvedPricing.currentPriceCents);
         }
 
         if (addButton) {

@@ -63,7 +63,10 @@
   {% endif %}
   {% if hero_card_entry_threshold != blank %}
     {% assign hero_card_entry_threshold_cents = hero_card_entry_threshold | times: 100 %}
-    {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold_cents | money_without_trailing_zeros %}
+    {% capture hero_card_free_shipping_threshold_display %}
+      {% render 'sb-money-no-decimals', amount: hero_card_entry_threshold_cents %}
+    {% endcapture %}
+    {% assign hero_card_free_shipping_threshold_display = hero_card_free_shipping_threshold_display | strip %}
   {% endif %}
 {% endif %}
 
@@ -582,6 +585,7 @@
       const submitButton = card.querySelector('[data-hero-card-submit]');
       const buttonLabel = card.querySelector('[data-hero-card-button-label]');
       const currencyCode = card.dataset.currency || 'USD';
+      const normalizedCurrencyCode = `${currencyCode}`.trim().toUpperCase();
       const productId = card.dataset.productId || '';
       if (!variantIdInput || !currentPriceElement || !comparePriceElement || !form || !submitButton || !buttonLabel) return;
 
@@ -592,9 +596,16 @@
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
       });
+      const usdNoDecimalsFormatter = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
 
       const formatMoney = (centsValue) => {
         const amountInCents = Number(centsValue) || 0;
+        if (normalizedCurrencyCode === 'USD') {
+          return `$${usdNoDecimalsFormatter.format(Math.round(amountInCents / 100))}`;
+        }
         return storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
           ? storefrontPricing.formatMoney(amountInCents, currencyCode)
           : fallbackMoneyFormatter.format(amountInCents / 100);

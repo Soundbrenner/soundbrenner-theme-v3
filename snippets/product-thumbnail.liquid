@@ -130,10 +130,16 @@
 
             if variant_color_value == option_value.name
               assign option_swatch_variant_id = product_variant.id
-              assign option_swatch_price_text = product_variant.price | money_without_trailing_zeros
+              capture option_swatch_price_text
+                render 'sb-money-no-decimals', amount: product_variant.price
+              endcapture
+              assign option_swatch_price_text = option_swatch_price_text | strip
               assign option_swatch_price_cents = product_variant.price | plus: 0
               if product_variant.compare_at_price > product_variant.price
-                assign option_swatch_compare_price_text = product_variant.compare_at_price | money_without_trailing_zeros
+                capture option_swatch_compare_price_text
+                  render 'sb-money-no-decimals', amount: product_variant.compare_at_price
+                endcapture
+                assign option_swatch_compare_price_text = option_swatch_compare_price_text | strip
                 assign option_swatch_compare_price_cents = product_variant.compare_at_price | plus: 0
               endif
               break
@@ -156,10 +162,16 @@
                 assign option_swatch_image = product_variant.featured_image | image_url: width: 584
                 assign option_swatch_gallery = 'image::' | append: option_swatch_image
                 assign option_swatch_variant_id = product_variant.id
-                assign option_swatch_price_text = product_variant.price | money_without_trailing_zeros
+                capture option_swatch_price_text
+                  render 'sb-money-no-decimals', amount: product_variant.price
+                endcapture
+                assign option_swatch_price_text = option_swatch_price_text | strip
                 assign option_swatch_price_cents = product_variant.price | plus: 0
                 if product_variant.compare_at_price > product_variant.price
-                  assign option_swatch_compare_price_text = product_variant.compare_at_price | money_without_trailing_zeros
+                  capture option_swatch_compare_price_text
+                    render 'sb-money-no-decimals', amount: product_variant.compare_at_price
+                  endcapture
+                  assign option_swatch_compare_price_text = option_swatch_compare_price_text | strip
                   assign option_swatch_compare_price_cents = product_variant.compare_at_price | plus: 0
                 endif
 
@@ -351,10 +363,16 @@
       endif
     endif
     if thumbnail_price == blank and selected_variant != blank
-      assign thumbnail_price = selected_variant.price | money_without_trailing_zeros
+      capture thumbnail_price
+        render 'sb-money-no-decimals', amount: selected_variant.price
+      endcapture
+      assign thumbnail_price = thumbnail_price | strip
     endif
     if thumbnail_compare_price == blank and selected_variant != blank and selected_variant.compare_at_price > selected_variant.price
-      assign thumbnail_compare_price = selected_variant.compare_at_price | money_without_trailing_zeros
+      capture thumbnail_compare_price
+        render 'sb-money-no-decimals', amount: selected_variant.compare_at_price
+      endcapture
+      assign thumbnail_compare_price = thumbnail_compare_price | strip
     endif
 
     if product.tags != blank
