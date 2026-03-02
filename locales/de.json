@@ -7,7 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "404": {
     "title": "404",
@@ -60,5 +59,65 @@
     "submit": "Suche",
     "no_results_html": "Keine Ergebnisse für {{ terms }} gefunden",
     "results_for_html": "{{ count }} Ergebnisse für {{ terms }} gefunden"
+  },
+  "sb": {
+    "accordion": {
+      "contact_prompt_html": "Wenn du keine Antwort findest, <a href=\"{{ url }}\">kontaktiere uns</a>!",
+      "frequently_asked_questions": "Häufig gestellte Fragen"
+    },
+    "app": {
+      "app_store": "App Store",
+      "download_app_store": "Lade es im App Store herunter",
+      "download_china": "Download in China",
+      "download_google_play": "Bei Google Play herunterladen",
+      "google_play": "Google Play"
+    },
+    "blog": {
+      "about_soundbrenner": "Über Soundbrenner",
+      "all": "Alle",
+      "archive": "Archiv",
+      "blog": "Blog",
+      "by_instrument": "Nach Instrument",
+      "by_product": "Nach Produkt",
+      "by_team_soundbrenner": "vom Soundbrenner Team",
+      "categories": "Kategorien",
+      "category_filters": "Blog-Kategorie-Filter",
+      "close_categories": "Kategorien schließen",
+      "comment_pagination": "Kommentar-Seitenumbruch",
+      "company_news": "Unternehmensnews",
+      "explore_shop": "Entdecke unseren Shop",
+      "featured_articles": "Empfohlene Artikel",
+      "gift_guides": "Geschenkideen",
+      "latest": "Neueste",
+      "min_read": "{{ minutes }} Min. Lesezeit",
+      "most_popular": "Am beliebtesten",
+      "music_insights": "Musik-Insights",
+      "next_page": "Nächste Seite",
+      "pagination": "Seitennavigation",
+      "previous_page": "Vorherige Seite",
+      "product_tips": "Produkttipps",
+      "read_this_next": "Lies als Nächstes",
+      "sidebar_content": "Seitenleisteninhalt",
+      "sidebar_promo": "Seitenleisten-Promo",
+      "sticky_navigation": "Feste Blog-Navigation"
+    },
+    "cart": {
+      "accepted_payment_methods": "Akzeptierte Zahlungsmethoden",
+      "apply": "Anwenden",
+      "clear_cart": "Warenkorb leeren",
+      "decrease_quantity": "Menge verringern",
+      "discount": "Rabatt",
+      "discount_code": "Rabattcode",
+      "discount_with_percent": "{{ code }} ({{ percent }} % RABATT)",
+      "empty_message": "Dein Warenkorb ist leer. Lass ihn mit wunderschön designtem Musik-Equipment füllen.",
+      "free_shipping": "Kostenloser Versand",
+      "free_shipping_remaining_html": "👉 Dir fehlen nur noch <strong>{{ amount }}</strong> bis zum <strong>kostenlosen Versand</strong>.",
+      "free_shipping_unlocked_html": "🥳 Du hast <strong>kostenlosen Versand</strong> freigeschaltet.",
+      "included_in_price": "Im Preis enthalten",
+      "increase_quantity": "Menge erhöhen",
+      "quantity": "Menge",
+      "remove_discount_code": "Entferne {{ code }}",
+      "remove_item": "Artikel entfernen"
+    }
   }
 }

@@ -7,7 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-
 {
   "404": {
     "title": "404",
@@ -60,5 +59,65 @@
     "submit": "Buscar",
     "no_results_html": "No se encontraron resultados para {{ terms }}",
     "results_for_html": "{{ count }} resultados encontrados para {{ terms }}"
+  },
+  "sb": {
+    "accordion": {
+      "contact_prompt_html": "Si no encuentras la respuesta, <a href=\"{{ url }}\">contáctanos</a>.",
+      "frequently_asked_questions": "Preguntas frecuentes"
+    },
+    "app": {
+      "app_store": "App Store",
+      "download_app_store": "Descarga en el App Store",
+      "download_china": "Descargar en China",
+      "download_google_play": "Descarga en Google Play",
+      "google_play": "Google Play"
+    },
+    "blog": {
+      "about_soundbrenner": "Acerca de Soundbrenner",
+      "all": "Todo",
+      "archive": "Archivo",
+      "blog": "Blog",
+      "by_instrument": "Por instrumento",
+      "by_product": "Por producto",
+      "by_team_soundbrenner": "por el equipo de Soundbrenner",
+      "categories": "Categorías",
+      "category_filters": "Filtros de categorías del blog",
+      "close_categories": "Cerrar categorías",
+      "comment_pagination": "Paginación de comentarios",
+      "company_news": "Noticias de la empresa",
+      "explore_shop": "Explora nuestra tienda",
+      "featured_articles": "Artículos destacados",
+      "gift_guides": "Guías de regalos",
+      "latest": "Lo último",
+      "min_read": "Lectura de {{ minutes }} min",
+      "most_popular": "Más popular",
+      "music_insights": "Estadísticas musicales",
+      "next_page": "Página siguiente",
+      "pagination": "Paginación",
+      "previous_page": "Página anterior",
+      "product_tips": "Consejos del producto",
+      "read_this_next": "Lee esto a continuación",
+      "sidebar_content": "Contenido de la barra lateral",
+      "sidebar_promo": "Promoción en la barra lateral",
+      "sticky_navigation": "Navegación fija del blog"
+    },
+    "cart": {
+      "accepted_payment_methods": "Métodos de pago aceptados",
+      "apply": "Aplicar",
+      "clear_cart": "Vaciar carrito",
+      "decrease_quantity": "Disminuir cantidad",
+      "discount": "Descuento",
+      "discount_code": "Código de descuento",
+      "discount_with_percent": "{{ code }} ({{ percent }}% DE DESCUENTO)",
+      "empty_message": "Tu carrito está vacío. Vamos a llenarlo con equipo musical de diseño excepcional.",
+      "free_shipping": "Envío gratis",
+      "free_shipping_remaining_html": "👉 Solo te faltan <strong>{{ amount }}</strong> para <strong>envío gratis</strong>.",
+      "free_shipping_unlocked_html": "🥳 Has desbloqueado el <strong>envío gratis</strong>.",
+      "included_in_price": "Incluido en el precio",
+      "increase_quantity": "Aumentar cantidad",
+      "quantity": "Cantidad",
+      "remove_discount_code": "Eliminar {{ code }}",
+      "remove_item": "Eliminar artículo"
+    }
   }
 }
