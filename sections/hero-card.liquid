@@ -67,7 +67,7 @@
     {% if hero_card_threshold_currency_symbol != blank %}
       {% assign hero_card_free_shipping_threshold_display = hero_card_threshold_currency_symbol | append: hero_card_threshold_amount %}
     {% else %}
-      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold_cents | money %}
+      {% assign hero_card_free_shipping_threshold_display = hero_card_entry_threshold_cents | money_without_trailing_zeros %}
     {% endif %}
   {% endif %}
 {% endif %}
@@ -588,26 +588,59 @@
       const productId = card.dataset.productId || '';
       if (!variantIdInput || !currentPriceElement || !comparePriceElement || !form || !submitButton || !buttonLabel) return;
 
-      const formatter = new Intl.NumberFormat(undefined, {
+      const storefrontPricing = window.SBStorefrontPricing || null;
+      const fallbackMoneyFormatter = new Intl.NumberFormat(undefined, {
         style: 'currency',
         currency: currencyCode,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
       });
 
       const formatMoney = (centsValue) => {
-        const amount = Number(centsValue) || 0;
-        return formatter.format(amount / 100);
+        const amountInCents = Number(centsValue) || 0;
+        return storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
+          ? storefrontPricing.formatMoney(amountInCents, currencyCode)
+          : fallbackMoneyFormatter.format(amountInCents / 100);
+      };
+
+      const resolveDisplayPrice = (priceCents, comparePriceCents, overrideProductId = productId) => {
+        if (storefrontPricing && typeof storefrontPricing.resolvePrice === 'function') {
+          const resolved = storefrontPricing.resolvePrice({
+            productId: overrideProductId,
+            priceCents,
+            comparePriceCents,
+          }) || {};
+          const currentPriceCents = Number(resolved.currentPriceCents);
+          const resolvedComparePriceCents = Number(resolved.comparePriceCents);
+          return {
+            currentPriceCents: Number.isFinite(currentPriceCents) ? currentPriceCents : Number(priceCents || 0),
+            comparePriceCents:
+              Number.isFinite(resolvedComparePriceCents) && resolvedComparePriceCents > currentPriceCents
+                ? resolvedComparePriceCents
+                : null,
+          };
+        }
+
+        const normalizedPrice = Number(priceCents) || 0;
+        const normalizedCompare = Number(comparePriceCents) || 0;
+        return {
+          currentPriceCents: normalizedPrice,
+          comparePriceCents: normalizedCompare > normalizedPrice ? normalizedCompare : null,
+        };
       };
 
       const applyVariant = (variant) => {
         if (!variant || !variant.id) return;
         variantIdInput.value = `${variant.id}`;
         const priceValue = Number(variant.price) || 0;
-        currentPriceElement.textContent = formatMoney(priceValue);
-
         const comparePriceValue = Number(variant.compare_at_price) || 0;
-        const hasCompare = comparePriceValue > priceValue;
+        const resolvedPricing = resolveDisplayPrice(priceValue, comparePriceValue);
+        const hasCompare =
+          Number.isFinite(resolvedPricing.comparePriceCents)
+          && resolvedPricing.comparePriceCents > resolvedPricing.currentPriceCents;
+        currentPriceElement.textContent = formatMoney(resolvedPricing.currentPriceCents);
         if (hasCompare) {
-          comparePriceElement.textContent = formatMoney(comparePriceValue);
+          comparePriceElement.textContent = formatMoney(resolvedPricing.comparePriceCents);
           comparePriceElement.hidden = false;
         } else {
           comparePriceElement.textContent = '';

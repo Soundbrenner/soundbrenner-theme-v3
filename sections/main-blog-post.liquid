@@ -79,7 +79,7 @@
       if sidebar_threshold_currency_symbol != blank
         assign sidebar_free_shipping_threshold_display = sidebar_threshold_currency_symbol | append: sidebar_threshold_amount
       else
-        assign sidebar_free_shipping_threshold_display = sidebar_entry_threshold_cents | money
+        assign sidebar_free_shipping_threshold_display = sidebar_entry_threshold_cents | money_without_trailing_zeros
       endif
     endif
   endif

@@ -96,7 +96,7 @@
       if seasonal_threshold_currency_symbol != blank
         assign seasonal_free_shipping_threshold_display = seasonal_threshold_currency_symbol | append: seasonal_threshold_amount
       else
-        assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold_cents | money
+        assign seasonal_free_shipping_threshold_display = seasonal_entry_threshold_cents | money_without_trailing_zeros
       endif
     endif
   endif
@@ -602,6 +602,7 @@
                           {% if block_type_key == 'primary_item_product' %}
                             {% assign accessories_collection = block.settings.accessories_collection %}
                             {% if accessories_collection == blank and card_product != blank and card_product.collections != blank %}
+                              {% assign fallback_non_generic_collection = blank %}
                               {% for candidate_collection in card_product.collections %}
                                 {% assign candidate_handle = candidate_collection.handle | downcase %}
                                 {% assign candidate_title = candidate_collection.title | downcase %}
@@ -609,9 +610,23 @@
                                   {% assign accessories_collection = candidate_collection %}
                                   {% break %}
                                 {% endif %}
+
+                                {% if fallback_non_generic_collection == blank %}
+                                  {% assign is_generic_collection = false %}
+                                  {% if candidate_handle == 'all' or candidate_handle == 'all-products' or candidate_handle contains 'shop-all' or candidate_title contains 'shop all' %}
+                                    {% assign is_generic_collection = true %}
+                                  {% endif %}
+                                  {% unless is_generic_collection %}
+                                    {% assign fallback_non_generic_collection = candidate_collection %}
+                                  {% endunless %}
+                                {% endif %}
                               {% endfor %}
                               {% if accessories_collection == blank %}
-                                {% assign accessories_collection = card_product.collections.first %}
+                                {% if fallback_non_generic_collection != blank %}
+                                  {% assign accessories_collection = fallback_non_generic_collection %}
+                                {% else %}
+                                  {% assign accessories_collection = card_product.collections.first %}
+                                {% endif %}
                               {% endif %}
                             {% endif %}
                             {% if accessories_collection != blank %}
@@ -899,6 +914,7 @@
 
                           assign drawer_accessories_collection = block.settings.accessories_collection
                           if drawer_accessories_collection == blank and drawer_card_product.collections != blank
+                            assign drawer_fallback_non_generic_collection = blank
                             for drawer_candidate_collection in drawer_card_product.collections
                               assign drawer_candidate_handle = drawer_candidate_collection.handle | downcase
                               assign drawer_candidate_title = drawer_candidate_collection.title | downcase
@@ -906,9 +922,23 @@
                                 assign drawer_accessories_collection = drawer_candidate_collection
                                 break
                               endif
+
+                              if drawer_fallback_non_generic_collection == blank
+                                assign drawer_is_generic_collection = false
+                                if drawer_candidate_handle == 'all' or drawer_candidate_handle == 'all-products' or drawer_candidate_handle contains 'shop-all' or drawer_candidate_title contains 'shop all'
+                                  assign drawer_is_generic_collection = true
+                                endif
+                                unless drawer_is_generic_collection
+                                  assign drawer_fallback_non_generic_collection = drawer_candidate_collection
+                                endunless
+                              endif
                             endfor
                             if drawer_accessories_collection == blank
-                              assign drawer_accessories_collection = drawer_card_product.collections.first
+                              if drawer_fallback_non_generic_collection != blank
+                                assign drawer_accessories_collection = drawer_fallback_non_generic_collection
+                              else
+                                assign drawer_accessories_collection = drawer_card_product.collections.first
+                              endif
                             endif
                           endif
                         elsif drawer_card_collection != blank

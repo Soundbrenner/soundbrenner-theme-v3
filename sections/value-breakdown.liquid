@@ -73,6 +73,7 @@
   <section
     class="sb-value-breakdown"
     data-value-breakdown
+    data-product-id="{{ product.id }}"
     data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
     data-initial-variant-id="{{ current_variant.id }}"
     data-extra-compare-sum-cents="{{ extra_compare_sum_cents }}"
@@ -114,10 +115,10 @@
             <p class="sb-value-breakdown__line-item-title font-body weight-bold">{{ product.title }}</p>
             <div class="sb-value-breakdown__line-item-prices">
               <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular" data-value-breakdown-first-compare>
-                {{ first_compare_price_cents | money }}
+                {{ first_compare_price_cents | money_without_trailing_zeros }}
               </span>
               <span class="sb-value-breakdown__line-item-price-current font-body weight-regular" data-value-breakdown-first-current>
-                {{ first_current_price_cents | money }}
+                {{ first_current_price_cents | money_without_trailing_zeros }}
               </span>
             </div>
           </div>
@@ -165,7 +166,7 @@
                 {% if item_show_price %}
                   <div class="sb-value-breakdown__line-item-prices">
                     <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular">
-                      {{ item_compare_price_cents | money }}
+                      {{ item_compare_price_cents | money_without_trailing_zeros }}
                     </span>
                     <span class="sb-value-breakdown__line-item-price-current font-body weight-regular">Free</span>
                   </div>
@@ -185,10 +186,10 @@
           <p class="sb-value-breakdown__total-title font-body weight-bold">Total</p>
           <div class="sb-value-breakdown__line-item-prices">
             <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular" data-value-breakdown-total-compare>
-              {{ total_compare_price_cents | money }}
+              {{ total_compare_price_cents | money_without_trailing_zeros }}
             </span>
             <span class="sb-value-breakdown__line-item-price-current font-body weight-regular" data-value-breakdown-total-current>
-              {{ total_current_price_cents | money }}
+              {{ total_current_price_cents | money_without_trailing_zeros }}
             </span>
           </div>
         </div>
@@ -413,6 +414,8 @@
       const variantSelect = productRoot ? productRoot.querySelector('[data-product-variant-id]') : null;
       const extraCompareSumCents = Number.parseInt(root.dataset.extraCompareSumCents || '0', 10) || 0;
       const currencyCode = root.dataset.currency || 'USD';
+      const productId = root.dataset.productId || '';
+      const storefrontPricing = window.SBStorefrontPricing || null;
 
       if (!variantsElement || !firstCompareElement || !firstCurrentElement || !totalCompareElement || !totalCurrentElement) return;
 
@@ -425,27 +428,51 @@
 
       const initialPriceSample = (firstCurrentElement.textContent || '').trim();
       const shouldAppendCurrencyCode = new RegExp(`\\b${currencyCode}\\b`, 'i').test(initialPriceSample);
-      const moneyFormatter = new Intl.NumberFormat(undefined, {
+      const fallbackMoneyFormatter = new Intl.NumberFormat(undefined, {
         style: 'currency',
         currency: currencyCode,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
       });
 
       const formatMoney = (centsValue) => {
         const amount = Number(centsValue) || 0;
-        const formatted = moneyFormatter.format(amount / 100);
+        const formatted = storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
+          ? storefrontPricing.formatMoney(amount, currencyCode)
+          : fallbackMoneyFormatter.format(amount / 100);
         if (!shouldAppendCurrencyCode) return formatted;
         return `${formatted} ${currencyCode}`;
+      };
+
+      const resolveDisplayPrice = (priceCents, comparePriceCents, overrideProductId = productId) => {
+        if (storefrontPricing && typeof storefrontPricing.resolvePrice === 'function') {
+          const resolved = storefrontPricing.resolvePrice({
+            productId: overrideProductId,
+            priceCents,
+            comparePriceCents,
+          }) || {};
+          const currentPriceCents = Number(resolved.currentPriceCents);
+          const resolvedComparePriceCents = Number(resolved.comparePriceCents);
+          return {
+            currentPriceCents: Number.isFinite(currentPriceCents) ? currentPriceCents : Number(priceCents || 0),
+            comparePriceCents:
+              Number.isFinite(resolvedComparePriceCents) && resolvedComparePriceCents > currentPriceCents
+                ? resolvedComparePriceCents
+                : null,
+          };
+        }
+
+        const normalizedPrice = Number(priceCents) || 0;
+        const normalizedCompare = Number(comparePriceCents) || 0;
+        return {
+          currentPriceCents: normalizedPrice,
+          comparePriceCents: normalizedCompare > normalizedPrice ? normalizedCompare : null,
+        };
       };
 
       const getCurrentVariantId = () => {
         if (variantSelect && variantSelect.value) return `${variantSelect.value}`;
         return `${root.dataset.currentVariantId || root.dataset.initialVariantId || ''}`;
-      };
-
-      const getComparablePrice = (variant) => {
-        const price = Number(variant?.price) || 0;
-        const compareAt = Number(variant?.compareAtPrice) || 0;
-        return compareAt > price ? compareAt : price;
       };
 
       const getVariantFromSelectorList = (variantId) => {
@@ -482,8 +509,9 @@
         const variant = variantsById[normalizedVariantId] || getVariantFromSelectorList(normalizedVariantId);
         if (!variant) return;
 
-        const comparablePrice = getComparablePrice(variant);
-        const currentPrice = Number(variant.price) || 0;
+        const resolvedPricing = resolveDisplayPrice(variant.price, variant.compareAtPrice);
+        const comparablePrice = Number(resolvedPricing.comparePriceCents || resolvedPricing.currentPriceCents || 0);
+        const currentPrice = Number(resolvedPricing.currentPriceCents || 0);
         const firstLineComparePrice = Math.max(comparablePrice - extraCompareSumCents, 0);
         const firstLineCurrentPrice = Math.max(currentPrice - extraCompareSumCents, 0);
         firstCompareElement.textContent = formatMoney(firstLineComparePrice);

@@ -2,7 +2,7 @@
 {% liquid
   assign sb_theme_mode = 'dark'
   assign sb_theme_locked = false
-  assign sb_debug_version = '3.69'
+  assign sb_debug_version = '3.70'
   if request.page_type == 'collection' and collection != blank
     assign collection_settings_ref = collection.metafields.custom.collection_settings.value | default: collection.metafields.custom.collection_settings
     if collection_settings_ref != blank
@@ -212,8 +212,6 @@
           'product-thumbnail-swatch-focus',
         ]);
 
-        const storefrontMoneyFormat = {{ shop.money_format | json }};
-
         const parseCents = (value) => {
           const nextValue = Number.parseInt(`${value ?? ''}`.trim(), 10);
           return Number.isFinite(nextValue) ? nextValue : null;
@@ -239,17 +237,37 @@
           },
         ];
 
-        const formatMoneyCents = (cents) => {
-          const normalizedCents = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
-          if (window.Shopify && typeof window.Shopify.formatMoney === 'function') {
-            return window.Shopify.formatMoney(normalizedCents, storefrontMoneyFormat);
+        const storefrontFallbackCurrency = {{ cart.currency.iso_code | default: shop.currency | json }};
+        const storefrontMoneyFormatterCache = new Map();
+
+        const resolveStorefrontCurrency = (preferredCurrency = '') => {
+          const normalizedPreferredCurrency = `${preferredCurrency || ''}`.trim().toUpperCase();
+          if (normalizedPreferredCurrency) return normalizedPreferredCurrency;
+          const activeCurrency = `${window.Shopify?.currency?.active || storefrontFallbackCurrency || 'USD'}`.trim().toUpperCase();
+          return activeCurrency || 'USD';
+        };
+
+        const getStorefrontMoneyFormatter = (currencyCode) => {
+          const cacheKey = `${currencyCode}`.trim().toUpperCase() || 'USD';
+          if (storefrontMoneyFormatterCache.has(cacheKey)) {
+            return storefrontMoneyFormatterCache.get(cacheKey);
           }
 
-          const activeCurrency = `${window.Shopify?.currency?.active || 'USD'}`.trim().toUpperCase();
-          return new Intl.NumberFormat(document.documentElement.lang || undefined, {
+          const formatter = new Intl.NumberFormat(document.documentElement.lang || undefined, {
             style: 'currency',
-            currency: activeCurrency,
-          }).format(normalizedCents / 100);
+            currency: cacheKey,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          });
+          storefrontMoneyFormatterCache.set(cacheKey, formatter);
+          return formatter;
+        };
+
+        const formatMoneyNoDecimals = (cents, currencyOverride = '') => {
+          const normalizedCents = Number.isFinite(Number(cents)) ? Math.round(Number(cents)) : 0;
+          const currencyCode = resolveStorefrontCurrency(currencyOverride);
+          const formatter = getStorefrontMoneyFormatter(currencyCode);
+          return formatter.format(normalizedCents / 100);
         };
 
         const thumbnailProductOverrideRateById = new Map();
@@ -265,7 +283,7 @@
           productRateById: thumbnailProductOverrideRateById,
         };
 
-        const getThumbnailDiscountRate = (productId) => {
+        const getStorefrontDiscountRate = (productId) => {
           const globalRate = thumbnailDiscountState.globalRate;
           const normalizedProductId = `${productId || ''}`.trim();
           const productRate = normalizedProductId
@@ -277,6 +295,50 @@
           }
 
           return clampDiscountRate(Math.max(globalRate, productRate));
+        };
+
+        const resolveStorefrontDisplayPricing = ({
+          productId = '',
+          priceCents = null,
+          comparePriceCents = null,
+        } = {}) => {
+          const normalizedPriceCents = parseCents(priceCents);
+          if (!Number.isFinite(normalizedPriceCents) || normalizedPriceCents <= 0) {
+            return {
+              currentPriceCents: null,
+              comparePriceCents: null,
+              hasComparePrice: false,
+              discountRate: 0,
+            };
+          }
+
+          const discountRate = getStorefrontDiscountRate(productId);
+          if (discountRate > 0) {
+            const discountedPriceCents = Math.max(0, Math.round(normalizedPriceCents * (1 - discountRate)));
+            return {
+              currentPriceCents: discountedPriceCents,
+              comparePriceCents: normalizedPriceCents,
+              hasComparePrice: normalizedPriceCents > discountedPriceCents,
+              discountRate,
+            };
+          }
+
+          const normalizedComparePriceCents = parseCents(comparePriceCents);
+          if (Number.isFinite(normalizedComparePriceCents) && normalizedComparePriceCents > normalizedPriceCents) {
+            return {
+              currentPriceCents: normalizedPriceCents,
+              comparePriceCents: normalizedComparePriceCents,
+              hasComparePrice: true,
+              discountRate: 0,
+            };
+          }
+
+          return {
+            currentPriceCents: normalizedPriceCents,
+            comparePriceCents: null,
+            hasComparePrice: false,
+            discountRate: 0,
+          };
         };
 
         const applyThumbnailDiscountPricing = (thumbnail, purchaseState = {}) => {
@@ -299,29 +361,27 @@
           const comparePriceText = `${purchaseState.comparePriceText || ''}`.trim();
 
           if (Number.isFinite(currentPriceCents) && currentPriceCents > 0) {
-            const discountRate = getThumbnailDiscountRate(nextProductId);
-            const hasDiscount = discountRate > 0;
-            const discountedPriceCents = hasDiscount
-              ? Math.max(0, Math.round(currentPriceCents * (1 - discountRate)))
-              : currentPriceCents;
+            const resolvedPricing = resolveStorefrontDisplayPricing({
+              productId: nextProductId,
+              priceCents: currentPriceCents,
+              comparePriceCents,
+            });
+            const hasComparePrice = Boolean(
+              resolvedPricing.hasComparePrice
+              && Number.isFinite(resolvedPricing.comparePriceCents)
+              && resolvedPricing.comparePriceCents > 0
+            );
 
-            if (hasDiscount) {
-              comparePriceElement.textContent = formatMoneyCents(currentPriceCents);
+            if (hasComparePrice) {
+              comparePriceElement.textContent = formatMoneyNoDecimals(resolvedPricing.comparePriceCents);
               comparePriceElement.hidden = false;
-              currentPriceElement.textContent = formatMoneyCents(discountedPriceCents);
-              currentPriceElement.hidden = false;
             } else {
-              const hasComparePrice = Number.isFinite(comparePriceCents) && comparePriceCents > currentPriceCents;
-              if (hasComparePrice) {
-                comparePriceElement.textContent = formatMoneyCents(comparePriceCents);
-                comparePriceElement.hidden = false;
-              } else {
-                comparePriceElement.textContent = '';
-                comparePriceElement.hidden = true;
-              }
-              currentPriceElement.textContent = formatMoneyCents(currentPriceCents);
-              currentPriceElement.hidden = false;
+              comparePriceElement.textContent = '';
+              comparePriceElement.hidden = true;
             }
+
+            currentPriceElement.textContent = formatMoneyNoDecimals(resolvedPricing.currentPriceCents);
+            currentPriceElement.hidden = false;
 
             priceRow.hidden = false;
             return;
@@ -344,6 +404,13 @@
           }
 
           priceRow.hidden = currentPriceElement.hidden && comparePriceElement.hidden;
+        };
+
+        window.SBStorefrontPricing = {
+          formatMoney: formatMoneyNoDecimals,
+          getDiscountRate: getStorefrontDiscountRate,
+          parseCents,
+          resolvePrice: resolveStorefrontDisplayPricing,
         };
 
         const syncThumbnailDiscountPricingScope = (scope = document) => {

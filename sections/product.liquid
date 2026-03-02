@@ -274,7 +274,7 @@
       if shopper_threshold_currency_symbol != blank
         assign shopper_country_free_shipping_threshold_display = shopper_threshold_currency_symbol | append: shopper_threshold_amount
       else
-        assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_cents | money
+        assign shopper_country_free_shipping_threshold_display = shopper_country_free_shipping_threshold_cents | money_without_trailing_zeros
       endif
     endif
   endif
@@ -499,10 +499,10 @@
                 hidden
               {% endunless %}
             >
-              {{ current_variant.compare_at_price | money }}
+              {{ current_variant.compare_at_price | money_without_trailing_zeros }}
             </span>
             <span class="sb-product-main__sticky-current-price font-caption weight-regular" data-sticky-current-price>
-              {{ current_variant.price | money }}
+              {{ current_variant.price | money_without_trailing_zeros }}
             </span>
           </div>
 
@@ -643,10 +643,10 @@
                 hidden
               {% endunless %}
             >
-              {{ current_variant.compare_at_price | money }}
+              {{ current_variant.compare_at_price | money_without_trailing_zeros }}
             </span>
             <span class="sb-product-main__sticky-bottom-current-price font-caption weight-regular" data-sticky-bottom-current-price>
-              {{ current_variant.price | money }}
+              {{ current_variant.price | money_without_trailing_zeros }}
             </span>
           </div>
 
@@ -1019,6 +1019,7 @@
                       data-selector-option-value="{{ option_value_label | escape }}"
                       data-variant-id="{{ selector_variant.id }}"
                       data-variant-available="{% if selector_variant.available %}true{% else %}false{% endif %}"
+                      data-variant-product-id="{{ product.id }}"
                       data-variant-price="{{ selector_variant.price | plus: 0 }}"
                       data-variant-compare-price="{% if selector_variant.compare_at_price != blank %}{{ selector_variant.compare_at_price | plus: 0 }}{% else %}0{% endif %}"
                       aria-pressed="{% if selector_is_selected %}true{% else %}false{% endif %}"
@@ -1027,11 +1028,11 @@
                       <span class="sb-product-main__selector-list-item-price-row">
                         {% if selector_has_compare %}
                           <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                            {{ selector_variant.compare_at_price | money }}
+                            {{ selector_variant.compare_at_price | money_without_trailing_zeros }}
                           </span>
                         {% endif %}
                         <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                          {{ selector_variant.price | money }}
+                          {{ selector_variant.price | money_without_trailing_zeros }}
                         </span>
                       </span>
                     </button>
@@ -1050,6 +1051,7 @@
                     data-selector-list-mode="multipack"
                     data-variant-id="{{ current_variant.id }}"
                     data-variant-available="{% if current_variant.available %}true{% else %}false{% endif %}"
+                    data-variant-product-id="{{ product.id }}"
                     data-variant-price="{{ current_variant.price | plus: 0 }}"
                     data-variant-compare-price="{% if current_variant.compare_at_price != blank %}{{ current_variant.compare_at_price | plus: 0 }}{% else %}0{% endif %}"
                     aria-pressed="{% if current_variant.id == selected_multipack_variant_id %}true{% else %}false{% endif %}"
@@ -1060,11 +1062,11 @@
                     <span class="sb-product-main__selector-list-item-price-row">
                       {% if current_product_has_compare %}
                         <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                          {{ current_variant.compare_at_price | money }}
+                          {{ current_variant.compare_at_price | money_without_trailing_zeros }}
                         </span>
                       {% endif %}
                       <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                        {{ current_variant.price | money }}
+                        {{ current_variant.price | money_without_trailing_zeros }}
                       </span>
                     </span>
                   </button>
@@ -1100,6 +1102,7 @@
                       data-selector-list-mode="multipack"
                       data-variant-id="{{ multipack_variant.id }}"
                       data-variant-available="{% if multipack_variant.available %}true{% else %}false{% endif %}"
+                      data-variant-product-id="{{ multipack_product.id }}"
                       data-variant-price="{{ multipack_variant.price | plus: 0 }}"
                       data-variant-compare-price="{% if multipack_variant.compare_at_price != blank %}{{ multipack_variant.compare_at_price | plus: 0 }}{% else %}0{% endif %}"
                       aria-pressed="{% if multipack_is_selected %}true{% else %}false{% endif %}"
@@ -1110,11 +1113,11 @@
                       <span class="sb-product-main__selector-list-item-price-row">
                         {% if multipack_has_compare %}
                           <span class="sb-product-main__price sb-product-main__price--compare font-body weight-regular">
-                            {{ multipack_variant.compare_at_price | money }}
+                            {{ multipack_variant.compare_at_price | money_without_trailing_zeros }}
                           </span>
                         {% endif %}
                         <span class="sb-product-main__price sb-product-main__price--current font-body weight-regular">
-                          {{ multipack_variant.price | money }}
+                          {{ multipack_variant.price | money_without_trailing_zeros }}
                         </span>
                       </span>
                     </button>
@@ -1226,10 +1229,10 @@
                     hidden
                   {% endunless %}
                 >
-                  {{ current_variant.compare_at_price | money }}
+                  {{ current_variant.compare_at_price | money_without_trailing_zeros }}
                 </p>
                 <p class="sb-product-main__price sb-product-main__price--current font-body weight-regular" data-product-current-price>
-                  {{ current_variant.price | money }}
+                  {{ current_variant.price | money_without_trailing_zeros }}
                 </p>
               </div>
               <span
@@ -1407,10 +1410,10 @@
 
                   <div class="sb-product-main__addon-price-row" data-addon-price-row>
                     <p class="sb-product-main__addon-price sb-product-main__addon-price--compare font-body weight-regular" data-addon-compare-price{% unless addon_has_compare_price %} hidden{% endunless %}>
-                      {{ addon_selected_variant.compare_at_price | money }}
+                      {{ addon_selected_variant.compare_at_price | money_without_trailing_zeros }}
                     </p>
                     <p class="sb-product-main__addon-price sb-product-main__addon-price--current font-body weight-regular" data-addon-current-price>
-                      {{ addon_selected_variant.price | money }}
+                      {{ addon_selected_variant.price | money_without_trailing_zeros }}
                     </p>
                   </div>
 
@@ -4008,9 +4011,12 @@
           .replace(/'/g, '&#39;');
 
       const currencyCode = priceRow?.dataset.currency || 'USD';
-      const moneyFormatter = new Intl.NumberFormat(undefined, {
+      const storefrontPricing = window.SBStorefrontPricing || null;
+      const fallbackMoneyFormatter = new Intl.NumberFormat(undefined, {
         style: 'currency',
         currency: currencyCode,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
       });
       const monthlyMoneyFormatter = new Intl.NumberFormat(undefined, {
         style: 'currency',
@@ -4409,9 +4415,45 @@
 
       const formatMoney = (centsValue) => {
         const amount = Number(centsValue) || 0;
-        const formatted = moneyFormatter.format(amount / 100);
+        const formatted = storefrontPricing && typeof storefrontPricing.formatMoney === 'function'
+          ? storefrontPricing.formatMoney(amount, currencyCode)
+          : fallbackMoneyFormatter.format(amount / 100);
         if (!shouldAppendCurrencyCode) return formatted;
         return `${formatted} ${currencyCode}`;
+      };
+
+      const resolveDisplayPrice = (purchaseData, overrideProductId = productId) => {
+        const basePriceCents = Number(purchaseData?.price) || 0;
+        const baseComparePriceCents = Number(purchaseData?.compare_at_price) || 0;
+
+        if (storefrontPricing && typeof storefrontPricing.resolvePrice === 'function') {
+          const resolved = storefrontPricing.resolvePrice({
+            productId: overrideProductId,
+            priceCents: basePriceCents,
+            comparePriceCents: baseComparePriceCents,
+          }) || {};
+          const currentPriceCents = Number(resolved.currentPriceCents);
+          const comparePriceCents = Number(resolved.comparePriceCents);
+          return {
+            currentPriceCents: Number.isFinite(currentPriceCents) ? currentPriceCents : basePriceCents,
+            comparePriceCents:
+              Number.isFinite(comparePriceCents) && comparePriceCents > (Number.isFinite(currentPriceCents) ? currentPriceCents : basePriceCents)
+                ? comparePriceCents
+                : null,
+          };
+        }
+
+        if (baseComparePriceCents > basePriceCents) {
+          return {
+            currentPriceCents: basePriceCents,
+            comparePriceCents: baseComparePriceCents,
+          };
+        }
+
+        return {
+          currentPriceCents: basePriceCents,
+          comparePriceCents: null,
+        };
       };
 
       const getStickyImageFromVariant = (variant) => {
@@ -4903,10 +4945,7 @@
         inTheBoxContainer.hidden = false;
       };
 
-      const formatAddonPrice = (centsValue) => {
-        const amount = Number(centsValue) || 0;
-        return moneyFormatter.format(amount / 100);
-      };
+      const formatAddonPrice = (centsValue) => formatMoney(centsValue);
 
       const initAddonItem = (item) => {
         if (!item) return;
@@ -5097,17 +5136,24 @@
             addButtonLabelElement.textContent = variant.available ? 'Add' : 'Sold out';
           }
 
-          const hasComparePrice = Number(variant.compare_at_price) > Number(variant.price);
+          const addonPricing = resolveDisplayPrice(
+            variant,
+            `${item.dataset.addonItemId || ''}` || `${item.dataset.addonProductId || ''}`
+          );
+          const hasComparePrice =
+            Number.isFinite(addonPricing.comparePriceCents)
+            && addonPricing.comparePriceCents > addonPricing.currentPriceCents;
           if (comparePriceElement) {
             if (hasComparePrice) {
-              comparePriceElement.textContent = formatAddonPrice(variant.compare_at_price);
+              comparePriceElement.textContent = formatAddonPrice(addonPricing.comparePriceCents);
               comparePriceElement.hidden = false;
             } else {
+              comparePriceElement.textContent = '';
               comparePriceElement.hidden = true;
             }
           }
           if (currentPriceElement) {
-            currentPriceElement.textContent = formatAddonPrice(variant.price);
+            currentPriceElement.textContent = formatAddonPrice(addonPricing.currentPriceCents);
           }
 
           const nextImageUrl = addonMediaMap?.[`${variant.id}`] || '';
@@ -5271,25 +5317,82 @@
         });
       };
 
+      const ensureSelectorListComparePriceElement = (item) => {
+        const existingCompareElement = item.querySelector('.sb-product-main__price--compare');
+        if (existingCompareElement) return existingCompareElement;
+
+        const priceRowElement = item.querySelector('.sb-product-main__selector-list-item-price-row');
+        const currentPriceElement = item.querySelector('.sb-product-main__price--current');
+        if (!priceRowElement || !currentPriceElement) return null;
+
+        const compareElement = document.createElement('span');
+        compareElement.className = 'sb-product-main__price sb-product-main__price--compare font-body weight-regular';
+        compareElement.hidden = true;
+        priceRowElement.insertBefore(compareElement, currentPriceElement);
+        return compareElement;
+      };
+
+      const syncSelectorListItemPricing = (item) => {
+        if (!item) return;
+
+        const itemPricing = resolveDisplayPrice(
+          {
+            price: Number(item.dataset.variantPrice || '0'),
+            compare_at_price: Number(item.dataset.variantComparePrice || '0'),
+          },
+          item.dataset.variantProductId || productId
+        );
+
+        const currentPriceNode = item.querySelector('.sb-product-main__price--current');
+        if (currentPriceNode) {
+          currentPriceNode.textContent = formatMoney(itemPricing.currentPriceCents);
+        }
+
+        let comparePriceNode = item.querySelector('.sb-product-main__price--compare');
+        const hasComparePrice =
+          Number.isFinite(itemPricing.comparePriceCents)
+          && itemPricing.comparePriceCents > itemPricing.currentPriceCents;
+
+        if (hasComparePrice) {
+          if (!comparePriceNode) {
+            comparePriceNode = ensureSelectorListComparePriceElement(item);
+          }
+          if (comparePriceNode) {
+            comparePriceNode.textContent = formatMoney(itemPricing.comparePriceCents);
+            comparePriceNode.hidden = false;
+          }
+        } else if (comparePriceNode) {
+          comparePriceNode.textContent = '';
+          comparePriceNode.hidden = true;
+        }
+      };
+
       const applyPurchaseState = (purchaseData) => {
         if (!purchaseData) return;
-        const hasComparePrice = Number(purchaseData.compare_at_price) > Number(purchaseData.price);
+        const resolvedPricing = resolveDisplayPrice(
+          purchaseData,
+          purchaseData.product_id || productId
+        );
+        const hasComparePrice =
+          Number.isFinite(resolvedPricing.comparePriceCents)
+          && resolvedPricing.comparePriceCents > resolvedPricing.currentPriceCents;
         if (currentPriceElement) {
-          currentPriceElement.textContent = formatMoney(purchaseData.price);
+          currentPriceElement.textContent = formatMoney(resolvedPricing.currentPriceCents);
         }
         if (comparePriceElement) {
           if (hasComparePrice) {
-            comparePriceElement.textContent = formatMoney(purchaseData.compare_at_price);
+            comparePriceElement.textContent = formatMoney(resolvedPricing.comparePriceCents);
             comparePriceElement.hidden = false;
           } else {
+            comparePriceElement.textContent = '';
             comparePriceElement.hidden = true;
           }
         }
         if (savingsBadgeElement) {
           if (hasComparePrice) {
-            const compareAt = Number(purchaseData.compare_at_price) || 0;
+            const compareAt = Number(resolvedPricing.comparePriceCents) || 0;
             const savingsPercent = compareAt > 0
-              ? Math.round(((compareAt - Number(purchaseData.price || 0)) / compareAt) * 100)
+              ? Math.round(((compareAt - Number(resolvedPricing.currentPriceCents || 0)) / compareAt) * 100)
               : 0;
             savingsBadgeElement.textContent = `Save ${savingsPercent}%`;
             savingsBadgeElement.hidden = false;
@@ -5298,7 +5401,7 @@
           }
         }
         if (monthlyPriceElement) {
-          monthlyPriceElement.textContent = monthlyMoneyFormatter.format(((Number(purchaseData.price) || 0) / 100) / 4);
+          monthlyPriceElement.textContent = monthlyMoneyFormatter.format((Number(resolvedPricing.currentPriceCents || 0) / 100) / 4);
         }
 
         if (addButton) {
@@ -5314,24 +5417,26 @@
         }
 
         if (stickyCurrentPriceElement) {
-          stickyCurrentPriceElement.textContent = formatMoney(purchaseData.price);
+          stickyCurrentPriceElement.textContent = formatMoney(resolvedPricing.currentPriceCents);
         }
         if (stickyBottomCurrentPriceElement) {
-          stickyBottomCurrentPriceElement.textContent = formatMoney(purchaseData.price);
+          stickyBottomCurrentPriceElement.textContent = formatMoney(resolvedPricing.currentPriceCents);
         }
         if (stickyComparePriceElement) {
           if (hasComparePrice) {
-            stickyComparePriceElement.textContent = formatMoney(purchaseData.compare_at_price);
+            stickyComparePriceElement.textContent = formatMoney(resolvedPricing.comparePriceCents);
             stickyComparePriceElement.hidden = false;
           } else {
+            stickyComparePriceElement.textContent = '';
             stickyComparePriceElement.hidden = true;
           }
         }
         if (stickyBottomComparePriceElement) {
           if (hasComparePrice) {
-            stickyBottomComparePriceElement.textContent = formatMoney(purchaseData.compare_at_price);
+            stickyBottomComparePriceElement.textContent = formatMoney(resolvedPricing.comparePriceCents);
             stickyBottomComparePriceElement.hidden = false;
           } else {
+            stickyBottomComparePriceElement.textContent = '';
             stickyBottomComparePriceElement.hidden = true;
           }
         }
@@ -5593,6 +5698,7 @@
           const purchaseData = {
             id: Number(variantId),
             available: item.dataset.variantAvailable === 'true',
+            product_id: item.dataset.variantProductId || productId,
             price: Number(item.dataset.variantPrice || '0'),
             compare_at_price: Number(item.dataset.variantComparePrice || '0'),
           };
@@ -5601,6 +5707,7 @@
         };
 
         selectorListItems.forEach((item) => {
+          syncSelectorListItemPricing(item);
           item.addEventListener('click', () => {
             applySelectorListItemSelection(item);
           });
