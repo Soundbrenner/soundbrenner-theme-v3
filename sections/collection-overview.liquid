@@ -94,7 +94,7 @@
       <div
         class="sb-collection-overview__stars"
         role="img"
-        aria-label="{{ rating_display }} out of 5 stars"
+        aria-label="{{ 'sb.rating.out_of_five_stars' | t: rating: rating_display }}"
         style="--sb-collection-overview-star-url: url('{{ star_icon_url }}');"
       >
         {% for star_index in (1..5) %}
@@ -114,11 +114,11 @@
       </div>
 
       <p class="sb-collection-overview__summary font-caption weight-regular">
-        {{ rating_display }} out of {{ all_reviews_count_display }} reviews
+        {{ 'sb.collection_overview.rating_summary' | t: rating: rating_display, count: all_reviews_count_display }}
       </p>
 
       <a class="sb-collection-overview__read-all font-caption2 weight-semibold" href="{{ read_all_url }}">
-        <span>Read all</span>
+        <span>{{ 'sb.collection_overview.read_all' | t }}</span>
         <span
           class="sb-collection-overview__read-all-arrow"
           aria-hidden="true"
@@ -142,7 +142,7 @@
             assign collection_title = overview_collection.title | strip
           endif
           if collection_title == blank
-            assign collection_title = 'Collection name'
+            assign collection_title = 'sb.collection_overview.collection_name' | t
           endif
 
           assign explore_link = overview_collection.url | default: routes.collections_url
@@ -188,7 +188,7 @@
 
             <div class="sb-collection-overview__actions">
               {% render 'radiant-button',
-                label: 'Explore collection',
+                label: 'sb.collection_overview.explore_collection' | t,
                 link: explore_link,
                 size: 'large',
                 extra_class: 'sb-collection-overview__explore-button font-caption weight-bold'
@@ -196,7 +196,7 @@
 
               {% if compare_link != blank %}
                 <a class="sb-collection-overview__compare-button font-caption weight-semibold" href="{{ compare_link }}">
-                  Compare
+                  {{ 'sb.collection_overview.compare' | t }}
                 </a>
               {% endif %}
             </div>
@@ -241,7 +241,7 @@
                   {% for placeholder_index in (1..6) %}
                     <div class="sb-collection-overview__carousel-item" data-sb-carousel-item>
                       {% render 'product-thumbnail',
-                        product_name: 'Product',
+                        product_name: 'sb.collection_overview.product_placeholder' | t,
                         hide_reviews: true,
                         show_add_to_cart: false,
                         show_compare_add_to_cart_large: false
@@ -254,7 +254,7 @@
                   <div class="sb-collection-overview__carousel-item sb-collection-overview__carousel-item--view-all" data-sb-carousel-item>
                     <a class="sb-collection-overview__view-all-link" href="{{ explore_link }}">
                       <span class="sb-collection-overview__view-all-card">
-                        <span class="sb-collection-overview__view-all-label font-callout weight-bold">View all</span>
+                        <span class="sb-collection-overview__view-all-label font-callout weight-bold">{{ 'sb.collection_overview.view_all' | t }}</span>
                         <span
                           class="sb-collection-overview__view-all-icon"
                           aria-hidden="true"
@@ -268,13 +268,13 @@
             </div>
 
             <div class="sb-collection-overview__carousel-controls" data-sb-carousel-controls>
-              <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+              <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-prev aria-label="{{ 'sb.common.previous' | t }}" disabled>
                 <span class="sb-collection-overview__carousel-arrow-icon sb-collection-overview__carousel-arrow-icon--left" aria-hidden="true">
                   {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
                 </span>
               </button>
 
-              <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-next aria-label="Next" disabled>
+              <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-next aria-label="{{ 'sb.common.next' | t }}" disabled>
                 <span class="sb-collection-overview__carousel-arrow-icon sb-collection-overview__carousel-arrow-icon--right" aria-hidden="true">
                   {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
                 </span>
@@ -286,10 +286,10 @@
     {% else %}
       <article class="sb-collection-overview__row">
         <div class="sb-collection-overview__heading-row" data-sb-reveal-item>
-          <h2 class="sb-collection-overview__collection-title font-title weight-bold">Collection name</h2>
+          <h2 class="sb-collection-overview__collection-title font-title weight-bold">{{ 'sb.collection_overview.collection_name' | t }}</h2>
           <div class="sb-collection-overview__actions">
             {% render 'radiant-button',
-              label: 'Explore collection',
+              label: 'sb.collection_overview.explore_collection' | t,
               link: routes.collections_url,
               size: 'large',
               extra_class: 'sb-collection-overview__explore-button font-caption weight-bold'
@@ -303,7 +303,7 @@
               {% for placeholder_index in (1..6) %}
                 <div class="sb-collection-overview__carousel-item" data-sb-carousel-item>
                   {% render 'product-thumbnail',
-                    product_name: 'Product',
+                    product_name: 'sb.collection_overview.product_placeholder' | t,
                     hide_reviews: true,
                     show_add_to_cart: false,
                     show_compare_add_to_cart_large: false
@@ -315,13 +315,13 @@
           </div>
 
           <div class="sb-collection-overview__carousel-controls" data-sb-carousel-controls>
-            <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+            <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-prev aria-label="{{ 'sb.common.previous' | t }}" disabled>
               <span class="sb-collection-overview__carousel-arrow-icon sb-collection-overview__carousel-arrow-icon--left" aria-hidden="true">
                 {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
               </span>
             </button>
 
-            <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-next aria-label="Next" disabled>
+            <button type="button" class="sb-collection-overview__carousel-arrow" data-sb-carousel-next aria-label="{{ 'sb.common.next' | t }}" disabled>
               <span class="sb-collection-overview__carousel-arrow-icon sb-collection-overview__carousel-arrow-icon--right" aria-hidden="true">
                 {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
               </span>

@@ -62,7 +62,10 @@
   if header_affiliate_name == blank and page != blank
     assign header_affiliate_name = page.title | strip
   endif
-  assign seasonal_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: 'your country'
+  assign seasonal_shipping_country_name = localization.country.name | default: localization.country.iso_code | strip
+  if seasonal_shipping_country_name == blank
+    assign seasonal_shipping_country_name = 'sb.cart.your_country' | t
+  endif
   assign seasonal_shipping_country_iso = localization.country.iso_code | upcase | strip
   assign seasonal_shipping_country_handle = seasonal_shipping_country_iso | downcase
   assign seasonal_shipping_is_blocked = false
@@ -70,8 +73,8 @@
   assign seasonal_free_shipping_threshold_display = ''
   assign seasonal_shipping_advertised_min_time = blank
   assign seasonal_shipping_advertised_max_time = blank
-  assign cart_summary_shipping_text = 'Ships worldwide'
-  assign cart_summary_taxes_text = 'May be due on delivery'
+  assign cart_summary_shipping_text = 'sb.cart.shipping_ships_worldwide' | t
+  assign cart_summary_taxes_text = 'sb.cart.taxes_may_be_due_on_delivery' | t
   assign seasonal_shipping_entry = shop.metaobjects['database_localized_shipping_info'][seasonal_shipping_country_handle]
   if seasonal_shipping_entry != blank and seasonal_shipping_country_iso != blank
     assign seasonal_entry_ship_to = seasonal_shipping_entry.ship_to_it.value | default: seasonal_shipping_entry.ship_to_it | append: '' | downcase
@@ -87,7 +90,7 @@
       assign seasonal_shipping_has_free_shipping = true
     endif
     if seasonal_entry_taxes_included == 'true' or seasonal_entry_taxes_included == '1' or seasonal_entry_taxes_included == 'yes'
-      assign cart_summary_taxes_text = 'Included in price'
+      assign cart_summary_taxes_text = 'sb.cart.included_in_price' | t
     endif
     if seasonal_entry_threshold != blank
       assign seasonal_entry_threshold_cents = seasonal_entry_threshold | times: 100
@@ -97,13 +100,13 @@
   assign seasonal_shipping_advertised_min_time_number = seasonal_shipping_advertised_min_time | plus: 0
   assign seasonal_shipping_advertised_max_time_number = seasonal_shipping_advertised_max_time | plus: 0
   if seasonal_shipping_entry == blank
-    assign cart_summary_shipping_text = 'Ships worldwide'
+    assign cart_summary_shipping_text = 'sb.cart.shipping_ships_worldwide' | t
   elsif seasonal_shipping_is_blocked
-    assign cart_summary_shipping_text = "We're not shipping to " | append: seasonal_shipping_country_name
+    assign cart_summary_shipping_text = 'sb.cart.shipping_not_shipping_to' | t: country: seasonal_shipping_country_name
   elsif seasonal_shipping_advertised_min_time != blank and seasonal_shipping_advertised_max_time != blank and seasonal_shipping_advertised_min_time_number < 11 and seasonal_shipping_advertised_max_time_number < 12
-    assign cart_summary_shipping_text = seasonal_shipping_advertised_min_time | append: '-' | append: seasonal_shipping_advertised_max_time | append: ' days delivery in ' | append: seasonal_shipping_country_name
+    assign cart_summary_shipping_text = 'sb.cart.shipping_days_delivery_in' | t: min: seasonal_shipping_advertised_min_time, max: seasonal_shipping_advertised_max_time, country: seasonal_shipping_country_name
   else
-    assign cart_summary_shipping_text = 'Ships to ' | append: seasonal_shipping_country_name
+    assign cart_summary_shipping_text = 'sb.cart.shipping_ships_to' | t: country: seasonal_shipping_country_name
   endif
 
   assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
@@ -208,9 +211,9 @@
   assign trustpilot_url = 'https://www.trustpilot.com/review/soundbrenner.com'
   assign trustpilot_rating_raw = trustpilot_entry.rating.value | default: trustpilot_entry.rating
   if trustpilot_rating_raw != blank
-    assign trustpilot_rating_text = trustpilot_rating_raw | append: ' out of 5'
+    assign trustpilot_rating_text = 'sb.trustpilot.rating_out_of_five' | t: rating: trustpilot_rating_raw
   else
-    assign trustpilot_rating_text = 'X.X out of 5'
+    assign trustpilot_rating_text = 'sb.trustpilot.rating_out_of_five' | t: rating: 'X.X'
   endif
   assign metronome_rating_raw = trustpilot_entry.the_metronome_app_review_rating.value | default: trustpilot_entry.the_metronome_app_review_rating
   assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count
@@ -324,19 +327,19 @@
           >
             <div class="header__announcement-countdown-group">
               <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-days>{{ countdown_initial_days }}</span>
-              <span class="header__announcement-countdown-label font-caption2 weight-semibold">days</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">{{ 'sb.common.days' | t }}</span>
             </div>
             <div class="header__announcement-countdown-group">
               <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-hours>{{ countdown_initial_hours }}</span>
-              <span class="header__announcement-countdown-label font-caption2 weight-semibold">hours</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">{{ 'sb.common.hours' | t }}</span>
             </div>
             <div class="header__announcement-countdown-group">
               <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-mins>{{ countdown_initial_mins }}</span>
-              <span class="header__announcement-countdown-label font-caption2 weight-semibold">mins</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">{{ 'sb.common.mins' | t }}</span>
             </div>
             <div class="header__announcement-countdown-group">
               <span class="header__announcement-countdown-value font-caption weight-bold" data-countdown-secs>{{ countdown_initial_secs }}</span>
-              <span class="header__announcement-countdown-label font-caption2 weight-semibold">secs</span>
+              <span class="header__announcement-countdown-label font-caption2 weight-semibold">{{ 'sb.common.secs' | t }}</span>
             </div>
           </div>
         {% endif %}
@@ -349,7 +352,7 @@
       <button
         type="button"
         class="header__icon-link header__icon-link--menu"
-        aria-label="Menu"
+        aria-label="{{ 'sb.common.menu' | t }}"
         aria-expanded="false"
         data-mobile-menu-toggle
       >
@@ -365,7 +368,7 @@
       </span>
     </a>
 
-    <nav class="header__menu" aria-label="Primary">
+    <nav class="header__menu" aria-label="{{ 'sb.common.primary' | t }}">
       {% if primary_navigation != blank and primary_navigation.links.size > 0 %}
         {% for link in primary_navigation.links %}
           {% liquid
@@ -458,8 +461,8 @@
                           else
                             assign card_link = routes.root_url | append: 'pages/the-app'
                           endif
-                          assign card_title = 'The Metronome app'
-                          assign card_body = 'Download for iOS and Android'
+                          assign card_title = 'sb.header.metronome_app' | t
+                          assign card_body = 'sb.header.download_ios_android' | t
                           assign parsed_rating_value = card_rating_display | split: ' ' | first | plus: 0
                           if parsed_rating_value > 0
                             assign card_rating_value = parsed_rating_value
@@ -497,12 +500,12 @@
                           for product_tag in card_product.tags
                             assign product_tag_downcase = product_tag | downcase
                             if product_tag_downcase == 'bestseller'
-                              assign card_badge_label = 'Bestseller'
+                              assign card_badge_label = 'sb.product.badge_bestseller' | t
                               assign card_badge_type = 'bestseller'
                               break
                             endif
                             if product_tag_downcase == 'new'
-                              assign card_badge_label = 'New'
+                              assign card_badge_label = 'sb.product.badge_new' | t
                               assign card_badge_type = 'new'
                             endif
                           endfor
@@ -565,22 +568,22 @@
                               </span>
                               <span>{{ card_rating_display }}</span>
                             </p>
-                            <p class="header__primary-card-rating-count font-caption weight-regular">{{ card_rating_count_display }} ratings</p>
+                            <p class="header__primary-card-rating-count font-caption weight-regular">{{ 'sb.header.ratings' | t: count: card_rating_count_display }}</p>
 
                             <div class="header__primary-card-app-links">
-                              <a href="{{ card_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                              <a href="{{ card_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.app.download_app_store' | t }}">
                                 <img
                                   src="{{ 'app-download-app-store.png' | asset_url }}"
-                                  alt="Download on the App Store"
+                                  alt="{{ 'sb.app.download_app_store' | t }}"
                                   loading="lazy"
                                   width="100"
                                   height="30"
                                 >
                               </a>
-                              <a href="{{ card_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                              <a href="{{ card_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.app.download_google_play' | t }}">
                                 <img
                                   src="{{ 'app-download-google-play.png' | asset_url }}"
-                                  alt="Get it on Google Play"
+                                  alt="{{ 'sb.app.download_google_play' | t }}"
                                   loading="lazy"
                                   width="100"
                                   height="30"
@@ -626,7 +629,7 @@
                             {% if accessories_collection != blank %}
                               <ul class="header__primary-card-links font-caption weight-semibold" role="list">
                                 <li>
-                                  <a href="{{ accessories_collection.url }}">Accessories</a>
+                                  <a href="{{ accessories_collection.url }}">{{ 'sb.header.accessories' | t }}</a>
                                 </li>
                               </ul>
                             {% endif %}
@@ -714,7 +717,7 @@
             <button
               type="button"
               class="header__localization-button font-caption2 weight-semibold"
-              aria-label="Region selector"
+              aria-label="{{ 'sb.common.region_selector' | t }}"
               aria-expanded="false"
               aria-controls="HeaderLocalizationPanel-{{ section.id }}"
               data-localization-ref="button"
@@ -759,7 +762,7 @@
           href="{{ routes.cart_url }}"
           data-header-cart-link
           data-header-cart-page="{% if request.page_type == 'cart' %}true{% else %}false{% endif %}"
-          aria-label="Cart"
+          aria-label="{{ 'cart.title' | t }}"
           aria-expanded="false"
           style="align-items: center; display: inline-flex; height: var(--sb-space-20); justify-content: center; min-height: var(--sb-space-20); min-width: var(--sb-space-20); width: var(--sb-space-20);"
         >
@@ -776,11 +779,11 @@
 </header>
 <div class="menu-drawer-container" data-mobile-menu-drawer>
   <div class="menu-drawer" data-mobile-menu-panel>
-    <nav class="menu-drawer__navigation" aria-label="Primary navigation">
+    <nav class="menu-drawer__navigation" aria-label="{{ 'sb.common.primary_navigation' | t }}">
       <button
         class="menu-drawer__close-button"
         type="button"
-        aria-label="Close menu"
+        aria-label="{{ 'sb.common.close_menu' | t }}"
         data-mobile-menu-close
       >
         <span class="menu-drawer__close-icon" aria-hidden="true">
@@ -877,7 +880,7 @@
                           when 'primary_item_app'
                             assign drawer_is_app = true
                             assign drawer_card_page = block.settings.app_page
-                            assign drawer_card_title = 'The Metronome app'
+                            assign drawer_card_title = 'sb.header.metronome_app' | t
                         endcase
 
                         if drawer_card_product != blank
@@ -895,12 +898,12 @@
                             for drawer_product_tag in drawer_card_product.tags
                               assign drawer_product_tag_downcase = drawer_product_tag | downcase
                               if drawer_product_tag_downcase == 'bestseller'
-                                assign drawer_badge_label = 'Bestseller'
+                                assign drawer_badge_label = 'sb.product.badge_bestseller' | t
                                 assign drawer_badge_type = 'bestseller'
                                 break
                               endif
                               if drawer_product_tag_downcase == 'new'
-                                assign drawer_badge_label = 'New'
+                                assign drawer_badge_label = 'sb.product.badge_new' | t
                                 assign drawer_badge_type = 'new'
                               endif
                             endfor
@@ -945,7 +948,7 @@
                             assign drawer_card_title = drawer_card_page.title
                           endif
                           if drawer_is_app
-                            assign drawer_card_body = 'Download for iOS and Android'
+                            assign drawer_card_body = 'sb.header.download_ios_android' | t
                             assign parsed_drawer_rating_value = drawer_rating_display | split: ' ' | first | plus: 0
                             if parsed_drawer_rating_value > 0
                               assign drawer_rating_value = parsed_drawer_rating_value
@@ -1011,7 +1014,7 @@
                                   </span>
                                   <span>{{ drawer_rating_display }}</span>
                                 </p>
-                                <p class="menu-drawer__app-rating-count font-caption weight-regular">{{ drawer_rating_count_display }} ratings</p>
+                                <p class="menu-drawer__app-rating-count font-caption weight-regular">{{ 'sb.header.ratings' | t: count: drawer_rating_count_display }}</p>
                               {% elsif drawer_card_body != blank %}
                                 <span class="menu-drawer__submenu-body font-caption weight-regular">{{ drawer_card_body | truncate: 120 }}</span>
                               {% endif %}
@@ -1026,7 +1029,7 @@
 
                         {% if drawer_accessories_collection != blank %}
                           <a class="menu-drawer__submenu-secondary font-caption weight-semibold" href="{{ drawer_accessories_collection.url }}">
-                            Accessories
+                            {{ 'sb.header.accessories' | t }}
                           </a>
                         {% endif %}
 
@@ -1076,12 +1079,12 @@
                               for drawer_related_tag in drawer_related_product.tags
                                 assign drawer_related_tag_downcase = drawer_related_tag | downcase
                                 if drawer_related_tag_downcase == 'bestseller'
-                                  assign drawer_related_badge_label = 'Bestseller'
+                                  assign drawer_related_badge_label = 'sb.product.badge_bestseller' | t
                                   assign drawer_related_badge_type = 'bestseller'
                                   break
                                 endif
                                 if drawer_related_tag_downcase == 'new'
-                                  assign drawer_related_badge_label = 'New'
+                                  assign drawer_related_badge_label = 'sb.product.badge_new' | t
                                   assign drawer_related_badge_type = 'new'
                                 endif
                               endfor
@@ -1128,8 +1131,8 @@
                         {% endfor %}
 
                         {% if drawer_is_app %}
-                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold" href="{{ drawer_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
-                            <span>App Store</span>
+                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold" href="{{ drawer_app_store_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.app.download_app_store' | t }}">
+                            <span>{{ 'sb.app.app_store' | t }}</span>
                             <span class="menu-drawer__submenu-store-badge" aria-hidden="true">
                               <img
                                 src="{{ 'app-download-app-store.png' | asset_url }}"
@@ -1140,8 +1143,8 @@
                               >
                             </span>
                           </a>
-                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold" href="{{ drawer_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
-                            <span>Google Play</span>
+                          <a class="menu-drawer__submenu-secondary menu-drawer__submenu-store font-caption weight-semibold" href="{{ drawer_google_play_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.app.download_google_play' | t }}">
+                            <span>{{ 'sb.app.google_play' | t }}</span>
                             <span class="menu-drawer__submenu-store-badge" aria-hidden="true">
                               <img
                                 src="{{ 'app-download-google-play.png' | asset_url }}"
@@ -1231,15 +1234,15 @@
                       type="button"
                       class="menu-drawer__localization-back-pill font-caption weight-regular"
                       data-localization-ref="drawerBackButton"
-                      aria-label="Back"
+                      aria-label="{{ 'sb.common.back' | t }}"
                     >
                       <span class="menu-drawer__localization-back-icon" aria-hidden="true">
                         {{ 'icon-chevron.svg' | inline_asset_content }}
                       </span>
-                      <span>Back</span>
+                      <span>{{ 'sb.common.back' | t }}</span>
                     </button>
                     <p class="menu-drawer__localization-page-title font-callout weight-bold">
-                      Region and language
+                      {{ 'sb.header.region_and_language' | t }}
                     </p>
                   </div>
                   <div class="menu-drawer__localization-page-body">
@@ -1274,7 +1277,7 @@
           href="{{ trustpilot_url }}"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Trustpilot logo link"
+          aria-label="{{ 'sb.trustpilot.logo_link' | t }}"
         >
           <span class="menu-drawer__trustpilot-logo" aria-hidden="true">
             {{ 'logo-trustpilot-multicolor.svg' | inline_asset_content }}
@@ -1285,7 +1288,7 @@
           href="{{ trustpilot_url }}"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Trustpilot stars link"
+          aria-label="{{ 'sb.trustpilot.stars_link' | t }}"
         >
           <span class="menu-drawer__trustpilot-stars" aria-hidden="true">
             {{ 'trustpilot-stars-multicolor.svg' | inline_asset_content }}
@@ -1296,7 +1299,7 @@
           href="{{ trustpilot_url }}"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Read Soundbrenner reviews on Trustpilot"
+          aria-label="{{ 'sb.trustpilot.read_reviews' | t }}"
         >
           {{ trustpilot_rating_text }}
         </a>
@@ -1304,12 +1307,12 @@
 
       <div class="menu-drawer__review menu-drawer__animated-element" style="--menu-drawer-animation-index: {{ mobile_menu_review_index }};" data-mobile-menu-review>
         <div class="menu-drawer__review-row">
-          <span class="menu-drawer__review-name font-caption weight-semibold" data-mobile-menu-review-name>Wesley G.</span>
+          <span class="menu-drawer__review-name font-caption weight-semibold" data-mobile-menu-review-name>{{ 'sb.header.mobile_review_name' | t }}</span>
           <span class="menu-drawer__review-verified font-caption weight-semibold">
             <span class="menu-drawer__review-verified-icon" aria-hidden="true">
               {{ 'icon-verified-badge.svg' | inline_asset_content }}
             </span>
-            <span>Verified buyer</span>
+            <span>{{ 'sb.common.verified_buyer' | t }}</span>
           </span>
           <span class="menu-drawer__review-stars" aria-hidden="true" style="--sb-review-star-icon-url: url('{{ 'icon-review-star.svg' | asset_url }}');">
             <span class="menu-drawer__review-star"></span>
@@ -1320,25 +1323,25 @@
           </span>
         </div>
         <p class="menu-drawer__review-text font-caption weight-regular" data-mobile-menu-review-text>
-          I have the in-ear monitors and the Pulse. They work exactly as promised. Shipping was good and without bad surprises. Thank you Soundbrenner!
+          {{ 'sb.header.mobile_review_text' | t }}
         </p>
-        <p class="menu-drawer__review-date font-caption weight-regular" data-mobile-menu-review-date>8 Jan, 2026</p>
+        <p class="menu-drawer__review-date font-caption weight-regular" data-mobile-menu-review-date>{{ 'sb.header.mobile_review_date' | t }}</p>
       </div>
 
-      <div class="menu-drawer__social menu-drawer__animated-element" style="--menu-drawer-animation-index: {{ mobile_menu_social_index }};" aria-label="Social links">
-        <a class="menu-drawer__social-link" href="https://www.instagram.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <div class="menu-drawer__social menu-drawer__animated-element" style="--menu-drawer-animation-index: {{ mobile_menu_social_index }};" aria-label="{{ 'sb.social.links' | t }}">
+        <a class="menu-drawer__social-link" href="https://www.instagram.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.instagram' | t }}">
           {{ 'social-media-instagram.svg' | inline_asset_content }}
         </a>
-        <a class="menu-drawer__social-link" href="https://www.facebook.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <a class="menu-drawer__social-link" href="https://www.facebook.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.facebook' | t }}">
           {{ 'social-media-facebook.svg' | inline_asset_content }}
         </a>
-        <a class="menu-drawer__social-link" href="https://www.tiktok.com/@soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+        <a class="menu-drawer__social-link" href="https://www.tiktok.com/@soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.tiktok' | t }}">
           {{ 'social-media-tiktok.svg' | inline_asset_content }}
         </a>
-        <a class="menu-drawer__social-link" href="https://x.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="X">
+        <a class="menu-drawer__social-link" href="https://x.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.x' | t }}">
           {{ 'social-media-x.svg' | inline_asset_content }}
         </a>
-        <a class="menu-drawer__social-link" href="https://www.youtube.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <a class="menu-drawer__social-link" href="https://www.youtube.com/soundbrenner" target="_blank" rel="noopener noreferrer" aria-label="{{ 'sb.social.youtube' | t }}">
           {{ 'social-media-youtube.svg' | inline_asset_content }}
         </a>
       </div>
@@ -1347,7 +1350,7 @@
   <button
     class="menu-drawer__backdrop menu-drawer__backdrop--local"
     type="button"
-    aria-label="Close menu"
+    aria-label="{{ 'sb.common.close_menu' | t }}"
     data-mobile-menu-close
   ></button>
 </div>
@@ -1360,8 +1363,8 @@
 
 <cart-drawer-component auto-open>
   <div class="header__cart-drawer" data-cart-drawer hidden>
-    <button type="button" class="header__cart-drawer-backdrop" data-cart-drawer-close aria-label="Close cart"></button>
-    <aside class="header__cart-drawer-panel" role="dialog" aria-modal="true" aria-label="Cart drawer" data-cart-drawer-panel cart-summary-sticky="true">
+    <button type="button" class="header__cart-drawer-backdrop" data-cart-drawer-close aria-label="{{ 'sb.common.close_cart' | t }}"></button>
+    <aside class="header__cart-drawer-panel" role="dialog" aria-modal="true" aria-label="{{ 'sb.common.cart_drawer' | t }}" data-cart-drawer-panel cart-summary-sticky="true">
       <div class="header__cart-drawer-header">
         <div class="header__cart-drawer-header-row">
           <h3 class="header__cart-drawer-title font-title weight-bold">
@@ -1370,7 +1373,7 @@
               {{ cart.item_count }}
             </span>
           </h3>
-          <button type="button" class="header__cart-drawer-close" data-cart-drawer-close aria-label="Close cart">
+          <button type="button" class="header__cart-drawer-close" data-cart-drawer-close aria-label="{{ 'sb.common.close_cart' | t }}">
             <span class="header__cart-drawer-close-icon" aria-hidden="true">{{ 'icon-cancel.svg' | inline_asset_content }}</span>
           </button>
         </div>
@@ -5517,63 +5520,7 @@
     const mobileMenuPreloadedSources = new Set();
     const primaryMenuPreloadedSources = new Set();
     const mobileMenuReviewStorageKey = 'sb-mobile-menu-review-index';
-    const mobileMenuReviews = [
-      {
-        day: 8,
-        name: 'Wesley G.',
-        text: "I have the in-ear monitors and the Pulse. They work exactly as promised. Shipping was good and without bad surprises. Thank you Soundbrenner!"
-      },
-      {
-        day: 4,
-        name: 'Rob M.',
-        text: "I had questions about my purchase, and Ethan has been super attentive offering excellent explanations and suggestions. Services matters as much as the product you buy, and I'm impressed."
-      },
-      {
-        day: 15,
-        name: 'Lee K.',
-        text: 'My initial order was delayed but the staff were super responsive to my emails and sorted it out without problem. Issues happen from time to time but I appreciate that they care about their customers and service.'
-      },
-      {
-        day: 2,
-        name: 'Samuel A.',
-        text: 'Amazing customer service, great and quick service overall. I am really happy I purchased this product and I will be looking forward to future purchases.'
-      },
-      {
-        day: 21,
-        name: 'Nate L.',
-        text: "Soundbrenner's customer service has been top notch. They helped me with a return for a bad adapter and made it right. Will gladly buy again from SB."
-      },
-      {
-        day: 9,
-        name: 'Christos T.',
-        text: 'Incredible customer service experience: prompt and deliberate responses, and understanding of my needs. I am very pleased with how they handled my return process.'
-      },
-      {
-        day: 12,
-        name: 'Paul S.',
-        text: 'Easy to shop for, shipping was fast, and the package presentation was much higher end than I expected.'
-      },
-      {
-        day: 27,
-        name: 'Mark C.',
-        text: "This company is a breath of fresh air to deal with! I did have a problem with part of my order but it was resolved so quickly it really wasn't a problem. I genuinely look forward to using this company again."
-      },
-      {
-        day: 18,
-        name: 'Curtis E.',
-        text: "One of the best customer support experiences I've ever had. I had one minor issue and they went above and beyond to correct it and emailed back within an hour. I don't see myself or my son buying from anyone else again."
-      },
-      {
-        day: 5,
-        name: 'Jerry W.',
-        text: 'Easy checkout and fast shipping. These folks know how to treat a customer with respect and appreciation.'
-      },
-      {
-        day: 24,
-        name: 'Cymil M.',
-        text: 'Shopping was seamless and easy. Customer service is very responsive and always presents options for whatever concern you may have. Five star.'
-      }
-    ];
+    const mobileMenuReviews = JSON.parse({{ 'sb.header.mobile_menu_reviews_json' | t | json }});
     let pageScrollLockY = 0;
     let pageScrollLockMode = null;
     const isDesktopViewport = () => window.matchMedia('(min-width: 990px)').matches;

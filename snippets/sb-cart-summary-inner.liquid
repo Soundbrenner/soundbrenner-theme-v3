@@ -5,8 +5,14 @@
     assign sb_cart_show_clear = false
   endif
   assign sb_cart_show_top_divider = show_top_divider | default: false
-  assign sb_cart_shipping_text = shipping_text | default: 'Ships worldwide'
-  assign sb_cart_taxes_text = taxes_text | default: 'May be due on delivery'
+  assign sb_cart_shipping_text = shipping_text
+  if sb_cart_shipping_text == blank
+    assign sb_cart_shipping_text = 'sb.cart.shipping_ships_worldwide' | t
+  endif
+  assign sb_cart_taxes_text = taxes_text
+  if sb_cart_taxes_text == blank
+    assign sb_cart_taxes_text = 'sb.cart.taxes_may_be_due_on_delivery' | t
+  endif
   assign sb_cart_summary_class = summary_class | default: 'sb-cart-summary'
   assign sb_cart_payment_list_class = payment_list_class | default: 'sb-cart-summary__payment-list'
   assign sb_cart_payment_item_class = payment_item_class | default: 'sb-cart-summary__payment-item'
@@ -132,7 +138,7 @@
   endif
   assign sb_cart_discount_code = sb_cart_discount_code | upcase | strip
   if sb_cart_discount_code == blank
-    assign sb_cart_discount_code = 'DISCOUNT'
+    assign sb_cart_discount_code = 'sb.cart.discount' | t | upcase
   endif
 
   assign sb_cart_discount_percent = blank
@@ -154,7 +160,7 @@
 
   assign sb_cart_auto_discount_text = sb_cart_discount_code
   if sb_cart_discount_percent != blank
-    assign sb_cart_auto_discount_text = sb_cart_auto_discount_text | append: ' (' | append: sb_cart_discount_percent | append: '% OFF)'
+    assign sb_cart_auto_discount_text = 'sb.cart.discount_with_percent' | t: code: sb_cart_discount_code, percent: sb_cart_discount_percent
   endif
   assign sb_cart_auto_discount_amount = sb_cart_discount_amount_cents | money
   assign sb_cart_subtotal_display = sb_cart_subtotal_cents | money
@@ -175,14 +181,14 @@
   </p>
 
   <p class="sb-cart-summary__row font-caption weight-regular">
-    <span>Subtotal</span>
+    <span>{{ 'sb.cart.subtotal' | t }}</span>
     <span class="sb-cart-shimmer-text" data-cart-subtotal data-shimmer-value="{{ sb_cart_subtotal_display | escape }}">
       {{ sb_cart_subtotal_display }}
     </span>
   </p>
 
   <p class="sb-cart-summary__row font-caption weight-regular">
-    <span>Taxes and duties</span>
+    <span>{{ 'sb.cart.taxes_and_duties' | t }}</span>
     <span>{{ sb_cart_taxes_text }}</span>
   </p>
 
@@ -217,7 +223,7 @@
 
   <details class="sb-cart-summary__discount" data-cart-discount-disclosure>
     <summary class="sb-cart-summary__row sb-cart-summary__row--discount-toggle font-caption weight-regular">
-      <span>Discount</span>
+      <span>{{ 'sb.cart.discount' | t }}</span>
       <span class="sb-cart-summary__toggle-icon" aria-hidden="true">
         <span class="sb-cart-summary__toggle-icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
         <span class="sb-cart-summary__toggle-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
@@ -231,13 +237,13 @@
             class="sb-cart-summary__discount-input font-caption weight-regular"
             type="text"
             name="discount"
-            aria-label="Discount code"
-            placeholder="Discount code"
+            aria-label="{{ 'sb.cart.discount_code' | t }}"
+            placeholder="{{ 'sb.cart.discount_code' | t }}"
             autocomplete="off"
             data-cart-discount-input
           >
           <button class="sb-cart-summary__discount-apply sb-button-radiant sb-button-radiant--medium font-caption weight-bold" type="submit">
-            <span class="sb-button-radiant__label">Apply</span>
+            <span class="sb-button-radiant__label">{{ 'sb.cart.apply' | t }}</span>
           </button>
         </form>
         <p
@@ -261,7 +267,7 @@
                 type="button"
                 class="sb-cart-discount-pill__remove"
                 data-cart-discount-remove="{{ discount_code_upper | escape }}"
-                aria-label="Remove {{ discount_code_upper | escape }}"
+                aria-label="{{ 'sb.cart.remove_discount_code' | t: code: discount_code_upper }}"
               >
                 <span class="sb-cart-discount-pill__remove-icon" aria-hidden="true">
                   {{ 'icon-cancel.svg' | inline_asset_content }}
@@ -277,7 +283,7 @@
   <div class="sb-cart-summary__divider" aria-hidden="true"></div>
 
   <p class="sb-cart-summary__row sb-cart-summary__row--total font-caption weight-bold">
-    <span>Total</span>
+    <span>{{ 'sb.cart.total' | t }}</span>
     <span class="sb-cart-shimmer-text" data-cart-total data-shimmer-value="{{ cart.total_price | money | escape }}">
       {{ cart.total_price | money }}
     </span>
@@ -295,7 +301,7 @@
           <span class="sb-button-radiant__icon" aria-hidden="true">
             <span class="sb-cart-summary__checkout-icon">{{ 'icon-checkout-lock.svg' | inline_asset_content }}</span>
           </span>
-          <span class="sb-button-radiant__label">Secure checkout</span>
+          <span class="sb-button-radiant__label">{{ 'sb.cart.secure_checkout' | t }}</span>
         </button>
       </form>
     {% else %}
@@ -308,7 +314,7 @@
         <span class="sb-button-radiant__icon" aria-hidden="true">
           <span class="sb-cart-summary__checkout-icon">{{ 'icon-checkout-lock.svg' | inline_asset_content }}</span>
         </span>
-        <span class="sb-button-radiant__label">Secure checkout</span>
+        <span class="sb-button-radiant__label">{{ 'sb.cart.secure_checkout' | t }}</span>
       </a>
     {% endif %}
 
@@ -316,6 +322,6 @@
   </div>
 
   {% if sb_cart_show_clear %}
-    <button type="button" class="{{ clear_button_class }}" data-cart-clear>Clear cart</button>
+    <button type="button" class="{{ clear_button_class }}" data-cart-clear>{{ 'sb.cart.clear_cart' | t }}</button>
   {% endif %}
 </div>

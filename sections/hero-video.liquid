@@ -132,7 +132,7 @@
               src="about:blank"
               data-embed-src="https://www.youtube.com/embed/{{ hero_video_fallback_youtube_id }}?rel=0"
               data-embed-provider="youtube"
-              title="Hero video"
+              title="{{ 'sb.hero_video.title' | t }}"
               loading="lazy"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowfullscreen
@@ -173,7 +173,7 @@
                 src="about:blank"
                 data-embed-src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
                 data-embed-provider="youtube"
-                title="Hero video"
+                title="{{ 'sb.hero_video.title' | t }}"
                 loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
@@ -223,7 +223,7 @@
                   src="about:blank"
                   data-embed-src="https://www.youtube.com/embed/{{ hero_video_youtube_id }}?rel=0"
                   data-embed-provider="youtube"
-                  title="Hero video {{ hero_video_valid_index }}"
+                  title="{{ 'sb.hero_video.title_index' | t: index: hero_video_valid_index }}"
                   loading="lazy"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
@@ -274,7 +274,7 @@
                 src="about:blank"
                 data-embed-src="https://www.youtube.com/embed/{{ hero_video_featured_id }}?rel=0"
                 data-embed-provider="youtube"
-                title="Hero video"
+                title="{{ 'sb.hero_video.title' | t }}"
                 loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
@@ -303,7 +303,7 @@
                   assign hero_video_valid_index = hero_video_valid_index | plus: 1
 
                   if hero_video_title == blank
-                    assign hero_video_title = 'Video ' | append: hero_video_valid_index
+                    assign hero_video_title = 'sb.hero_video.video_index' | t: index: hero_video_valid_index
                   endif
                 %}
                 <button
@@ -312,7 +312,7 @@
                   data-hero-video-thumb
                   data-hero-video-id="{{ hero_video_youtube_id | escape }}"
                   data-hero-video-title="{{ hero_video_title | escape }}"
-                  aria-label="Play {{ hero_video_title | escape }}"
+                  aria-label="{{ 'sb.hero_video.play_title' | t: title: hero_video_title | escape }}"
                 >
                   <span class="sb-hero-video__thumb-frame">
                     <img

@@ -1,6 +1,7 @@
 <section class="sb-manual-chapters" id="sb-manual-{{ section.id }}">
+  {% assign manual_chapter_fallback = 'sb.manual.chapter' | t %}
   <aside class="sb-manual-chapters__sidebar" data-sb-reveal>
-    <nav class="sb-manual-chapters__nav" aria-label="Product manual">
+    <nav class="sb-manual-chapters__nav" aria-label="{{ 'sb.manual.product_manual' | t }}">
       {% assign first_chapter_link = true %}
       {% for block in section.blocks %}
         {% if block.type == 'heading' %}
@@ -12,9 +13,9 @@
             data-sb-reveal-item
             data-manual-link
             data-target="{{ chapter_id }}"
-            data-manual-label="{{ block.settings.heading | default: 'Chapter' | escape }}"
+            data-manual-label="{{ block.settings.heading | default: manual_chapter_fallback | escape }}"
           >
-            {{ block.settings.heading | default: 'Chapter' }}
+            {{ block.settings.heading | default: manual_chapter_fallback }}
           </a>
           {% assign first_chapter_link = false %}
         {% endif %}
@@ -23,17 +24,17 @@
   </aside>
 
   {% liquid
-    assign initial_mobile_chapter_label = 'Chapters'
+    assign initial_mobile_chapter_label = 'sb.manual.chapters' | t
     for block in section.blocks
       if block.type == 'heading'
-        assign initial_mobile_chapter_label = block.settings.heading | default: 'Chapter'
+        assign initial_mobile_chapter_label = block.settings.heading | default: manual_chapter_fallback
         break
       endif
     endfor
   %}
   <div
     class="sb-manual-chapters__sticky-nav-wrap sb-manual-chapters__sticky-nav-wrap--mobile"
-    aria-label="Sticky manual navigation"
+    aria-label="{{ 'sb.manual.sticky_navigation' | t }}"
     data-sb-reveal
     data-sb-sticky-top-navigation
     data-sb-sticky-active="true"
@@ -67,13 +68,13 @@
                   type="button"
                   class="sb-manual-chapters__sticky-filter-close"
                   data-manual-chapter-close
-                  aria-label="Close chapters"
+                  aria-label="{{ 'sb.manual.close_chapters' | t }}"
                 >
                   <span class="sb-manual-chapters__sticky-filter-close-icon" aria-hidden="true">
                     {{ 'icon-cancel.svg' | inline_asset_content }}
                   </span>
                 </button>
-                <p class="sb-manual-chapters__sticky-filter-panel-title font-callout weight-bold">Chapters</p>
+                <p class="sb-manual-chapters__sticky-filter-panel-title font-callout weight-bold">{{ 'sb.manual.chapters' | t }}</p>
               </div>
 
               <div class="sb-manual-chapters__sticky-filter-panel-list">
@@ -88,10 +89,10 @@
                       data-sb-reveal-item
                       data-manual-link
                       data-target="{{ chapter_id }}"
-                      data-manual-label="{{ block.settings.heading | default: 'Chapter' | escape }}"
+                      data-manual-label="{{ block.settings.heading | default: manual_chapter_fallback | escape }}"
                       data-manual-chapter-option
                     >
-                      {{ block.settings.heading | default: 'Chapter' }}
+                      {{ block.settings.heading | default: manual_chapter_fallback }}
                     </a>
                     {% assign first_mobile_chapter_link = false %}
                   {% endif %}
@@ -168,7 +169,7 @@
           {{ block.shopify_attributes }}
         >
           <iframe
-            title="Vimeo video"
+            title="{{ 'sb.media.vimeo_video' | t }}"
             loading="lazy"
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
             allowfullscreen
@@ -176,7 +177,7 @@
             data-manual-vimeo-frame
           ></iframe>
           <div class="sb-manual-chapters__video-placeholder font-caption weight-semibold" data-sb-reveal-item>
-            Vimeo video placeholder
+            {{ 'sb.media.vimeo_video_placeholder' | t }}
           </div>
         </figure>
       {% elsif block.type == 'accordion_item' %}
@@ -805,6 +806,8 @@
     const chapterBackdrop = root.querySelector('[data-manual-chapter-backdrop]');
     const currentChapterLabels = Array.from(root.querySelectorAll('[data-manual-current-chapter-label]'));
     const headerElement = document.querySelector('.header');
+    const chapterFallbackLabel = {{ 'sb.manual.chapter' | t | json }};
+    const chaptersFallbackLabel = {{ 'sb.manual.chapters' | t | json }};
     if (!links.length || !chapters.length) return;
     let activeFirstTemplateSection = null;
 
@@ -841,7 +844,7 @@
 
     const chapterData = chapters.map((chapter) => {
       const heading = chapter.querySelector('.sb-manual-chapters__heading');
-      const label = `${heading?.textContent || chapter.id || ''}`.trim() || 'Chapter';
+      const label = `${heading?.textContent || chapter.id || ''}`.trim() || chapterFallbackLabel;
       return { id: chapter.id, heading: heading || chapter, label };
     });
 
@@ -857,7 +860,7 @@
     }
 
     const setCurrentChapterLabel = (id) => {
-      const nextLabel = chapterLabelMap.get(id) || chapterData[0]?.label || 'Chapters';
+      const nextLabel = chapterLabelMap.get(id) || chapterData[0]?.label || chaptersFallbackLabel;
       currentChapterLabels.forEach((labelNode) => {
         if (`${labelNode.textContent || ''}`.trim() === nextLabel) return;
         labelNode.textContent = nextLabel;

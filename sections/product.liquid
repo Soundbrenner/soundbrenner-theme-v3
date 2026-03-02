@@ -43,6 +43,10 @@
   assign product_usps_root = product_usps_ref.value | default: product_usps_ref.reference | default: product_usps_ref
   assign add_to_cart_icon_type = section.settings.add_to_cart_icon | default: 'cart'
   assign product_module_block_types = '|media_gallery|variant_explainer_box|delivery_explainer_box|video_stories|in_the_box|description|popular_add_ons|'
+  assign product_label_add_to_cart = 'sb.product.add_to_cart' | t
+  assign product_label_sold_out = 'sb.product.sold_out' | t
+  assign product_label_add = 'sb.product.add' | t
+  assign product_label_learn_more = 'sb.product.learn_more' | t
 
   if product_page_header != blank
     assign product_has_page_header = true
@@ -143,23 +147,23 @@
     assign delivery_current_week_index = delivery_current_day | minus: 1 | divided_by: 7 | plus: 1
     assign delivery_target_week_index = delivery_current_week_index
 
-    assign delivery_week_label = 'first'
+    assign delivery_week_label = 'sb.product.week_first' | t
     case delivery_target_week_index
       when 2
-        assign delivery_week_label = 'second'
+        assign delivery_week_label = 'sb.product.week_second' | t
       when 3
-        assign delivery_week_label = 'third'
+        assign delivery_week_label = 'sb.product.week_third' | t
       when 4
-        assign delivery_week_label = 'fourth'
+        assign delivery_week_label = 'sb.product.week_fourth' | t
       when 5
-        assign delivery_week_label = 'fifth'
+        assign delivery_week_label = 'sb.product.week_fifth' | t
     endcase
 
     assign delivery_first_of_month_text = 'now' | date: '%Y-%m-01 00:00:00'
     assign delivery_first_of_month_timestamp = delivery_first_of_month_text | date: '%s' | plus: 0
     assign delivery_next_month_timestamp = delivery_first_of_month_timestamp | plus: 2764800
     assign delivery_next_month_name = delivery_next_month_timestamp | date: '%B'
-    assign delivery_next_batch_text = delivery_week_label | append: ' week of ' | append: delivery_next_month_name
+    assign delivery_next_batch_text = 'sb.product.week_of_month' | t: week: delivery_week_label, month: delivery_next_month_name
 
     assign product_delivery_explainer_title = product_delivery_explainer_title | replace: '{{ Delivery explainer box shipping date }}', delivery_shipping_date_text
     assign product_delivery_explainer_title = product_delivery_explainer_title | replace: '{{ Delivery explainer box next batch date }}', delivery_next_batch_text
@@ -181,12 +185,12 @@
     for product_tag in product.tags
       assign product_tag_downcase = product_tag | downcase
       if product_tag_downcase == 'bestseller'
-        assign product_badge_label = 'Bestseller'
+        assign product_badge_label = 'sb.product.badge_bestseller' | t
         assign product_badge_type = 'bestseller'
         break
       endif
       if product_tag_downcase == 'new'
-        assign product_badge_label = 'New'
+        assign product_badge_label = 'sb.product.badge_new' | t
         assign product_badge_type = 'new'
       endif
     endfor
@@ -281,13 +285,13 @@
   assign shopper_country_advertised_min_time_number = shopper_country_advertised_min_time | plus: 0
   assign shopper_country_advertised_max_time_number = shopper_country_advertised_max_time | plus: 0
   if shopper_country_shipping_entry_found == false
-    assign shopper_country_shipping_text = 'Ships worldwide'
+    assign shopper_country_shipping_text = 'sb.cart.shipping_ships_worldwide' | t
   elsif shopper_country_ship_to_it == false
-    assign shopper_country_shipping_text = "We're not shipping to " | append: shopper_country_name
+    assign shopper_country_shipping_text = 'sb.cart.shipping_not_shipping_to' | t: country: shopper_country_name
   elsif shopper_country_advertised_min_time != blank and shopper_country_advertised_max_time != blank and shopper_country_advertised_min_time_number < 11 and shopper_country_advertised_max_time_number < 12
-    assign shopper_country_shipping_text = shopper_country_advertised_min_time | append: '-' | append: shopper_country_advertised_max_time | append: ' days delivery in ' | append: shopper_country_name
+    assign shopper_country_shipping_text = 'sb.cart.shipping_days_delivery_in' | t: min: shopper_country_advertised_min_time, max: shopper_country_advertised_max_time, country: shopper_country_name
   else
-    assign shopper_country_shipping_text = 'Ships to ' | append: shopper_country_name
+    assign shopper_country_shipping_text = 'sb.cart.shipping_ships_to' | t: country: shopper_country_name
   endif
 
   if shopper_country_ship_to_it
@@ -326,11 +330,11 @@
       assign selector_list_mode = 'none'
     endif
     if selector_list_heading == blank and selector_list_mode == 'variant'
-      assign selector_list_heading = 'Variant'
+      assign selector_list_heading = 'sb.product.variant' | t
     endif
   elsif product_multipack_items != blank
     assign selector_list_mode = 'multipack'
-    assign selector_list_heading = 'Buy multiple and save extra'
+    assign selector_list_heading = 'sb.product.buy_multiple_save_extra' | t
     assign selected_multipack_variant_id = current_variant.id
     for multipack_item in product_multipack_items
       assign multipack_entry = multipack_item.value | default: multipack_item.reference.value | default: multipack_item.reference | default: multipack_item
@@ -356,7 +360,7 @@
       endif
     endfor
     if selector_list_heading == blank
-      assign selector_list_heading = 'Variant'
+      assign selector_list_heading = 'sb.product.variant' | t
     endif
   endif
 
@@ -513,7 +517,7 @@
                 href="#klaviyo-product-reviews-wrapper"
                 data-sticky-reviews-link
                 data-rating-tooltip="{{ product_rating_tooltip }}"
-                aria-label="Go to reviews"
+                aria-label="{{ 'sb.product.go_to_reviews' | t }}"
               >
                 {% assign sticky_star_icon_url = 'icon-review-star.svg' | asset_url %}
                 {% for i in (1..5) %}
@@ -539,7 +543,7 @@
                 data-sticky-review-count
                 data-sticky-review-count-value="{{ product_reviews_count | plus: 0 | round }}"
               >
-                {{ product_reviews_count | plus: 0 | round }} reviews
+                {{ 'sb.product.reviews_count' | t: count: product_reviews_count }}
               </a>
             </div>
           {% endunless %}
@@ -552,7 +556,7 @@
             class="sb-product-main__sticky-segmented"
             data-sticky-segmented-controls
             role="tablist"
-            aria-label="Page mode"
+            aria-label="{{ 'sb.product.page_mode' | t }}"
           >
             <span class="sb-product-main__sticky-segment-indicator" aria-hidden="true"></span>
             <button
@@ -561,7 +565,7 @@
               data-sticky-segment-option="learn-more"
               aria-pressed="true"
             >
-              Learn more
+              {{ 'sb.product.learn_more' | t }}
             </button>
             <button
               class="sb-product-main__sticky-segment-pill font-caption weight-medium"
@@ -569,7 +573,7 @@
               data-sticky-segment-option="buy-now"
               aria-pressed="false"
             >
-              Buy now
+              {{ 'sb.product.buy_now' | t }}
             </button>
           </div>
         </div>
@@ -582,7 +586,9 @@
         {% unless current_variant.available %}
           disabled
         {% endunless %}
-        aria-label="{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}"
+        data-label-available="{{ product_label_add_to_cart }}"
+        data-label-unavailable="{{ product_label_sold_out }}"
+        aria-label="{% if current_variant.available %}{{ product_label_add_to_cart }}{% else %}{{ product_label_sold_out }}{% endif %}"
       >
         <span class="sb-button-radiant__icon sb-product-main__sticky-add-button-icon" aria-hidden="true">
           {% if add_to_cart_icon_type == 'arrow' %}
@@ -599,9 +605,9 @@
         </span>
         <span class="sb-button-radiant__label" data-sticky-add-button-label>
           {% if current_variant.available %}
-            Add to cart
+            {{ product_label_add_to_cart }}
           {% else %}
-            Sold out
+            {{ product_label_sold_out }}
           {% endif %}
         </span>
       </button>
@@ -657,7 +663,7 @@
                 href="#klaviyo-product-reviews-wrapper"
                 data-sticky-reviews-link
                 data-rating-tooltip="{{ product_rating_tooltip }}"
-                aria-label="Go to reviews"
+                aria-label="{{ 'sb.product.go_to_reviews' | t }}"
               >
                 {% assign sticky_star_icon_url = 'icon-review-star.svg' | asset_url %}
                 {% for i in (1..5) %}
@@ -683,7 +689,7 @@
                 data-sticky-bottom-review-count
                 data-sticky-review-count-value="{{ product_reviews_count | plus: 0 | round }}"
               >
-                {{ product_reviews_count | plus: 0 | round }} reviews
+                {{ 'sb.product.reviews_count' | t: count: product_reviews_count }}
               </a>
             </div>
           {% endunless %}
@@ -697,7 +703,9 @@
         {% unless current_variant.available %}
           disabled
         {% endunless %}
-        aria-label="{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}"
+        data-label-available="{{ product_label_add }}"
+        data-label-unavailable="{{ product_label_sold_out }}"
+        aria-label="{% if current_variant.available %}{{ product_label_add_to_cart }}{% else %}{{ product_label_sold_out }}{% endif %}"
       >
         <span class="sb-button-radiant__icon sb-product-main__sticky-bottom-add-button-icon" aria-hidden="true">
           {% if add_to_cart_icon_type == 'arrow' %}
@@ -714,9 +722,9 @@
         </span>
         <span class="sb-button-radiant__label" data-sticky-bottom-add-button-label>
           {% if current_variant.available %}
-            Add
+            {{ product_label_add }}
           {% else %}
-            Sold out
+            {{ product_label_sold_out }}
           {% endif %}
         </span>
       </button>
@@ -1242,7 +1250,7 @@
                   hidden
                 {% endunless %}
               >
-                Save {{ savings_percentage }}%
+                {{ 'sb.product.save_percent' | t: percent: savings_percentage }}
               </span>
             </div>
           {% endif %}
@@ -1259,7 +1267,9 @@
               {% unless current_variant.available %}
                 disabled
               {% endunless %}
-              aria-label="{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}"
+              data-label-available="{{ product_label_add_to_cart }}"
+              data-label-unavailable="{{ product_label_sold_out }}"
+              aria-label="{% if current_variant.available %}{{ product_label_add_to_cart }}{% else %}{{ product_label_sold_out }}{% endif %}"
             >
               <span class="sb-product-main__add-button-icon" aria-hidden="true">
                 {% if add_to_cart_icon_type == 'arrow' %}
@@ -1276,9 +1286,9 @@
               </span>
               <span class="sb-product-main__add-button-label" data-add-button-label>
               {% if current_variant.available %}
-                Add to cart
+                {{ product_label_add_to_cart }}
               {% else %}
-                Sold out
+                {{ product_label_sold_out }}
               {% endif %}
               </span>
             </button>
@@ -1289,7 +1299,7 @@
                   class="sb-product-main__shop-pay-button sb-button-radiant sb-button-radiant--large sb-button-radiant--shop-pay sb-button-radiant--trailing-icon font-caption weight-bold"
                   aria-hidden="true"
                 >
-                  <span class="sb-button-radiant__label">Buy with</span>
+                  <span class="sb-button-radiant__label">{{ 'sb.product.buy_with' | t }}</span>
                   <span class="sb-button-radiant__icon" aria-hidden="true">
                     {{ 'logo-shop-pay.svg' | inline_asset_content }}
                   </span>
@@ -1306,14 +1316,14 @@
 
           {% unless product_hide_purchase_guarantees %}
             <div class="sb-product-main__purchase-guarantees">
-              <ul class="sb-product-main__purchase-guarantees-list" aria-label="Purchase guarantees">
+              <ul class="sb-product-main__purchase-guarantees-list" aria-label="{{ 'sb.product.purchase_guarantees' | t }}">
                 {% if shopper_country_free_shipping_available and shopper_country_free_shipping_threshold_display != blank %}
                   <li class="sb-product-main__purchase-guarantee-item">
                     <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
                       {{ 'icon-purchase-guarantee-featured.svg' | inline_asset_content }}
                     </span>
                     <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">
-                      Free shipping over {{ shopper_country_free_shipping_threshold_display }}
+                      {{ 'sb.product.free_shipping_over' | t: threshold: shopper_country_free_shipping_threshold_display }}
                     </span>
                   </li>
                 {% endif %}
@@ -1331,7 +1341,7 @@
                       {{ 'icon-purchase-guarantee-account-balance.svg' | inline_asset_content }}
                     </span>
                     <span class="sb-product-main__purchase-guarantee-text font-body weight-regular"
-                      >All taxes &amp; duties included in price</span
+                      >{{ 'sb.product.all_taxes_duties_included' | t }}</span
                     >
                   </li>
                 {% endif %}
@@ -1339,13 +1349,13 @@
                   <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
                     {{ 'icon-purchase-guarantee-autorenew.svg' | inline_asset_content }}
                   </span>
-                  <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">30-day money-back guarantee</span>
+                  <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">{{ 'sb.product.money_back_30_day' | t }}</span>
                 </li>
                 <li class="sb-product-main__purchase-guarantee-item">
                   <span class="sb-product-main__purchase-guarantee-icon" aria-hidden="true">
                     {{ 'icon-purchase-guarantee-verified-user.svg' | inline_asset_content }}
                   </span>
-                  <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">1-year warranty</span>
+                  <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">{{ 'sb.product.warranty_1_year' | t }}</span>
                 </li>
                 {% if show_shop_pay_guarantee %}
                   <li class="sb-product-main__purchase-guarantee-item sb-product-main__purchase-guarantee-item--shop-pay">
@@ -1353,7 +1363,7 @@
                       {{ 'icon-purchase-guarantee-pie-chart.svg' | inline_asset_content }}
                     </span>
                     <span class="sb-product-main__purchase-guarantee-text font-body weight-regular">
-                      Shop Pay installments from&nbsp;<span data-product-monthly-price>{{ current_variant.price | times: 0.01 | divided_by: 4.0 | round | times: 100 | money_without_trailing_zeros }}</span>
+                      {{ 'sb.product.shop_pay_installments_from' | t }}&nbsp;<span data-product-monthly-price>{{ current_variant.price | times: 0.01 | divided_by: 4.0 | round | times: 100 | money_without_trailing_zeros }}</span>
                     </span>
                   </li>
                 {% endif %}
@@ -1475,15 +1485,17 @@
                       class="sb-product-main__addon-add-button sb-button-radiant sb-button-radiant--medium sb-button-radiant--leading-icon font-caption weight-bold"
                       data-addon-add-to-cart
                       data-addon-variant-id="{{ addon_selected_variant.id }}"
-                      aria-label="Add"
+                      data-label-available="{{ product_label_add }}"
+                      data-label-unavailable="{{ product_label_sold_out }}"
+                      aria-label="{{ product_label_add }}"
                     >
                       <span class="sb-button-radiant__icon sb-product-main__addon-add-button-icon" aria-hidden="true">
                         <img src="{{ 'icon-add-to-cart.svg' | asset_url }}" alt="" width="16" height="16">
                       </span>
-                      <span class="sb-button-radiant__label" data-addon-add-label>Add</span>
+                      <span class="sb-button-radiant__label" data-addon-add-label>{{ product_label_add }}</span>
                     </button>
                     <a class="sb-product-main__addon-view-button sb-button-outline-pill-medium font-caption weight-semibold" href="{{ addon_selected_variant_url }}" target="_blank" rel="noopener noreferrer" data-addon-product-link>
-                      Learn more
+                      {{ product_label_learn_more }}
                     </a>
                   </div>
                 </div>
@@ -1610,7 +1622,7 @@
                             class="sb-product-main__video-story"
                             data-video-story-trigger
                             data-video-story-url="{{ story_video_url | escape }}"
-                            aria-label="Play video"
+                            aria-label="{{ 'sb.media.play_video' | t }}"
                           >
                             <span class="sb-product-main__video-story-inner">
                               {% # theme-check-disable RemoteAsset %}
@@ -1634,14 +1646,14 @@
                         type="button"
                         class="sb-product-main__video-story-modal-backdrop"
                         data-video-story-close
-                        aria-label="Close video"
+                        aria-label="{{ 'sb.media.close_video' | t }}"
                       ></button>
-                      <div class="sb-product-main__video-story-modal-panel" role="dialog" aria-modal="true" aria-label="Video story player">
+                      <div class="sb-product-main__video-story-modal-panel" role="dialog" aria-modal="true" aria-label="{{ 'sb.media.video_story_player' | t }}">
                         <button
                           type="button"
                           class="sb-product-main__video-story-modal-close"
                           data-video-story-close
-                          aria-label="Close video"
+                          aria-label="{{ 'sb.media.close_video' | t }}"
                         >
                           ×
                         </button>
@@ -1667,7 +1679,7 @@
                     {% endif %}
                     {{ block.shopify_attributes }}
                   >
-                    <h2 class="sb-product-main__in-the-box-title font-callout weight-bold">In the box</h2>
+                    <h2 class="sb-product-main__in-the-box-title font-callout weight-bold">{{ 'sb.product.in_the_box' | t }}</h2>
                     <div class="sb-product-main__in-the-box-grid" data-in-the-box-grid>
                       {% for in_the_box_item in product_in_the_box_items %}
                         {% liquid
@@ -1752,7 +1764,7 @@
                       aria-expanded="false"
                       data-product-description-trigger
                     >
-                      <span class="sb-product-main__description-accordion-title font-callout weight-bold">Description</span>
+                      <span class="sb-product-main__description-accordion-title font-callout weight-bold">{{ 'sb.product.description' | t }}</span>
                       <span class="sb-product-main__description-accordion-icon" aria-hidden="true">
                         <span class="sb-product-main__description-accordion-icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
                         <span class="sb-product-main__description-accordion-icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
@@ -1768,7 +1780,7 @@
               {% when 'popular_add_ons' %}
                 {% if addon_items_rendered > 0 %}
                   <section class="sb-product-main__popular-addins" {{ block.shopify_attributes }}>
-                    <h2 class="sb-product-main__popular-addins-title font-callout weight-bold">Popular add-ons</h2>
+                    <h2 class="sb-product-main__popular-addins-title font-callout weight-bold">{{ 'sb.product.popular_add_ons' | t }}</h2>
                     <div class="sb-product-main__popular-addins-list">
                       {{ addon_items_markup }}
                     </div>
@@ -4053,6 +4065,11 @@
       const reviewCountFormatter = new Intl.NumberFormat(undefined, {
         maximumFractionDigits: 0,
       });
+      const reviewsCountTemplate = {{ 'sb.product.reviews_count' | t: count: '__COUNT__' | json }};
+      const savePercentTemplate = {{ 'sb.product.save_percent' | t: percent: '__PERCENT__' | json }};
+      const addToCartLabel = {{ product_label_add_to_cart | json }};
+      const soldOutLabel = {{ product_label_sold_out | json }};
+      const addLabel = {{ product_label_add | json }};
       const initialPriceSample = (
         stickyCurrentPriceElement?.textContent ||
         currentPriceElement?.textContent ||
@@ -4064,7 +4081,8 @@
         [stickyReviewCountElement, stickyBottomReviewCountElement].forEach((element) => {
           if (!element) return;
           const rawCount = Number.parseFloat(element.dataset.stickyReviewCountValue || '0') || 0;
-          element.textContent = `${reviewCountFormatter.format(Math.round(rawCount))} reviews`;
+          const formattedCount = reviewCountFormatter.format(Math.round(rawCount));
+          element.textContent = reviewsCountTemplate.replace('__COUNT__', formattedCount);
         });
       };
 
@@ -5172,9 +5190,12 @@
           if (!variant) return;
           addButtonElement.dataset.addonVariantId = `${variant.id}`;
           addButtonElement.disabled = !variant.available;
-          addButtonElement.setAttribute('aria-label', variant.available ? 'Add' : 'Sold out');
+          const addonAvailableLabel = addButtonElement.dataset.labelAvailable || addLabel;
+          const addonUnavailableLabel = addButtonElement.dataset.labelUnavailable || soldOutLabel;
+          const addonNextLabel = variant.available ? addonAvailableLabel : addonUnavailableLabel;
+          addButtonElement.setAttribute('aria-label', addonNextLabel);
           if (addButtonLabelElement) {
-            addButtonLabelElement.textContent = variant.available ? 'Add' : 'Sold out';
+            addButtonLabelElement.textContent = addonNextLabel;
           }
 
           const addonPricing = resolveDisplayPrice(
@@ -5435,7 +5456,7 @@
             const savingsPercent = compareAt > 0
               ? Math.round(((compareAt - Number(resolvedPricing.currentPriceCents || 0)) / compareAt) * 100)
               : 0;
-            savingsBadgeElement.textContent = `Save ${savingsPercent}%`;
+            savingsBadgeElement.textContent = savePercentTemplate.replace('__PERCENT__', `${savingsPercent}`);
             savingsBadgeElement.hidden = false;
           } else {
             savingsBadgeElement.hidden = true;
@@ -5447,7 +5468,9 @@
 
         if (addButton) {
           addButton.disabled = !purchaseData.available;
-          const nextLabel = purchaseData.available ? 'Add to cart' : 'Sold out';
+          const availableLabel = addButton.dataset.labelAvailable || addToCartLabel;
+          const unavailableLabel = addButton.dataset.labelUnavailable || soldOutLabel;
+          const nextLabel = purchaseData.available ? availableLabel : unavailableLabel;
           if (addButtonLabel) addButtonLabel.textContent = nextLabel;
           addButton.setAttribute('aria-label', nextLabel);
         }
@@ -5482,15 +5505,19 @@
         }
         if (stickyAddButton) {
           stickyAddButton.disabled = !purchaseData.available;
-          const nextLabel = purchaseData.available ? 'Add to cart' : 'Sold out';
+          const availableLabel = stickyAddButton.dataset.labelAvailable || addToCartLabel;
+          const unavailableLabel = stickyAddButton.dataset.labelUnavailable || soldOutLabel;
+          const nextLabel = purchaseData.available ? availableLabel : unavailableLabel;
           if (stickyAddButtonLabel) stickyAddButtonLabel.textContent = nextLabel;
           stickyAddButton.setAttribute('aria-label', nextLabel);
         }
         if (stickyBottomAddButton) {
           stickyBottomAddButton.disabled = !purchaseData.available;
-          const nextLabel = purchaseData.available ? 'Add' : 'Sold out';
+          const availableLabel = stickyBottomAddButton.dataset.labelAvailable || addLabel;
+          const unavailableLabel = stickyBottomAddButton.dataset.labelUnavailable || soldOutLabel;
+          const nextLabel = purchaseData.available ? availableLabel : unavailableLabel;
           if (stickyBottomAddButtonLabel) stickyBottomAddButtonLabel.textContent = nextLabel;
-          stickyBottomAddButton.setAttribute('aria-label', purchaseData.available ? 'Add to cart' : 'Sold out');
+          stickyBottomAddButton.setAttribute('aria-label', purchaseData.available ? addToCartLabel : soldOutLabel);
         }
 
         const stickyVariant = variants.find((variant) => `${variant.id}` === `${purchaseData.id}`);

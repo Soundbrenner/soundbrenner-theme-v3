@@ -300,6 +300,7 @@
     const arrowSvg = {{ 'arrow-reduced-padding.svg' | inline_asset_content | json }};
     const checkSvg = {{ 'icon-check.svg' | inline_asset_content | json }};
     const errorSvg = {{ 'icon-error.svg' | inline_asset_content | json }};
+    const defaultOptOutLabel = {{ 'sb.data_sharing.opt_out' | t | json }};
     const checkboxOffSvg = {{ 'icon-data-sharing-opt-out-checkbox-off.svg' | inline_asset_content | json }};
     const checkboxOnSvg = {{ 'icon-data-sharing-opt-out-checkbox-on.svg' | inline_asset_content | json }};
     const checkboxFillColor = window.getComputedStyle(document.documentElement)
@@ -468,7 +469,7 @@
 
       const hasLabel = button.querySelector('.sb-button-radiant__label');
       if (!hasLabel) {
-        const buttonLabelText = (button.textContent || '').trim() || 'Opt out';
+        const buttonLabelText = (button.textContent || '').trim() || defaultOptOutLabel;
         button.textContent = '';
 
         const labelNode = document.createElement('span');

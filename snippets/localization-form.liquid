@@ -40,13 +40,13 @@
               type="text"
               name="country_filter"
               value=""
-              placeholder="Search"
+              placeholder="{{ 'sb.common.search' | t }}"
               role="combobox"
               aria-owns="{{ localization_style }}-country-results-{{ form_identifier }}"
               aria-controls="{{ localization_style }}-country-results-{{ form_identifier }}"
               aria-haspopup="listbox"
               aria-autocomplete="list"
-              aria-label="Search"
+              aria-label="{{ 'sb.common.search' | t }}"
               autocorrect="off"
               autocomplete="off"
               autocapitalize="off"
@@ -108,7 +108,7 @@
 
           <ul class="list-unstyled countries" role="list">
             <li class="localization-form__list-item localization-form__list-item-disabled font-caption weight-regular" data-localization-ref="noResultsMessage" hidden>
-              No results found
+              {{ 'sb.common.no_results_found' | t }}
             </li>
             {%- for country in localization.available_countries -%}
               {% liquid
@@ -157,7 +157,7 @@
     {% if show_language %}
       <div class="language-selector{% if show_country == false %} language-selector--inline{% endif %}">
         {% if show_country %}
-          <span class="language-selector__label font-caption weight-regular">Language</span>
+          <span class="language-selector__label font-caption weight-regular">{{ 'sb.common.language' | t }}</span>
         {% endif %}
         <div class="localization-form__select-wrap">
           <span class="localization-form__select-value font-caption weight-regular" aria-hidden="true">
@@ -167,7 +167,7 @@
             id="{{ localization_style }}-language-{{ form_identifier }}"
             class="localization-form__select font-caption weight-regular"
             name="language_code"
-            aria-label="Language"
+            aria-label="{{ 'sb.common.language' | t }}"
             data-localization-ref="languageInput"
           >
             {%- for language in localization.available_languages -%}

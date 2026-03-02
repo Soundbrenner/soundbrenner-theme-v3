@@ -54,7 +54,8 @@
   assign shipping_country_token = '{{ Shipping country }}'
   assign free_shipping_threshold_token = '{{ Free shipping threshold }}'
   assign sitewide_seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 48 | strip
-  assign sidebar_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: 'your country'
+  assign sidebar_shipping_country_fallback = 'sb.cart.your_country' | t
+  assign sidebar_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: sidebar_shipping_country_fallback
   assign sidebar_shipping_country_iso = localization.country.iso_code | upcase | strip
   assign sidebar_shipping_country_handle = sidebar_shipping_country_iso | downcase
   assign sidebar_shipping_is_blocked = false
@@ -202,15 +203,15 @@
 {% endcapture %}
 
 {% liquid
-  assign mobile_categories_trigger_label = 'Categories'
+  assign mobile_categories_trigger_label = 'sb.blog.categories' | t
   if active_tag_handle == 'company-news'
-    assign mobile_categories_trigger_label = 'Company news'
+    assign mobile_categories_trigger_label = 'sb.blog.company_news' | t
   elsif active_tag_handle == 'music-insights'
-    assign mobile_categories_trigger_label = 'Music insights'
+    assign mobile_categories_trigger_label = 'sb.blog.music_insights' | t
   elsif active_tag_handle == 'product-insights' or active_tag_handle == 'product-tips'
-    assign mobile_categories_trigger_label = 'Product tips'
+    assign mobile_categories_trigger_label = 'sb.blog.product_tips' | t
   elsif active_tag_handle == 'gift-guides'
-    assign mobile_categories_trigger_label = 'Gift guides'
+    assign mobile_categories_trigger_label = 'sb.blog.gift_guides' | t
   endif
 %}
 
@@ -228,17 +229,17 @@
   <div class="sb-blog-post__inner">
     <div
       class="sb-blog-post__sticky-nav-wrap sb-blog-post__sticky-nav-wrap--desktop"
-      aria-label="Sticky blog navigation"
+      aria-label="{{ 'sb.blog.sticky_navigation' | t }}"
       data-sb-blog-post-sticky-nav-wrap
       data-sb-sticky-top-navigation
     >
       <div class="sb-blog-post__sticky-nav" data-sb-blog-post-sticky-nav>
-        <div class="sb-blog-post__sticky-nav-left" aria-label="Blog category filters">
-          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}">All</a>
-          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}/tagged/company-news">Company news</a>
-          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}/tagged/music-insights">Music insights</a>
-          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}/tagged/product-tips">Product tips</a>
-          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}/tagged/gift-guides">Gift guides</a>
+        <div class="sb-blog-post__sticky-nav-left" aria-label="{{ 'sb.blog.category_filters' | t }}">
+          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}">{{ 'sb.blog.all' | t }}</a>
+          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}/tagged/company-news">{{ 'sb.blog.company_news' | t }}</a>
+          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}/tagged/music-insights">{{ 'sb.blog.music_insights' | t }}</a>
+          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}/tagged/product-tips">{{ 'sb.blog.product_tips' | t }}</a>
+          <a class="sb-blog-post__sticky-filter font-caption" href="{{ blog_url }}/tagged/gift-guides">{{ 'sb.blog.gift_guides' | t }}</a>
 
           {% if has_product_tag_filters %}
             <div class="sb-blog-post__sticky-dropdown" data-sb-blog-post-filter-dropdown>
@@ -249,7 +250,7 @@
                 aria-controls="SbBlogPostByProductPanel-{{ section.id }}"
                 data-sb-blog-post-filter-trigger
               >
-                <span>By product</span>
+                <span>{{ 'sb.blog.by_product' | t }}</span>
                 <span class="sb-blog-post__sticky-filter-caret" aria-hidden="true">
                   {{ 'icon-chevron.svg' | inline_asset_content }}
                 </span>
@@ -277,7 +278,7 @@
                 aria-controls="SbBlogPostByInstrumentPanel-{{ section.id }}"
                 data-sb-blog-post-filter-trigger
               >
-                <span>By instrument</span>
+                <span>{{ 'sb.blog.by_instrument' | t }}</span>
                 <span class="sb-blog-post__sticky-filter-caret" aria-hidden="true">
                   {{ 'icon-chevron.svg' | inline_asset_content }}
                 </span>
@@ -299,7 +300,7 @@
         {%
           render 'radiant-button',
           link: routes.all_products_collection_url,
-          label: 'Explore our shop',
+          label: 'sb.blog.explore_shop' | t,
           size: 'medium',
           extra_class: 'sb-blog-post__sticky-nav-shop-button font-caption weight-bold'
         %}
@@ -307,7 +308,7 @@
     </div>
     <div
       class="sb-blog-post__sticky-nav-wrap sb-blog-post__sticky-nav-wrap--mobile"
-      aria-label="Sticky blog navigation"
+      aria-label="{{ 'sb.blog.sticky_navigation' | t }}"
       data-sb-blog-post-sticky-nav-wrap
       data-sb-sticky-top-navigation
     >
@@ -337,49 +338,49 @@
                     type="button"
                     class="sb-blog-post__sticky-filter-close"
                     data-sb-blog-post-filter-close
-                    aria-label="Close categories"
+                    aria-label="{{ 'sb.blog.close_categories' | t }}"
                   >
                     <span class="sb-blog-post__sticky-filter-close-icon" aria-hidden="true">
                       {{ 'icon-cancel.svg' | inline_asset_content }}
                     </span>
                   </button>
-                  <p class="sb-blog-post__sticky-filter-panel-title font-callout weight-bold">Categories</p>
+                  <p class="sb-blog-post__sticky-filter-panel-title font-callout weight-bold">{{ 'sb.blog.categories' | t }}</p>
                 </div>
                 <div class="sb-blog-post__sticky-filter-panel-list">
                   <a
                     class="sb-blog-post__sticky-filter-option font-caption{% if active_tag_handle == blank %} is-active{% endif %}"
                     href="{{ blog_url }}"
                   >
-                    All
+                    {{ 'sb.blog.all' | t }}
                   </a>
                   <a
                     class="sb-blog-post__sticky-filter-option font-caption{% if active_tag_handle == 'company-news' %} is-active{% endif %}"
                     href="{{ blog_url }}/tagged/company-news"
                   >
-                    Company news
+                    {{ 'sb.blog.company_news' | t }}
                   </a>
                   <a
                     class="sb-blog-post__sticky-filter-option font-caption{% if active_tag_handle == 'music-insights' %} is-active{% endif %}"
                     href="{{ blog_url }}/tagged/music-insights"
                   >
-                    Music insights
+                    {{ 'sb.blog.music_insights' | t }}
                   </a>
                   <a
                     class="sb-blog-post__sticky-filter-option font-caption{% if active_tag_handle == 'product-insights' or active_tag_handle == 'product-tips' %} is-active{% endif %}"
                     href="{{ blog_url }}/tagged/product-tips"
                   >
-                    Product tips
+                    {{ 'sb.blog.product_tips' | t }}
                   </a>
                   <a
                     class="sb-blog-post__sticky-filter-option font-caption{% if active_tag_handle == 'gift-guides' %} is-active{% endif %}"
                     href="{{ blog_url }}/tagged/gift-guides"
                   >
-                    Gift guides
+                    {{ 'sb.blog.gift_guides' | t }}
                   </a>
 
                   {% if has_product_tag_filters %}
                     <span class="sb-blog-post__sticky-filter-option sb-blog-post__sticky-filter-option--group font-caption">
-                      By product
+                      {{ 'sb.blog.by_product' | t }}
                     </span>
                     <div class="sb-blog-post__sticky-filter-option-children">
                       {{ product_tag_filter_options }}
@@ -388,7 +389,7 @@
 
                   {% if has_instrument_tag_filters %}
                     <span class="sb-blog-post__sticky-filter-option sb-blog-post__sticky-filter-option--group font-caption">
-                      By instrument
+                      {{ 'sb.blog.by_instrument' | t }}
                     </span>
                     <div class="sb-blog-post__sticky-filter-option-children">
                       {{ instrument_tag_filter_options }}
@@ -402,7 +403,7 @@
         {%
           render 'radiant-button',
           link: routes.all_products_collection_url,
-          label: 'Explore our shop',
+          label: 'sb.blog.explore_shop' | t,
           size: 'medium',
           extra_class: 'sb-blog-post__sticky-nav-shop-button sb-blog-post__sticky-nav-shop-button--mobile font-caption weight-bold'
         %}
@@ -410,9 +411,16 @@
     </div>
     <div class="sb-blog-post__sticky-backdrop" data-sb-blog-post-filter-backdrop aria-hidden="true"></div>
 
+    {% liquid
+      assign sidebar_promo_aria_label = sidebar_promo_title | strip
+      if sidebar_promo_aria_label == blank
+        assign sidebar_promo_aria_label = 'sb.blog.sidebar_promo' | t
+      endif
+    %}
+
     {% capture sidebar_promo_markup %}
       {% if sidebar_promo_title != blank or sidebar_promo_text != blank or sidebar_promo_button_label != blank %}
-        <section class="sb-blog-sidebar-box sb-blog-sidebar-box--promo" aria-label="{{ sidebar_promo_title | default: 'Sidebar promo' }}">
+        <section class="sb-blog-sidebar-box sb-blog-sidebar-box--promo" aria-label="{{ sidebar_promo_aria_label }}">
           {% if sidebar_promo_title != blank %}
             <h3 class="sb-blog-sidebar-box__promo-title font-callout weight-bold">{{ sidebar_promo_title }}</h3>
           {% endif %}
@@ -446,7 +454,7 @@
               {% if article_read_duration_text contains 'min' %}
                 {{ article_read_duration_text }}
               {% else %}
-                {{ article_read_duration_text }} min read
+                {{ 'sb.blog.min_read' | t: minutes: article_read_duration_text }}
               {% endif %}
             </p>
           {% endif %}
@@ -470,7 +478,7 @@
             }}
           </figure>
           {% if sidebar_promo_markup != blank %}
-            <div class="sb-blog-post__mobile-promo" aria-label="{{ sidebar_promo_title | default: 'Sidebar promo' }}">
+            <div class="sb-blog-post__mobile-promo" aria-label="{{ sidebar_promo_aria_label }}">
               {{ sidebar_promo_markup }}
             </div>
           {% endif %}
@@ -482,17 +490,17 @@
 
         <div class="sb-blog-post__postscript">
           <div class="sb-blog-post__postscript-divider" aria-hidden="true"></div>
-          <p class="sb-blog-post__postscript-author font-body weight-bold">by Team Soundbrenner</p>
+          <p class="sb-blog-post__postscript-author font-body weight-bold">{{ 'sb.blog.by_team_soundbrenner' | t }}</p>
 
           {% if section.settings.about_box_content != blank %}
-            <section class="sb-blog-post__about-box rte font-body weight-regular" aria-label="About Soundbrenner">
+            <section class="sb-blog-post__about-box rte font-body weight-regular" aria-label="{{ 'sb.blog.about_soundbrenner' | t }}">
               {% render 'localized-richtext-links', content: section.settings.about_box_content %}
             </section>
           {% endif %}
 
           {% if read_next_count > 0 %}
-            <section class="sb-blog-post__read-next" aria-label="Read this next">
-              <h2 class="sb-blog-post__read-next-title font-title weight-bold">Read this next</h2>
+            <section class="sb-blog-post__read-next" aria-label="{{ 'sb.blog.read_this_next' | t }}">
+              <h2 class="sb-blog-post__read-next-title font-title weight-bold">{{ 'sb.blog.read_this_next' | t }}</h2>
               <div class="sb-blog-post__read-next-list">
                 {{ read_next_cards_markup }}
               </div>
@@ -518,7 +526,7 @@
                 {% endfor %}
               </div>
               {% if paginate.pages > 1 %}
-                <nav class="sb-blog-post__pagination font-caption weight-regular" aria-label="Comment pagination">
+                <nav class="sb-blog-post__pagination font-caption weight-regular" aria-label="{{ 'sb.blog.comment_pagination' | t }}">
                   {{ paginate | default_pagination }}
                 </nav>
               {% endif %}
@@ -528,7 +536,7 @@
       </article>
 
       {% if sidebar_promo_markup != blank %}
-        <aside class="sb-blog-post__sidebar sb-blog-post__sidebar--desktop" aria-label="{{ sidebar_promo_title | default: 'Sidebar promo' }}">
+        <aside class="sb-blog-post__sidebar sb-blog-post__sidebar--desktop" aria-label="{{ sidebar_promo_aria_label }}">
           <div class="sb-blog-post__sidebar-stack" data-sb-blog-post-sticky-stack>
             <div class="sb-blog-post__sidebar-phase sb-blog-post__sidebar-phase--1" data-sb-blog-post-sidebar-phase-1>
               <div class="sb-blog-post__sidebar-card-wrap" data-sb-blog-post-sidebar-sticky-card>

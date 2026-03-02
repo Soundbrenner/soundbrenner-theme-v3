@@ -6,7 +6,7 @@
 
       {% if form.posted_successfully? or contact_query_string contains 'contact_posted=true' %}
         <h3 class="sb-contact-form__success-title font-title weight-bold">
-          Thank you for contacting us. We'll get back as soon as possible.
+          {{ 'sb.contact.success_message' | t }}
         </h3>
       {% elsif form.errors %}
         <p class="sb-contact-form__status font-caption weight-regular">{{ form.errors | default_errors }}</p>
@@ -26,7 +26,7 @@
                   name="contact[name]"
                   value="{{ form.name }}"
                   autocomplete="name"
-                  placeholder="Full name"
+                  placeholder="{{ 'sb.contact.full_name' | t }}"
                   required
                 >
               </div>
@@ -42,7 +42,7 @@
                   autocomplete="email"
                   spellcheck="false"
                   autocapitalize="off"
-                  placeholder="Email"
+                  placeholder="{{ 'sb.contact.email' | t }}"
                   required
                 >
               </div>
@@ -79,7 +79,7 @@
 
       <div class="sb-contact-form__submit-row">
         {% render 'radiant-button',
-          label: 'Send',
+          label: 'sb.contact.send' | t,
           size: 'large',
           icon_position: 'trailing',
           button_type: 'submit',

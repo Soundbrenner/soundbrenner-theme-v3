@@ -798,7 +798,7 @@ This file can be re-written at any time.
                 <div class="shg-preview__product-header">
                   <img class="shg-preview__product-image" src="{{ shg_preview_product.featured_image | image_url: width: 64 }}" alt="{{ shg_preview_product.title }}" />
                   <span class="shg-preview__product-title">{{ shg_preview_product.title }}</span>
-                  <a href="{{ shg_preview_product.url }}?shgpvid={{ shogun_variant_id }}" class="shg-preview__product-link" title="View product page">
+                  <a href="{{ shg_preview_product.url }}?shgpvid={{ shogun_variant_id }}" class="shg-preview__product-link" title="{{ 'sb.shogun.view_product_page' | t }}">
                     {{ eye_symbol }}
                   </a>
                   <button class="shg-preview__product-caret" onclick="toggleProduct('shg-preview-{{ optimization_config.id }}-product-{{ shg_preview_product.handle }}')">

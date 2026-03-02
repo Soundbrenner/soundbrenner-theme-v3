@@ -168,7 +168,7 @@
                     <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular">
                       {{ item_compare_price_cents | money_without_trailing_zeros }}
                     </span>
-                    <span class="sb-value-breakdown__line-item-price-current font-body weight-regular">Free</span>
+                    <span class="sb-value-breakdown__line-item-price-current font-body weight-regular">{{ 'sb.value_breakdown.free' | t }}</span>
                   </div>
                 {% endif %}
               </div>
@@ -183,7 +183,7 @@
         {% endif %}
 
         <div class="sb-value-breakdown__total-row">
-          <p class="sb-value-breakdown__total-title font-body weight-bold">Total</p>
+          <p class="sb-value-breakdown__total-title font-body weight-bold">{{ 'sb.value_breakdown.total' | t }}</p>
           <div class="sb-value-breakdown__line-item-prices">
             <span class="sb-value-breakdown__line-item-price-compare font-body weight-regular" data-value-breakdown-total-compare>
               {{ total_compare_price_cents | money_without_trailing_zeros }}
@@ -198,8 +198,10 @@
           class="sb-value-breakdown__add-button sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold"
           type="button"
           data-value-breakdown-add-button
+          data-label-available="{{ 'sb.product.add_to_cart' | t }}"
+          data-label-unavailable="{{ 'sb.product.sold_out' | t }}"
           {% unless current_variant.available %}disabled{% endunless %}
-          aria-label="{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}"
+          aria-label="{% if current_variant.available %}{{ 'sb.product.add_to_cart' | t }}{% else %}{{ 'sb.product.sold_out' | t }}{% endif %}"
         >
           <span class="sb-button-radiant__icon sb-value-breakdown__add-button-icon" aria-hidden="true">
             <img
@@ -211,7 +213,7 @@
             >
           </span>
           <span class="sb-button-radiant__label" data-value-breakdown-add-button-label>
-            {% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}
+            {% if current_variant.available %}{{ 'sb.product.add_to_cart' | t }}{% else %}{{ 'sb.product.sold_out' | t }}{% endif %}
           </span>
         </button>
 
@@ -221,7 +223,7 @@
             aria-hidden="true"
             style="--sb-value-breakdown-guarantee-icon-url: url('{{ 'icon-check.svg' | asset_url }}');"
           ></span>
-          <p class="sb-value-breakdown__guarantee-text font-caption weight-semibold">30 days money-back guarantee</p>
+          <p class="sb-value-breakdown__guarantee-text font-caption weight-semibold">{{ 'sb.product.money_back_30_day' | t }}</p>
         </div>
       </div>
     </div>
@@ -523,9 +525,12 @@
 
         if (addButton) {
           const isAvailable = Boolean(variant.available);
+          const availableLabel = addButton.dataset.labelAvailable || '';
+          const unavailableLabel = addButton.dataset.labelUnavailable || '';
+          const nextLabel = isAvailable ? availableLabel : unavailableLabel;
           addButton.disabled = !isAvailable;
-          addButton.setAttribute('aria-label', isAvailable ? 'Add to cart' : 'Sold out');
-          if (addButtonLabel) addButtonLabel.textContent = isAvailable ? 'Add to cart' : 'Sold out';
+          addButton.setAttribute('aria-label', nextLabel);
+          if (addButtonLabel) addButtonLabel.textContent = nextLabel;
         }
       };
 

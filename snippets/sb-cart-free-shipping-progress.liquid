@@ -21,10 +21,10 @@
   assign free_shipping_message = ''
   if free_shipping_available
     if free_shipping_reached
-      assign free_shipping_message = "🥳 You've unlocked <strong>free shipping</strong>."
+      assign free_shipping_message = 'sb.cart.free_shipping_unlocked_html' | t
     elsif free_shipping_threshold_cents > 0
       assign free_shipping_remaining_formatted = free_shipping_remaining_cents | money
-      assign free_shipping_message = "👉 You're only <strong>" | append: free_shipping_remaining_formatted | append: '</strong> away from <strong>free shipping</strong>.'
+      assign free_shipping_message = 'sb.cart.free_shipping_remaining_html' | t: amount: free_shipping_remaining_formatted
     endif
   endif
 %}
@@ -56,7 +56,7 @@
           {{ 'icon-free-shipping-package.svg' | inline_asset_content }}
         </span>
       </div>
-      <p class="sb-cart-free-shipping__label font-caption weight-regular">Free shipping</p>
+      <p class="sb-cart-free-shipping__label font-caption weight-regular">{{ 'sb.cart.free_shipping' | t }}</p>
     </div>
 
     <div class="sb-cart-free-shipping__bar sb-cart-free-shipping__bar--outro">

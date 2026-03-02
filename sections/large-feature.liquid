@@ -5,6 +5,8 @@
   assign hide_section = false
   assign meta_feature_items = blank
   assign meta_has_items = false
+  assign large_feature_media_alt_fallback = 'sb.large_feature.image_alt' | t
+  assign large_feature_kicker_fallback = 'sb.large_feature.kicker' | t
 
   if use_product_metaobjects
     if request.page_type == 'product' and product != blank
@@ -170,7 +172,7 @@
               assign feature_show_app = true
             endif
 
-            assign feature_media_alt = feature_image.alt | default: feature_title_primary | default: 'Large feature image'
+            assign feature_media_alt = feature_image.alt | default: feature_title_primary | default: large_feature_media_alt_fallback
           %}
 
           {% if feature_title_primary == blank and feature_title_accent == blank and feature_subtitle == blank and feature_image == blank and feature_video_url == blank %}
@@ -253,7 +255,7 @@
                     <img
                       class="sb-large-feature__app-download-badge sb-large-feature__app-download-badge--app-store"
                       src="{{ 'app-download-app-store.png' | asset_url }}"
-                      alt="Download on the App Store"
+                      alt="{{ 'sb.app.download_app_store' | t }}"
                       loading="lazy"
                       width="108"
                       height="36"
@@ -263,7 +265,7 @@
                     <img
                       class="sb-large-feature__app-download-badge sb-large-feature__app-download-badge--google-play"
                       src="{{ 'app-download-google-play.png' | asset_url }}"
-                      alt="Get it on Google Play"
+                      alt="{{ 'sb.app.download_google_play' | t }}"
                       loading="lazy"
                       width="122"
                       height="36"
@@ -277,7 +279,10 @@
       {% else %}
         <div class="sb-large-feature__layout {% if section.settings.media_position == 'right' %}sb-large-feature__layout--media-right{% endif %}">
           <div class="sb-large-feature__media" data-sb-reveal-item>
-            {% assign media_alt = section.settings.media.alt | default: section.settings.title_part_one | default: 'Large feature image' %}
+            {% assign media_alt = section.settings.media.alt | default: section.settings.title_part_one | strip %}
+            {% if media_alt == blank %}
+              {% assign media_alt = 'sb.large_feature.image_alt' | t %}
+            {% endif %}
             {% if section.settings.media_video != blank %}
               {{
                 section.settings.media_video
@@ -316,7 +321,7 @@
 
           <div class="sb-large-feature__content" data-sb-reveal-item>
             {% if section.settings.show_icon_and_kicker %}
-              {% assign large_feature_kicker_text = section.settings.kicker_text | default: 'Kicker' %}
+              {% assign large_feature_kicker_text = section.settings.kicker_text | default: large_feature_kicker_fallback %}
               {% if section.settings.kicker_icon != blank %}
                 {% assign large_feature_kicker_icon_url = section.settings.kicker_icon | image_url: width: 16 %}
               {% else %}

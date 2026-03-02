@@ -42,7 +42,8 @@
 {% if hero_card_affiliate_name == blank and page != blank %}
   {% assign hero_card_affiliate_name = page.title | strip %}
 {% endif %}
-{% assign hero_card_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: 'your country' %}
+{% assign hero_card_shipping_country_fallback = 'sb.cart.your_country' | t %}
+{% assign hero_card_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: hero_card_shipping_country_fallback %}
 {% assign hero_card_shipping_country_iso = localization.country.iso_code | upcase | strip %}
 {% assign hero_card_shipping_country_handle = hero_card_shipping_country_iso | downcase %}
 {% assign hero_card_shipping_is_blocked = false %}
@@ -74,8 +75,8 @@
       {% assign hero_card_selected_variant = product.selected_or_first_available_variant %}
       {% assign hero_card_source_image_desktop = hero_card_footer_ref.background_image_desktop.value | default: hero_card_footer_ref.background_image_desktop %}
       {% assign hero_card_source_image_mobile = hero_card_footer_ref.background_image_mobile.value | default: hero_card_footer_ref.background_image_mobile %}
-      {% assign hero_card_headline = 'Not happy? Get your money back!' %}
-      {% assign hero_card_subheadline = 'Test risk free with 30-day money-back guarantee.' %}
+      {% assign hero_card_headline = 'sb.hero_card.product_mode_headline' | t %}
+      {% assign hero_card_subheadline = 'sb.hero_card.product_mode_subheadline' | t %}
       {% assign hero_card_show_button = true %}
     {% else %}
       {% assign hero_card_hide_section = true %}
@@ -88,18 +89,18 @@
     {% assign hero_card_source_image_desktop = hero_card_affiliate_metaobject.image_desktop.value | default: hero_card_affiliate_metaobject.image_desktop %}
     {% assign hero_card_source_image_mobile = hero_card_affiliate_metaobject.image_mobile.value | default: hero_card_affiliate_metaobject.image_mobile %}
     {% assign hero_card_kicker = section.settings.kicker %}
-    {% assign hero_card_headline = 'Special deal brought to you by {{ Affiliate name }}' %}
+    {% assign hero_card_headline = 'sb.hero_card.affiliate_headline' | t %}
     {% assign hero_card_subheadline_free_shipping = settings.seasonal_hero_subheadline_free_shipping | strip %}
     {% assign hero_card_subheadline_no_free_shipping = settings.seasonal_hero_subheadline_no_free_shipping | strip %}
     {% assign hero_card_subheadline_blocked = settings.seasonal_hero_subheadline_blocked | strip %}
     {% if hero_card_subheadline_free_shipping == blank %}
-      {% assign hero_card_subheadline_free_shipping = 'Save up to {{ Sitewide discount depth }}% and get free shipping in {{ Shipping country }} on orders over {{ Free shipping threshold }}.' %}
+      {% assign hero_card_subheadline_free_shipping = 'sb.hero_card.subheadline_free_shipping' | t %}
     {% endif %}
     {% if hero_card_subheadline_no_free_shipping == blank %}
-      {% assign hero_card_subheadline_no_free_shipping = 'Save up to {{ Sitewide discount depth }}% in {{ Shipping country }}.' %}
+      {% assign hero_card_subheadline_no_free_shipping = 'sb.hero_card.subheadline_no_free_shipping' | t %}
     {% endif %}
     {% if hero_card_subheadline_blocked == blank %}
-      {% assign hero_card_subheadline_blocked = "We're not shipping to {{ Shipping country }}. Select a different country." %}
+      {% assign hero_card_subheadline_blocked = 'sb.hero_card.subheadline_blocked' | t %}
     {% endif %}
     {% if hero_card_shipping_is_blocked %}
       {% assign hero_card_subheadline = hero_card_subheadline_blocked %}
@@ -141,13 +142,13 @@
     {% assign hero_card_subheadline_no_free_shipping = settings.seasonal_hero_subheadline_no_free_shipping | strip %}
     {% assign hero_card_subheadline_blocked = settings.seasonal_hero_subheadline_blocked | strip %}
     {% if hero_card_subheadline_free_shipping == blank %}
-      {% assign hero_card_subheadline_free_shipping = 'Save up to {{ Sitewide discount depth }}% and get free shipping in {{ Shipping country }} on orders over {{ Free shipping threshold }}.' %}
+      {% assign hero_card_subheadline_free_shipping = 'sb.hero_card.subheadline_free_shipping' | t %}
     {% endif %}
     {% if hero_card_subheadline_no_free_shipping == blank %}
-      {% assign hero_card_subheadline_no_free_shipping = 'Save up to {{ Sitewide discount depth }}% in {{ Shipping country }}.' %}
+      {% assign hero_card_subheadline_no_free_shipping = 'sb.hero_card.subheadline_no_free_shipping' | t %}
     {% endif %}
     {% if hero_card_subheadline_blocked == blank %}
-      {% assign hero_card_subheadline_blocked = "We're not shipping to {{ Shipping country }}. Select a different country." %}
+      {% assign hero_card_subheadline_blocked = 'sb.hero_card.subheadline_blocked' | t %}
     {% endif %}
     {% if hero_card_shipping_is_blocked %}
       {% assign hero_card_subheadline = hero_card_subheadline_blocked %}
@@ -181,7 +182,7 @@
   {% assign hero_card_button_link = section.settings.button_link %}
   {% assign hero_card_show_button = section.settings.show_button %}
   {% if hero_card_show_button and hero_card_button_label == blank %}
-    {% assign hero_card_button_label = 'Placeholder' %}
+    {% assign hero_card_button_label = 'sb.hero_card.placeholder_button' | t %}
   {% endif %}
 
   {% if collection != blank %}
@@ -204,7 +205,7 @@
   {% assign hero_card_button_link = section.settings.button_link %}
   {% assign hero_card_show_button = section.settings.show_button %}
   {% if hero_card_show_button and hero_card_button_label == blank %}
-    {% assign hero_card_button_label = 'Placeholder' %}
+    {% assign hero_card_button_label = 'sb.hero_card.placeholder_button' | t %}
   {% endif %}
 {% endif %}
 
@@ -278,7 +279,9 @@
             <button
               type="submit"
               class="sb-framing-card__product-button sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon font-caption weight-bold"
-              aria-label="Add to cart"
+              data-label-available="{{ 'sb.product.add_to_cart' | t }}"
+              data-label-unavailable="{{ 'sb.product.sold_out' | t }}"
+              aria-label="{{ 'sb.product.add_to_cart' | t }}"
               data-hero-card-submit
             >
               <span class="sb-framing-card__product-button-icon" aria-hidden="true">
@@ -291,7 +294,7 @@
                 >
               </span>
               <span class="sb-framing-card__product-button-copy">
-                <span class="sb-framing-card__product-button-label" data-hero-card-button-label>Add to cart</span>
+                <span class="sb-framing-card__product-button-label" data-hero-card-button-label>{{ 'sb.product.add_to_cart' | t }}</span>
                 <span class="sb-framing-card__product-button-prices">
                   <span class="sb-framing-card__product-button-price sb-framing-card__product-button-price--compare" data-hero-card-compare-price></span>
                   <span class="sb-framing-card__product-button-price sb-framing-card__product-button-price--current" data-hero-card-current-price></span>
@@ -320,7 +323,7 @@
                 <img
                   class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--app-store"
                   src="{{ 'app-download-app-store.png' | asset_url }}"
-                  alt="Download on the App Store"
+                  alt="{{ 'sb.app.download_app_store' | t }}"
                   loading="lazy"
                   width="108"
                   height="36"
@@ -333,7 +336,7 @@
                 <img
                   class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--google-play"
                   src="{{ 'app-download-google-play.png' | asset_url }}"
-                  alt="Get it on Google Play"
+                  alt="{{ 'sb.app.download_google_play' | t }}"
                   loading="lazy"
                   width="122"
                   height="36"
@@ -346,7 +349,7 @@
                 <img
                   class="sb-framing-card__app-download-badge sb-framing-card__app-download-badge--china"
                   src="{{ 'app-download-china.png' | asset_url }}"
-                  alt="Download in China"
+                  alt="{{ 'sb.app.download_china' | t }}"
                   loading="lazy"
                   width="122"
                   height="36"
@@ -642,7 +645,9 @@
         }
 
         const isAvailable = variant.available !== false;
-        const nextLabel = isAvailable ? 'Add to cart' : 'Sold out';
+        const availableLabel = submitButton.dataset.labelAvailable || '';
+        const unavailableLabel = submitButton.dataset.labelUnavailable || '';
+        const nextLabel = isAvailable ? availableLabel : unavailableLabel;
         buttonLabel.textContent = nextLabel;
         submitButton.disabled = !isAvailable;
         submitButton.setAttribute('aria-label', nextLabel);

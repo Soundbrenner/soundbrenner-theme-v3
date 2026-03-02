@@ -1,7 +1,7 @@
-<div class="{{ container_class }}" aria-label="Accepted payment methods">
+<div class="{{ container_class }}" aria-label="{{ 'sb.cart.accepted_payment_methods' | t }}">
   {% if show_shop_all %}
     <a class="{{ shop_all_class }}" href="{{ routes.all_products_collection_url }}">
-      <span class="sb-button-radiant__label">Shop all products</span>
+      <span class="sb-button-radiant__label">{{ 'sb.cart.shop_all_products' | t }}</span>
     </a>
   {% endif %}
 

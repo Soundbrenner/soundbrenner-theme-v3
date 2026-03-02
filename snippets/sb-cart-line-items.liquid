@@ -116,12 +116,12 @@
           </div>
         </div>
         <div class="sb-cart-line__controls">
-          <div class="sb-cart-quantity" role="group" aria-label="Quantity">
+          <div class="sb-cart-quantity" role="group" aria-label="{{ 'sb.cart.quantity' | t }}">
             <button
               type="button"
               class="sb-cart-quantity__button"
               data-cart-qty-minus
-              aria-label="Decrease quantity"
+              aria-label="{{ 'sb.cart.decrease_quantity' | t }}"
               {% if item.quantity <= 1 %}
                 disabled
                 aria-disabled="true"
@@ -139,15 +139,15 @@
               step="1"
               inputmode="numeric"
               value="{{ item.quantity }}"
-              aria-label="Quantity"
+              aria-label="{{ 'sb.cart.quantity' | t }}"
             >
-            <button type="button" class="sb-cart-quantity__button" data-cart-qty-plus aria-label="Increase quantity">
+            <button type="button" class="sb-cart-quantity__button" data-cart-qty-plus aria-label="{{ 'sb.cart.increase_quantity' | t }}">
               <span class="sb-cart-quantity__icon sb-cart-quantity__icon--plus" aria-hidden="true">
                 {{ 'icon-accordion-add.svg' | inline_asset_content }}
               </span>
             </button>
           </div>
-          <button type="button" class="sb-cart-line__remove" data-cart-remove aria-label="Remove item">
+          <button type="button" class="sb-cart-line__remove" data-cart-remove aria-label="{{ 'sb.cart.remove_item' | t }}">
             <span class="sb-cart-line__remove-icon" aria-hidden="true">{{ 'icon-cart-delete.svg' | inline_asset_content }}</span>
           </button>
         </div>

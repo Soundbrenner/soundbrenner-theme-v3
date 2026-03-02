@@ -5,6 +5,8 @@
   assign section_title = section.settings.title
   assign carousel_items = blank
   assign has_valid_item = false
+  assign feature_video_alt_fallback = 'sb.feature_carousel.video_alt' | t
+  assign feature_media_alt_fallback = 'sb.feature_carousel.media_alt' | t
 
   if use_product_metaobjects
     if request.page_type == 'product' and product != blank
@@ -145,7 +147,7 @@
                     <iframe
                       class="sb-feature-carousel__media-video sb-feature-carousel__media-video-iframe"
                       src="{{ item_video_embed_url | escape }}"
-                      title="{{ item_alt | default: 'Feature video' | escape }}"
+                      title="{{ item_alt | default: feature_video_alt_fallback | escape }}"
                       loading="lazy"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowfullscreen
@@ -168,7 +170,7 @@
                   {% # theme-check-disable RemoteAsset %}
                   <img
                     src="{{ item_image_url }}"
-                    alt="{{ item_alt | default: 'Feature media' | escape }}"
+                    alt="{{ item_alt | default: feature_media_alt_fallback | escape }}"
                     loading="lazy"
                     width="283"
                     height="283"
@@ -177,7 +179,7 @@
                 {% else %}
                   <img
                     src="{{ 'placeholder-feature-carousel.jpg' | asset_url }}"
-                    alt="{{ item_alt | default: 'Feature media' | escape }}"
+                    alt="{{ item_alt | default: feature_media_alt_fallback | escape }}"
                     loading="lazy"
                     width="283"
                     height="283"
@@ -239,13 +241,13 @@
     </div>
 
     <div class="sb-feature-carousel__controls" data-sb-carousel-controls>
-      <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-prev aria-label="Previous" disabled>
+      <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-prev aria-label="{{ 'sb.common.previous' | t }}" disabled>
         <span class="sb-feature-carousel__arrow-icon sb-feature-carousel__arrow-icon--left" aria-hidden="true">
           {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
         </span>
       </button>
 
-      <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-next aria-label="Next" disabled>
+      <button type="button" class="sb-feature-carousel__arrow" data-sb-carousel-next aria-label="{{ 'sb.common.next' | t }}" disabled>
         <span class="sb-feature-carousel__arrow-icon sb-feature-carousel__arrow-icon--right" aria-hidden="true">
           {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
         </span>

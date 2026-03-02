@@ -59,9 +59,9 @@
     data-sb-reveal
   >
     <div class="sb-press-ticker__inner">
-      <h2 class="sb-press-ticker__title font-title weight-bold" data-sb-reveal-item>As seen on</h2>
+      <h2 class="sb-press-ticker__title font-title weight-bold" data-sb-reveal-item>{{ 'sb.press_ticker.title' | t }}</h2>
 
-      <div class="sb-press-ticker__marquee" aria-label="As seen on logos">
+      <div class="sb-press-ticker__marquee" aria-label="{{ 'sb.press_ticker.logos_aria_label' | t }}">
         <div class="sb-press-ticker__track">
           {% for duplicate in (1..2) %}
             <ul class="sb-press-ticker__logos" {% if duplicate == 2 %}aria-hidden="true"{% endif %}>

@@ -9,7 +9,7 @@
   elsif product != blank
     assign thumbnail_name = product.title
   else
-    assign thumbnail_name = 'Product name'
+    assign thumbnail_name = 'sb.product.product_name' | t
   endif
 
   assign thumbnail_url = '#'
@@ -361,12 +361,12 @@
       for product_tag in product.tags
         assign product_tag_downcase = product_tag | downcase
         if product_tag_downcase == 'bestseller'
-          assign thumbnail_badge_label = 'Bestseller'
+          assign thumbnail_badge_label = 'sb.product.badge_bestseller' | t
           assign thumbnail_badge_type = 'bestseller'
           break
         endif
         if product_tag_downcase == 'new'
-          assign thumbnail_badge_label = 'New'
+          assign thumbnail_badge_label = 'sb.product.badge_new' | t
           assign thumbnail_badge_type = 'new'
         endif
       endfor
@@ -557,7 +557,7 @@
         type="button"
         class="sb-product-thumbnail__gallery-nav sb-product-thumbnail__gallery-nav--left"
         data-gallery-nav="-1"
-        aria-label="Previous image"
+        aria-label="{{ 'sb.product.previous_image' | t }}"
       >
         <span class="sb-product-thumbnail__gallery-nav-icon" aria-hidden="true">
           {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
@@ -567,7 +567,7 @@
         type="button"
         class="sb-product-thumbnail__gallery-nav sb-product-thumbnail__gallery-nav--right"
         data-gallery-nav="1"
-        aria-label="Next image"
+        aria-label="{{ 'sb.product.next_image' | t }}"
       >
         <span class="sb-product-thumbnail__gallery-nav-icon" aria-hidden="true">
           {{ 'icon-carousel-arrow-filled.svg' | inline_asset_content }}
@@ -580,9 +580,9 @@
         class="sb-product-thumbnail__add-to-cart font-caption weight-bold"
         data-add-to-cart
         data-variant-id="{{ thumbnail_variant_id }}"
-        data-label-default="Add"
-        data-label-added="Added"
-        aria-label="Add to cart"
+        data-label-default="{{ 'sb.product.add' | t }}"
+        data-label-added="{{ 'sb.product.added' | t }}"
+        aria-label="{{ 'sb.product.add_to_cart' | t }}"
       >
         <img
           class="sb-product-thumbnail__add-to-cart-icon-image"
@@ -594,7 +594,7 @@
           width="16"
           height="16"
         >
-        <span class="sb-product-thumbnail__add-to-cart-label" data-add-to-cart-label>Add</span>
+        <span class="sb-product-thumbnail__add-to-cart-label" data-add-to-cart-label>{{ 'sb.product.add' | t }}</span>
       </button>
     {% endif %}
   </div>
@@ -606,7 +606,7 @@
       <div
         class="sb-product-thumbnail__stars"
         role="img"
-        aria-label="{{ thumbnail_rating }} out of 5 stars"
+        aria-label="{{ 'sb.rating.out_of_five_stars' | t: rating: thumbnail_rating }}"
         data-rating-tooltip="{{ thumbnail_rating_tooltip }}"
         style="padding-bottom: var(--sb-space-4);"
       >
@@ -627,7 +627,7 @@
         {% endfor %}
       </div>
       <p class="sb-product-thumbnail__reviews font-body weight-regular">
-        {{ thumbnail_reviews_count_formatted }} reviews
+        {{ 'sb.product.reviews_count' | t: count: thumbnail_reviews_count_formatted }}
       </p>
     </div>
   {% endunless %}
@@ -648,7 +648,7 @@
 
   <div
     class="sb-product-thumbnail__swatches{% unless has_swatches %} is-empty{% endunless %}"
-    aria-label="Color selector"
+    aria-label="{{ 'sb.product.color_selector' | t }}"
   >
     {% if has_swatches %}
       {% assign swatch_button_index = 0 %}
@@ -682,7 +682,7 @@
               data-thumbnail-compare-price="{{ swatch_compare_price_text }}"
               {% if swatch_price_cents != blank %}data-thumbnail-price-cents="{{ swatch_price_cents }}"{% endif %}
               {% if swatch_compare_price_cents != blank %}data-thumbnail-compare-price-cents="{{ swatch_compare_price_cents }}"{% endif %}
-              aria-label="Color {{ swatch_button_index }}"
+              aria-label="{{ 'sb.product.color_option' | t: index: swatch_button_index }}"
             >
               <span class="sb-product-thumbnail__swatch-fill" aria-hidden="true"></span>
             </button>
@@ -698,9 +698,9 @@
       class="sb-button-radiant sb-button-radiant--large sb-button-radiant--leading-icon sb-product-thumbnail__add-to-cart-large"
       data-add-to-cart
       data-variant-id="{{ thumbnail_variant_id }}"
-      data-label-default="Add to cart"
-      data-label-added="Added"
-      aria-label="Add to cart"
+      data-label-default="{{ 'sb.product.add_to_cart' | t }}"
+      data-label-added="{{ 'sb.product.added' | t }}"
+      aria-label="{{ 'sb.product.add_to_cart' | t }}"
     >
       <span class="sb-button-radiant__icon" aria-hidden="true">
         <img
@@ -710,7 +710,7 @@
           height="16"
         >
       </span>
-      <span class="sb-button-radiant__label" data-add-to-cart-label>Add to cart</span>
+      <span class="sb-button-radiant__label" data-add-to-cart-label>{{ 'sb.product.add_to_cart' | t }}</span>
     </button>
   {% endif %}
 

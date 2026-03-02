@@ -12,7 +12,7 @@
   assign tech_specs_items = blank
   assign faq_items = blank
 
-  assign section_title = 'Frequently asked questions'
+  assign section_title = 'sb.accordion.frequently_asked_questions' | t
   if section.settings.use_custom_title and section.settings.custom_title != blank
     assign section_title = section.settings.custom_title
   endif
@@ -110,8 +110,7 @@
       <h2 class="sb-accordion__title font-title weight-bold" data-sb-reveal-item>{{ section_title }}</h2>
       {% if section.settings.show_subtitle %}
         <p class="sb-accordion__subtitle font-body weight-semibold" data-sb-reveal-item>
-          If you can't find your answer,
-          <a href="{{ contact_page_url }}">contact us</a>!
+          {{ 'sb.accordion.contact_prompt_html' | t: url: contact_page_url }}
         </p>
       {% endif %}
     </div>
