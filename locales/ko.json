@@ -238,7 +238,59 @@
       "warranty_1_year": "1년 보증",
       "badge_bestseller": "베스트셀러",
       "badge_new": "신제품",
-      "buy_multiple_save_extra": "여러 개 구매하고 추가 할인 받기"
+      "buy_multiple_save_extra": "여러 개 구매하고 추가 할인 받기",
+      "product_name": "제품 이름",
+      "variant": "버전",
+      "week_fifth": "다섯 번째",
+      "week_first": "첫 번째",
+      "week_fourth": "네 번째",
+      "week_of_month": "{{ month }}의 {{ week }}주",
+      "week_second": "초",
+      "week_third": "세 번째"
+    },
+    "rating": {
+      "out_of_five_stars": "5점 만점에 {{ rating }}점"
+    },
+    "see_it_in_action": {
+      "media_alt": "미디어에서 직접 확인하기"
+    },
+    "shogun": {
+      "view_product_page": "제품 페이지 보기"
+    },
+    "social": {
+      "facebook": "페이스북",
+      "instagram": "인스타그램",
+      "links": "소셜 링크",
+      "tiktok": "틱톡",
+      "youtube": "유튜브"
+    },
+    "trustpilot": {
+      "logo_link": "Trustpilot 로고 링크",
+      "rating_out_of_five": "5점 만점에 {{ rating }}",
+      "read_reviews": "Trustpilot에서 Soundbrenner 리뷰 보기",
+      "stars_link": "Trustpilot 별점 링크",
+      "metronome_rating_summary": "{{ rating }}점 평점, {{ count }}개 리뷰",
+      "trustscore_summary": "Trustpilot에서 {{ rating }} 트러스트스코어"
+    },
+    "value_breakdown": {
+      "free": "무료",
+      "total": "총합"
+    },
+    "data_sharing": {
+      "opt_out": "수신 거부"
+    },
+    "feature_carousel": {
+      "media_alt": "미디어 특징",
+      "video_alt": "기능 영상"
+    },
+    "hero_card": {
+      "affiliate_headline": "{{ Affiliate name }}에서 제공하는 특별 할인",
+      "placeholder_button": "플레이스홀더",
+      "product_mode_headline": "마음에 들지 않으세요? 전액 환불해 드릴게요!",
+      "product_mode_subheadline": "30일 환불 보장으로 부담 없이 테스트해봐.",
+      "subheadline_blocked": "{{ Shipping country }}(으)로는 배송하지 않습니다. 다른 국가를 선택해 주세요.",
+      "subheadline_free_shipping": "최대 {{ Sitewide discount depth }}% 할인 받고, {{ Free shipping threshold }} 이상 주문 시 {{ Shipping country }}에서 무료 배송을 받아봐.",
+      "subheadline_no_free_shipping": "{{ Shipping country }}에서 최대 {{ Sitewide discount depth }}%까지 할인받아."
     }
   }
 }
