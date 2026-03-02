@@ -305,8 +305,9 @@ body {
   margin-top: var(--sb-space-24) !important;
 }
 
-/* Native Shopify policy pages */
-body .shopify-policy__container {
+/* Native Shopify policy pages and default page content */
+body .shopify-policy__container,
+body .sb-page-content {
   box-sizing: border-box !important;
   margin: var(--sb-space-96) auto !important;
   max-width: calc(var(--page-width) + (var(--page-margin) * 2)) !important;
@@ -314,12 +315,14 @@ body .shopify-policy__container {
   width: 100% !important;
 }
 
-body .shopify-policy__title {
+body .shopify-policy__title,
+body .sb-page-content__title {
   color: var(--sb-color-neutral-900) !important;
   text-align: left !important;
 }
 
-body .shopify-policy__title h1 {
+body .shopify-policy__title h1,
+body .sb-page-content__title h1 {
   color: var(--sb-color-neutral-900) !important;
   font-family: var(--font-display--family) !important;
   font-size: var(--font-size-title) !important;
@@ -329,12 +332,14 @@ body .shopify-policy__title h1 {
   text-align: left !important;
 }
 
-body .shopify-policy__body {
+body .shopify-policy__body,
+body .sb-page-content__body {
   color: var(--sb-color-neutral-900) !important;
   margin-top: var(--sb-space-24) !important;
 }
 
-body .shopify-policy__body .rte {
+body .shopify-policy__body .rte,
+body .sb-page-content__body .rte {
   color: var(--sb-color-neutral-900) !important;
   font-family: var(--font-primary--family) !important;
   font-size: var(--font-size-body) !important;
@@ -342,11 +347,13 @@ body .shopify-policy__body .rte {
   line-height: 1.35 !important;
 }
 
-body .shopify-policy__body .rte > * {
+body .shopify-policy__body .rte > *,
+body .sb-page-content__body .rte > * {
   margin: 0 !important;
 }
 
-body .shopify-policy__body .rte > * + * {
+body .shopify-policy__body .rte > * + *,
+body .sb-page-content__body .rte > * + * {
   margin-top: var(--sb-space-24) !important;
 }
 
