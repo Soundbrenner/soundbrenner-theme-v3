@@ -3555,12 +3555,12 @@ button[aria-label='Modal close button']:focus-visible::after {
   font-size: var(--font-size-caption) !important;
   font-weight: 700 !important;
   gap: var(--sb-space-8) !important;
-  height: var(--sb-space-48) !important;
+  height: 48px !important;
   justify-content: center !important;
   line-height: 1 !important;
-  min-height: var(--sb-space-48) !important;
+  min-height: 48px !important;
   overflow: visible !important;
-  padding-inline: var(--sb-space-24) !important;
+  padding-inline: 24px !important;
   position: relative !important;
   text-decoration: none !important;
   transform: translateY(0) !important;
