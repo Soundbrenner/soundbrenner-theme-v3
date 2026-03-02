@@ -309,10 +309,22 @@ body {
 body .shopify-policy__container,
 body .sb-page-content {
   box-sizing: border-box !important;
-  margin: var(--sb-space-96) auto !important;
   max-width: calc(var(--page-width) + (var(--page-margin) * 2)) !important;
   padding-inline: var(--page-margin) !important;
   width: 100% !important;
+}
+
+/*
+  Keep page spacing at a single 96 rhythm:
+  - default pages get top/bottom rhythm from section/footer wrappers
+  - policy pages get top rhythm from container, bottom rhythm from footer wrapper
+*/
+body .sb-page-content {
+  margin: 0 auto !important;
+}
+
+body .shopify-policy__container {
+  margin: var(--sb-space-96) auto 0 !important;
 }
 
 body .shopify-policy__title,
