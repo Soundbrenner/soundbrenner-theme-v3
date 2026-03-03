@@ -5375,6 +5375,7 @@
     header.dataset.headerInit = 'true';
 
     const affiliateAnnouncementCookieName = 'sb_affiliate_announcement_state';
+    const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
     const affiliateNameToken = `${header.dataset.affiliateNameToken || ''}`;
     const affiliateAnnouncementTemplate = `${header.dataset.affiliateAnnouncementTemplate || ''}`;
     const affiliateAnnouncementGradient = `${header.dataset.affiliateAnnouncementGradient || ''}`;
@@ -5409,6 +5410,22 @@
 
     const clearAffiliateAnnouncementState = () => {
       document.cookie = `${affiliateAnnouncementCookieName}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax`;
+    };
+
+    const setAffiliateHeroPendingState = (state) => {
+      const rootNode = document.documentElement;
+      if (!(rootNode instanceof HTMLElement)) return;
+
+      if (state) {
+        rootNode.classList.add(affiliateHeroPendingClass);
+        window.SBAffiliateAnnouncementState = state;
+        return;
+      }
+
+      rootNode.classList.remove(affiliateHeroPendingClass);
+      if ('SBAffiliateAnnouncementState' in window) {
+        delete window.SBAffiliateAnnouncementState;
+      }
     };
 
     const getAffiliateAnnouncementState = () => {
@@ -5507,10 +5524,12 @@
       if (!state) {
         clearAffiliateAnnouncementState();
         applyAffiliateAnnouncement(null);
+        setAffiliateHeroPendingState(null);
         return null;
       }
 
       applyAffiliateAnnouncement(state);
+      setAffiliateHeroPendingState(state);
       return state;
     };
 

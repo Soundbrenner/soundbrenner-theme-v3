@@ -54,7 +54,9 @@
   assign sitewide_discount_depth_token = '{{ Sitewide discount depth }}'
   assign shipping_country_token = '{{ Shipping country }}'
   assign free_shipping_threshold_token = '{{ Free shipping threshold }}'
+  assign affiliate_name_token = '{{ Affiliate name }}'
   assign sitewide_seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 48 | strip
+  assign sitewide_affiliate_discount_depth = settings.sitewide_affiliate_discount_depth | default: 20 | strip
   assign sidebar_shipping_country_fallback = 'sb.cart.your_country' | t
   assign sidebar_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: sidebar_shipping_country_fallback
   assign sidebar_shipping_country_iso = localization.country.iso_code | upcase | strip
@@ -83,19 +85,24 @@
     endif
   endif
 
-  assign sidebar_promo_title = settings.seasonal_hero_headline | strip
+  assign sidebar_promo_title_template = settings.seasonal_hero_headline | strip
+  assign sidebar_promo_affiliate_title_template = 'sb.hero_card.affiliate_headline' | t
   assign sidebar_promo_text_free_shipping = settings.seasonal_hero_subheadline_free_shipping | strip
   assign sidebar_promo_text_no_free_shipping = settings.seasonal_hero_subheadline_no_free_shipping | strip
   assign sidebar_promo_text_blocked = settings.seasonal_hero_subheadline_blocked | strip
   if sidebar_shipping_is_blocked
-    assign sidebar_promo_text = sidebar_promo_text_blocked
+    assign sidebar_promo_text_template = sidebar_promo_text_blocked
   elsif sidebar_shipping_has_free_shipping
-    assign sidebar_promo_text = sidebar_promo_text_free_shipping
+    assign sidebar_promo_text_template = sidebar_promo_text_free_shipping
   else
-    assign sidebar_promo_text = sidebar_promo_text_no_free_shipping
+    assign sidebar_promo_text_template = sidebar_promo_text_no_free_shipping
   endif
-  assign sidebar_promo_button_label = settings.seasonal_hero_button_label | strip
+  assign sidebar_promo_button_label_template = settings.seasonal_hero_button_label | strip
   assign sidebar_promo_button_link = settings.seasonal_hero_button_link
+
+  assign sidebar_promo_title = sidebar_promo_title_template
+  assign sidebar_promo_text = sidebar_promo_text_template
+  assign sidebar_promo_button_label = sidebar_promo_button_label_template
 
   assign sidebar_promo_title = sidebar_promo_title | replace: sale_name_token, seasonal_sale_name
   assign sidebar_promo_text = sidebar_promo_text | replace: sale_name_token, seasonal_sale_name
@@ -424,22 +431,37 @@
 
     {% capture sidebar_promo_markup %}
       {% if sidebar_promo_title != blank or sidebar_promo_text != blank or sidebar_promo_button_label != blank %}
-        <section class="sb-blog-sidebar-box sb-blog-sidebar-box--promo" aria-label="{{ sidebar_promo_aria_label }}">
+        <section
+          class="sb-blog-sidebar-box sb-blog-sidebar-box--promo"
+          aria-label="{{ sidebar_promo_aria_label }}"
+          data-sidebar-promo-affiliate="true"
+          data-sidebar-promo-affiliate-title-template="{{ sidebar_promo_affiliate_title_template | escape }}"
+          data-sidebar-promo-text-template="{{ sidebar_promo_text_template | escape }}"
+          data-sidebar-promo-button-label-template="{{ sidebar_promo_button_label_template | escape }}"
+          data-sale-name-token="{{ sale_name_token | escape }}"
+          data-sitewide-discount-token="{{ sitewide_discount_depth_token | escape }}"
+          data-shipping-country-token="{{ shipping_country_token | escape }}"
+          data-free-shipping-threshold-token="{{ free_shipping_threshold_token | escape }}"
+          data-affiliate-name-token="{{ affiliate_name_token | escape }}"
+          data-affiliate-discount-depth="{{ sitewide_affiliate_discount_depth | escape }}"
+          data-shipping-country-name="{{ sidebar_shipping_country_name | escape }}"
+          data-free-shipping-threshold-display="{{ sidebar_free_shipping_threshold_display | escape }}"
+        >
           {% if sidebar_promo_title != blank %}
-            <h3 class="sb-blog-sidebar-box__promo-title font-callout weight-bold">{{ sidebar_promo_title }}</h3>
+            <h3 class="sb-blog-sidebar-box__promo-title font-callout weight-bold" data-sidebar-promo-title>{{ sidebar_promo_title }}</h3>
           {% endif %}
 
           {% if sidebar_promo_text != blank %}
-            <p class="sb-blog-sidebar-box__promo-text font-body weight-regular">{{ sidebar_promo_text }}</p>
+            <p class="sb-blog-sidebar-box__promo-text font-body weight-regular" data-sidebar-promo-text>{{ sidebar_promo_text }}</p>
           {% endif %}
 
           {% if sidebar_promo_button_label != blank and sidebar_promo_button_link != blank %}
             <a class="sb-blog-sidebar-box__promo-button font-caption weight-bold" href="{{ sidebar_promo_button_link }}">
-              {{ sidebar_promo_button_label }}
+              <span data-sidebar-promo-button-label>{{ sidebar_promo_button_label }}</span>
             </a>
           {% elsif sidebar_promo_button_label != blank %}
             <span class="sb-blog-sidebar-box__promo-button font-caption weight-bold">
-              {{ sidebar_promo_button_label }}
+              <span data-sidebar-promo-button-label>{{ sidebar_promo_button_label }}</span>
             </span>
           {% endif %}
         </section>
@@ -1528,6 +1550,7 @@
   (() => {
     const root = document.querySelector('.sb-blog-post');
     if (!root) return;
+    const affiliateAnnouncementCookieName = 'sb_affiliate_announcement_state';
 
     const stickyNavWraps = Array.from(root.querySelectorAll('[data-sb-blog-post-sticky-nav-wrap]'));
     const sidebarStacks = Array.from(root.querySelectorAll('[data-sb-blog-post-sticky-stack]'));
@@ -1537,6 +1560,105 @@
     const filterDropdowns = Array.from(root.querySelectorAll('[data-sb-blog-post-filter-dropdown]'));
     const filterCloseButtons = Array.from(root.querySelectorAll('[data-sb-blog-post-filter-close]'));
     const filterBackdrop = root.querySelector('[data-sb-blog-post-filter-backdrop]');
+    const affiliatePromoBoxes = Array.from(root.querySelectorAll('[data-sidebar-promo-affiliate="true"]'));
+
+    const readCookie = (name) => {
+      const cookieSource = `${document.cookie || ''}`;
+      if (!cookieSource) return '';
+      const cookieParts = cookieSource.split(';');
+      for (const cookiePart of cookieParts) {
+        const trimmedPart = cookiePart.trim();
+        if (!trimmedPart.startsWith(`${name}=`)) continue;
+        return trimmedPart.slice(name.length + 1);
+      }
+      return '';
+    };
+
+    const parseJson = (value) => {
+      try {
+        return JSON.parse(value);
+      } catch (_) {
+        return null;
+      }
+    };
+
+    const normalizeAffiliateState = (rawState) => {
+      if (!rawState || typeof rawState !== 'object') return null;
+      const discountCode = `${rawState.discountCode || ''}`.trim();
+      const affiliateName = `${rawState.affiliateName || discountCode}`.trim();
+      const expiresAt = Number.parseInt(`${rawState.expiresAt || ''}`, 10);
+      if (!discountCode || !affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return null;
+      return {
+        discountCode,
+        affiliateName,
+      };
+    };
+
+    const getAffiliateState = () => {
+      const prefetched = normalizeAffiliateState(window.SBAffiliateAnnouncementState);
+      if (prefetched) return prefetched;
+
+      const rawCookieValue = readCookie(affiliateAnnouncementCookieName);
+      if (!rawCookieValue) return null;
+      const decodedCookieValue = (() => {
+        try {
+          return decodeURIComponent(rawCookieValue);
+        } catch (_) {
+          return rawCookieValue;
+        }
+      })();
+      return normalizeAffiliateState(parseJson(decodedCookieValue));
+    };
+
+    const replaceToken = (input, token, replacement) => {
+      const source = `${input || ''}`;
+      const target = `${token || ''}`;
+      if (!target) return source;
+      return source.split(target).join(`${replacement || ''}`);
+    };
+
+    const resolvePromoTemplate = (promoBox, templateValue, state) => {
+      let resolved = `${templateValue || ''}`;
+      resolved = replaceToken(resolved, promoBox.dataset.affiliateNameToken || '', state.affiliateName);
+      resolved = replaceToken(resolved, promoBox.dataset.saleNameToken || '', state.affiliateName);
+      resolved = replaceToken(resolved, promoBox.dataset.sitewideDiscountToken || '', promoBox.dataset.affiliateDiscountDepth || '');
+      resolved = replaceToken(resolved, promoBox.dataset.shippingCountryToken || '', promoBox.dataset.shippingCountryName || '');
+      resolved = replaceToken(resolved, promoBox.dataset.freeShippingThresholdToken || '', promoBox.dataset.freeShippingThresholdDisplay || '');
+      return resolved.trim();
+    };
+
+    const applyAffiliatePromoState = (state) => {
+      if (!state || !affiliatePromoBoxes.length) return;
+
+      affiliatePromoBoxes.forEach((promoBox) => {
+        if (!(promoBox instanceof HTMLElement)) return;
+        const nextSignature = `${state.discountCode}:${state.affiliateName}`;
+        if (promoBox.dataset.sidebarPromoAffiliateSignature === nextSignature) return;
+        promoBox.dataset.sidebarPromoAffiliateSignature = nextSignature;
+
+        const titleElement = promoBox.querySelector('[data-sidebar-promo-title]');
+        const textElement = promoBox.querySelector('[data-sidebar-promo-text]');
+        const buttonLabelElement = promoBox.querySelector('[data-sidebar-promo-button-label]');
+
+        const resolvedTitle = resolvePromoTemplate(promoBox, promoBox.dataset.sidebarPromoAffiliateTitleTemplate || '', state);
+        if (resolvedTitle && titleElement) {
+          titleElement.textContent = resolvedTitle;
+          promoBox.setAttribute('aria-label', resolvedTitle);
+        }
+
+        const resolvedText = resolvePromoTemplate(promoBox, promoBox.dataset.sidebarPromoTextTemplate || '', state);
+        if (resolvedText && textElement) {
+          textElement.textContent = resolvedText;
+        }
+
+        const resolvedButtonLabel = resolvePromoTemplate(promoBox, promoBox.dataset.sidebarPromoButtonLabelTemplate || '', state);
+        if (resolvedButtonLabel && buttonLabelElement) {
+          buttonLabelElement.textContent = resolvedButtonLabel;
+        }
+      });
+    };
+
+    applyAffiliatePromoState(getAffiliateState());
 
     const closeFilterDropdown = (dropdown, { returnFocus = false } = {}) => {
       if (!dropdown || dropdown.getAttribute('data-open') !== 'true') return;

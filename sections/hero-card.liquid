@@ -503,6 +503,11 @@
     opacity: 0.75;
   }
 
+  html.sb-affiliate-hero-pending .sb-framing-card[data-hero-card-seasonal="true"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   @media (max-width: 749px) {
     .sb-framing-card__app-downloads-qr {
       display: none;
@@ -542,6 +547,9 @@
 {% javascript %}
   (() => {
     const affiliateAnnouncementCookieName = 'sb_affiliate_announcement_state';
+    const affiliateWindowStateKey = 'SBAffiliateAnnouncementState';
+    const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
+    const affiliateFinalizeBindingKey = '__sbAffiliateHeroFinalizeBound';
 
     const readCookie = (name) => {
       const cookieSource = `${document.cookie || ''}`;
@@ -563,6 +571,23 @@
       }
     };
 
+    const normalizeAffiliateAnnouncementState = (rawState) => {
+      if (!rawState || typeof rawState !== 'object') return null;
+
+      const discountCode = `${rawState.discountCode || ''}`.trim();
+      const affiliateName = `${rawState.affiliateName || discountCode}`.trim();
+      const expiresAt = Number.parseInt(`${rawState.expiresAt || ''}`, 10);
+      if (!discountCode || !affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return null;
+
+      return {
+        discountCode,
+        affiliateName,
+        heroDesktopImage: `${rawState.heroDesktopImage || ''}`.trim(),
+        heroMobileImage: `${rawState.heroMobileImage || ''}`.trim(),
+        expiresAt,
+      };
+    };
+
     const getAffiliateAnnouncementState = () => {
       const rawCookieValue = readCookie(affiliateAnnouncementCookieName);
       if (!rawCookieValue) return null;
@@ -576,19 +601,12 @@
       })();
 
       const parsedState = parseJson(decodedCookieValue);
-      if (!parsedState || typeof parsedState !== 'object') return null;
+      return normalizeAffiliateAnnouncementState(parsedState);
+    };
 
-      const discountCode = `${parsedState.discountCode || ''}`.trim();
-      const affiliateName = `${parsedState.affiliateName || discountCode}`.trim();
-      const expiresAt = Number.parseInt(`${parsedState.expiresAt || ''}`, 10);
-      if (!discountCode || !affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return null;
-
-      return {
-        discountCode,
-        affiliateName,
-        heroDesktopImage: `${parsedState.heroDesktopImage || ''}`.trim(),
-        heroMobileImage: `${parsedState.heroMobileImage || ''}`.trim(),
-      };
+    const getPrefetchedAffiliateAnnouncementState = () => {
+      const prefetchedState = window[affiliateWindowStateKey];
+      return normalizeAffiliateAnnouncementState(prefetchedState);
     };
 
     const replaceToken = (input, token, replacement) => {
@@ -684,13 +702,35 @@
       }
     };
 
-    const seasonalCards = Array.from(document.querySelectorAll('[data-hero-card-seasonal="true"]'));
-    if (seasonalCards.length) {
-      const affiliateState = getAffiliateAnnouncementState();
-      if (affiliateState) {
-        seasonalCards.forEach((card) => {
-          applyAffiliateModeToSeasonalHeroCard(card, affiliateState);
-        });
+    const applyAffiliateModeToAllSeasonalHeroCards = () => {
+      const seasonalCards = Array.from(document.querySelectorAll('[data-hero-card-seasonal="true"]'));
+      if (!seasonalCards.length) return;
+
+      const affiliateState = getPrefetchedAffiliateAnnouncementState() || getAffiliateAnnouncementState();
+      if (!affiliateState) return;
+
+      seasonalCards.forEach((card) => {
+        applyAffiliateModeToSeasonalHeroCard(card, affiliateState);
+      });
+    };
+
+    applyAffiliateModeToAllSeasonalHeroCards();
+
+    const rootNode = document.documentElement;
+    if (rootNode instanceof HTMLElement && rootNode.classList.contains(affiliateHeroPendingClass)) {
+      const revealSeasonalHeroCards = () => {
+        applyAffiliateModeToAllSeasonalHeroCards();
+        rootNode.classList.remove(affiliateHeroPendingClass);
+        window[affiliateFinalizeBindingKey] = false;
+      };
+
+      if (document.readyState === 'loading') {
+        if (!window[affiliateFinalizeBindingKey]) {
+          window[affiliateFinalizeBindingKey] = true;
+          document.addEventListener('DOMContentLoaded', revealSeasonalHeroCards, { once: true });
+        }
+      } else {
+        revealSeasonalHeroCards();
       }
     }
 
