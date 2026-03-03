@@ -139,10 +139,14 @@
         opacity: 1;
       }
 
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] {
+      [data-testid='POPUP'],
+      [role='dialog'][aria-modal='true'] {
         --sb-klaviyo-popup-edge-padding: var(--sb-space-30);
         --sb-klaviyo-popup-element-gap: var(--sb-space-24);
         --sb-klaviyo-popup-close-size: var(--sb-space-20);
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] {
         background-color: var(--sb-color-neutral-200) !important;
         border-radius: 24px !important;
         box-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25) !important;
@@ -161,14 +165,6 @@
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(6) [data-testid='form-component'] {
         padding: 0 var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-edge-padding) !important;
-      }
-
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(2) [data-testid='form-component'] {
-        padding-top: calc(
-          var(--sb-klaviyo-popup-edge-padding)
-          + var(--sb-klaviyo-popup-close-size)
-          + var(--sb-klaviyo-popup-element-gap)
-        ) !important;
       }
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'],
@@ -330,26 +326,27 @@
 
       [data-testid='POPUP'] .klaviyo-close-form {
         align-items: center !important;
-        background: transparent url('{{ 'icon-cancel.svg' | asset_url }}') center / var(--sb-klaviyo-popup-close-size) var(--sb-klaviyo-popup-close-size) no-repeat !important;
+        background: transparent url('{{ 'icon-cancel.svg' | asset_url }}') center / var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) no-repeat !important;
         border: 0 !important;
         border-radius: 0 !important;
         color: var(--sb-color-always-white) !important;
         cursor: pointer !important;
         display: inline-flex !important;
-        height: var(--sb-klaviyo-popup-close-size) !important;
+        height: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) !important;
         justify-content: center !important;
         line-height: 0 !important;
         margin: 0 !important;
         margin-right: 0 !important;
         margin-top: 0 !important;
-        min-height: var(--sb-klaviyo-popup-close-size) !important;
-        min-width: var(--sb-klaviyo-popup-close-size) !important;
+        min-height: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) !important;
+        min-width: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) !important;
         padding: 0 !important;
         pointer-events: auto !important;
         position: absolute !important;
-        right: var(--sb-klaviyo-popup-edge-padding) !important;
-        top: var(--sb-klaviyo-popup-edge-padding) !important;
-        width: var(--sb-klaviyo-popup-close-size) !important;
+        right: var(--sb-klaviyo-popup-edge-padding, var(--sb-space-30)) !important;
+        top: var(--sb-klaviyo-popup-edge-padding, var(--sb-space-30)) !important;
+        width: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) !important;
+        z-index: 8 !important;
       }
 
       [data-testid='POPUP'] .klaviyo-close-form:hover,
@@ -372,31 +369,26 @@
         -webkit-mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
         -webkit-mask-position: center;
         -webkit-mask-repeat: no-repeat;
-        -webkit-mask-size: var(--sb-klaviyo-popup-close-size) var(--sb-klaviyo-popup-close-size);
-        background: var(--sb-color-always-white);
+        -webkit-mask-size: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) var(--sb-klaviyo-popup-close-size, var(--sb-space-20));
+        background: var(--sb-color-blue-500);
         content: '';
         display: block;
-        height: var(--sb-klaviyo-popup-close-size);
+        height: var(--sb-klaviyo-popup-close-size, var(--sb-space-20));
         mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
         mask-position: center;
         mask-repeat: no-repeat;
-        mask-size: var(--sb-klaviyo-popup-close-size) var(--sb-klaviyo-popup-close-size);
+        mask-size: var(--sb-klaviyo-popup-close-size, var(--sb-space-20)) var(--sb-klaviyo-popup-close-size, var(--sb-space-20));
         pointer-events: none;
-        width: var(--sb-klaviyo-popup-close-size);
-      }
-
-      [data-testid='POPUP'].sb-klaviyo-popup--success .klaviyo-close-form::before,
-      [role='dialog'][aria-modal='true'].sb-klaviyo-popup--success .klaviyo-close-form::before {
-        background: var(--sb-color-neutral-900);
+        width: var(--sb-klaviyo-popup-close-size, var(--sb-space-20));
       }
 
       [data-testid='POPUP'] .klaviyo-close-form:hover::before,
       [data-testid='POPUP'] .klaviyo-close-form:focus-visible::before {
-        background: var(--sb-color-primary-500);
+        background: var(--sb-color-neutral-900);
       }
 
       [data-testid='POPUP'] .klaviyo-close-form:active::before {
-        background: var(--sb-color-primary-500);
+        background: var(--sb-color-neutral-900);
         transform: none;
       }
 
@@ -613,7 +605,15 @@
           timerMinutes: {{ 'sb.klaviyo_popup.timer_minutes' | t | json }},
           timerSeconds: {{ 'sb.klaviyo_popup.timer_seconds' | t | json }},
         };
-        const normalizeText = (value) => `${value || ''}`.replace(/\s+/g, ' ').trim();
+        const decodeHtmlEntities = (value) => {
+          const source = `${value || ''}`;
+          if (!source.includes('&')) return source;
+          const decoder = document.createElement('textarea');
+          decoder.innerHTML = source;
+          return decoder.value;
+        };
+
+        const normalizeText = (value) => decodeHtmlEntities(value).replace(/\s+/g, ' ').trim();
         const setNodeText = (node, value) => {
           if (!(node instanceof HTMLElement)) return;
           const nextText = normalizeText(value);
@@ -769,14 +769,17 @@
               const lineOne = normalizeText(popupLocaleCopy.titleLineOne);
               const lineTwo = normalizeText(popupLocaleCopy.titleLineTwo);
               if (titleRoot instanceof HTMLElement && (lineOne || lineTwo)) {
+                titleRoot.classList.add('font-title', 'weight-bold');
                 titleRoot.replaceChildren();
                 if (lineOne) {
                   const lineOneNode = document.createElement('p');
+                  lineOneNode.className = 'font-title weight-bold';
                   lineOneNode.textContent = lineOne;
                   titleRoot.appendChild(lineOneNode);
                 }
                 if (lineTwo) {
                   const lineTwoNode = document.createElement('p');
+                  lineTwoNode.className = 'font-title weight-bold';
                   lineTwoNode.textContent = lineTwo;
                   titleRoot.appendChild(lineTwoNode);
                 }
@@ -813,8 +816,10 @@
 
             const successTitleText = normalizeText(popupLocaleCopy.successTitle);
             if (successTitleRoot instanceof HTMLElement && successTitleText) {
+              successTitleRoot.classList.add('font-title', 'weight-bold');
               successTitleRoot.replaceChildren();
               const successTitleNode = document.createElement('p');
+              successTitleNode.className = 'font-title weight-bold';
               successTitleNode.textContent = successTitleText;
               successTitleRoot.appendChild(successTitleNode);
             }
