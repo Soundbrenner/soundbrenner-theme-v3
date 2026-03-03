@@ -916,6 +916,12 @@
             "image": "shopify://shop_images/Product_Core_2_Order_24.jpg"
           }
         },
+        "subheading_7C6VdM": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Manage notifications"
+          }
+        },
         "text_rAXGi4": {
           "type": "text",
           "settings": {
@@ -1298,6 +1304,7 @@
         "accordion_item_f3A3i8",
         "text_X9Jggx",
         "image_pWEwmn",
+        "subheading_7C6VdM",
         "text_rAXGi4",
         "image_JwgLWG",
         "text_nVhP36",
