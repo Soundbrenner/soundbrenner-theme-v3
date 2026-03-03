@@ -894,7 +894,7 @@
         "text_U3HEgD": {
           "type": "text",
           "settings": {
-            "text": "<p>Smartphone notifications are supported for iOS and Android mobile devices. The Core/Spark will receive the same notifications as your mobile device and is compatible with all apps. At the moment it’s not possible to enable or disable notifications for particular apps independently from your mobile device.</p><p>For the Core/Spark to receive notifications, iOS and Android require a number of permissions. When you connect your device for the first time to our app, we will ask for these permissions automatically during the device setup. </p><p>If you are unable to receive notifications after the setup, check out our troubleshooting below:</p>"
+            "text": "<p>Smartphone notifications are supported on both iOS and Android devices. Your Core / Spark will mirror the notifications you receive on your mobile device and is compatible with all apps. At this time, it is not possible to enable or disable notifications for individual apps independently from your mobile device settings.</p><p>To receive notifications, iOS and Android require certain permissions. When you connect your device to the Soundbrenner app for the first time, these permissions will be requested automatically during setup.</p><p>If you are not receiving notifications after completing the setup process, please refer to the troubleshooting section below:</p>"
           }
         },
         "accordion_item_f3A3i8": {
