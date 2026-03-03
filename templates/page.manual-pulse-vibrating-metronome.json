@@ -152,28 +152,16 @@
             "answer": "<p>When the battery of your wearable is not in use, it will discharge at a low speed. If you do not use the battery for an extended period of time (e.g. 3 months or longer) there is a risk that it over-discharges. This can cause permanent damage to the electrodes and active materials of the battery. In the worst case this means that the battery (and your wearable) no longer work. This behavior is typical in all of today's lithium batteries.</p><p>The solution is simple. <strong>Charge and discharge the battery in your wearable at least every three months to ensure it remains in good condition</strong>. If you use your wearable regularly (e.g. at least once per week) you do not have to worry or take any special measures to maintain the battery's health.</p><p><strong>What happens if the battery in my wearable is permanently damaged?</strong></p><p>Unfortunately it's currently not possible to replace the battery in our wearables. This is not an intentional design choice, but because we had to use adhesives to increase the water resistance of our products. This means if a wearable is opened up, many of the mechanical components get damaged and can't be re-used. It's definitely a goal to make our batteries replaceable in the future, but with a small and tightly packed form factor like a smartwatch this is not a trivial challenge. </p><p>It's all the more important that you take good care of your wearable's battery. In case your wearable's battery is damaged, please contact our support and we'll try our best to help you: <a href=\"https://support.soundbrenner.com/hc/en-us/requests/new\" target=\"_blank\">contact support</a></p>"
           }
         },
-        "heading_small_yn6TBq": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Charging"
-          }
-        },
         "text_8iMfyk": {
           "type": "text",
           "settings": {
-            "text": "<p>While charging, the soundwave will slowly pulse in an orange color.</p>"
-          }
-        },
-        "heading_small_76mbcf": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Fully charged"
+            "text": "<p><strong>Charging</strong></p><p>While charging, the soundwave will slowly pulse in an orange color.</p>"
           }
         },
         "text_Je89EH": {
           "type": "text",
           "settings": {
-            "text": "<p>When charging is complete, the soundwave will turn solid green.</p>"
+            "text": "<p><strong>Fully charged</strong></p><p>When charging is complete, the soundwave will turn solid green.</p>"
           }
         },
         "divider_Jd6948": {
@@ -298,16 +286,10 @@
             "heading": "Interactions"
           }
         },
-        "heading_small_PXEqzz": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Start or pause"
-          }
-        },
         "text_VmJxKr": {
           "type": "text",
           "settings": {
-            "text": "<p>Tap the soundwave twice quickly to start or pause the metronome.</p>"
+            "text": "<p><strong>Start or pause</strong></p><p>Tap the soundwave twice quickly to start or pause the metronome.</p>"
           }
         },
         "image_JRGeCQ": {
@@ -316,16 +298,10 @@
             "image": "shopify://shop_images/Product_Pulse_Order_6.jpg"
           }
         },
-        "heading_small_qxGaTb": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Tap tempo"
-          }
-        },
         "text_pD9eRG": {
           "type": "text",
           "settings": {
-            "text": "<p>Tap the soundwave three times or more at a steady pace. The Pulse will set a new tempo that matches the average pace of your taps.</p>"
+            "text": "<p><strong>Tap tempo</strong></p><p>Tap the soundwave three times or more at a steady pace. The Pulse will set a new tempo that matches the average pace of your taps.</p>"
           }
         },
         "image_mXDBAY": {
@@ -334,16 +310,10 @@
             "image": "shopify://shop_images/Product_Pulse_Order_7.jpg"
           }
         },
-        "heading_small_NJN76f": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Change the tempo"
-          }
-        },
         "text_yYneXf": {
           "type": "text",
           "settings": {
-            "text": "<p>Turn the wheel to make fine adjustments to the tempo.</p>"
+            "text": "<p><strong>Change the tempo</strong></p><p>Turn the wheel to make fine adjustments to the tempo.</p>"
           }
         },
         "image_FLNrUT": {
@@ -559,9 +529,7 @@
         "image_K3PQ6p",
         "text_p4WTmD",
         "accordion_item_ynigGJ",
-        "heading_small_yn6TBq",
         "text_8iMfyk",
-        "heading_small_76mbcf",
         "text_Je89EH",
         "divider_Jd6948",
         "subheading_bFbL7r",
@@ -584,13 +552,10 @@
         "image_hPgcxR",
         "divider_L6b7wJ",
         "heading_NWcY7r",
-        "heading_small_PXEqzz",
         "text_VmJxKr",
         "image_JRGeCQ",
-        "heading_small_qxGaTb",
         "text_pD9eRG",
         "image_mXDBAY",
-        "heading_small_NJN76f",
         "text_yYneXf",
         "image_FLNrUT",
         "divider_qH4tCT",

@@ -124,10 +124,6 @@
         <h3 class="sb-manual-chapters__heading-medium font-callout weight-bold" data-sb-reveal {{ block.shopify_attributes }}>
           <span data-sb-reveal-item>{{ block.settings.heading }}</span>
         </h3>
-      {% elsif block.type == 'heading_small' %}
-        <h4 class="sb-manual-chapters__heading-small font-body weight-bold" data-sb-reveal {{ block.shopify_attributes }}>
-          <span data-sb-reveal-item>{{ block.settings.heading }}</span>
-        </h4>
       {% elsif block.type == 'image' %}
         <figure class="sb-manual-chapters__media" data-sb-reveal {{ block.shopify_attributes }}>
           {% if block.settings.image != blank %}
@@ -1019,11 +1015,6 @@
   .sb-manual-chapters__heading-medium {
     color: var(--sb-color-neutral-900);
     margin: 12px 0 8px;
-  }
-
-  .sb-manual-chapters__heading-small {
-    color: var(--sb-color-neutral-900);
-    margin: 0;
   }
 
   .sb-manual-chapters__body {
@@ -2014,18 +2005,6 @@
           "id": "heading",
           "label": "Heading",
           "default": "Header medium"
-        }
-      ]
-    },
-    {
-      "type": "heading_small",
-      "name": "Header small",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Header small"
         }
       ]
     },

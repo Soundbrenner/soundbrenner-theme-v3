@@ -116,28 +116,16 @@
             "heading": "The basics"
           }
         },
-        "heading_small_Ty9BrV": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Accents"
-          }
-        },
         "text_4": {
           "type": "text",
           "settings": {
-            "text": "<p>Accent markers have four states: Off, 1st accent, 2nd accent, and 3rd accent.</p><p>Tap an accent marker in the metronome interface to cycle states. In settings, you can assign different sounds and visual effects to each accent state.</p>"
-          }
-        },
-        "heading_small_kWiYA9": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Library"
+            "text": "<p><strong>Accents</strong></p><p>Accent markers have four states: Off, 1st accent, 2nd accent, and 3rd accent.</p><p>Tap an accent marker in the metronome interface to cycle states. In settings, you can assign different sounds and visual effects to each accent state.</p>"
           }
         },
         "text_9XTRJP": {
           "type": "text",
           "settings": {
-            "text": "<p>Here you can save songs and organize them into setlists. You can also share them using a convenient sharing link. With Soundbrenner Plus, your library is automatically backed up to the cloud and synced across all your devices.</p>"
+            "text": "<p><strong>Library</strong></p><p>Here you can save songs and organize them into setlists. You can also share them using a convenient sharing link. With Soundbrenner Plus, your library is automatically backed up to the cloud and synced across all your devices.</p>"
           }
         },
         "divider_6nmcYR": {
@@ -166,64 +154,34 @@
             "heading": "Rhythm workarounds"
           }
         },
-        "heading_small_nEhdH4": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Using the metronome slower than 20 BPM"
-          }
-        },
         "text_nnLU8B": {
           "type": "text",
           "settings": {
-            "text": "<p>You can simulate slower tempos by muting beats within a measure. Set the tempo to 20 BPM in 4/4. If you mute beats 2 and 4, you will hear a click every two beats, which equals 10 BPM. If you mute beats 2, 3, and 4, you will hear one click per measure, which equals 5 BPM.</p>"
-          }
-        },
-        "heading_small_UA6c3V": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Using the metronome faster than 400 BPM"
+            "text": "<p><strong>Using the metronome slower than 20 BPM</strong></p><p>You can simulate slower tempos by muting beats within a measure. Set the tempo to 20 BPM in 4/4. If you mute beats 2 and 4, you will hear a click every two beats, which equals 10 BPM. If you mute beats 2, 3, and 4, you will hear one click per measure, which equals 5 BPM.</p>"
           }
         },
         "text_B8zeAa": {
           "type": "text",
           "settings": {
-            "text": "<p>To simulate higher tempos, divide the tempo and use subdivisions. For example, to achieve 450 BPM in quarter notes, set the metronome to 225 BPM and select eighth notes as the subdivision. The resulting clicks equal 450 quarter notes per minute.</p>"
-          }
-        },
-        "heading_small_Qnq3gQ": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Using the metronome with sixtuplets"
+            "text": "<p><strong>Using the metronome faster than 400 BPM</strong></p><p>To simulate higher tempos, divide the tempo and use subdivisions. For example, to achieve 450 BPM in quarter notes, set the metronome to 225 BPM and select eighth notes as the subdivision. The resulting clicks equal 450 quarter notes per minute.</p>"
           }
         },
         "text_MUwUMx": {
           "type": "text",
           "settings": {
-            "text": "<p>To approximate sixtuplets, double the BPM and select triplet subdivisions. A sextuplet equals two groups of triplets within one beat, so this produces the correct rhythmic density.</p>"
-          }
-        },
-        "heading_small_yYmYqw": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Sending quarter notes to one band member and eighth notes to another"
+            "text": "<p><strong>Using the metronome with sixtuplets</strong></p><p>To approximate sixtuplets, double the BPM and select triplet subdivisions. A sextuplet equals two groups of triplets within one beat, so this produces the correct rhythmic density.</p>"
           }
         },
         "text_WJMJfq": {
           "type": "text",
           "settings": {
-            "text": "<p>Use two devices linked via Ableton Link over Wi-Fi. Linked devices share the same BPM, but each device can choose its own subdivision.</p>"
-          }
-        },
-        "heading_small_xGwhxh": {
-          "type": "heading_small",
-          "settings": {
-            "heading": "Using quarter notes per minute instead of beats per minute"
+            "text": "<p><strong>Sending quarter notes to one band member and eighth notes to another</strong></p><p>Use two devices linked via Ableton Link over Wi-Fi. Linked devices share the same BPM, but each device can choose its own subdivision.</p>"
           }
         },
         "text_ELHRpf": {
           "type": "text",
           "settings": {
-            "text": "<p>The app displays tempo in BPM, where the beat is defined by the selected time signature. Changing the time signature does not automatically change the BPM.</p><p>If you prefer to think in quarter notes per minute, adjust the BPM manually. For time signatures with x/8, double the BPM to maintain the same quarter-note pulse. For time signatures with x/2, halve the BPM accordingly.</p>"
+            "text": "<p><strong>Using quarter notes per minute instead of beats per minute</strong></p><p>The app displays tempo in BPM, where the beat is defined by the selected time signature. Changing the time signature does not automatically change the BPM.</p><p>If you prefer to think in quarter notes per minute, adjust the BPM manually. For time signatures with x/8, double the BPM to maintain the same quarter-note pulse. For time signatures with x/2, halve the BPM accordingly.</p>"
           }
         },
         "divider_5": {
@@ -279,24 +237,17 @@
         "button_3b",
         "divider_3",
         "heading_4",
-        "heading_small_Ty9BrV",
         "text_4",
-        "heading_small_kWiYA9",
         "text_9XTRJP",
         "divider_6nmcYR",
         "heading_HRr34p",
         "text_Ucnxic",
         "divider_3CbBPL",
         "heading_cFpRqT",
-        "heading_small_nEhdH4",
         "text_nnLU8B",
-        "heading_small_UA6c3V",
         "text_B8zeAa",
-        "heading_small_Qnq3gQ",
         "text_MUwUMx",
-        "heading_small_yYmYqw",
         "text_WJMJfq",
-        "heading_small_xGwhxh",
         "text_ELHRpf",
         "divider_5",
         "heading_6",
