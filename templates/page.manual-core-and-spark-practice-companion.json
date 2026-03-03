@@ -238,7 +238,7 @@
         "button_86rHwW": {
           "type": "button",
           "settings": {
-            "label": "Compatibility",
+            "label": "View compatibility",
             "button_size": "large",
             "icon_position": "none",
             "link": "shopify://pages/manual-the-metronome-app"
