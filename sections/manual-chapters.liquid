@@ -343,9 +343,7 @@
             referrerpolicy="strict-origin-when-cross-origin"
             data-manual-vimeo-frame
           ></iframe>
-          <div class="sb-manual-chapters__video-placeholder font-caption weight-semibold" data-sb-reveal-item>
-            {{ 'sb.media.vimeo_video_placeholder' | t }}
-          </div>
+          <div class="sb-manual-chapters__video-placeholder" aria-hidden="true" data-sb-reveal-item></div>
         </figure>
       {% elsif block.type == 'accordion_item' %}
         <article class="sb-manual-chapters__accordion" data-sb-reveal {{ block.shopify_attributes }}>
@@ -521,15 +519,11 @@
   }
 
   .sb-manual-chapters__video-placeholder {
-    align-items: center;
     background: var(--sb-color-neutral-200);
     border: 1px solid var(--sb-color-neutral-600);
-    color: var(--sb-color-neutral-900);
-    display: flex;
-    justify-content: center;
+    display: block;
+    aspect-ratio: 16 / 9;
     min-height: 220px;
-    padding: var(--sb-space-24);
-    text-align: center;
     width: 100%;
   }
 

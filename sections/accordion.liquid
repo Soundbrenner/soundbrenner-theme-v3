@@ -10,6 +10,7 @@
   assign section_media = blank
   assign tech_specs_title = blank
   assign tech_specs_items = blank
+  assign tech_specs_is_grouped = false
   assign faq_items = blank
 
   assign section_title = 'sb.accordion.frequently_asked_questions' | t
@@ -41,20 +42,56 @@
 
   if hide_section == false and uses_metaobject_content
     if tech_specs_items != blank
-      for raw_item in tech_specs_items
-        assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item
-        assign line_title = item_entry.tech_specs_line_title.value | default: item_entry.tech_specs_line_title
-        assign line_text = item_entry.tech_specs_line_text | metafield_tag
-        if line_text == blank
-          assign line_text = item_entry.tech_specs_line_text.value | default: item_entry.tech_specs_line_text
-        endif
-        assign line_title = line_title | append: '' | strip
-        assign line_text = line_text | append: '' | strip
-        if line_title != blank or line_text != blank
-          assign has_tech_specs = true
-          break
-        endif
-      endfor
+      assign tech_specs_first_entry = tech_specs_items | first
+      assign tech_specs_first_entry = tech_specs_first_entry.value | default: tech_specs_first_entry.reference.value | default: tech_specs_first_entry.reference | default: tech_specs_first_entry
+      assign tech_specs_first_group_items = tech_specs_first_entry.tech_specs_item.value | default: tech_specs_first_entry.tech_specs_item.references | default: tech_specs_first_entry.tech_specs_item
+      if tech_specs_first_group_items != blank
+        assign tech_specs_is_grouped = true
+      endif
+
+      if tech_specs_is_grouped
+        for raw_group in tech_specs_items
+          assign group_entry = raw_group.value | default: raw_group.reference.value | default: raw_group.reference | default: raw_group
+          assign group_items = group_entry.tech_specs_item.value | default: group_entry.tech_specs_item.references | default: group_entry.tech_specs_item
+          if group_items == blank
+            continue
+          endif
+
+          for raw_line in group_items
+            assign line_entry = raw_line.value | default: raw_line.reference.value | default: raw_line.reference | default: raw_line
+            assign line_title = line_entry.tech_specs_line_title.value | default: line_entry.tech_specs_line_title
+            assign line_text = line_entry.tech_specs_line_text | metafield_tag
+            if line_text == blank
+              assign line_text = line_entry.tech_specs_line_text.value | default: line_entry.tech_specs_line_text
+            endif
+            assign line_title = line_title | append: '' | strip
+            assign line_text = line_text | append: '' | strip
+            if line_title != blank or line_text != blank
+              assign has_tech_specs = true
+              break
+            endif
+          endfor
+
+          if has_tech_specs
+            break
+          endif
+        endfor
+      else
+        for raw_item in tech_specs_items
+          assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item
+          assign line_title = item_entry.tech_specs_line_title.value | default: item_entry.tech_specs_line_title
+          assign line_text = item_entry.tech_specs_line_text | metafield_tag
+          if line_text == blank
+            assign line_text = item_entry.tech_specs_line_text.value | default: item_entry.tech_specs_line_text
+          endif
+          assign line_title = line_title | append: '' | strip
+          assign line_text = line_text | append: '' | strip
+          if line_title != blank or line_text != blank
+            assign has_tech_specs = true
+            break
+          endif
+        endfor
+      endif
     endif
 
     if faq_items != blank
@@ -135,43 +172,117 @@
       <div class="sb-accordion__items">
         {% if uses_metaobject_content %}
           {% if has_tech_specs %}
-            <article class="sb-accordion__item" data-sb-reveal>
-              <button
-                type="button"
-                class="sb-accordion__trigger"
-                aria-expanded="false"
-                data-accordion-trigger
-                data-sb-reveal-item
-              >
-                <span class="sb-accordion__question font-body weight-bold">{{ tech_specs_title }}</span>
-                <span class="sb-accordion__icon" aria-hidden="true">
-                  <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
-                  <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
-                </span>
-              </button>
-              <div class="sb-accordion__answer sb-accordion__answer--tech-specs" data-accordion-answer data-sb-reveal-item>
-                {% for raw_item in tech_specs_items %}
+            {% if tech_specs_is_grouped %}
+              {% for raw_group in tech_specs_items %}
+                {% liquid
+                  assign group_entry = raw_group.value | default: raw_group.reference.value | default: raw_group.reference | default: raw_group
+                  assign group_title = group_entry.tech_specs_title.value | default: group_entry.tech_specs_title | default: group_entry.title.value | default: group_entry.title | default: tech_specs_title | default: 'Tech specs'
+                  assign group_title = group_title | append: '' | strip
+                  assign group_items = group_entry.tech_specs_item.value | default: group_entry.tech_specs_item.references | default: group_entry.tech_specs_item
+                  assign has_group_rows = false
+                %}
+                {% if group_items == blank %}
+                  {% continue %}
+                {% endif %}
+
+                {% for raw_line in group_items %}
                   {% liquid
-                    assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item
-                    assign line_title = item_entry.tech_specs_line_title.value | default: item_entry.tech_specs_line_title
-                    assign line_text = item_entry.tech_specs_line_text | metafield_tag
+                    assign line_entry = raw_line.value | default: raw_line.reference.value | default: raw_line.reference | default: raw_line
+                    assign line_title = line_entry.tech_specs_line_title.value | default: line_entry.tech_specs_line_title
+                    assign line_text = line_entry.tech_specs_line_text | metafield_tag
                     if line_text == blank
-                      assign line_text = item_entry.tech_specs_line_text.value | default: item_entry.tech_specs_line_text
+                      assign line_text = line_entry.tech_specs_line_text.value | default: line_entry.tech_specs_line_text
                     endif
                     assign line_title = line_title | append: '' | strip
                     assign line_text = line_text | append: '' | strip
                   %}
-                  {% if line_title == blank and line_text == blank %}
-                    {% continue %}
+                  {% if line_title != blank or line_text != blank %}
+                    {% assign has_group_rows = true %}
+                    {% break %}
                   {% endif %}
-                  <div class="sb-accordion__spec-row">
-                    <p class="sb-accordion__spec-label font-caption weight-bold">{{ line_title }}</p>
-                    <div class="sb-accordion__spec-value font-caption weight-regular">{{ line_text }}</div>
-                  </div>
                 {% endfor %}
-              </div>
-              <hr class="sb-accordion__divider" data-sb-reveal-item>
-            </article>
+
+                {% if has_group_rows == false %}
+                  {% continue %}
+                {% endif %}
+
+                <article class="sb-accordion__item" data-sb-reveal>
+                  <button
+                    type="button"
+                    class="sb-accordion__trigger"
+                    aria-expanded="false"
+                    data-accordion-trigger
+                    data-sb-reveal-item
+                  >
+                    <span class="sb-accordion__question font-body weight-bold">{{ group_title }}</span>
+                    <span class="sb-accordion__icon" aria-hidden="true">
+                      <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                      <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                    </span>
+                  </button>
+                  <div class="sb-accordion__answer sb-accordion__answer--tech-specs" data-accordion-answer data-sb-reveal-item>
+                    {% for raw_line in group_items %}
+                      {% liquid
+                        assign line_entry = raw_line.value | default: raw_line.reference.value | default: raw_line.reference | default: raw_line
+                        assign line_title = line_entry.tech_specs_line_title.value | default: line_entry.tech_specs_line_title
+                        assign line_text = line_entry.tech_specs_line_text | metafield_tag
+                        if line_text == blank
+                          assign line_text = line_entry.tech_specs_line_text.value | default: line_entry.tech_specs_line_text
+                        endif
+                        assign line_title = line_title | append: '' | strip
+                        assign line_text = line_text | append: '' | strip
+                      %}
+                      {% if line_title == blank and line_text == blank %}
+                        {% continue %}
+                      {% endif %}
+                      <div class="sb-accordion__spec-row">
+                        <p class="sb-accordion__spec-label font-caption weight-bold">{{ line_title }}</p>
+                        <div class="sb-accordion__spec-value font-caption weight-regular">{{ line_text }}</div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <hr class="sb-accordion__divider" data-sb-reveal-item>
+                </article>
+              {% endfor %}
+            {% else %}
+              <article class="sb-accordion__item" data-sb-reveal>
+                <button
+                  type="button"
+                  class="sb-accordion__trigger"
+                  aria-expanded="false"
+                  data-accordion-trigger
+                  data-sb-reveal-item
+                >
+                  <span class="sb-accordion__question font-body weight-bold">{{ tech_specs_title | default: 'Tech specs' }}</span>
+                  <span class="sb-accordion__icon" aria-hidden="true">
+                    <span class="sb-accordion__icon-plus">{{ 'icon-accordion-add.svg' | inline_asset_content }}</span>
+                    <span class="sb-accordion__icon-close">{{ 'icon-accordion-close.svg' | inline_asset_content }}</span>
+                  </span>
+                </button>
+                <div class="sb-accordion__answer sb-accordion__answer--tech-specs" data-accordion-answer data-sb-reveal-item>
+                  {% for raw_item in tech_specs_items %}
+                    {% liquid
+                      assign item_entry = raw_item.value | default: raw_item.reference.value | default: raw_item.reference | default: raw_item
+                      assign line_title = item_entry.tech_specs_line_title.value | default: item_entry.tech_specs_line_title
+                      assign line_text = item_entry.tech_specs_line_text | metafield_tag
+                      if line_text == blank
+                        assign line_text = item_entry.tech_specs_line_text.value | default: item_entry.tech_specs_line_text
+                      endif
+                      assign line_title = line_title | append: '' | strip
+                      assign line_text = line_text | append: '' | strip
+                    %}
+                    {% if line_title == blank and line_text == blank %}
+                      {% continue %}
+                    {% endif %}
+                    <div class="sb-accordion__spec-row">
+                      <p class="sb-accordion__spec-label font-caption weight-bold">{{ line_title }}</p>
+                      <div class="sb-accordion__spec-value font-caption weight-regular">{{ line_text }}</div>
+                    </div>
+                  {% endfor %}
+                </div>
+                <hr class="sb-accordion__divider" data-sb-reveal-item>
+              </article>
+            {% endif %}
           {% endif %}
 
           {% if has_faqs %}
@@ -421,6 +532,19 @@
 
   .sb-accordion__spec-value p {
     margin: 0;
+  }
+
+  .sb-accordion__spec-value a,
+  .sb-accordion__spec-value a:visited {
+    color: var(--sb-color-primary-500);
+    text-decoration: none;
+  }
+
+  .sb-accordion__spec-value a:hover,
+  .sb-accordion__spec-value a:focus-visible,
+  .sb-accordion__spec-value a:active {
+    color: var(--sb-color-primary-500);
+    text-decoration: underline;
   }
 
   .sb-accordion__item.is-open .sb-accordion__answer {
