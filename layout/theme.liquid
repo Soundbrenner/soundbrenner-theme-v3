@@ -36,6 +36,7 @@
         const affiliateCookieName = 'sb_affiliate_announcement_state';
         const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
         const affiliateAnnouncementActiveClass = 'sb-affiliate-announcement-active';
+        const affiliateKlaviyoSuppressionClass = 'sb-affiliate-klaviyo-suppressed';
         const readCookie = (name) => {
           const cookieSource = `${document.cookie || ''}`;
           if (!cookieSource) return '';
@@ -80,6 +81,7 @@
         if (rootNode instanceof HTMLElement) {
           rootNode.classList.add(affiliateHeroPendingClass);
           rootNode.classList.add(affiliateAnnouncementActiveClass);
+          rootNode.classList.add(affiliateKlaviyoSuppressionClass);
         }
 
         window.SBAffiliateAnnouncementState = {
@@ -101,6 +103,98 @@
         --sb-announcement-background: linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%) !important;
       }
     </style>
+    <script>
+      (() => {
+        const suppressionClass = 'sb-affiliate-klaviyo-suppressed';
+        const rootNode = document.documentElement;
+        if (!(rootNode instanceof HTMLElement) || !rootNode.classList.contains(suppressionClass)) return;
+
+        const extractFormIds = (value) => {
+          const source = `${value || ''}`;
+          if (!source) return [];
+          const matches = source.match(/klaviyo-form-([A-Za-z0-9_-]+)/g) || [];
+          return matches.map((match) => match.replace('klaviyo-form-', ''));
+        };
+
+        const getNodeFormIds = (node) => {
+          if (!(node instanceof HTMLElement)) return [];
+          const ids = new Set();
+          extractFormIds(node.className).forEach((id) => ids.add(id));
+          extractFormIds(node.getAttribute('data-testid')).forEach((id) => ids.add(id));
+          return Array.from(ids);
+        };
+
+        const getAllowedEmbedFormIds = () => {
+          const allowedIds = new Set();
+          document
+            .querySelectorAll(".sb-footer__newsletter-klaviyo [class*='klaviyo-form-'], .sb-footer__newsletter-klaviyo [data-testid^='klaviyo-form-']")
+            .forEach((node) => {
+              getNodeFormIds(node).forEach((id) => allowedIds.add(id));
+            });
+          return allowedIds;
+        };
+
+        const isAllowedEmbedForm = (formNode, allowedEmbedIds) => {
+          if (!(formNode instanceof HTMLElement)) return false;
+          if (formNode.closest('.sb-footer__newsletter-klaviyo')) return true;
+          const formIds = getNodeFormIds(formNode);
+          return formIds.some((id) => allowedEmbedIds.has(id));
+        };
+
+        const hidePopupContainer = (node, allowedEmbedIds) => {
+          let currentNode = node;
+          while (currentNode && currentNode !== document.body) {
+            if (!(currentNode instanceof HTMLElement)) break;
+            if (isAllowedEmbedForm(currentNode, allowedEmbedIds)) return;
+            currentNode.style.setProperty('display', 'none', 'important');
+            currentNode = currentNode.parentElement;
+          }
+        };
+
+        const suppressKlaviyoPopups = (scope = document) => {
+          if (!(scope instanceof Document || scope instanceof HTMLElement)) return;
+          const allowedEmbedIds = getAllowedEmbedFormIds();
+          const forms = scope.querySelectorAll('.klaviyo-form');
+          forms.forEach((formNode) => {
+            if (!(formNode instanceof HTMLElement)) return;
+            if (isAllowedEmbedForm(formNode, allowedEmbedIds)) return;
+            hidePopupContainer(formNode, allowedEmbedIds);
+          });
+        };
+
+        const processAddedNode = (node) => {
+          if (!(node instanceof HTMLElement)) return;
+          const allowedEmbedIds = getAllowedEmbedFormIds();
+          if (node.classList.contains('klaviyo-form')) {
+            if (!isAllowedEmbedForm(node, allowedEmbedIds)) {
+              hidePopupContainer(node, allowedEmbedIds);
+            }
+            return;
+          }
+          suppressKlaviyoPopups(node);
+        };
+
+        const runSuppression = () => {
+          suppressKlaviyoPopups(document);
+        };
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', runSuppression, { once: true });
+        } else {
+          runSuppression();
+        }
+
+        if (typeof MutationObserver !== 'function') return;
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((addedNode) => {
+              processAddedNode(addedNode);
+            });
+          });
+        });
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+      })();
+    </script>
 
     {%- if settings.favicon != blank -%}
       <link
