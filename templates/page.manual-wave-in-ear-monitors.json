@@ -153,7 +153,8 @@
         "tech_specs_accordions_gBhQif": {
           "type": "tech_specs_accordions",
           "settings": {
-            "source_metaobject": "wave-in-ear-monitors"
+            "source_metaobject": "wave-in-ear-monitors",
+            "hide_accordion_and_title": true
           }
         },
         "divider_4": {

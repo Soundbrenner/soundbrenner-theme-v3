@@ -127,7 +127,8 @@
         "tech_specs_accordions_aF7b2N": {
           "type": "tech_specs_accordions",
           "settings": {
-            "source_metaobject": "flow-microphone"
+            "source_metaobject": "flow-microphone",
+            "hide_accordion_and_title": true
           }
         },
         "divider_4": {
