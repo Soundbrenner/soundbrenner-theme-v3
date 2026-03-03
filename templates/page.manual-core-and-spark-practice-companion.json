@@ -471,22 +471,10 @@
             "heading": "Power on & power off"
           }
         },
-        "text_mkJcQC": {
-          "type": "text",
-          "settings": {
-            "text": "<p><strong>Power on</strong><br/>Hold the top button for 1 second to turn on the device.</p>"
-          }
-        },
         "text_9cDw6H": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Power off</strong></p><p>1. Hold the top button for 3 seconds until the power off prompt appears.</p><p>2. Select yes by pressing the bottom button.</p>"
-          }
-        },
-        "image_fnMLty": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Product_Core_2_Order_7.jpg"
+            "text": "<p><strong>Power on</strong><br/>Hold the top button for 1 second to turn on the device.</p><p><strong>Power off</strong></p><p>1. Hold the top button for 3 seconds until the power off prompt appears.</p><p>2. Select yes by pressing the bottom button.</p>"
           }
         },
         "divider_xrGQeX": {
@@ -518,7 +506,7 @@
         "text_VAA3iK": {
           "type": "text",
           "settings": {
-            "text": "<p>The Core / Spark features a capacitive touch surface. To ensure reliable input detection, place two fingers flat across the surface. Do not use only your fingertips.</p><p><strong>Start or pause a feature</strong></p><p>Tap the soundwave icon twice quickly to start or pause certain features. This gesture works in the <strong>Metronome</strong>, <strong>Timer</strong>, <strong>Stopwatch</strong>, and <strong>Smartphone Music Remote</strong> apps.</p>"
+            "text": "<p>The Core / Spark features a capacitive touch surface. To ensure reliable input detection, place two fingers flat across the surface. Do not use only your fingertips.</p><p><strong>Start or pause a feature</strong></p><p>Tap the soundwave icon twice quickly to start or pause certain features. This gesture works in the <strong>Metronome</strong>, <strong>Timer</strong>, <strong>Stopwatch</strong>, and <strong>Smartphone music remote</strong> apps.</p>"
           }
         },
         "image_mgU7ky": {
@@ -1235,9 +1223,7 @@
         "text_dydTbg",
         "divider_8GrH8j",
         "subheading_iL8Qey",
-        "text_mkJcQC",
         "text_9cDw6H",
-        "image_fnMLty",
         "divider_xrGQeX",
         "subheading_8r8K8r",
         "image_bxUAQc",
