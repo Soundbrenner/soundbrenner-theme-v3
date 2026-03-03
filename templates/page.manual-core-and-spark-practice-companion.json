@@ -611,7 +611,7 @@
         "text_6R9XD8": {
           "type": "text",
           "settings": {
-            "text": "<p>If you already practiced for a while but didn't start the session on your device, adjust the start time by pressing the bottom button and rotating the wheel.</p><p>When a practice session is active on your device, the \"Track\" app will automatically open each time you wake the screen for easy access. The LED ring fills with orange to show progress towards your goal. To turn off the orange tracking light, disable it in the Core 2/Spark settings of our mobile app.</p>"
+            "text": "<p>If you have already been practicing but did not start the session on your device, you can adjust the start time. Press the bottom button and rotate the wheel to set the correct start time.</p><p>When a practice session is active, the <strong>Track</strong> app will automatically open each time you wake the screen for quick access. The LED ring gradually fills with orange to indicate progress toward your goal.</p><p>To disable the orange tracking light, open the mobile app and turn it off in the Core / Spark settings.</p>"
           }
         },
         "image_NyDj7h": {
