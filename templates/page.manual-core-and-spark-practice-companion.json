@@ -1077,7 +1077,7 @@
         "image_L8yyXG": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Core_2_Order_28.jpg"
+            "image": "shopify://shop_images/Product_Core_2_Order_28_774d1249-6672-45a8-a36f-916890b9c4cf.jpg"
           }
         },
         "subheading_D9MaqY": {
@@ -1089,7 +1089,7 @@
         "text_nGgRmi": {
           "type": "text",
           "settings": {
-            "text": "<p>This only works if your Core/Spark is unresponsive. Make sure the charging cable is connected to a power source. Then attach the charging cable to the magnetic port. Detach it and attach the charging cable a second time to complete the hard restart.</p>"
+            "text": "<p>This procedure should only be used if your Core / Spark is unresponsive.</p><p>Ensure that the charging cable is connected to a power source. Attach the cable to the magnetic port on the device, then detach it. Immediately reattach the cable a second time to initiate the hard restart.</p>"
           }
         },
         "image_7Wy3B7": {
