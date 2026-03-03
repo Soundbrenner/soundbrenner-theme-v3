@@ -150,6 +150,195 @@
             >
           {% endif %}
         </figure>
+      {% elsif block.type == 'image_grid' %}
+        {% liquid
+          assign image_grid_fetch_from_product = false
+          if block.settings.fetch_whats_in_the_box_from_product == true
+            assign image_grid_fetch_from_product = true
+          endif
+
+          assign image_grid_items_from_product = blank
+          if image_grid_fetch_from_product
+            assign image_grid_root_source = blank
+            if block.settings.source_metaobject != blank
+              assign image_grid_root_source = block.settings.source_metaobject.value | default: block.settings.source_metaobject.reference.value | default: block.settings.source_metaobject.reference | default: block.settings.source_metaobject
+            elsif block.settings.source_product != blank
+              assign image_grid_source_product = block.settings.source_product
+              assign image_grid_source_variant_match = block.settings.source_variant_match | strip
+              assign image_grid_source_variant = image_grid_source_product.selected_or_first_available_variant
+              if image_grid_source_variant_match != blank
+                assign image_grid_source_variant_match_handle = image_grid_source_variant_match | handleize
+                for image_grid_variant_candidate in image_grid_source_product.variants
+                  assign image_grid_variant_candidate_title_handle = image_grid_variant_candidate.title | handleize
+                  if image_grid_variant_candidate_title_handle contains image_grid_source_variant_match_handle
+                    assign image_grid_source_variant = image_grid_variant_candidate
+                    break
+                  endif
+                endfor
+              endif
+              assign image_grid_in_the_box_ref = image_grid_source_product.metafields.custom.sbv2_what_s_in_the_box
+              if image_grid_source_product.has_only_default_variant == false and image_grid_source_variant != blank
+                assign image_grid_variant_ref = image_grid_source_variant.metafields.custom.sbv2_what_s_in_the_box
+                if image_grid_variant_ref != blank
+                  assign image_grid_in_the_box_ref = image_grid_variant_ref
+                endif
+              endif
+              assign image_grid_root_source = image_grid_in_the_box_ref.value | default: image_grid_in_the_box_ref.reference.value | default: image_grid_in_the_box_ref.reference | default: image_grid_in_the_box_ref
+            endif
+
+            if image_grid_root_source != blank
+              assign image_grid_root = blank
+              for image_grid_root_candidate in image_grid_root_source limit: 1
+                assign image_grid_root = image_grid_root_candidate
+              endfor
+              if image_grid_root == blank
+                assign image_grid_root = image_grid_root_source
+              endif
+              if image_grid_root != blank and image_grid_root.products == blank
+                assign image_grid_nested = image_grid_root.sbv2_what_s_in_the_box.value | default: image_grid_root.sbv2_what_s_in_the_box.reference.value | default: image_grid_root.sbv2_what_s_in_the_box.reference | default: image_grid_root.sbv2_what_s_in_the_box
+                if image_grid_nested != blank
+                  assign image_grid_root = image_grid_nested
+                endif
+              endif
+              if image_grid_root != blank
+                assign image_grid_items_from_product = image_grid_root.products.value | default: image_grid_root.products.references | default: image_grid_root.products
+              endif
+            endif
+          endif
+
+          assign image_grid_has_items = false
+          if image_grid_fetch_from_product and image_grid_items_from_product != blank
+            assign image_grid_has_items = true
+          endif
+          if image_grid_fetch_from_product == false and image_grid_has_items == false
+            for item_index in (1..9)
+              assign image_setting_key = 'item_' | append: item_index | append: '_image'
+              assign text_setting_key = 'item_' | append: item_index | append: '_text'
+              assign image_grid_item_image = block.settings[image_setting_key]
+              assign image_grid_item_text = block.settings[text_setting_key] | strip
+              if image_grid_item_image != blank or image_grid_item_text != blank
+                assign image_grid_has_items = true
+                break
+              endif
+            endfor
+          endif
+        %}
+        {% if image_grid_has_items %}
+          <div class="sb-manual-chapters__image-grid" data-sb-reveal {{ block.shopify_attributes }}>
+            {% if image_grid_fetch_from_product and image_grid_items_from_product != blank %}
+              {% for image_grid_source_item in image_grid_items_from_product %}
+                {% liquid
+                  assign image_grid_entry = image_grid_source_item.value | default: image_grid_source_item.reference.value | default: image_grid_source_item.reference | default: image_grid_source_item
+                  assign image_grid_media_field = image_grid_entry.product_media
+                  assign image_grid_media_source = image_grid_media_field.value | default: image_grid_media_field.reference.value | default: image_grid_media_field.reference | default: image_grid_media_field
+                  assign image_grid_media = blank
+                  for image_grid_media_candidate in image_grid_media_source limit: 1
+                    assign image_grid_media = image_grid_media_candidate
+                  endfor
+                  if image_grid_media == blank
+                    assign image_grid_media = image_grid_media_source
+                  endif
+
+                  assign image_grid_title = image_grid_entry.product_title.value | default: image_grid_entry.product_title | strip
+                  if image_grid_title == blank
+                    continue
+                  endif
+
+                  assign image_grid_media_url = blank
+                  if image_grid_media.url != blank
+                    assign image_grid_media_url = image_grid_media.url
+                  elsif image_grid_media.src != blank
+                    assign image_grid_media_url = image_grid_media.src
+                  elsif image_grid_media.preview_image != blank
+                    assign image_grid_media_url = image_grid_media.preview_image | image_url: width: 600
+                  elsif image_grid_media.image != blank
+                    assign image_grid_media_url = image_grid_media.image | image_url: width: 600
+                  endif
+                  if image_grid_media_url == blank and image_grid_media != blank
+                    assign image_grid_media_url = image_grid_media | file_url
+                    if image_grid_media_url contains 'Liquid error' or image_grid_media_url contains 'MediaListDrop'
+                      assign image_grid_media_url = blank
+                    endif
+                  endif
+                  if image_grid_media_url != blank and image_grid_media_url contains 'files/'
+                    unless image_grid_media_url contains '/cdn/shop/' or image_grid_media_url contains '://'
+                      assign image_grid_media_url_prefix_files = image_grid_media_url | slice: 0, 6
+                      assign image_grid_media_url_prefix_slash_files = image_grid_media_url | slice: 0, 7
+                      if image_grid_media_url_prefix_files == 'files/'
+                        assign image_grid_media_url = '/cdn/shop/' | append: image_grid_media_url
+                      elsif image_grid_media_url_prefix_slash_files == '/files/'
+                        assign image_grid_media_url = '/cdn/shop' | append: image_grid_media_url
+                      endif
+                    endunless
+                  endif
+                %}
+                <figure class="sb-manual-chapters__image-grid-item" data-sb-reveal-item>
+                  <span class="sb-manual-chapters__image-grid-media">
+                    {% if image_grid_media_url != blank %}
+                      {% # theme-check-disable RemoteAsset %}
+                      <img
+                        src="{{ image_grid_media_url }}"
+                        alt="{{ image_grid_title | escape }}"
+                        loading="lazy"
+                        class="sb-manual-chapters__image-grid-image"
+                        width="600"
+                        height="600"
+                      >
+                      {% # theme-check-enable RemoteAsset %}
+                    {% else %}
+                      <img
+                        src="{{ 'manual-image-grid-item-placeholder.png' | asset_url }}"
+                        alt="{{ image_grid_title | escape }}"
+                        loading="lazy"
+                        class="sb-manual-chapters__image-grid-image"
+                        width="600"
+                        height="600"
+                      >
+                    {% endif %}
+                  </span>
+                  <figcaption class="sb-manual-chapters__image-grid-caption font-body weight-regular">{{ image_grid_title | escape }}</figcaption>
+                </figure>
+              {% endfor %}
+            {% elsif image_grid_fetch_from_product == false %}
+              {% for item_index in (1..9) %}
+                {% liquid
+                  assign image_setting_key = 'item_' | append: item_index | append: '_image'
+                  assign text_setting_key = 'item_' | append: item_index | append: '_text'
+                  assign image_grid_item_image = block.settings[image_setting_key]
+                  assign image_grid_item_text = block.settings[text_setting_key] | strip
+                %}
+                {% if image_grid_item_image != blank or image_grid_item_text != blank %}
+                  <figure class="sb-manual-chapters__image-grid-item" data-sb-reveal-item>
+                    <span class="sb-manual-chapters__image-grid-media">
+                      {% if image_grid_item_image != blank %}
+                        {{
+                          image_grid_item_image
+                          | image_url: width: 600
+                          | image_tag:
+                            loading: 'lazy',
+                            class: 'sb-manual-chapters__image-grid-image',
+                            alt: image_grid_item_image.alt | default: image_grid_item_text
+                        }}
+                      {% else %}
+                        <img
+                          src="{{ 'manual-image-grid-item-placeholder.png' | asset_url }}"
+                          alt="{{ image_grid_item_text | escape }}"
+                          loading="lazy"
+                          class="sb-manual-chapters__image-grid-image"
+                          width="600"
+                          height="600"
+                        >
+                      {% endif %}
+                    </span>
+                    {% if image_grid_item_text != blank %}
+                      <figcaption class="sb-manual-chapters__image-grid-caption font-body weight-regular">{{ image_grid_item_text | escape }}</figcaption>
+                    {% endif %}
+                  </figure>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% endif %}
       {% elsif block.type == 'button' %}
         <div class="sb-manual-chapters__button-wrap" data-sb-reveal {{ block.shopify_attributes }}>
           {% render 'radiant-button',
@@ -281,6 +470,42 @@
     display: block;
     height: auto;
     width: 100%;
+  }
+
+  .sb-manual-chapters__image-grid {
+    display: grid;
+    gap: var(--sb-space-36);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .sb-manual-chapters__image-grid-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-space-16);
+    margin: 0;
+    min-width: 0;
+  }
+
+  .sb-manual-chapters__image-grid-media {
+    aspect-ratio: 1 / 1;
+    border-radius: 24px;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .sb-manual-chapters__image-grid-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .sb-manual-chapters__image-grid-caption {
+    color: var(--sb-color-neutral-900);
+    margin: 0;
+    text-align: left;
   }
 
   .sb-manual-chapters__divider {
@@ -781,6 +1006,12 @@
     .sb-manual-chapters__sticky-backdrop.is-active {
       opacity: 1;
       pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 989px) {
+    .sb-manual-chapters__image-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
@@ -1455,6 +1686,158 @@
           "id": "image",
           "label": "Image",
           "info": "Target minimum 912px width at 2x export (1824px width)."
+        }
+      ]
+    },
+    {
+      "type": "image_grid",
+      "name": "Image grid",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "fetch_whats_in_the_box_from_product",
+          "label": "Fetch what's in the box from product",
+          "default": false
+        },
+        {
+          "type": "product",
+          "id": "source_product",
+          "label": "Product",
+          "info": "Uses the product or selected variant's what's in the box metaobject."
+        },
+        {
+          "type": "text",
+          "id": "source_variant_match",
+          "label": "Variant title match",
+          "info": "Optional. Uses the first variant whose title contains this text."
+        },
+        {
+          "type": "metaobject",
+          "id": "source_metaobject",
+          "label": "What's in the box metaobject",
+          "metaobject_type": "sbv2_what_s_in_the_box",
+          "info": "Optional override when product selection does not resolve the desired data."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_1_image",
+          "label": "Item 1 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_1_text",
+          "label": "Item 1 text",
+          "default": "Item 1",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "item_2_image",
+          "label": "Item 2 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_2_text",
+          "label": "Item 2 text",
+          "default": "Item 2",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "item_3_image",
+          "label": "Item 3 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_3_text",
+          "label": "Item 3 text",
+          "default": "Item 3",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "item_4_image",
+          "label": "Item 4 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_4_text",
+          "label": "Item 4 text",
+          "default": "Item 4",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "item_5_image",
+          "label": "Item 5 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_5_text",
+          "label": "Item 5 text",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "item_6_image",
+          "label": "Item 6 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_6_text",
+          "label": "Item 6 text",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "item_7_image",
+          "label": "Item 7 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_7_text",
+          "label": "Item 7 text",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "item_8_image",
+          "label": "Item 8 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_8_text",
+          "label": "Item 8 text",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "image_picker",
+          "id": "item_9_image",
+          "label": "Item 9 image",
+          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
+        },
+        {
+          "type": "text",
+          "id": "item_9_text",
+          "label": "Item 9 text",
+          "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         }
       ]
     },

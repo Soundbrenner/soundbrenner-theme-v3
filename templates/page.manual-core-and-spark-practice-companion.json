@@ -94,28 +94,44 @@
             "heading": "What's in the box"
           }
         },
-        "body_3": {
-          "type": "text",
+        "heading_small_Z3NbU4": {
+          "type": "heading_small",
           "settings": {
-            "text": "<p>View the full list of packaging contents on the product page.</p>"
+            "heading": "Core 2"
           }
         },
-        "button_rF6dEJ": {
-          "type": "button",
+        "image_grid_4fY4mP": {
+          "type": "image_grid",
           "settings": {
-            "label": "Core 2 in the box",
-            "button_size": "large",
-            "icon_position": "none",
-            "link": "shopify://products/core-2-practice-companion"
+            "fetch_whats_in_the_box_from_product": true,
+            "source_product": "core-2-practice-companion"
           }
         },
-        "button_9nmwUx": {
-          "type": "button",
+        "heading_small_HQzjNP": {
+          "type": "heading_small",
           "settings": {
-            "label": "Spark in the box",
-            "button_size": "large",
-            "icon_position": "none",
-            "link": "shopify://products/spark-practice-companion"
+            "heading": "Spark"
+          }
+        },
+        "image_grid_8fFLQn": {
+          "type": "image_grid",
+          "settings": {
+            "fetch_whats_in_the_box_from_product": true,
+            "source_product": "spark-practice-companion"
+          }
+        },
+        "heading_small_Fm2iKk": {
+          "type": "heading_small",
+          "settings": {
+            "heading": "Core Steel 2"
+          }
+        },
+        "image_grid_p9DgQa": {
+          "type": "image_grid",
+          "settings": {
+            "fetch_whats_in_the_box_from_product": true,
+            "source_product": "core-2-practice-companion",
+            "source_variant_match": "Core Steel 2 / jet black"
           }
         },
         "divider_3": {
@@ -432,6 +448,29 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/Product_Core_2_Order_11.jpg"
+          }
+        },
+        "image_grid_wyW8Qm": {
+          "type": "image_grid",
+          "settings": {
+            "item_1_image": "shopify://shop_images/Property_1_Battery_level.png",
+            "item_1_text": "Battery level",
+            "item_2_image": "shopify://shop_images/Property_1_Battery_charging.png",
+            "item_2_text": "Battery charging",
+            "item_3_image": "shopify://shop_images/Property_1_New_notification.png",
+            "item_3_text": "New notification",
+            "item_4_image": "shopify://shop_images/Property_1_Smartphone_music_remote.png",
+            "item_4_text": "Smartphone music remote",
+            "item_5_image": "shopify://shop_images/Property_1_Ready_to_pair.png",
+            "item_5_text": "Ready to pair",
+            "item_6_image": "shopify://shop_images/Property_1_Disconnected_but_paired.png",
+            "item_6_text": "Disconnected but paired",
+            "item_7_image": "shopify://shop_images/Property_1_Airplane_mode.png",
+            "item_7_text": "Airplane mode",
+            "item_8_image": "shopify://shop_images/Property_1_Practice_streak_active_goal_not_reached.png",
+            "item_8_text": "Practice streak active goal not reached",
+            "item_9_image": "shopify://shop_images/Property_1_Practice_streak_active_goal_reached.png",
+            "item_9_text": "Practice streak active goal reached"
           }
         },
         "divider_Fnahzw": {
@@ -1079,9 +1118,12 @@
         "vimeo_video_YefAQq",
         "divider_2",
         "subheading_QhB4a6",
-        "body_3",
-        "button_rF6dEJ",
-        "button_9nmwUx",
+        "heading_small_Z3NbU4",
+        "image_grid_4fY4mP",
+        "heading_small_HQzjNP",
+        "image_grid_8fFLQn",
+        "heading_small_Fm2iKk",
+        "image_grid_p9DgQa",
         "divider_3",
         "subheading_fEQfTx",
         "image_BAXgF7",
@@ -1137,6 +1179,7 @@
         "subheading_rcLpyC",
         "text_kBrneM",
         "image_J9tiAi",
+        "image_grid_wyW8Qm",
         "divider_Fnahzw",
         "heading_KPp8G4",
         "subheading_6FXkVe",
