@@ -13,6 +13,7 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
         "use_resource_title_description": true,
         "use_product_page_metaobjects": false,
         "background_image_desktop": "shopify://shop_images/footer_core_2_desktop.jpg",
@@ -274,13 +275,13 @@
         "subheading_zLjb8j": {
           "type": "subheading",
           "settings": {
-            "heading": "Charging the Core/Spark"
+            "heading": "Charging the device"
           }
         },
         "body_5": {
           "type": "text",
           "settings": {
-            "text": "<p>To charge your Core/Spark, attach the cable to the magnetic port located on the side of the device. It takes ~1.5 hours to fully charge.</p><p><strong>Battery life</strong></p><ul><li>4+ days in watch mode, or</li><li>3+ hours metronome playback</li></ul><p><strong>Charging light</strong></p><ul><li>Orange light = charging</li><li>Green light = fully charged</li></ul>"
+            "text": "<p>To charge your Core / Spark, attach the cable to the magnetic port located on the side of the device. A full charge takes approximately 1.5 hours.</p><p><strong>Battery life</strong></p><ul><li>4+ days in watch mode, or</li><li>3+ hours metronome playback</li></ul><p><strong>Charging light</strong></p><ul><li>Orange light = charging</li><li>Green light = fully charged</li></ul>"
           }
         },
         "image_hPYJx3": {
@@ -342,20 +343,20 @@
         "text_KYQ8qF": {
           "type": "text",
           "settings": {
-            "text": "<p>The Core/Spark is splash resistant (IP65). This means it can withstand light rain or water splashes, for example while washing your hands. However, it can not withstand heavy rain, showers or water immersion.</p><p>The Core/Spark contains strong magnets that may interfere with some medical devices. Read the \"Safety & regulatory information\" section at the end of this manual for more information.</p><h4>Tip</h4><p>Don't store your Core/Spark for extended periods (over 3 months) with an empty battery, as this can lead to permanent battery damage.</p>"
+            "text": "<p>The Core / Spark is splash resistant (IP65). It can withstand light rain and minor water splashes, such as when washing your hands. However, it is not designed to withstand heavy rain, showers, or full water immersion.</p><p>The Core / Spark contains strong magnets that may interfere with certain medical devices. For more information, please refer to the <strong>Safety & Regulatory Information</strong> section at the end of this manual.</p><h4>Tip</h4><p>Do not store your Core / Spark for extended periods (more than 3 months) with a fully depleted battery, as this may result in permanent battery damage.</p>"
           }
         },
         "accordion_item_P6NyaD": {
           "type": "accordion_item",
           "settings": {
             "question": "Core battery maintenance guide",
-            "answer": "<p>When the battery of your wearable is not in use, it will discharge at a low speed. If you do not use the battery for an extended period of time (e.g. 3 months or longer) there is a risk that it over-discharges. This can cause permanent damage to the electrodes and active materials of the battery. In the worst case this means that the battery (and your wearable) no longer work. This behavior is typical in all of today's lithium batteries.</p><p>The solution is simple. <strong>Charge and discharge the battery in your wearable at least every three months to ensure it remains in good condition</strong>. If you use your wearable regularly (e.g. at least once per week), you do not have to worry or take any special measures to maintain the battery's health.</p><p><strong>What happens if the battery in my wearable is permanently damaged?</strong></p><p>Unfortunately it's currently not possible to replace the battery in our wearables. This is not an intentional design choice, but because we had to use adhesives to increase the water resistance of our products. This means if a wearable is opened up, many of the mechanical components get damaged and can't be re-used. It's definitely a goal to make our batteries replaceable in the future, but with a small and tightly packed form factor like a smartwatch this is not a trivial challenge. </p><p>It's all the more important that you take good care of your wearable's battery. In case your wearable's battery is damaged, please contact our support and we'll try our best to help you: <a href=\"https://support.soundbrenner.com/hc/en-us/requests/new\" target=\"_blank\">contact support</a></p>"
+            "answer": "<p>When not in use, the battery in your wearable will slowly discharge. If the device remains unused for an extended period (for example, 3 months or longer), the battery may become over-discharged. This can cause permanent damage to the battery’s internal components. In severe cases, the battery and the device may no longer function. This behavior is common to all modern lithium batteries.</p><p>To prevent this, charge and discharge your wearable at least once every three months to maintain battery health. If you use your device regularly, such as at least once per week, no additional precautions are necessary.</p><h4>What happens if the battery is permanently damaged?</h4><p>Currently, the battery in our wearables cannot be replaced. This is due to the use of adhesives to improve water resistance. Opening the device may damage internal mechanical components, preventing reassembly.</p><p>We aim to make batteries replaceable in future products. However, achieving this in a compact and tightly integrated form factor presents significant engineering challenges.</p><p>For this reason, it is especially important to take proper care of your wearable’s battery.</p><p>If you suspect that your device’s battery has been damaged, please contact our support team. We will do our best to assist you: <a href=\"https://support.soundbrenner.com/hc/en-us/requests/new\" target=\"_blank\">contact support</a></p>"
           }
         },
         "text_ecFNQA": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Silicone strap & body strap</strong></p><p>Both straps are very durable and suitable for all environmental conditions.</p><p><strong>Italian leather straps</strong></p><p>We only use premium quality leather sourced from Italy. Any variations in color or markings such as scars and wrinkles are inherent to the natural beauty and uniqueness of genuine leather.</p><p>Over time the leather will mold to your wrist and develop a patina finish. To maximize its durability, we suggest to limit the leather’s contact with moisture.</p>"
+            "text": "<p><strong>Silicone Strap & Body Strap</strong></p><p>Both straps are highly durable and suitable for use in all environmental conditions.</p><p><strong>Italian Leather Straps</strong></p><p>We use premium-quality leather sourced from Italy. Natural variations in color and markings, such as scars or wrinkles, are inherent characteristics of genuine leather and contribute to its unique appearance.</p><p>Over time, the leather will naturally conform to your wrist and develop a distinctive patina. To preserve its quality and longevity, we recommend minimizing exposure to moisture.</p>"
           }
         },
         "divider_ExTXVE": {
@@ -383,7 +384,7 @@
         "text_mfDFqP": {
           "type": "text",
           "settings": {
-            "text": "<p>To put the Core on its rig, hover it right above the rig and let go. Once the Core drops on the rig, it will magnetically snap into place.</p><p>When placing the Core on its rig, make sure the buttons point towards the direction of your hand. To wear the Core on your other wrist, you can change the orientation of the screen in our mobile app.</p><h4>Tip</h4><p>Make sure that you hear and feel the spring-loaded pin when the Core locks into place on the rig. This will ensure it can’t fall off.</p>"
+            "text": "<p>To attach the Core to the rig, hold it slightly above the rig and release it. The Core will magnetically snap into place.</p><p>When placing the Core on the rig, ensure that the buttons face toward your hand. If you prefer to wear the Core on your other wrist, you can adjust the screen orientation in the mobile app.</p><h4>Tip</h4><p>Make sure you both hear and feel the spring-loaded pin engage when the Core locks into place on the rig. This confirms that it is securely attached and prevents it from falling off.</p>"
           }
         },
         "divider_dn4KAP": {
@@ -399,7 +400,7 @@
         "text_NytJdp": {
           "type": "text",
           "settings": {
-            "text": "<p>To change your watch strap, simply turn the device on its back and open the two rivets on each side.</p><p>We’ve created a range of stylish strap options for the Soundbrenner Core and Spark. They’re made from the finest materials such as silicone, woven nylon or Italian leather. Explore our latest collection on:</p>"
+            "text": "<p>To change the watch strap, turn the device over and release the two rivets located on each side.</p><p>We offer a range of strap options for the Soundbrenner Core and Spark, crafted from high-quality materials such as silicone, woven nylon, and Italian leather. Explore the latest collection at:</p>"
           }
         },
         "button_xMyAQB": {
@@ -1358,6 +1359,7 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
+        "use_affiliate_metaobject": false,
         "use_resource_title_description": false,
         "use_product_page_metaobjects": false,
         "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
