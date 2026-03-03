@@ -122,6 +122,22 @@
       html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo .klaviyo-form {
         display: flex !important;
       }
+
+      .sb-klaviyo-popup-backdrop {
+        -webkit-backdrop-filter: blur(var(--sb-space-8));
+        backdrop-filter: blur(var(--sb-space-8));
+        background: var(--sb-color-always-black-25);
+        inset: 0;
+        opacity: 0;
+        pointer-events: none;
+        position: fixed;
+        transition: opacity 180ms ease;
+        z-index: 49;
+      }
+
+      html.sb-klaviyo-popup-open .sb-klaviyo-popup-backdrop {
+        opacity: 1;
+      }
     </style>
     <script>
       (() => {
@@ -255,6 +271,93 @@
             window.clearInterval(resuppressTimer);
           }
         }, 250);
+      })();
+    </script>
+    <script>
+      (() => {
+        const popupOpenClass = 'sb-klaviyo-popup-open';
+        const markerSelector =
+          '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
+
+        const isFooterEmbedContext = (node) =>
+          node instanceof HTMLElement && Boolean(node.closest('.sb-footer__newsletter-klaviyo'));
+
+        const getPopupContainer = (node) => {
+          if (!(node instanceof HTMLElement)) return null;
+          if (isFooterEmbedContext(node)) return null;
+
+          let currentNode = node;
+          while (currentNode && currentNode !== document.body) {
+            if (!(currentNode instanceof HTMLElement)) break;
+            if (isFooterEmbedContext(currentNode)) return null;
+
+            const computedStyle = window.getComputedStyle(currentNode);
+            const zIndex = Number.parseInt(computedStyle.zIndex || '0', 10);
+            const isDialog = currentNode.getAttribute('role') === 'dialog' || currentNode.getAttribute('aria-modal') === 'true';
+            const isPopupLike = computedStyle.position === 'fixed' || (computedStyle.position === 'absolute' && zIndex >= 1000) || isDialog;
+            if (isPopupLike) return currentNode;
+
+            currentNode = currentNode.parentElement;
+          }
+
+          return null;
+        };
+
+        const isVisiblePopup = (node) => {
+          if (!(node instanceof HTMLElement)) return false;
+          if (node.hasAttribute('hidden') || node.getAttribute('aria-hidden') === 'true') return false;
+
+          const computedStyle = window.getComputedStyle(node);
+          if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden') return false;
+          if (Number.parseFloat(computedStyle.opacity || '1') <= 0.01) return false;
+
+          const rect = node.getBoundingClientRect();
+          if (rect.width < 120 || rect.height < 80) return false;
+          if (rect.right <= 0 || rect.bottom <= 0) return false;
+          if (rect.left >= window.innerWidth || rect.top >= window.innerHeight) return false;
+
+          return true;
+        };
+
+        const updatePopupBackdropState = () => {
+          const popupContainers = new Set();
+          document.querySelectorAll(markerSelector).forEach((node) => {
+            if (!(node instanceof HTMLElement)) return;
+            const popupContainer = getPopupContainer(node);
+            if (!(popupContainer instanceof HTMLElement)) return;
+            popupContainers.add(popupContainer);
+          });
+
+          const hasVisiblePopup = Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
+          document.documentElement.classList.toggle(popupOpenClass, hasVisiblePopup);
+        };
+
+        let frameId = 0;
+        const queueUpdate = () => {
+          if (frameId) return;
+          frameId = window.requestAnimationFrame(() => {
+            frameId = 0;
+            updatePopupBackdropState();
+          });
+        };
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', queueUpdate, { once: true });
+        } else {
+          queueUpdate();
+        }
+
+        if (typeof MutationObserver !== 'function') return;
+        const observer = new MutationObserver(queueUpdate);
+        observer.observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['class', 'style', 'hidden', 'aria-hidden', 'data-testid'],
+        });
+
+        window.addEventListener('resize', queueUpdate, { passive: true });
+        window.addEventListener('orientationchange', queueUpdate);
       })();
     </script>
 
@@ -470,6 +573,7 @@
   </head>
 
   <body>
+    <div class="sb-klaviyo-popup-backdrop" aria-hidden="true"></div>
     {% sections 'header-group' %}
 
     {{ content_for_layout }}
