@@ -162,28 +162,6 @@
             assign image_grid_root_source = blank
             if block.settings.source_metaobject != blank
               assign image_grid_root_source = block.settings.source_metaobject.value | default: block.settings.source_metaobject.reference.value | default: block.settings.source_metaobject.reference | default: block.settings.source_metaobject
-            elsif block.settings.source_product != blank
-              assign image_grid_source_product = block.settings.source_product
-              assign image_grid_source_variant_match = block.settings.source_variant_match | strip
-              assign image_grid_source_variant = image_grid_source_product.selected_or_first_available_variant
-              if image_grid_source_variant_match != blank
-                assign image_grid_source_variant_match_handle = image_grid_source_variant_match | handleize
-                for image_grid_variant_candidate in image_grid_source_product.variants
-                  assign image_grid_variant_candidate_title_handle = image_grid_variant_candidate.title | handleize
-                  if image_grid_variant_candidate_title_handle contains image_grid_source_variant_match_handle
-                    assign image_grid_source_variant = image_grid_variant_candidate
-                    break
-                  endif
-                endfor
-              endif
-              assign image_grid_in_the_box_ref = image_grid_source_product.metafields.custom.sbv2_what_s_in_the_box
-              if image_grid_source_product.has_only_default_variant == false and image_grid_source_variant != blank
-                assign image_grid_variant_ref = image_grid_source_variant.metafields.custom.sbv2_what_s_in_the_box
-                if image_grid_variant_ref != blank
-                  assign image_grid_in_the_box_ref = image_grid_variant_ref
-                endif
-              endif
-              assign image_grid_root_source = image_grid_in_the_box_ref.value | default: image_grid_in_the_box_ref.reference.value | default: image_grid_in_the_box_ref.reference | default: image_grid_in_the_box_ref
             endif
 
             if image_grid_root_source != blank
@@ -250,9 +228,9 @@
                   elsif image_grid_media.src != blank
                     assign image_grid_media_url = image_grid_media.src
                   elsif image_grid_media.preview_image != blank
-                    assign image_grid_media_url = image_grid_media.preview_image | image_url: width: 600
+                    assign image_grid_media_url = image_grid_media.preview_image | image_url: width: 400
                   elsif image_grid_media.image != blank
-                    assign image_grid_media_url = image_grid_media.image | image_url: width: 600
+                    assign image_grid_media_url = image_grid_media.image | image_url: width: 400
                   endif
                   if image_grid_media_url == blank and image_grid_media != blank
                     assign image_grid_media_url = image_grid_media | file_url
@@ -281,8 +259,8 @@
                         alt="{{ image_grid_title | escape }}"
                         loading="lazy"
                         class="sb-manual-chapters__image-grid-image"
-                        width="600"
-                        height="600"
+                        width="400"
+                        height="400"
                       >
                       {% # theme-check-enable RemoteAsset %}
                     {% else %}
@@ -291,8 +269,8 @@
                         alt="{{ image_grid_title | escape }}"
                         loading="lazy"
                         class="sb-manual-chapters__image-grid-image"
-                        width="600"
-                        height="600"
+                        width="400"
+                        height="400"
                       >
                     {% endif %}
                   </span>
@@ -313,7 +291,7 @@
                       {% if image_grid_item_image != blank %}
                         {{
                           image_grid_item_image
-                          | image_url: width: 600
+                          | image_url: width: 400
                           | image_tag:
                             loading: 'lazy',
                             class: 'sb-manual-chapters__image-grid-image',
@@ -325,8 +303,8 @@
                           alt="{{ image_grid_item_text | escape }}"
                           loading="lazy"
                           class="sb-manual-chapters__image-grid-image"
-                          width="600"
-                          height="600"
+                          width="400"
+                          height="400"
                         >
                       {% endif %}
                     </span>
@@ -1700,29 +1678,17 @@
           "default": false
         },
         {
-          "type": "product",
-          "id": "source_product",
-          "label": "Product",
-          "info": "Uses the product or selected variant's what's in the box metaobject."
-        },
-        {
-          "type": "text",
-          "id": "source_variant_match",
-          "label": "Variant title match",
-          "info": "Optional. Uses the first variant whose title contains this text."
-        },
-        {
           "type": "metaobject",
           "id": "source_metaobject",
           "label": "What's in the box metaobject",
           "metaobject_type": "sbv2_what_s_in_the_box",
-          "info": "Optional override when product selection does not resolve the desired data."
+          "info": "Used only when fetch is enabled."
         },
         {
           "type": "image_picker",
           "id": "item_1_image",
           "label": "Item 1 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {
@@ -1736,7 +1702,7 @@
           "type": "image_picker",
           "id": "item_2_image",
           "label": "Item 2 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {
@@ -1750,7 +1716,7 @@
           "type": "image_picker",
           "id": "item_3_image",
           "label": "Item 3 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {
@@ -1764,7 +1730,7 @@
           "type": "image_picker",
           "id": "item_4_image",
           "label": "Item 4 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {
@@ -1778,7 +1744,7 @@
           "type": "image_picker",
           "id": "item_5_image",
           "label": "Item 5 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {
@@ -1791,7 +1757,7 @@
           "type": "image_picker",
           "id": "item_6_image",
           "label": "Item 6 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {
@@ -1804,7 +1770,7 @@
           "type": "image_picker",
           "id": "item_7_image",
           "label": "Item 7 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {
@@ -1817,7 +1783,7 @@
           "type": "image_picker",
           "id": "item_8_image",
           "label": "Item 8 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {
@@ -1830,7 +1796,7 @@
           "type": "image_picker",
           "id": "item_9_image",
           "label": "Item 9 image",
-          "info": "Target minimum 300x300 at 2x export (600x600).",
+          "info": "Target minimum 200x200 at 2x export (400x400).",
           "visible_if": "{{ block.settings.fetch_whats_in_the_box_from_product == false }}"
         },
         {

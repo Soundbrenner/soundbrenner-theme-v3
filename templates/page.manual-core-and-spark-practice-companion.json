@@ -104,7 +104,7 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "source_product": "core-2-practice-companion"
+            "source_metaobject": "gid://shopify/Metaobject/142705623291"
           }
         },
         "heading_small_HQzjNP": {
@@ -117,7 +117,7 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "source_product": "spark-practice-companion"
+            "source_metaobject": "gid://shopify/Metaobject/142704738555"
           }
         },
         "heading_small_Fm2iKk": {
@@ -130,8 +130,7 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
-            "source_product": "core-2-practice-companion",
-            "source_variant_match": "Core Steel 2 / jet black"
+            "source_metaobject": "gid://shopify/Metaobject/142706835707"
           }
         },
         "divider_3": {
@@ -1120,10 +1119,10 @@
         "subheading_QhB4a6",
         "heading_small_Z3NbU4",
         "image_grid_4fY4mP",
-        "heading_small_HQzjNP",
-        "image_grid_8fFLQn",
         "heading_small_Fm2iKk",
         "image_grid_p9DgQa",
+        "heading_small_HQzjNP",
+        "image_grid_8fFLQn",
         "divider_3",
         "subheading_fEQfTx",
         "image_BAXgF7",

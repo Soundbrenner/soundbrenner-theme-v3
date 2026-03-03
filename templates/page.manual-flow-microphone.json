@@ -97,12 +97,10 @@
           }
         },
         "button_rF6dEJ": {
-          "type": "button",
+          "type": "image_grid",
           "settings": {
-            "label": "View in the box",
-            "button_size": "large",
-            "icon_position": "none",
-            "link": "shopify://products/flow-microphone"
+            "fetch_whats_in_the_box_from_product": true,
+            "source_metaobject": "gid://shopify/Metaobject/148126335227"
           }
         },
         "divider_3": {
@@ -216,7 +214,6 @@
         "text_L9hxMe",
         "divider_JY3aW7",
         "chapter_3",
-        "body_3",
         "button_rF6dEJ",
         "divider_3",
         "chapter_4",
