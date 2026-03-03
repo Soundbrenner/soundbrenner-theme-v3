@@ -673,7 +673,7 @@
         "image_chjewp": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Core_2_Order_15.jpg"
+            "image": "shopify://shop_images/Product_Core_2_Order_15_cde650db-62d3-4d7c-a550-eb0337acf687.jpg"
           }
         },
         "text_rgUPrz": {
@@ -741,7 +741,7 @@
         "text_TqbGXK": {
           "type": "text",
           "settings": {
-            "text": "<h4>Tip</h4><p>An alternative way to start the metronome is to long-press the bottom button. Once you release the button, the metronome starts. This makes it easy to sync your device's starting time with the rhythm of something you're listening to.</p>"
+            "text": "<h4>Tip</h4><p>You can also start the metronome by pressing and holding the bottom button. The metronome will begin as soon as you release the button.</p><p>This method allows you to precisely align the start of the metronome with the rhythm of the music or audio you are listening to.</p>"
           }
         },
         "divider_GzhHqt": {
