@@ -899,12 +899,6 @@
           "type": "divider",
           "settings": {}
         },
-        "heading_CkQRPN": {
-          "type": "heading",
-          "settings": {
-            "heading": "Other apps"
-          }
-        },
         "subheading_qcM8GX": {
           "type": "subheading",
           "settings": {
@@ -963,22 +957,16 @@
             "heading": "Troubleshooting"
           }
         },
-        "vimeo_video_9C4c6x": {
-          "type": "vimeo_video",
-          "settings": {
-            "video_source": "vimeo.com/video/593163439"
-          }
-        },
-        "subheading_CEbFYN": {
+        "subheading_LiwjxQ": {
           "type": "subheading",
           "settings": {
-            "heading": "Get help"
+            "heading": "Connecting to your mobile device"
           }
         },
         "text_bR3bMT": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Connecting to your mobile device</strong></p><p>If you are having problems to connect your Core, Core 2 or Spark to your mobile device, try the steps below to resolve your problem.</p>"
+            "text": "<p>If you are having problems to connect your Core, Core 2 or Spark to your mobile device, try the steps below to resolve your problem.</p>"
           }
         },
         "accordion_item_97qzHE": {
@@ -995,10 +983,16 @@
             "answer": "<ul><li><strong>Powered up:</strong> Make sure your wearable is powered on and not out of battery. If you're new and you're not sure, check out our \"Getting started\" how-to video <a href=\"https://support.soundbrenner.com/hc/en-us/articles/900001243703\" target=\"_blank\">here</a>.</li><li><strong>Pair in Soundbrenner app:</strong> You need to pair the wearable from within the Soundbrenner app. Do not pair it from the Bluetooth settings of your mobile device. After installing the Soundbrenner app, simply follow its onboarding instructions. If the app was already installed before, go to \"Settings\" in the bottom navigation menu of our app → \"Add a Soundbrenner wearable\".</li><li><strong>Unpair on your wearable:</strong> This is to make sure your wearable is not paired to anything and available for pairing. Open the \"Settings\" app on your wearable. Navigate to \"Bluetooth\" and press the bottom button twice to confirm. This will remove any prior pairing and make your wearable available for pairing again. </li><li><strong>Unpair on mobile device:</strong> If you paired your wearable to your mobile device before, sometimes it can help to remove it and start from scratch. To do so, navigate to \"Settings\" in the bottom navigation menu of our mobile app. If you can see your wearable here, swipe from right to left. Tap the \"Remove\" button that appears. Next go to iOS settings (outside the Soundbrenner app) → Bluetooth → Tap on (i) next to your wearable → Tap on \"Forget This Device\" and \"Forget Device\". Now come back to the Soundbrenner app and try connecting again and you will successfully pair and connect your wearable.</li><li><strong>Compatibility: </strong>Visit <a href=\"https://support.soundbrenner.com/hc/en-us/articles/www.soundbrenner.com/compatibility\" target=\"_blank\">www.soundbrenner.com/compatibility</a> to check if you have an incompatible mobile device.</li><li><strong>Restart mobile device:</strong> Try turning off your mobile device and restarting it. Sometimes this can solve the problem.</li><li><strong>Contact support:</strong> If you are still having problems, please reach out to us.</li></ul>"
           }
         },
+        "subheading_qTRhUi": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Soft restart"
+          }
+        },
         "text_6mCaUq": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Soft restart</strong></p><p>If your device shows unexpected behavior, hold both buttons for 5 seconds and keep them pressed until recovery mode launches. Select restart with the bottom button to soft restart. If your device is unresponsive, try performing a hard restart.</p>"
+            "text": "<p>If your device shows unexpected behavior, hold both buttons for 5 seconds and keep them pressed until recovery mode launches. Select restart with the bottom button to soft restart. If your device is unresponsive, try performing a hard restart.</p>"
           }
         },
         "image_L8yyXG": {
@@ -1278,7 +1272,6 @@
         "text_p6RUM9",
         "image_ctxrVb",
         "divider_yGiD6W",
-        "heading_CkQRPN",
         "subheading_qcM8GX",
         "text_8awQtz",
         "subheading_wqcpNK",
@@ -1289,11 +1282,11 @@
         "text_DcDGni",
         "divider_G4W7PG",
         "heading_8JzcNh",
-        "vimeo_video_9C4c6x",
-        "subheading_CEbFYN",
+        "subheading_LiwjxQ",
         "text_bR3bMT",
         "accordion_item_97qzHE",
         "accordion_item_fmV7jz",
+        "subheading_qTRhUi",
         "text_6mCaUq",
         "image_L8yyXG",
         "text_nGgRmi",
