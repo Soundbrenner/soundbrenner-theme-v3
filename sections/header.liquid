@@ -52,12 +52,14 @@
   endif
   assign header_affiliate_name = ''
   assign header_affiliate_discount_code = ''
+  assign header_affiliate_collabs_id = ''
   if header_affiliate_metaobject != blank
     assign header_affiliate_name = header_affiliate_metaobject.full_name.value | default: header_affiliate_metaobject.full_name | strip
     if header_affiliate_name == blank
       assign header_affiliate_name = header_affiliate_metaobject.discount_name.value | default: header_affiliate_metaobject.discount_name | strip
     endif
     assign header_affiliate_discount_code = header_affiliate_metaobject.discount_name.value | default: header_affiliate_metaobject.discount_name | strip
+    assign header_affiliate_collabs_id = header_affiliate_metaobject.collabs_id.value | default: header_affiliate_metaobject.collabs_id | strip
   endif
   if header_affiliate_name == blank and page != blank
     assign header_affiliate_name = page.title | strip
@@ -260,9 +262,12 @@
   <script>
     (() => {
       const code = {{ header_affiliate_discount_code | json }};
+      const collabsIdRaw = {{ header_affiliate_collabs_id | json }};
+      const collabsId = `${collabsIdRaw || ''}`.trim();
       if (!code) return;
-      const appliedKey = `sb-affiliate-discount-applied-${code}`;
-      const pendingKey = `sb-affiliate-discount-pending-${code}`;
+      const keySuffix = collabsId ? `${code}-${collabsId}` : code;
+      const appliedKey = `sb-affiliate-discount-applied-${keySuffix}`;
+      const pendingKey = `sb-affiliate-discount-pending-${keySuffix}`;
 
       try {
         if (window.sessionStorage.getItem(appliedKey) === '1') return;
@@ -284,8 +289,12 @@
         return;
       }
 
-      const destination = `/discount/${encodeURIComponent(code)}?redirect=${encodeURIComponent(redirectUrl)}`;
-      window.location.replace(destination);
+      const discountUrl = new URL(`/discount/${encodeURIComponent(code)}`, window.location.origin);
+      discountUrl.searchParams.set('redirect', redirectUrl);
+      if (collabsId) {
+        discountUrl.searchParams.set('dt_id', collabsId);
+      }
+      window.location.replace(`${discountUrl.pathname}${discountUrl.search}`);
     })();
   </script>
 {% endif %}
