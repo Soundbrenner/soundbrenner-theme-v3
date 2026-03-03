@@ -1,7 +1,6 @@
 {% assign hero_card_fallback_image_desktop = 'placeholder-hero-card-desktop.jpg' | asset_url %}
 {% assign hero_card_fallback_image_mobile = 'placeholder-hero-card-mobile.jpg' | asset_url %}
 {% assign hero_card_use_seasonal = section.settings.use_seasonal_hero_card %}
-{% assign hero_card_use_affiliate_metaobject = section.settings.use_affiliate_metaobject %}
 {% assign hero_card_use_resource_copy = section.settings.use_resource_title_description %}
 {% assign hero_card_use_product_metaobjects = section.settings.use_product_page_metaobjects %}
 {% assign hero_card_product_mode = false %}
@@ -18,6 +17,11 @@
 {% assign affiliate_name_token = '{{ Affiliate name }}' %}
 {% assign sitewide_seasonal_discount_depth = settings.sitewide_seasonal_discount_depth | default: 48 | strip %}
 {% assign sitewide_affiliate_discount_depth = settings.sitewide_affiliate_discount_depth | default: 20 | strip %}
+{% assign hero_card_enable_affiliate_cookie_mode = false %}
+{% assign hero_card_seasonal_kicker_template = '' %}
+{% assign hero_card_seasonal_headline_template = '' %}
+{% assign hero_card_seasonal_subheadline_template = '' %}
+{% assign hero_card_seasonal_button_label_template = '' %}
 {% assign hero_card_affiliate_metaobject = blank %}
 {% if request.page_type == 'page' and page != blank %}
   {% assign hero_card_affiliate_metaobject = page.metafields.custom.affiliate.value | default: page.metafields.custom.affiliate %}
@@ -31,16 +35,6 @@
 {% assign hero_card_is_affiliate_page = false %}
 {% if hero_card_affiliate_metaobject != blank %}
   {% assign hero_card_is_affiliate_page = true %}
-{% endif %}
-{% assign hero_card_affiliate_name = '' %}
-{% if hero_card_affiliate_metaobject != blank %}
-  {% assign hero_card_affiliate_name = hero_card_affiliate_metaobject.full_name.value | default: hero_card_affiliate_metaobject.full_name | strip %}
-  {% if hero_card_affiliate_name == blank %}
-    {% assign hero_card_affiliate_name = hero_card_affiliate_metaobject.discount_name.value | default: hero_card_affiliate_metaobject.discount_name | strip %}
-  {% endif %}
-{% endif %}
-{% if hero_card_affiliate_name == blank and page != blank %}
-  {% assign hero_card_affiliate_name = page.title | strip %}
 {% endif %}
 {% assign hero_card_shipping_country_fallback = 'sb.cart.your_country' | t %}
 {% assign hero_card_shipping_country_name = localization.country.name | default: localization.country.iso_code | default: hero_card_shipping_country_fallback %}
@@ -87,52 +81,6 @@
   {% else %}
     {% assign hero_card_hide_section = true %}
   {% endif %}
-{% elsif hero_card_use_affiliate_metaobject %}
-  {% if hero_card_is_affiliate_page %}
-    {% assign hero_card_source_image_desktop = hero_card_affiliate_metaobject.image_desktop.value | default: hero_card_affiliate_metaobject.image_desktop %}
-    {% assign hero_card_source_image_mobile = hero_card_affiliate_metaobject.image_mobile.value | default: hero_card_affiliate_metaobject.image_mobile %}
-    {% assign hero_card_kicker = section.settings.kicker %}
-    {% assign hero_card_headline = 'sb.hero_card.affiliate_headline' | t %}
-    {% assign hero_card_subheadline_free_shipping = settings.seasonal_hero_subheadline_free_shipping | strip %}
-    {% assign hero_card_subheadline_no_free_shipping = settings.seasonal_hero_subheadline_no_free_shipping | strip %}
-    {% assign hero_card_subheadline_blocked = settings.seasonal_hero_subheadline_blocked | strip %}
-    {% if hero_card_subheadline_free_shipping == blank %}
-      {% assign hero_card_subheadline_free_shipping = 'sb.hero_card.subheadline_free_shipping' | t %}
-    {% endif %}
-    {% if hero_card_subheadline_no_free_shipping == blank %}
-      {% assign hero_card_subheadline_no_free_shipping = 'sb.hero_card.subheadline_no_free_shipping' | t %}
-    {% endif %}
-    {% if hero_card_subheadline_blocked == blank %}
-      {% assign hero_card_subheadline_blocked = 'sb.hero_card.subheadline_blocked' | t %}
-    {% endif %}
-    {% if hero_card_shipping_is_blocked %}
-      {% assign hero_card_subheadline = hero_card_subheadline_blocked %}
-    {% elsif hero_card_shipping_has_free_shipping %}
-      {% assign hero_card_subheadline = hero_card_subheadline_free_shipping %}
-    {% else %}
-      {% assign hero_card_subheadline = hero_card_subheadline_no_free_shipping %}
-    {% endif %}
-    {% assign hero_card_button_label = settings.seasonal_hero_button_label %}
-    {% assign hero_card_button_link = settings.seasonal_hero_button_link %}
-    {% if hero_card_button_label != blank %}
-      {% assign hero_card_show_button = true %}
-    {% else %}
-      {% assign hero_card_show_button = false %}
-    {% endif %}
-    {% assign hero_card_kicker = hero_card_kicker | replace: affiliate_name_token, hero_card_affiliate_name %}
-    {% assign hero_card_headline = hero_card_headline | replace: affiliate_name_token, hero_card_affiliate_name %}
-    {% assign hero_card_resolved_sale_name = hero_card_affiliate_name %}
-    {% assign hero_card_resolved_discount_depth = sitewide_affiliate_discount_depth %}
-    {% assign hero_card_subheadline = hero_card_subheadline | replace: affiliate_name_token, hero_card_resolved_sale_name %}
-    {% assign hero_card_subheadline = hero_card_subheadline | replace: shipping_country_token, hero_card_shipping_country_name %}
-    {% assign hero_card_subheadline = hero_card_subheadline | replace: free_shipping_threshold_token, hero_card_free_shipping_threshold_display %}
-    {% assign hero_card_headline = hero_card_headline | replace: sale_name_token, hero_card_resolved_sale_name %}
-    {% assign hero_card_subheadline = hero_card_subheadline | replace: sale_name_token, hero_card_resolved_sale_name %}
-    {% assign hero_card_subheadline = hero_card_subheadline | replace: sitewide_discount_depth_token, hero_card_resolved_discount_depth %}
-    {% assign hero_card_button_label = hero_card_button_label | replace: sale_name_token, hero_card_resolved_sale_name %}
-  {% else %}
-    {% assign hero_card_hide_section = true %}
-  {% endif %}
 {% elsif hero_card_use_seasonal %}
   {% if hero_card_is_affiliate_page %}
     {% assign hero_card_hide_section = true %}
@@ -162,6 +110,11 @@
     {% endif %}
     {% assign hero_card_button_label = settings.seasonal_hero_button_label %}
     {% assign hero_card_button_link = settings.seasonal_hero_button_link %}
+    {% assign hero_card_seasonal_kicker_template = hero_card_kicker %}
+    {% assign hero_card_seasonal_headline_template = hero_card_headline %}
+    {% assign hero_card_seasonal_subheadline_template = hero_card_subheadline %}
+    {% assign hero_card_seasonal_button_label_template = hero_card_button_label %}
+    {% assign hero_card_enable_affiliate_cookie_mode = true %}
     {% assign hero_card_resolved_sale_name = seasonal_sale_name %}
     {% assign hero_card_resolved_discount_depth = sitewide_seasonal_discount_depth %}
     {% assign hero_card_kicker = hero_card_kicker | replace: sale_name_token, hero_card_resolved_sale_name %}
@@ -231,7 +184,7 @@
 {% assign hero_card_show_app_download_google_play = false %}
 {% assign hero_card_show_app_download_china = false %}
 {% assign hero_card_show_app_downloads = false %}
-{% if hero_card_product_mode == false and hero_card_use_seasonal == false and hero_card_use_affiliate_metaobject == false and hero_card_use_resource_copy == false %}
+{% if hero_card_product_mode == false and hero_card_use_seasonal == false and hero_card_use_resource_copy == false %}
   {% assign hero_card_app_download_mode = true %}
   {% assign hero_card_show_app_download_qr = section.settings.show_app_download_qr %}
   {% assign hero_card_show_app_download_app_store = section.settings.show_app_download_app_store %}
@@ -263,6 +216,21 @@
         data-initial-variant-id="{{ hero_card_selected_variant.id }}"
         data-initial-price="{{ hero_card_selected_variant.price | default: 0 }}"
         data-initial-compare-price="{{ hero_card_selected_variant.compare_at_price | default: 0 }}"
+      {% endif %}
+      {% if hero_card_enable_affiliate_cookie_mode %}
+        data-hero-card-seasonal="true"
+        data-sale-name-token="{{ sale_name_token | escape }}"
+        data-sitewide-discount-token="{{ sitewide_discount_depth_token | escape }}"
+        data-shipping-country-token="{{ shipping_country_token | escape }}"
+        data-free-shipping-threshold-token="{{ free_shipping_threshold_token | escape }}"
+        data-affiliate-name-token="{{ affiliate_name_token | escape }}"
+        data-affiliate-discount-depth="{{ sitewide_affiliate_discount_depth | escape }}"
+        data-shipping-country-name="{{ hero_card_shipping_country_name | escape }}"
+        data-free-shipping-threshold-display="{{ hero_card_free_shipping_threshold_display | escape }}"
+        data-seasonal-kicker-template="{{ hero_card_seasonal_kicker_template | escape }}"
+        data-seasonal-headline-template="{{ hero_card_seasonal_headline_template | escape }}"
+        data-seasonal-subheadline-template="{{ hero_card_seasonal_subheadline_template | escape }}"
+        data-seasonal-button-label-template="{{ hero_card_seasonal_button_label_template | escape }}"
       {% endif %}
       style="--sb-hero-card-bg-mobile: url('{{ hero_card_mobile_image }}'); --sb-hero-card-bg-desktop: url('{{ hero_card_desktop_image }}');"
     >
@@ -571,6 +539,136 @@
 
 {% javascript %}
   (() => {
+    const affiliateAnnouncementCookieName = 'sb_affiliate_announcement_state';
+
+    const readCookie = (name) => {
+      const cookieSource = `${document.cookie || ''}`;
+      if (!cookieSource) return '';
+      const cookieParts = cookieSource.split(';');
+      for (const cookiePart of cookieParts) {
+        const trimmedPart = cookiePart.trim();
+        if (!trimmedPart.startsWith(`${name}=`)) continue;
+        return trimmedPart.slice(name.length + 1);
+      }
+      return '';
+    };
+
+    const parseJson = (value) => {
+      try {
+        return JSON.parse(value);
+      } catch (_) {
+        return null;
+      }
+    };
+
+    const getAffiliateAnnouncementState = () => {
+      const rawCookieValue = readCookie(affiliateAnnouncementCookieName);
+      if (!rawCookieValue) return null;
+
+      const decodedCookieValue = (() => {
+        try {
+          return decodeURIComponent(rawCookieValue);
+        } catch (_) {
+          return rawCookieValue;
+        }
+      })();
+
+      const parsedState = parseJson(decodedCookieValue);
+      if (!parsedState || typeof parsedState !== 'object') return null;
+
+      const discountCode = `${parsedState.discountCode || ''}`.trim();
+      const affiliateName = `${parsedState.affiliateName || discountCode}`.trim();
+      const expiresAt = Number.parseInt(`${parsedState.expiresAt || ''}`, 10);
+      if (!discountCode || !affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return null;
+
+      return {
+        discountCode,
+        affiliateName,
+        heroDesktopImage: `${parsedState.heroDesktopImage || ''}`.trim(),
+        heroMobileImage: `${parsedState.heroMobileImage || ''}`.trim(),
+      };
+    };
+
+    const replaceToken = (input, token, replacement) => {
+      const source = `${input || ''}`;
+      const target = `${token || ''}`;
+      if (!target) return source;
+      return source.split(target).join(`${replacement || ''}`);
+    };
+
+    const escapeCssUrl = (value) => `${value || ''}`.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+
+    const applyAffiliateModeToSeasonalHeroCard = (card, state) => {
+      if (!(card instanceof HTMLElement) || !state) return;
+
+      const signature = `${state.discountCode}:${state.affiliateName}:${state.heroDesktopImage}:${state.heroMobileImage}`;
+      if (card.dataset.heroCardAffiliateSignature === signature) return;
+      card.dataset.heroCardAffiliateSignature = signature;
+
+      const affiliateName = `${state.affiliateName || ''}`.trim();
+      const affiliateNameToken = `${card.dataset.affiliateNameToken || ''}`;
+      const saleNameToken = `${card.dataset.saleNameToken || ''}`;
+      const sitewideDiscountToken = `${card.dataset.sitewideDiscountToken || ''}`;
+      const shippingCountryToken = `${card.dataset.shippingCountryToken || ''}`;
+      const freeShippingThresholdToken = `${card.dataset.freeShippingThresholdToken || ''}`;
+      const affiliateDiscountDepth = `${card.dataset.affiliateDiscountDepth || ''}`;
+      const shippingCountryName = `${card.dataset.shippingCountryName || ''}`;
+      const freeShippingThresholdDisplay = `${card.dataset.freeShippingThresholdDisplay || ''}`;
+
+      const resolveTemplate = (templateValue) => {
+        let resolved = `${templateValue || ''}`;
+        resolved = replaceToken(resolved, affiliateNameToken, affiliateName);
+        resolved = replaceToken(resolved, saleNameToken, affiliateName);
+        resolved = replaceToken(resolved, sitewideDiscountToken, affiliateDiscountDepth);
+        resolved = replaceToken(resolved, shippingCountryToken, shippingCountryName);
+        resolved = replaceToken(resolved, freeShippingThresholdToken, freeShippingThresholdDisplay);
+        return resolved.trim();
+      };
+
+      const kickerElement = card.querySelector('.sb-framing-card__kicker');
+      const headlineElement = card.querySelector('.sb-framing-card__headline');
+      const subheadlineElement = card.querySelector('.sb-framing-card__subheadline');
+      const buttonLabelElement = card.querySelector('.sb-framing-card__button .sb-button-radiant__label');
+
+      if (kickerElement) {
+        const kickerText = resolveTemplate(card.dataset.seasonalKickerTemplate);
+        if (kickerText) kickerElement.textContent = kickerText;
+      }
+
+      if (headlineElement) {
+        const headlineText = resolveTemplate(card.dataset.seasonalHeadlineTemplate);
+        if (headlineText) headlineElement.textContent = headlineText;
+      }
+
+      if (subheadlineElement) {
+        const subheadlineText = resolveTemplate(card.dataset.seasonalSubheadlineTemplate);
+        if (subheadlineText) subheadlineElement.textContent = subheadlineText;
+      }
+
+      if (buttonLabelElement) {
+        const buttonLabelText = resolveTemplate(card.dataset.seasonalButtonLabelTemplate);
+        if (buttonLabelText) buttonLabelElement.textContent = buttonLabelText;
+      }
+
+      if (state.heroMobileImage) {
+        card.style.setProperty('--sb-hero-card-bg-mobile', `url("${escapeCssUrl(state.heroMobileImage)}")`);
+      }
+
+      if (state.heroDesktopImage) {
+        card.style.setProperty('--sb-hero-card-bg-desktop', `url("${escapeCssUrl(state.heroDesktopImage)}")`);
+      }
+    };
+
+    const seasonalCards = Array.from(document.querySelectorAll('[data-hero-card-seasonal="true"]'));
+    if (seasonalCards.length) {
+      const affiliateState = getAffiliateAnnouncementState();
+      if (affiliateState) {
+        seasonalCards.forEach((card) => {
+          applyAffiliateModeToSeasonalHeroCard(card, affiliateState);
+        });
+      }
+    }
+
     const cards = Array.from(document.querySelectorAll('[data-hero-card-product-mode]'));
     if (!cards.length) return;
 
@@ -755,38 +853,31 @@
     },
     {
       "type": "checkbox",
-      "id": "use_affiliate_metaobject",
-      "label": "Use affiliate discount metaobject",
-      "default": false,
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
-    },
-    {
-      "type": "checkbox",
       "id": "use_resource_title_description",
       "label": "Use Shopify page title and description",
       "default": false,
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "checkbox",
       "id": "use_product_page_metaobjects",
       "label": "Use product page metaobject",
       "default": false,
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false }}"
     },
     {
       "type": "image_picker",
       "id": "background_image_desktop",
       "label": "Background image desktop",
       "info": "Target minimum 1240x380 at 2x export (2480x760).",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "image_picker",
       "id": "background_image_mobile",
       "label": "Background image mobile",
       "info": "Target minimum 402x380 at 3x export (1206x1140).",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "text",
@@ -798,27 +889,27 @@
       "type": "textarea",
       "id": "headline",
       "label": "Headline",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "textarea",
       "id": "subheadline",
       "label": "Subheadline",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "checkbox",
       "id": "show_button",
       "label": "Show button",
       "default": false,
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "text",
       "id": "button_label",
       "label": "Button label",
       "default": "Placeholder",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "select",
@@ -829,7 +920,7 @@
         { "value": "large", "label": "Large" },
         { "value": "medium", "label": "Medium" }
       ],
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "select",
@@ -841,41 +932,41 @@
         { "value": "leading", "label": "Leading" },
         { "value": "trailing", "label": "Trailing" }
       ],
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "url",
       "id": "button_link",
       "label": "Button link",
-      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false and section.settings.use_affiliate_metaobject == false }}"
+      "visible_if": "{{ section.settings.use_seasonal_hero_card == false and section.settings.show_button and section.settings.use_product_page_metaobjects == false }}"
     },
     {
       "type": "checkbox",
       "id": "show_app_download_qr",
       "label": "Show app download QR code",
       "default": false,
-      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
+      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false }}"
     },
     {
       "type": "checkbox",
       "id": "show_app_download_app_store",
       "label": "Show App Store download button",
       "default": false,
-      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
+      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false }}"
     },
     {
       "type": "checkbox",
       "id": "show_app_download_google_play",
       "label": "Show Google Play download button",
       "default": false,
-      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
+      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false }}"
     },
     {
       "type": "checkbox",
       "id": "show_app_download_china",
       "label": "Show China download button",
       "default": false,
-      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_affiliate_metaobject == false and section.settings.use_resource_title_description == false }}"
+      "visible_if": "{{ section.settings.use_product_page_metaobjects == false and section.settings.use_seasonal_hero_card == false and section.settings.use_resource_title_description == false }}"
     }
   ],
   "presets": [

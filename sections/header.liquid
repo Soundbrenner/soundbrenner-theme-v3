@@ -53,6 +53,8 @@
   assign header_affiliate_name = ''
   assign header_affiliate_discount_code = ''
   assign header_affiliate_collabs_id = ''
+  assign header_affiliate_image_desktop_url = ''
+  assign header_affiliate_image_mobile_url = ''
   if header_affiliate_metaobject != blank
     assign header_affiliate_name = header_affiliate_metaobject.full_name.value | default: header_affiliate_metaobject.full_name | strip
     if header_affiliate_name == blank
@@ -60,6 +62,18 @@
     endif
     assign header_affiliate_discount_code = header_affiliate_metaobject.discount_name.value | default: header_affiliate_metaobject.discount_name | strip
     assign header_affiliate_collabs_id = header_affiliate_metaobject.collabs_id.value | default: header_affiliate_metaobject.collabs_id | strip
+
+    assign header_affiliate_image_desktop_source = header_affiliate_metaobject.image_desktop.value | default: header_affiliate_metaobject.image_desktop
+    if header_affiliate_image_desktop_source != blank
+      assign header_affiliate_image_desktop_width = header_affiliate_image_desktop_source.width | default: 2480 | at_most: 2480
+      assign header_affiliate_image_desktop_url = header_affiliate_image_desktop_source | image_url: width: header_affiliate_image_desktop_width
+    endif
+
+    assign header_affiliate_image_mobile_source = header_affiliate_metaobject.image_mobile.value | default: header_affiliate_metaobject.image_mobile
+    if header_affiliate_image_mobile_source != blank
+      assign header_affiliate_image_mobile_width = header_affiliate_image_mobile_source.width | default: 1206 | at_most: 1206
+      assign header_affiliate_image_mobile_url = header_affiliate_image_mobile_source | image_url: width: header_affiliate_image_mobile_width
+    endif
   endif
   if header_affiliate_name == blank and page != blank
     assign header_affiliate_name = page.title | strip
@@ -307,6 +321,8 @@
   data-affiliate-name-token="{{ affiliate_name_token | escape }}"
   data-affiliate-discount-code="{{ header_affiliate_discount_code | escape }}"
   data-affiliate-name="{{ header_affiliate_name | escape }}"
+  data-affiliate-image-desktop="{{ header_affiliate_image_desktop_url | escape }}"
+  data-affiliate-image-mobile="{{ header_affiliate_image_mobile_url | escape }}"
   data-affiliate-cookie-duration-hours="{{ affiliate_discount_cookie_duration_hours }}"
   {% if show_announcement %}
     style="--sb-announcement-background: {{ announcement_gradient }};"
@@ -5332,6 +5348,8 @@
     const affiliateAnnouncementCookieName = 'sb_affiliate_announcement_state';
     const affiliatePageDiscountCode = `${header.dataset.affiliateDiscountCode || ''}`.trim();
     const affiliatePageName = `${header.dataset.affiliateName || ''}`.trim();
+    const affiliatePageImageDesktop = `${header.dataset.affiliateImageDesktop || ''}`.trim();
+    const affiliatePageImageMobile = `${header.dataset.affiliateImageMobile || ''}`.trim();
     const affiliateNameToken = `${header.dataset.affiliateNameToken || ''}`;
     const affiliateAnnouncementTemplate = `${header.dataset.affiliateAnnouncementTemplate || ''}`;
     const affiliateAnnouncementGradient = `${header.dataset.affiliateAnnouncementGradient || ''}`;
@@ -5389,12 +5407,16 @@
 
       const discountCode = `${parsedState.discountCode || ''}`.trim();
       const affiliateName = `${parsedState.affiliateName || discountCode}`.trim();
+      const heroDesktopImage = `${parsedState.heroDesktopImage || ''}`.trim();
+      const heroMobileImage = `${parsedState.heroMobileImage || ''}`.trim();
       const expiresAt = Number.parseInt(`${parsedState.expiresAt || ''}`, 10);
       if (!discountCode || !affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return null;
 
       return {
         discountCode,
         affiliateName,
+        heroDesktopImage,
+        heroMobileImage,
         expiresAt
       };
     };
@@ -5408,6 +5430,8 @@
       const nextState = {
         discountCode: `${state.discountCode || ''}`.trim(),
         affiliateName: `${state.affiliateName || state.discountCode || ''}`.trim(),
+        heroDesktopImage: `${state.heroDesktopImage || ''}`.trim(),
+        heroMobileImage: `${state.heroMobileImage || ''}`.trim(),
         expiresAt: Number.parseInt(`${state.expiresAt || ''}`, 10)
       };
       if (!nextState.discountCode || !nextState.affiliateName || !Number.isFinite(nextState.expiresAt) || nextState.expiresAt <= Date.now()) {
@@ -5498,6 +5522,8 @@
       writeAffiliateAnnouncementState({
         discountCode: affiliatePageDiscountCode,
         affiliateName: affiliatePageName || affiliatePageDiscountCode,
+        heroDesktopImage: affiliatePageImageDesktop,
+        heroMobileImage: affiliatePageImageMobile,
         expiresAt: Date.now() + affiliateAnnouncementDurationMs
       });
     }

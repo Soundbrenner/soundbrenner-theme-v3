@@ -13,7 +13,6 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
-        "use_affiliate_metaobject": false,
         "use_resource_title_description": true,
         "use_product_page_metaobjects": false,
         "background_image_desktop": "shopify://shop_images/Footer_flow_desktop.jpg",
@@ -240,7 +239,6 @@
       "type": "hero-card",
       "settings": {
         "use_seasonal_hero_card": false,
-        "use_affiliate_metaobject": false,
         "use_resource_title_description": false,
         "use_product_page_metaobjects": false,
         "background_image_desktop": "shopify://shop_images/Property_1_Contact_us_0ce733bb-15cd-498c-a133-043d9039f8af.jpg",
