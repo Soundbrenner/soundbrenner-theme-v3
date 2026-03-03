@@ -815,7 +815,7 @@
         "text_r7gJrb": {
           "type": "text",
           "settings": {
-            "text": "<p>Open the <strong>Microphone Tuner</strong> app and play a note. The device will detect the closest pitch and display its deviation in cents. As you adjust the pitch, the LED ring will change from red to green to indicate when the note is in tune.</p><p>To adjust the tuning reference (A4), press the bottom button and rotate the wheel to set your preferred frequency (default: 440 Hz).</p>"
+            "text": "<p>Open the <strong>Microphone tuner</strong> app and play a note. The device will detect the closest pitch and display its deviation in cents. As you adjust the pitch, the LED ring will change from red to green to indicate when the note is in tune.</p><p>To adjust the tuning reference (A4), press the bottom button and rotate the wheel to set your preferred frequency (default: 440 Hz).</p>"
           }
         },
         "image_D7bYPy": {
