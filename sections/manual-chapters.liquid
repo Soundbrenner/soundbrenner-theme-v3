@@ -401,6 +401,7 @@
                   assign tech_specs_group_entry = tech_specs_group_raw.value | default: tech_specs_group_raw.reference.value | default: tech_specs_group_raw.reference | default: tech_specs_group_raw
                   assign tech_specs_group_title = tech_specs_group_entry.tech_specs_title.value | default: tech_specs_group_entry.tech_specs_title | default: tech_specs_group_entry.title.value | default: tech_specs_group_entry.title | default: 'Tech specs'
                   assign tech_specs_group_title = tech_specs_group_title | append: '' | strip
+                  assign tech_specs_group_title_normalized = tech_specs_group_title | downcase | strip
                   assign tech_specs_group_items = tech_specs_group_entry.tech_specs_item.value | default: tech_specs_group_entry.tech_specs_item.references | default: tech_specs_group_entry.tech_specs_item
                   assign tech_specs_group_has_rows = false
                 %}
@@ -430,7 +431,9 @@
                 {% endif %}
 
                 <section class="sb-manual-chapters__tech-specs-group" data-sb-reveal-item>
-                  <h3 class="sb-manual-chapters__tech-specs-title font-body weight-bold">{{ tech_specs_group_title }}</h3>
+                  {% if tech_specs_group_title != blank and tech_specs_group_title_normalized != 'tech specs' %}
+                    <h3 class="sb-manual-chapters__tech-specs-title font-body weight-bold">{{ tech_specs_group_title }}</h3>
+                  {% endif %}
                   <div class="sb-manual-chapters__tech-specs-rows">
                     {% for tech_specs_line_raw in tech_specs_group_items %}
                       {% liquid
@@ -458,9 +461,12 @@
               {% liquid
                 assign tech_specs_title = tech_specs_root.tech_specs_title.value | default: tech_specs_root.tech_specs_title | default: 'Tech specs'
                 assign tech_specs_title = tech_specs_title | append: '' | strip
+                assign tech_specs_title_normalized = tech_specs_title | downcase | strip
               %}
               <section class="sb-manual-chapters__tech-specs-group" data-sb-reveal-item>
-                <h3 class="sb-manual-chapters__tech-specs-title font-body weight-bold">{{ tech_specs_title }}</h3>
+                {% if tech_specs_title != blank and tech_specs_title_normalized != 'tech specs' %}
+                  <h3 class="sb-manual-chapters__tech-specs-title font-body weight-bold">{{ tech_specs_title }}</h3>
+                {% endif %}
                 <div class="sb-manual-chapters__tech-specs-rows">
                   {% for tech_specs_line_raw in tech_specs_groups %}
                     {% liquid
