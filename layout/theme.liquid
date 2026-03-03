@@ -31,6 +31,70 @@
 >
   <head>
     {% render 'shogun-optimizer' %}
+    <script>
+      (() => {
+        const affiliateCookieName = 'sb_affiliate_announcement_state';
+        const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
+        const readCookie = (name) => {
+          const cookieSource = `${document.cookie || ''}`;
+          if (!cookieSource) return '';
+          const cookieParts = cookieSource.split(';');
+          for (const cookiePart of cookieParts) {
+            const trimmedPart = cookiePart.trim();
+            if (!trimmedPart.startsWith(`${name}=`)) continue;
+            return trimmedPart.slice(name.length + 1);
+          }
+          return '';
+        };
+        const parseJson = (value) => {
+          try {
+            return JSON.parse(value);
+          } catch (_) {
+            return null;
+          }
+        };
+
+        const rawCookieValue = readCookie(affiliateCookieName);
+        if (!rawCookieValue) return;
+
+        const decodedCookieValue = (() => {
+          try {
+            return decodeURIComponent(rawCookieValue);
+          } catch (_) {
+            return rawCookieValue;
+          }
+        })();
+
+        const parsedState = parseJson(decodedCookieValue);
+        if (!parsedState || typeof parsedState !== 'object') return;
+
+        const discountCode = `${parsedState.discountCode || ''}`.trim();
+        const affiliateName = `${parsedState.affiliateName || discountCode}`.trim();
+        const heroDesktopImage = `${parsedState.heroDesktopImage || ''}`.trim();
+        const heroMobileImage = `${parsedState.heroMobileImage || ''}`.trim();
+        const expiresAt = Number.parseInt(`${parsedState.expiresAt || ''}`, 10);
+        if (!discountCode || !affiliateName || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return;
+
+        const rootNode = document.documentElement;
+        if (rootNode instanceof HTMLElement) {
+          rootNode.classList.add(affiliateHeroPendingClass);
+        }
+
+        window.SBAffiliateAnnouncementState = {
+          discountCode,
+          affiliateName,
+          heroDesktopImage,
+          heroMobileImage,
+          expiresAt,
+        };
+      })();
+    </script>
+    <style>
+      html.sb-affiliate-hero-pending [data-hero-card-seasonal="true"] {
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
 
     {%- if settings.favicon != blank -%}
       <link
@@ -74,8 +138,8 @@
 
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
-    <script src="{{ 'sb-sticky-stack.js' | asset_url }}"></script>
-    <script src="{{ 'product-thumbnail-section-init.js' | asset_url }}"></script>
+    <script src="{{ 'sb-sticky-stack.js' | asset_url }}" defer></script>
+    <script src="{{ 'product-thumbnail-section-init.js' | asset_url }}" defer></script>
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}

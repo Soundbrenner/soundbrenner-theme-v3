@@ -9,6 +9,7 @@
  */
 {
   "404": {
+    "title": "404",
     "not_found": "페이지를 찾을 수 없습니다.",
     "back_to_shopping": "쇼핑으로 돌아가기"
   },
@@ -262,6 +263,7 @@
       "instagram": "인스타그램",
       "links": "소셜 링크",
       "tiktok": "틱톡",
+      "x": "X",
       "youtube": "유튜브"
     },
     "trustpilot": {

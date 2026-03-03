@@ -702,36 +702,86 @@
       }
     };
 
-    const applyAffiliateModeToAllSeasonalHeroCards = () => {
-      const seasonalCards = Array.from(document.querySelectorAll('[data-hero-card-seasonal="true"]'));
-      if (!seasonalCards.length) return;
+    const getActiveAffiliateAnnouncementState = () => (
+      getPrefetchedAffiliateAnnouncementState() || getAffiliateAnnouncementState()
+    );
 
-      const affiliateState = getPrefetchedAffiliateAnnouncementState() || getAffiliateAnnouncementState();
-      if (!affiliateState) return;
+    const applyAffiliateModeToAllSeasonalHeroCards = (affiliateState = getActiveAffiliateAnnouncementState()) => {
+      const seasonalCards = Array.from(document.querySelectorAll('[data-hero-card-seasonal="true"]'));
+      if (!seasonalCards.length || !affiliateState) return false;
 
       seasonalCards.forEach((card) => {
         applyAffiliateModeToSeasonalHeroCard(card, affiliateState);
       });
+
+      return true;
     };
 
-    applyAffiliateModeToAllSeasonalHeroCards();
-
     const rootNode = document.documentElement;
-    if (rootNode instanceof HTMLElement && rootNode.classList.contains(affiliateHeroPendingClass)) {
-      const revealSeasonalHeroCards = () => {
-        applyAffiliateModeToAllSeasonalHeroCards();
+    const resolveAffiliateHeroState = () => {
+      const affiliateState = getActiveAffiliateAnnouncementState();
+      if (!affiliateState) {
+        if (rootNode instanceof HTMLElement) {
+          rootNode.classList.remove(affiliateHeroPendingClass);
+        }
+        return true;
+      }
+
+      const hasAppliedAffiliateState = applyAffiliateModeToAllSeasonalHeroCards(affiliateState);
+      if (hasAppliedAffiliateState && rootNode instanceof HTMLElement && rootNode.classList.contains(affiliateHeroPendingClass)) {
         rootNode.classList.remove(affiliateHeroPendingClass);
+      }
+      return hasAppliedAffiliateState;
+    };
+
+    const bindAffiliateHeroRecovery = () => {
+      if (window[affiliateFinalizeBindingKey]) return;
+      window[affiliateFinalizeBindingKey] = true;
+
+      let observer = null;
+      let timeoutId = null;
+
+      const cleanup = () => {
         window[affiliateFinalizeBindingKey] = false;
+        document.removeEventListener('DOMContentLoaded', runRecovery);
+        window.removeEventListener('load', runRecovery);
+        window.removeEventListener('pageshow', runRecovery);
+        if (observer) observer.disconnect();
+        if (timeoutId) window.clearTimeout(timeoutId);
       };
 
-      if (document.readyState === 'loading') {
-        if (!window[affiliateFinalizeBindingKey]) {
-          window[affiliateFinalizeBindingKey] = true;
-          document.addEventListener('DOMContentLoaded', revealSeasonalHeroCards, { once: true });
+      const runRecovery = () => {
+        if (resolveAffiliateHeroState()) {
+          cleanup();
         }
-      } else {
-        revealSeasonalHeroCards();
+      };
+
+      document.addEventListener('DOMContentLoaded', runRecovery);
+      window.addEventListener('load', runRecovery);
+      window.addEventListener('pageshow', runRecovery);
+
+      if (typeof MutationObserver === 'function') {
+        observer = new MutationObserver(runRecovery);
+        observer.observe(document.documentElement, { childList: true, subtree: true });
       }
+
+      timeoutId = window.setTimeout(cleanup, 3000);
+    };
+
+    const affiliateState = getActiveAffiliateAnnouncementState();
+    const hasResolvedAffiliateHeroState = resolveAffiliateHeroState();
+
+    if (affiliateState) {
+      window.addEventListener('load', () => {
+        applyAffiliateModeToAllSeasonalHeroCards(getActiveAffiliateAnnouncementState() || affiliateState);
+        if (rootNode instanceof HTMLElement && rootNode.classList.contains(affiliateHeroPendingClass)) {
+          rootNode.classList.remove(affiliateHeroPendingClass);
+        }
+      }, { once: true });
+    }
+
+    if (!hasResolvedAffiliateHeroState && affiliateState) {
+      bindAffiliateHeroRecovery();
     }
 
     const cards = Array.from(document.querySelectorAll('[data-hero-card-product-mode]'));
