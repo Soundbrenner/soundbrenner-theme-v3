@@ -122,10 +122,6 @@
             "hide_accordion_and_title": false
           }
         },
-        "divider_4": {
-          "type": "divider",
-          "settings": {}
-        },
         "subheading_wXKcBY": {
           "type": "subheading",
           "settings": {
@@ -559,7 +555,6 @@
         "divider_3",
         "subheading_nfVETd",
         "tech_specs_accordions_dj3sQ",
-        "divider_4",
         "subheading_wXKcBY",
         "body_5",
         "image_K3PQ6p",
