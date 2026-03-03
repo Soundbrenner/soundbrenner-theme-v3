@@ -1071,7 +1071,7 @@
         "text_6mCaUq": {
           "type": "text",
           "settings": {
-            "text": "<p>If your device shows unexpected behavior, hold both buttons for 5 seconds and keep them pressed until recovery mode launches. Select restart with the bottom button to soft restart. If your device is unresponsive, try performing a hard restart.</p>"
+            "text": "<p>If your device behaves unexpectedly, press and hold both buttons for 5 seconds, and continue holding them until Recovery Mode appears.</p><p>Use the bottom button to select <strong>Restart</strong> and perform a soft restart.</p><p>If the device remains unresponsive, perform a hard restart.</p>"
           }
         },
         "image_L8yyXG": {
