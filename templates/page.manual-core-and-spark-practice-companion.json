@@ -765,7 +765,7 @@
             "label": "Soundbrenner shop",
             "button_size": "large",
             "icon_position": "none",
-            "link": "https://www.soundbrenner.com/shop"
+            "link": "shopify://collections/all"
           }
         },
         "text_awM8te": {
@@ -1001,10 +1001,16 @@
             "image": "shopify://shop_images/Product_Core_2_Order_28.jpg"
           }
         },
+        "subheading_D9MaqY": {
+          "type": "subheading",
+          "settings": {
+            "heading": "Hard restart"
+          }
+        },
         "text_nGgRmi": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Hard restart</strong></p><p>This only works if your Core/Spark is unresponsive. Make sure the charging cable is connected to a power source. Then attach the charging cable to the magnetic port. Detach it and attach the charging cable a second time to complete the hard restart.</p>"
+            "text": "<p>This only works if your Core/Spark is unresponsive. Make sure the charging cable is connected to a power source. Then attach the charging cable to the magnetic port. Detach it and attach the charging cable a second time to complete the hard restart.</p>"
           }
         },
         "image_7Wy3B7": {
@@ -1289,6 +1295,7 @@
         "subheading_qTRhUi",
         "text_6mCaUq",
         "image_L8yyXG",
+        "subheading_D9MaqY",
         "text_nGgRmi",
         "image_7Wy3B7",
         "divider_89iXCF",
