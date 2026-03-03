@@ -97,6 +97,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "core-2-stone-gray",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -123,6 +125,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "core-steel-2-jet-black",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -149,6 +153,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "spark-berry-blue",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -348,7 +354,7 @@
         "accordion_item_P6NyaD": {
           "type": "accordion_item",
           "settings": {
-            "question": "Core battery maintenance guide",
+            "question": "Battery maintenance guide",
             "answer": "<p>When not in use, the battery in your wearable will slowly discharge. If the device remains unused for an extended period (for example, 3 months or longer), the battery may become over-discharged. This can cause permanent damage to the battery’s internal components. In severe cases, the battery and the device may no longer function. This behavior is common to all modern lithium batteries.</p><p>To prevent this, charge and discharge your wearable at least once every three months to maintain battery health. If you use your device regularly, such as at least once per week, no additional precautions are necessary.</p><h4>What happens if the battery is permanently damaged?</h4><p>Currently, the battery in our wearables cannot be replaced. This is due to the use of adhesives to improve water resistance. Opening the device may damage internal mechanical components, preventing reassembly.</p><p>We aim to make batteries replaceable in future products. However, achieving this in a compact and tightly integrated form factor presents significant engineering challenges.</p><p>For this reason, it is especially important to take proper care of your wearable’s battery.</p><p>If you suspect that your device’s battery has been damaged, please contact our support team. We will do our best to assist you: <a href=\"https://support.soundbrenner.com/hc/en-us/requests/new\" target=\"_blank\">contact support</a></p>"
           }
         },
@@ -458,7 +464,7 @@
         "text_dydTbg": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Top button</strong></p><ul><li>Go backward</li><li>Stop editing selection</li><li>Power on & power off (long press)</li></ul><p><strong>Bottom button</strong></p><ul><li>Go forward</li><li>Start editing selection</li><li>Open app dock</li></ul><p><strong>Wheel</strong></p><ul><li>Navigate the app dock</li><li>Change values while editing a selection</li></ul><p><strong>Touch surface</strong></p><ul><li>Tap the soundwave twice quickly to start or pause a feature while inside an app</li><li>Tap the soundwave three or more times to tap tempo while inside the \"Metronome\" app</li></ul>"
+            "text": "<p><strong>Top button</strong></p><ul><li>Go backward</li><li>Stop editing selection</li><li>Power on & power off (long press)</li></ul><p><strong>Bottom button</strong></p><ul><li>Go forward</li><li>Start editing selection</li><li>Open app dock</li></ul><p><strong>Wheel</strong></p><ul><li>Navigate the app dock</li><li>Change values while editing a selection</li></ul><p><strong>Touch surface</strong></p><ul><li>Tap the soundwave twice quickly to start or pause a feature while inside an app</li><li>Tap the soundwave three or more times to tap tempo while inside the <strong>Metronome</strong> app</li></ul>"
           }
         },
         "divider_8GrH8j": {
@@ -553,6 +559,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": false,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "",
             "item_1_image": "shopify://shop_images/Property_1_Battery_level.png",
             "item_1_text": "Battery level",
@@ -965,7 +973,7 @@
         "text_p6RUM9": {
           "type": "text",
           "settings": {
-            "text": "<p>3. Press the bottom button to select the current media you're playing. Twist the wheel forward for next, backward for previous.<br/></p><p>4. Press the bottom button again to select the volume. Twist the wheel forward to increase, backward to decrease.</p>"
+            "text": "<p>3. Press the bottom button to select the current media playing. Twist the wheel forward for next, backward for previous.</p><p>4. Press the bottom button again to select the volume. Twist the wheel forward to increase, backward to decrease.</p>"
           }
         },
         "image_ctxrVb": {
@@ -987,7 +995,7 @@
         "text_8awQtz": {
           "type": "text",
           "settings": {
-            "text": "<p>Press the bottom button to select if you want to edit the hours, minutes or seconds. Once selected, use the wheel to edit the time. Tap the soundwave twice quickly to start or pause the timer.</p>"
+            "text": "<p>Press the bottom button to select whether you want to adjust the hours, minutes, or seconds. Once selected, rotate the wheel to set the desired time.</p><p>Tap the soundwave icon twice quickly to start or pause the timer.</p>"
           }
         },
         "subheading_wqcpNK": {
@@ -1011,7 +1019,7 @@
         "text_hdLRXH": {
           "type": "text",
           "settings": {
-            "text": "<p>To create an alarm, select \"New alarm\" with the wheel and press the bottom button. Use the wheel to set the time of your alarm. With the bottom button, select which days the alarm should be active and turn each on by twisting the wheel right. The alarm will be active on days that are underlined. If no days are underlined, the alarm will be by default active on all days. </p><p>Change the state of the alarm by selecting \"On\" with the bottom button. Twist the wheel to the right to select \"Off\" or \"Delete\". Confirm your selection by pressing the bottom button.</p>"
+            "text": "<p>To create an alarm, rotate the wheel to select <strong>New alarm</strong>, then press the bottom button to confirm.</p><p>Use the wheel to set the desired time. Press the bottom button to select the days on which the alarm should be active. Rotate the wheel to the right to enable a specific day. Active days are indicated by an underline. If no days are underlined, the alarm is active every day by default.</p><p>To change the alarm status, select <strong>On</strong> using the bottom button. Rotate the wheel to choose <strong>Off</strong> or <strong>Delete</strong>, then press the bottom button to confirm your selection.</p>"
           }
         },
         "subheading_8T3AUg": {
@@ -1023,7 +1031,7 @@
         "text_DcDGni": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Airplane mode</strong></p><p>Disable all radio signals such as Bluetooth. While airplane mode is on, your device won’t be able to communicate with your mobile device.</p><p><strong>Bluetooth</strong></p><p>Shows your current connection status. Press the bottom button to unpair and make your device ready to pair again.</p><p><strong>Factory reset</strong></p><p>This will erase all data and preferences and reset the Core/Spark back to factory settings. The device will be locked until the setup is completed with the Soundbrenner app.</p>"
+            "text": "<p><strong>Airplane mode</strong></p><p>Disables all wireless communication, including Bluetooth. When Airplane Mode is enabled, the device cannot connect to your mobile device.</p><p><strong>Bluetooth</strong></p><p>Displays the current connection status. Press the bottom button to unpair the device and make it available for pairing again.</p><p><strong>Factory reset</strong></p><p>Erases all data and preferences and restores the Core / Spark to its factory settings. After a factory reset, the device will be locked until setup is completed again using the Soundbrenner app.</p>"
           }
         },
         "divider_G4W7PG": {
@@ -1071,13 +1079,13 @@
         "text_6mCaUq": {
           "type": "text",
           "settings": {
-            "text": "<p>If your device shows unexpected behavior, hold both buttons for 5 seconds and keep them pressed until recovery mode launches. Select restart with the bottom button to soft restart. If your device is unresponsive, try performing a hard restart.</p>"
+            "text": "<p>If your device behaves unexpectedly, press and hold both buttons for 5 seconds, and continue holding them until Recovery Mode appears.</p><p>Use the bottom button to select <strong>Restart</strong> and perform a soft restart.</p><p>If the device remains unresponsive, perform a hard restart.</p>"
           }
         },
         "image_L8yyXG": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Core_2_Order_28.jpg"
+            "image": "shopify://shop_images/Product_Core_2_Order_28_774d1249-6672-45a8-a36f-916890b9c4cf.jpg"
           }
         },
         "subheading_D9MaqY": {
@@ -1089,7 +1097,7 @@
         "text_nGgRmi": {
           "type": "text",
           "settings": {
-            "text": "<p>This only works if your Core/Spark is unresponsive. Make sure the charging cable is connected to a power source. Then attach the charging cable to the magnetic port. Detach it and attach the charging cable a second time to complete the hard restart.</p>"
+            "text": "<p>This procedure should only be used if your Core / Spark is unresponsive.</p><p>Ensure that the charging cable is connected to a power source. Attach the cable to the magnetic port on the device, then detach it. Immediately reattach the cable a second time to initiate the hard restart.</p>"
           }
         },
         "image_7Wy3B7": {
