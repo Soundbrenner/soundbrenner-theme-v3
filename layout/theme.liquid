@@ -35,6 +35,7 @@
       (() => {
         const affiliateCookieName = 'sb_affiliate_announcement_state';
         const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
+        const affiliateAnnouncementActiveClass = 'sb-affiliate-announcement-active';
         const readCookie = (name) => {
           const cookieSource = `${document.cookie || ''}`;
           if (!cookieSource) return '';
@@ -78,6 +79,7 @@
         const rootNode = document.documentElement;
         if (rootNode instanceof HTMLElement) {
           rootNode.classList.add(affiliateHeroPendingClass);
+          rootNode.classList.add(affiliateAnnouncementActiveClass);
         }
 
         window.SBAffiliateAnnouncementState = {
@@ -93,6 +95,10 @@
       html.sb-affiliate-hero-pending [data-hero-card-seasonal="true"] {
         opacity: 0;
         pointer-events: none;
+      }
+
+      html.sb-affiliate-announcement-active .header.has-announcement {
+        --sb-announcement-background: linear-gradient(90deg, #67E8F9 0%, #1E293B 33%, #1E293B 66%, #67E8F9 100%) !important;
       }
     </style>
 
