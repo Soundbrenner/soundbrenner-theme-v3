@@ -140,6 +140,9 @@
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] {
+        --sb-klaviyo-popup-edge-padding: var(--sb-space-30);
+        --sb-klaviyo-popup-element-gap: var(--sb-space-24);
+        --sb-klaviyo-popup-close-size: var(--sb-space-20);
         background-color: var(--sb-color-neutral-200) !important;
         border-radius: 24px !important;
         box-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25) !important;
@@ -147,17 +150,25 @@
       }
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [data-testid='form-component'] {
-        padding: var(--sb-space-30) var(--sb-space-30) var(--sb-space-24) !important;
+        padding: var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-element-gap) !important;
       }
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(3) [data-testid='form-component'],
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(4) [data-testid='form-component'],
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(5) [data-testid='form-component'] {
-        padding: 0 var(--sb-space-30) var(--sb-space-24) !important;
+        padding: 0 var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-element-gap) !important;
       }
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(6) [data-testid='form-component'] {
-        padding: 0 var(--sb-space-30) var(--sb-space-30) !important;
+        padding: 0 var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-edge-padding) !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(2) [data-testid='form-component'] {
+        padding-top: calc(
+          var(--sb-klaviyo-popup-edge-padding)
+          + var(--sb-klaviyo-popup-close-size)
+          + var(--sb-klaviyo-popup-element-gap)
+        ) !important;
       }
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'],
@@ -190,6 +201,13 @@
         font-size: var(--font-size-body) !important;
         font-weight: 400 !important;
         line-height: 1.4 !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial [data-testid='form-row']:nth-of-type(2) [id^='rich-text-'] *,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial [data-testid='form-row']:nth-of-type(3) [id^='rich-text-'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial [data-testid='form-row']:nth-of-type(3) [id^='rich-text-'] * {
+        text-align: center !important;
       }
 
       [data-testid='POPUP'] input[type='email'] {
@@ -236,28 +254,102 @@
         line-height: 1.35 !important;
       }
 
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(3) [data-testid='form-component'] {
+        align-items: center !important;
+        display: flex !important;
+        gap: var(--sb-space-16) !important;
+        justify-content: center !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success button[aria-label='Copy coupon code'] {
+        background: var(--sb-color-blue-500) !important;
+        background-color: var(--sb-color-blue-500) !important;
+        border-color: var(--sb-color-neutral-200) !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(3) [data-testid='form-component'] > div:not([id^='rich-text-']) {
+        color: var(--sb-color-neutral-900) !important;
+        font-family: var(--font-primary--family) !important;
+        font-size: var(--font-size-body) !important;
+        font-weight: 700 !important;
+        line-height: 1.35 !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(3) [data-testid='form-component'] svg {
+        background: var(--sb-color-neutral-900) !important;
+        color: transparent !important;
+        cursor: pointer !important;
+        flex-shrink: 0 !important;
+        height: var(--sb-space-20) !important;
+        margin: 0 !important;
+        min-height: var(--sb-space-20) !important;
+        min-width: var(--sb-space-20) !important;
+        padding: 0 !important;
+        width: var(--sb-space-20) !important;
+        -webkit-mask: center / var(--sb-space-20) var(--sb-space-20) no-repeat url('{{ 'icon-content-copy.svg' | asset_url }}') !important;
+        mask: center / var(--sb-space-20) var(--sb-space-20) no-repeat url('{{ 'icon-content-copy.svg' | asset_url }}') !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(3) [data-testid='form-component'] svg * {
+        display: none !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] * {
+        color: var(--sb-color-neutral-900) !important;
+        font-family: var(--font-primary--family) !important;
+        font-size: var(--font-size-body) !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+        text-align: center !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [id^='rich-text-'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [id^='rich-text-'] * {
+        text-align: center !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] strong,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='form-row']:nth-of-type(4) [id^='rich-text-'] b {
+        font-weight: 700 !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='klaviyo-countdown'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='klaviyo-countdown'] * {
+        color: var(--sb-color-neutral-900) !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success [data-testid='klaviyo-countdown'] span[aria-hidden='true'] {
+        color: var(--sb-color-neutral-900) !important;
+        font-family: var(--font-display--family) !important;
+        font-size: var(--font-size-title) !important;
+        font-weight: 700 !important;
+        line-height: var(--font-title-line-height) !important;
+      }
+
       [data-testid='POPUP'] .klaviyo-close-form {
         align-items: center !important;
-        background: transparent url('{{ 'icon-cancel.svg' | asset_url }}') center / var(--sb-space-20) var(--sb-space-20) no-repeat !important;
+        background: transparent url('{{ 'icon-cancel.svg' | asset_url }}') center / var(--sb-klaviyo-popup-close-size) var(--sb-klaviyo-popup-close-size) no-repeat !important;
         border: 0 !important;
         border-radius: 0 !important;
         color: var(--sb-color-always-white) !important;
         cursor: pointer !important;
         display: inline-flex !important;
-        height: var(--sb-space-20) !important;
+        height: var(--sb-klaviyo-popup-close-size) !important;
         justify-content: center !important;
         line-height: 0 !important;
         margin: 0 !important;
         margin-right: 0 !important;
         margin-top: 0 !important;
-        min-height: var(--sb-space-20) !important;
-        min-width: var(--sb-space-20) !important;
+        min-height: var(--sb-klaviyo-popup-close-size) !important;
+        min-width: var(--sb-klaviyo-popup-close-size) !important;
         padding: 0 !important;
         pointer-events: auto !important;
         position: absolute !important;
-        right: var(--sb-space-30) !important;
-        top: var(--sb-space-30) !important;
-        width: var(--sb-space-20) !important;
+        right: var(--sb-klaviyo-popup-edge-padding) !important;
+        top: var(--sb-klaviyo-popup-edge-padding) !important;
+        width: var(--sb-klaviyo-popup-close-size) !important;
       }
 
       [data-testid='POPUP'] .klaviyo-close-form:hover,
@@ -280,17 +372,22 @@
         -webkit-mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
         -webkit-mask-position: center;
         -webkit-mask-repeat: no-repeat;
-        -webkit-mask-size: var(--sb-space-20) var(--sb-space-20);
+        -webkit-mask-size: var(--sb-klaviyo-popup-close-size) var(--sb-klaviyo-popup-close-size);
         background: var(--sb-color-always-white);
         content: '';
         display: block;
-        height: var(--sb-space-20);
+        height: var(--sb-klaviyo-popup-close-size);
         mask-image: url('{{ 'icon-cancel.svg' | asset_url }}');
         mask-position: center;
         mask-repeat: no-repeat;
-        mask-size: var(--sb-space-20) var(--sb-space-20);
+        mask-size: var(--sb-klaviyo-popup-close-size) var(--sb-klaviyo-popup-close-size);
         pointer-events: none;
-        width: var(--sb-space-20);
+        width: var(--sb-klaviyo-popup-close-size);
+      }
+
+      [data-testid='POPUP'].sb-klaviyo-popup--success .klaviyo-close-form::before,
+      [role='dialog'][aria-modal='true'].sb-klaviyo-popup--success .klaviyo-close-form::before {
+        background: var(--sb-color-neutral-900);
       }
 
       [data-testid='POPUP'] .klaviyo-close-form:hover::before,
@@ -660,6 +757,12 @@
 
             const emailInput = popupForm.querySelector("input[type='email']");
             const hasEmailInput = emailInput instanceof HTMLInputElement;
+            popupForm.classList.toggle('sb-klaviyo-popup-form--initial', hasEmailInput);
+            popupForm.classList.toggle('sb-klaviyo-popup-form--success', !hasEmailInput);
+            if (popupDialog instanceof HTMLElement) {
+              popupDialog.classList.toggle('sb-klaviyo-popup--initial', hasEmailInput);
+              popupDialog.classList.toggle('sb-klaviyo-popup--success', !hasEmailInput);
+            }
 
             if (hasEmailInput) {
               const titleRoot = popupForm.querySelector("[data-testid='form-row']:nth-of-type(2) [id^='rich-text-']");
@@ -728,19 +831,57 @@
                   : '';
 
               const successLines = [
-                localizedCodeLine,
                 normalizeText(popupLocaleCopy.successOfferLine),
                 normalizeText(popupLocaleCopy.successReminderLine),
                 normalizeText(popupLocaleCopy.successExpiresIn),
-              ].filter(Boolean);
+              ];
 
-              if (successLines.length) {
+              if (localizedCodeLine || successLines.some(Boolean)) {
                 successBodyRoot.replaceChildren();
-                successLines.forEach((lineText) => {
-                  const lineNode = document.createElement('div');
-                  lineNode.textContent = lineText;
-                  successBodyRoot.appendChild(lineNode);
-                });
+
+                if (localizedCodeLine) {
+                  const codeLineNode = document.createElement('div');
+                  if (codeTemplateHasToken && discountCode) {
+                    const templateSegments = codeTemplate.split('__CODE__');
+                    const prefixText = templateSegments[0] || '';
+                    const suffixText = templateSegments.slice(1).join('__CODE__');
+                    if (prefixText) {
+                      codeLineNode.append(document.createTextNode(prefixText));
+                    }
+                    const codeStrong = document.createElement('strong');
+                    codeStrong.textContent = discountCode;
+                    codeLineNode.append(codeStrong);
+                    if (suffixText) {
+                      codeLineNode.append(document.createTextNode(suffixText));
+                    }
+                  } else {
+                    codeLineNode.textContent = localizedCodeLine;
+                  }
+                  successBodyRoot.appendChild(codeLineNode);
+                }
+
+                const offerText = successLines[0];
+                if (offerText) {
+                  const offerLineNode = document.createElement('div');
+                  const offerStrong = document.createElement('strong');
+                  offerStrong.textContent = offerText;
+                  offerLineNode.appendChild(offerStrong);
+                  successBodyRoot.appendChild(offerLineNode);
+                }
+
+                const reminderText = successLines[1];
+                if (reminderText) {
+                  const reminderLineNode = document.createElement('div');
+                  reminderLineNode.textContent = reminderText;
+                  successBodyRoot.appendChild(reminderLineNode);
+                }
+
+                const expiresText = successLines[2];
+                if (expiresText) {
+                  const expiresLineNode = document.createElement('div');
+                  expiresLineNode.textContent = expiresText;
+                  successBodyRoot.appendChild(expiresLineNode);
+                }
               }
             }
           });
