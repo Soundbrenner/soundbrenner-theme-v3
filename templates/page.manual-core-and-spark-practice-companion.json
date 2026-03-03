@@ -717,7 +717,7 @@
         "text_pitfrD": {
           "type": "text",
           "settings": {
-            "text": "<p>1. Press the bottom button to select the first value.</p><p>2. While selected, use the wheel to change the</p>"
+            "text": "<p>1. Press the bottom button to select the first value.</p><p>2. While selected, use the wheel to change the value.</p>"
           }
         },
         "image_FV98pp": {
