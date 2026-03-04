@@ -1585,6 +1585,15 @@
           return Number.isFinite(nextValue) ? nextValue : null;
         };
 
+        const parseBooleanFlag = (value, fallback = false) => {
+          if (typeof value === 'boolean') return value;
+          const normalized = `${value ?? ''}`.trim().toLowerCase();
+          if (!normalized) return fallback;
+          if (normalized === 'true' || normalized === '1' || normalized === 'yes' || normalized === 'on') return true;
+          if (normalized === 'false' || normalized === '0' || normalized === 'no' || normalized === 'off') return false;
+          return fallback;
+        };
+
         const formatMoneyNoDecimals = (cents, currencyOverride = '') => {
           const normalizedCents = parseCents(cents);
           if (!Number.isFinite(normalizedCents)) return '';
@@ -1671,11 +1680,24 @@
           const comparePriceCents = parseCents(
             purchaseState.comparePriceCents ?? thumbnail.dataset.thumbnailComparePriceCents
           );
+          const hideDiscounts = parseBooleanFlag(
+            purchaseState.hideDiscounts ?? thumbnail.dataset.thumbnailHideDiscounts,
+            false
+          );
 
           const currentPriceText = `${purchaseState.currentPriceText || ''}`.trim();
           const comparePriceText = `${purchaseState.comparePriceText || ''}`.trim();
 
           if (Number.isFinite(currentPriceCents) && currentPriceCents > 0) {
+            if (hideDiscounts) {
+              comparePriceElement.textContent = '';
+              comparePriceElement.hidden = true;
+              currentPriceElement.textContent = formatMoneyNoDecimals(currentPriceCents);
+              currentPriceElement.hidden = false;
+              priceRow.hidden = false;
+              return;
+            }
+
             const resolvedPricing = resolveStorefrontDisplayPricing({
               productId: nextProductId,
               priceCents: currentPriceCents,
@@ -1710,7 +1732,7 @@
             currentPriceElement.hidden = true;
           }
 
-          if (comparePriceText) {
+          if (!hideDiscounts && comparePriceText) {
             comparePriceElement.textContent = comparePriceText;
             comparePriceElement.hidden = false;
           } else {
@@ -1825,6 +1847,7 @@
           const nextComparePrice = String(button.dataset.thumbnailComparePrice || '').trim();
           const nextCurrentPriceCents = parseCents(button.dataset.thumbnailPriceCents);
           const nextComparePriceCents = parseCents(button.dataset.thumbnailComparePriceCents);
+          const thumbnailHideDiscounts = parseBooleanFlag(thumbnail.dataset.thumbnailHideDiscounts, false);
 
           if (Number.isFinite(nextCurrentPriceCents) && nextCurrentPriceCents > 0) {
             thumbnail.dataset.thumbnailPriceCents = `${nextCurrentPriceCents}`;
@@ -1832,7 +1855,7 @@
             delete thumbnail.dataset.thumbnailPriceCents;
           }
 
-          if (Number.isFinite(nextComparePriceCents) && nextComparePriceCents > 0) {
+          if (!thumbnailHideDiscounts && Number.isFinite(nextComparePriceCents) && nextComparePriceCents > 0) {
             thumbnail.dataset.thumbnailComparePriceCents = `${nextComparePriceCents}`;
           } else {
             delete thumbnail.dataset.thumbnailComparePriceCents;
@@ -1842,9 +1865,10 @@
             applyThumbnailDiscountPricing(thumbnail, {
               variantId: nextVariantId,
               currentPriceCents: nextCurrentPriceCents,
-              comparePriceCents: nextComparePriceCents,
+              comparePriceCents: thumbnailHideDiscounts ? null : nextComparePriceCents,
               currentPriceText: nextCurrentPrice,
-              comparePriceText: nextComparePrice,
+              comparePriceText: thumbnailHideDiscounts ? '' : nextComparePrice,
+              hideDiscounts: thumbnailHideDiscounts,
             });
           }
 

@@ -46,14 +46,16 @@
   elsif thumbnail_rating_tooltip_decimal.size == 1
     assign thumbnail_rating_tooltip = thumbnail_rating_tooltip | append: '0'
   endif
-  assign thumbnail_hide_reviews = hide_reviews
-  if thumbnail_hide_reviews == blank and product != blank
+  assign thumbnail_product_settings_ref = blank
+  if product != blank
     assign thumbnail_product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
-    if thumbnail_product_settings_ref != blank
-      assign thumbnail_hide_reviews_value = thumbnail_product_settings_ref.hide_reviews.value | default: thumbnail_product_settings_ref.hide_reviews
-      if thumbnail_hide_reviews_value == true or thumbnail_hide_reviews_value == 'true' or thumbnail_hide_reviews_value == 1 or thumbnail_hide_reviews_value == '1'
-        assign thumbnail_hide_reviews = true
-      endif
+  endif
+
+  assign thumbnail_hide_reviews = hide_reviews
+  if thumbnail_hide_reviews == blank and thumbnail_product_settings_ref != blank
+    assign thumbnail_hide_reviews_value = thumbnail_product_settings_ref.hide_reviews.value | default: thumbnail_product_settings_ref.hide_reviews
+    if thumbnail_hide_reviews_value == true or thumbnail_hide_reviews_value == 'true' or thumbnail_hide_reviews_value == 1 or thumbnail_hide_reviews_value == '1'
+      assign thumbnail_hide_reviews = true
     endif
   endif
   if thumbnail_hide_reviews == blank
@@ -61,6 +63,22 @@
   endif
   if thumbnail_hide_reviews == 'true' or thumbnail_hide_reviews == 1 or thumbnail_hide_reviews == '1'
     assign thumbnail_hide_reviews = true
+  endif
+
+  assign thumbnail_hide_discounts = hide_discounts
+  if thumbnail_hide_discounts == blank and thumbnail_product_settings_ref != blank
+    assign thumbnail_hide_discounts_value = thumbnail_product_settings_ref.hide_discounts.value | default: thumbnail_product_settings_ref.hide_discounts
+    if thumbnail_hide_discounts_value == true or thumbnail_hide_discounts_value == 'true' or thumbnail_hide_discounts_value == 1 or thumbnail_hide_discounts_value == '1'
+      assign thumbnail_hide_discounts = true
+    endif
+  endif
+  if thumbnail_hide_discounts == blank
+    assign thumbnail_hide_discounts = false
+  endif
+  if thumbnail_hide_discounts == 'true' or thumbnail_hide_discounts == 1 or thumbnail_hide_discounts == '1'
+    assign thumbnail_hide_discounts = true
+  elsif thumbnail_hide_discounts == 'false' or thumbnail_hide_discounts == 0 or thumbnail_hide_discounts == '0'
+    assign thumbnail_hide_discounts = false
   endif
 
   assign thumbnail_show_add_to_cart = show_add_to_cart
@@ -119,7 +137,7 @@
               endcapture
               assign option_swatch_price_text = option_swatch_price_text | strip
               assign option_swatch_price_cents = product_variant.price | plus: 0
-              if product_variant.compare_at_price > product_variant.price
+              if product_variant.compare_at_price > product_variant.price and thumbnail_hide_discounts == false
                 capture option_swatch_compare_price_text
                   render 'sb-money-no-decimals', amount: product_variant.compare_at_price, currency: thumbnail_currency_code, context: 'storefront'
                 endcapture
@@ -151,7 +169,7 @@
                 endcapture
                 assign option_swatch_price_text = option_swatch_price_text | strip
                 assign option_swatch_price_cents = product_variant.price | plus: 0
-                if product_variant.compare_at_price > product_variant.price
+                if product_variant.compare_at_price > product_variant.price and thumbnail_hide_discounts == false
                   capture option_swatch_compare_price_text
                     render 'sb-money-no-decimals', amount: product_variant.compare_at_price, currency: thumbnail_currency_code, context: 'storefront'
                   endcapture
@@ -330,7 +348,7 @@
     if selected_variant != blank
       assign thumbnail_variant_id = selected_variant.id
       assign thumbnail_price_cents = selected_variant.price | plus: 0
-      if selected_variant.compare_at_price > selected_variant.price
+      if selected_variant.compare_at_price > selected_variant.price and thumbnail_hide_discounts == false
         assign thumbnail_compare_price_cents = selected_variant.compare_at_price | plus: 0
       endif
       if selected_variant.featured_image != blank
@@ -352,7 +370,7 @@
       endcapture
       assign thumbnail_price = thumbnail_price | strip
     endif
-    if thumbnail_compare_price == blank and selected_variant != blank and selected_variant.compare_at_price > selected_variant.price
+    if thumbnail_compare_price == blank and selected_variant != blank and selected_variant.compare_at_price > selected_variant.price and thumbnail_hide_discounts == false
       capture thumbnail_compare_price
         render 'sb-money-no-decimals', amount: selected_variant.compare_at_price, currency: thumbnail_currency_code, context: 'storefront'
       endcapture
@@ -508,11 +526,17 @@
       endif
     endif
   endif
+
+  if thumbnail_hide_discounts
+    assign thumbnail_compare_price = blank
+    assign thumbnail_compare_price_cents = blank
+  endif
 %}
 
 <article
   class="sb-product-thumbnail"
   {% if product != blank %}data-thumbnail-product-id="{{ product.id }}"{% endif %}
+  data-thumbnail-hide-discounts="{% if thumbnail_hide_discounts %}true{% else %}false{% endif %}"
   data-thumbnail-variant-id="{{ thumbnail_variant_id }}"
   data-thumbnail-base-url="{{ thumbnail_url }}"
   {% if thumbnail_price_cents != blank %}data-thumbnail-price-cents="{{ thumbnail_price_cents }}"{% endif %}
