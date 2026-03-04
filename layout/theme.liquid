@@ -297,10 +297,13 @@
         background: var(--sb-color-blue-500) !important;
         background-color: var(--sb-color-blue-500) !important;
         border-color: var(--sb-color-neutral-200) !important;
+        gap: var(--sb-space-16) !important;
+        justify-content: center !important;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success button[aria-label='Copy coupon code'] > div {
         color: var(--sb-color-neutral-900) !important;
+        flex: 0 0 auto !important;
         font-family: var(--font-primary--family) !important;
         font-size: var(--font-size-body) !important;
         font-weight: 700 !important;
@@ -317,7 +320,7 @@
         margin: 0 !important;
         min-height: 20px !important;
         min-width: 20px !important;
-        padding: 0 0 0 var(--sb-space-16) !important;
+        padding: 0 !important;
         width: 20px !important;
         -webkit-mask: center / 20px 20px no-repeat url('{{ 'icon-content-copy.svg' | asset_url }}') !important;
         mask: center / 20px 20px no-repeat url('{{ 'icon-content-copy.svg' | asset_url }}') !important;
