@@ -588,6 +588,73 @@
     return value;
   };
 
+  const getDiscountApplicationKey = (application) => {
+    const type = normalizeDiscountType(application && application.type);
+    const title = normalizeDiscountTitle(application && application.title);
+    if (!type && !title) return '';
+    return `${type}::${title}`;
+  };
+
+  const getCartLevelDiscountApplicationKeySet = (cart) => {
+    const keys = new Set();
+    const applications = Array.isArray(cart && cart.cart_level_discount_applications)
+      ? cart.cart_level_discount_applications
+      : [];
+    applications.forEach((application) => {
+      const key = getDiscountApplicationKey(application);
+      if (key) keys.add(key);
+    });
+    return keys;
+  };
+
+  const getItemProductDiscountAllocations = (item, cartLevelDiscountApplicationKeys = new Set()) => {
+    if (!item || !Array.isArray(item.line_level_discount_allocations)) return [];
+    return item.line_level_discount_allocations.filter((allocation) => {
+      const application = allocation && allocation.discount_application ? allocation.discount_application : null;
+      const applicationKey = getDiscountApplicationKey(application);
+      if (!applicationKey) return false;
+      return !cartLevelDiscountApplicationKeys.has(applicationKey);
+    });
+  };
+
+  const getItemLineDiscountTitle = (item, cartLevelDiscountApplicationKeys = new Set()) => {
+    const allocations = getItemProductDiscountAllocations(item, cartLevelDiscountApplicationKeys);
+    for (const allocation of allocations) {
+      const application = allocation && allocation.discount_application ? allocation.discount_application : null;
+      const title = `${application && application.title ? application.title : ''}`.trim();
+      if (title) return title;
+    }
+    return '';
+  };
+
+  const getItemLineDiscountPercent = (item, cartLevelDiscountApplicationKeys = new Set()) => {
+    const originalLinePriceCents = Number.isFinite(Number(item && item.original_line_price))
+      ? Number(item.original_line_price)
+      : 0;
+    if (originalLinePriceCents <= 0) return 0;
+    const allocations = getItemProductDiscountAllocations(item, cartLevelDiscountApplicationKeys);
+    if (!allocations.length) return 0;
+    const discountCents = allocations.reduce((total, allocation) => {
+      const amount = Number(allocation && allocation.amount);
+      if (!Number.isFinite(amount) || amount <= 0) return total;
+      return total + amount;
+    }, 0);
+    if (discountCents <= 0) return 0;
+    return Math.max(0, Math.round((discountCents / originalLinePriceCents) * 100));
+  };
+
+  const formatLineDiscountText = (template, title, percent) => {
+    const normalizedTitle = `${title || ''}`.trim();
+    const normalizedPercent = Number.isFinite(Number(percent)) ? Math.max(0, Math.round(Number(percent))) : 0;
+    if (!normalizedTitle || normalizedPercent <= 0) return '';
+
+    const normalizedTemplate = `${template || ''}`.trim();
+    const resolvedTemplate = normalizedTemplate || '__CODE__ (__PERCENT__% OFF)';
+    return resolvedTemplate
+      .replace(/__CODE__/g, normalizedTitle)
+      .replace(/__PERCENT__/g, `${normalizedPercent}`);
+  };
+
   const getItemImageUrl = (item) => {
     if (item && item.featured_image && typeof item.featured_image.url === 'string') {
       return item.featured_image.url;
@@ -1322,6 +1389,7 @@
       this.clearButtons = this.querySelectorAll('[data-cart-clear]');
       this.placeholderImage = this.dataset.placeholderImage || '';
       this.displayCurrency = `${this.dataset.currency || ''}`.trim().toUpperCase();
+      this.lineDiscountTemplate = `${this.dataset.lineDiscountTemplate || ''}`;
       this.hasServerRenderedRows =
         this.itemListNode instanceof HTMLElement &&
         this.itemListNode.querySelector('[data-cart-line]') instanceof HTMLElement;
@@ -1990,6 +2058,7 @@
       if (!this.itemListNode) return;
 
       const items = Array.isArray(cart.items) ? cart.items : [];
+      const cartLevelDiscountApplicationKeys = getCartLevelDiscountApplicationKeySet(cart);
       const existingHoverImageByKey = new Map();
       const existingHoverImageByVariantId = new Map();
       this.itemListNode.querySelectorAll('[data-cart-item-key]').forEach((row) => {
@@ -2023,11 +2092,47 @@
             ? Number(item.final_line_price)
             : 0;
           const hasDiscount = originalLinePriceCents > finalLinePriceCents;
+          const lineDiscountTitle = hasDiscount
+            ? getItemLineDiscountTitle(item, cartLevelDiscountApplicationKeys)
+            : '';
+          const lineDiscountPercent = hasDiscount
+            ? getItemLineDiscountPercent(item, cartLevelDiscountApplicationKeys)
+            : 0;
+          const lineDiscountText = formatLineDiscountText(
+            this.lineDiscountTemplate,
+            lineDiscountTitle,
+            lineDiscountPercent
+          );
           const regularLinePrice = formatMoney(hasDiscount ? originalLinePriceCents : finalLinePriceCents, currency);
           const discountedLinePrice = hasDiscount ? formatMoney(finalLinePriceCents, currency) : '';
 
+          const metaNode = row.querySelector('.sb-cart-line__meta');
           const priceGroup = row.querySelector('.sb-cart-line__price-group');
-          if (!(priceGroup instanceof HTMLElement)) return;
+          if (!(metaNode instanceof HTMLElement) || !(priceGroup instanceof HTMLElement)) return;
+
+          const titleNode = metaNode.querySelector('.sb-cart-line__title');
+          if (titleNode instanceof HTMLElement) {
+            const existingDiscountLabel = metaNode.querySelector('[data-cart-line-discount-label]');
+            if (lineDiscountText) {
+              const discountLabel =
+                existingDiscountLabel instanceof HTMLElement
+                  ? existingDiscountLabel
+                  : document.createElement('p');
+              discountLabel.className = 'sb-cart-line__discount-label font-caption weight-regular';
+              discountLabel.setAttribute('data-cart-line-discount-label', '');
+              discountLabel.textContent = lineDiscountText;
+              if (discountLabel.parentElement !== metaNode) {
+                const variantNode = metaNode.querySelector('.sb-cart-line__variant');
+                if (variantNode instanceof HTMLElement) {
+                  metaNode.insertBefore(discountLabel, variantNode);
+                } else {
+                  metaNode.insertBefore(discountLabel, priceGroup);
+                }
+              }
+            } else if (existingDiscountLabel instanceof HTMLElement) {
+              existingDiscountLabel.remove();
+            }
+          }
 
           priceGroup.innerHTML = `
             <p
@@ -2109,6 +2214,17 @@
           ? Number(item.final_line_price)
           : 0;
         const hasDiscount = originalLinePriceCents > finalLinePriceCents;
+        const lineDiscountTitle = hasDiscount
+          ? getItemLineDiscountTitle(item, cartLevelDiscountApplicationKeys)
+          : '';
+        const lineDiscountPercent = hasDiscount
+          ? getItemLineDiscountPercent(item, cartLevelDiscountApplicationKeys)
+          : 0;
+        const lineDiscountText = formatLineDiscountText(
+          this.lineDiscountTemplate,
+          lineDiscountTitle,
+          lineDiscountPercent
+        );
         const regularLinePrice = formatMoney(hasDiscount ? originalLinePriceCents : finalLinePriceCents, currency);
         const discountedLinePrice = hasDiscount ? formatMoney(finalLinePriceCents, currency) : '';
         const minusButtonAttributes = effectiveQuantity <= 1 ? 'disabled aria-disabled="true"' : '';
@@ -2125,6 +2241,13 @@
           <div class="sb-cart-line__content">
             <div class="sb-cart-line__meta">
               <a class="sb-cart-line__title font-caption weight-bold" href="${productUrl}">${title}</a>
+              ${
+                lineDiscountText
+                  ? `<p class="sb-cart-line__discount-label font-caption weight-regular" data-cart-line-discount-label>${escapeHtml(
+                      lineDiscountText
+                    )}</p>`
+                  : ''
+              }
               ${
                 variantTitle
                   ? `<p class="sb-cart-line__variant font-caption weight-regular">${variantTitle}</p>`

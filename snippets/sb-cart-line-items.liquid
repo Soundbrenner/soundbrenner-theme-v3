@@ -39,6 +39,48 @@
       if item.original_line_price > item.final_line_price
         assign item_has_discount = true
       endif
+      assign item_has_product_discount = false
+      assign item_line_discount_title = blank
+      assign item_line_discount_percent = 0
+      if item_has_discount
+        assign item_product_discount_amount = 0
+        if item.line_level_discount_allocations != blank
+          for item_discount_allocation in item.line_level_discount_allocations
+            assign item_discount_title_candidate = item_discount_allocation.discount_application.title | strip
+            assign item_discount_type_candidate = item_discount_allocation.discount_application.type | strip | downcase
+            assign item_discount_is_cart_level = false
+            if cart.cart_level_discount_applications != blank
+              for item_cart_level_application in cart.cart_level_discount_applications
+                assign item_cart_level_title = item_cart_level_application.title | strip
+                assign item_cart_level_type = item_cart_level_application.type | strip | downcase
+                if item_discount_title_candidate == item_cart_level_title and item_discount_type_candidate == item_cart_level_type
+                  assign item_discount_is_cart_level = true
+                  break
+                endif
+              endfor
+            endif
+            if item_discount_is_cart_level == false
+              assign item_discount_amount_candidate = item_discount_allocation.amount | plus: 0
+              if item_discount_amount_candidate > 0
+                assign item_product_discount_amount = item_product_discount_amount | plus: item_discount_amount_candidate
+              endif
+              if item_line_discount_title == blank and item_discount_title_candidate != blank
+                assign item_line_discount_title = item_discount_title_candidate
+              endif
+            endif
+          endfor
+        endif
+        if item.original_line_price > 0 and item_product_discount_amount > 0
+          assign item_line_discount_percent = item_product_discount_amount | times: 100.0 | divided_by: item.original_line_price | round
+        endif
+        if item_line_discount_title != blank and item_line_discount_percent > 0
+          assign item_has_product_discount = true
+        endif
+      endif
+      if item_has_product_discount == false
+        assign item_line_discount_title = blank
+        assign item_line_discount_percent = 0
+      endif
       capture item_original_line_price_formatted
         render 'sb-money-no-decimals', amount: item.original_line_price, currency: sb_cart_currency_code, context: 'cart'
       endcapture
@@ -94,6 +136,11 @@
       <div class="sb-cart-line__content">
         <div class="sb-cart-line__meta">
           <a class="sb-cart-line__title font-caption weight-bold" href="{{ item.url }}">{{ item_title }}</a>
+          {% if item_has_product_discount %}
+            <p class="sb-cart-line__discount-label font-caption weight-regular" data-cart-line-discount-label>
+              {{ 'sb.cart.discount_with_percent' | t: code: item_line_discount_title, percent: item_line_discount_percent }}
+            </p>
+          {% endif %}
           {% if item_variant != blank %}
             <p class="sb-cart-line__variant font-caption weight-regular">{{ item_variant }}</p>
           {% endif %}

@@ -36,7 +36,6 @@
         const affiliateCookieName = 'sb_affiliate_announcement_state';
         const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
         const affiliateAnnouncementActiveClass = 'sb-affiliate-announcement-active';
-        const affiliateKlaviyoSuppressionClass = 'sb-affiliate-klaviyo-suppressed';
         const affiliatePricingPendingClass = 'sb-affiliate-pricing-pending';
         const readCookie = (name) => {
           const cookieSource = `${document.cookie || ''}`;
@@ -82,7 +81,6 @@
         if (rootNode instanceof HTMLElement) {
           rootNode.classList.add(affiliateHeroPendingClass);
           rootNode.classList.add(affiliateAnnouncementActiveClass);
-          rootNode.classList.add(affiliateKlaviyoSuppressionClass);
           rootNode.classList.add(affiliatePricingPendingClass);
           window.setTimeout(() => {
             rootNode.classList.remove(affiliatePricingPendingClass);
@@ -761,7 +759,7 @@
         const popupOpenClass = 'sb-klaviyo-popup-open';
         const markerSelector =
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
-        const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || 'en-US');
+        const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
         const popupLocaleCopy = {
           dialogLabel: {{ 'sb.klaviyo_popup.dialog_label' | t | json }},
           closeLabel: {{ 'sb.klaviyo_popup.close_label' | t | json }},
@@ -1836,6 +1834,30 @@
           });
         };
 
+        const localizedCountFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined, {
+          maximumFractionDigits: 0,
+        });
+
+        const syncThumbnailReviewCountScope = (scope = document) => {
+          if (!(scope instanceof Element || scope instanceof Document)) return;
+
+          scope.querySelectorAll('[data-thumbnail-reviews-count][data-count-template][data-count-value]').forEach((node) => {
+            if (!(node instanceof HTMLElement)) return;
+
+            const template = `${node.dataset.countTemplate || ''}`.trim();
+            if (!template) return;
+
+            const parsedCount = Number.parseInt(`${node.dataset.countValue || ''}`.replace(/[^\d]/g, ''), 10);
+            if (!Number.isFinite(parsedCount)) return;
+
+            const formattedCount = localizedCountFormatter.format(parsedCount);
+            const nextText = template.replace(/__COUNT__/g, formattedCount);
+            if (nextText && node.textContent !== nextText) {
+              node.textContent = nextText;
+            }
+          });
+        };
+
         const getSelectedSwatch = (row) =>
           row.querySelector('.sb-product-thumbnail__swatch.is-selected') || row.querySelector('.sb-product-thumbnail__swatch');
 
@@ -2523,6 +2545,7 @@
           });
 
           syncThumbnailDiscountPricingScope(scope);
+          syncThumbnailReviewCountScope(scope);
         };
 
         document.addEventListener(ThemeEvents.variantUpdate, (event) => {
@@ -2545,6 +2568,7 @@
           initThumbnailMediaScope,
           syncThumbnailPurchaseState,
           syncThumbnailDiscountPricingScope,
+          syncThumbnailReviewCountScope,
         };
 
         document.dispatchEvent(new CustomEvent('sb:product-thumbnail:ready'));
@@ -2558,12 +2582,19 @@
     <script>
       (() => {
         const rootSelector = '#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper';
-        const countPattern = /\b(\d{4,})(?=\s+reviews\b)/g;
+        const countPattern = /\b(\d[\d.,\s\u00A0\u202F]*)(?=\s+reviews\b)/gi;
         const klaviyoStarPath =
           'M3.825 19.5L5.45 12.475L0 7.75L7.2 7.125L10 0.5L12.8 7.125L20 7.75L14.55 12.475L16.175 19.5L10 15.775L3.825 19.5Z';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
         let formattingObserver = null;
         let widgetObserver = null;
+
+        const parseLocalizedInteger = (value) => {
+          const digits = `${value || ''}`.replace(/[^\d]/g, '');
+          if (!digits) return null;
+          const parsed = Number.parseInt(digits, 10);
+          return Number.isFinite(parsed) ? parsed : null;
+        };
 
         const applyCustomStarPaths = (scope = document) => {
           const stars = scope.querySelectorAll('path.kl_reviews__star');
@@ -2657,17 +2688,17 @@
           buttons.forEach((button) => {
             const aria = button.getAttribute('aria-label') || '';
             const ratingMatch = aria.match(/([\d.,]+)\s*stars?/i);
-            const countFromAria = aria.match(/(\d[\d,]*)\s*(ratings?|reviews?)/i);
+            const countFromAria = aria.match(/(\d[\d.,\s\u00A0\u202F]*)\s*(ratings?|reviews?)/i);
             if (!ratingMatch) return;
 
             const starsBadge = button.querySelector('.kl_reviews__stars_badge');
             if (!starsBadge) return;
 
             const existingLabel = button.querySelector('.kl_reviews__star_rating_widget__label');
-            const countFromLabel = (existingLabel?.textContent || '').match(/(\d[\d,]*)/);
+            const countFromLabel = (existingLabel?.textContent || '').match(/(\d[\d.,\s\u00A0\u202F]*)/);
             const rawCount = (countFromAria && countFromAria[1]) || (countFromLabel && countFromLabel[1]) || '0';
-            const countNumber = Number(String(rawCount).replace(/,/g, ''));
-            const formattedCount = Number.isFinite(countNumber) ? numberFormatter.format(countNumber) : rawCount;
+            const countNumber = parseLocalizedInteger(rawCount);
+            const formattedCount = Number.isFinite(countNumber) ? numberFormatter.format(countNumber) : `${rawCount}`.trim();
             const ratingNumber = Number(String(ratingMatch[1]).replace(',', '.'));
             const formattedRating = Number.isFinite(ratingNumber) ? ratingNumber.toFixed(1) : ratingMatch[1];
 
@@ -2696,9 +2727,10 @@
             const currentText = target.textContent;
             if (!currentText) return;
 
-            const nextText = currentText.replace(countPattern, (_, digits) =>
-              numberFormatter.format(Number(digits))
-            );
+            const nextText = currentText.replace(countPattern, (_, digits) => {
+              const parsed = parseLocalizedInteger(digits);
+              return Number.isFinite(parsed) ? numberFormatter.format(parsed) : `${digits}`;
+            });
 
             if (nextText !== currentText) {
               target.textContent = nextText;
@@ -2710,9 +2742,10 @@
             const currentText = target.textContent;
             if (!currentText) return;
 
-            const nextText = currentText.replace(/\b(\d+)(?=\s+reviews?\b)/i, (_, digits) =>
-              numberFormatter.format(Number(digits))
-            );
+            const nextText = currentText.replace(/\b(\d[\d.,\s\u00A0\u202F]*)(?=\s+reviews?\b)/i, (_, digits) => {
+              const parsed = parseLocalizedInteger(digits);
+              return Number.isFinite(parsed) ? numberFormatter.format(parsed) : `${digits}`;
+            });
 
             if (nextText !== currentText) {
               target.textContent = nextText;
@@ -2770,11 +2803,14 @@
               .trim();
 
             const ratingMatch = nextText.match(/(\d+(?:[.,]\d+)?)/);
-            const reviewsMatch = nextText.match(/(\d[\d,]*)\s+reviews\b/i);
+            const reviewsMatch = nextText.match(/(\d[\d.,\s\u00A0\u202F]*)\s+reviews\b/i);
 
             if (ratingMatch && reviewsMatch) {
               const ratingValue = ratingMatch[1];
-              const reviewsValue = reviewsMatch[1];
+              const parsedReviewsCount = parseLocalizedInteger(reviewsMatch[1]);
+              const reviewsValue = Number.isFinite(parsedReviewsCount)
+                ? numberFormatter.format(parsedReviewsCount)
+                : `${reviewsMatch[1]}`.trim();
               const nextHtml =
                 `<span class="sb-klaviyo-rating-value">${ratingValue}</span>` +
                 `<span class="sb-klaviyo-inline-star" aria-hidden="true"></span>` +

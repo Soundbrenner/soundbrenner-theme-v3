@@ -15,44 +15,9 @@
   assign all_reviews_count_string = all_reviews_count_source | append: '' | replace: '[', '' | replace: ']', '' | replace: '"', '' | split: ',' | first | strip
 
   assign all_reviews_rating_number = all_reviews_rating_string | replace: ',', '.' | plus: 0
-  assign all_reviews_count_number = all_reviews_count_string | replace: ',', '' | plus: 0 | round: 0
+  assign all_reviews_count_number = all_reviews_count_string | replace: ',', '' | replace: '.', '' | replace: ' ', '' | plus: 0 | round: 0
 
-  assign all_reviews_count_display = '0'
-  if all_reviews_count_number > 0
-    assign count_string = all_reviews_count_number | append: ''
-    assign count_length = count_string.size
-
-    if count_length <= 3
-      assign all_reviews_count_display = count_string
-    else
-      assign first_group_size = count_length | modulo: 3
-      if first_group_size == 0
-        assign first_group_size = 3
-      endif
-
-      capture formatted_count
-        echo count_string | slice: 0, first_group_size
-      endcapture
-
-      assign consumed_digits = first_group_size
-      assign trailing_digits = count_length | minus: first_group_size
-      assign trailing_groups = trailing_digits | divided_by: 3
-
-      if trailing_groups > 0
-        for group_index in (1..trailing_groups)
-          assign group_segment = count_string | slice: consumed_digits, 3
-          capture formatted_count
-            echo formatted_count
-            echo ','
-            echo group_segment
-          endcapture
-          assign consumed_digits = consumed_digits | plus: 3
-        endfor
-      endif
-
-      assign all_reviews_count_display = formatted_count
-    endif
-  endif
+  assign all_reviews_count_display = all_reviews_count_number | append: ''
 
   if all_reviews_rating_number < 0
     assign all_reviews_rating_number = 0

@@ -31,24 +31,7 @@
   if thumbnail_reviews_count_number < 0
     assign thumbnail_reviews_count_number = 0
   endif
-  assign thumbnail_reviews_count_text = thumbnail_reviews_count_number | append: ''
-  assign thumbnail_reviews_count_chars = thumbnail_reviews_count_text | split: ''
-  capture thumbnail_reviews_count_formatted
-    for review_count_char in thumbnail_reviews_count_chars
-      echo review_count_char
-      assign remaining_chars = forloop.length | minus: forloop.index
-      assign should_add_separator = false
-      if remaining_chars > 0
-        assign remainder = remaining_chars | modulo: 3
-        if remainder == 0
-          assign should_add_separator = true
-        endif
-      endif
-      if should_add_separator
-        echo ','
-      endif
-    endfor
-  endcapture
+  assign thumbnail_reviews_count_formatted = thumbnail_reviews_count_number | append: ''
   assign thumbnail_rating = rating | default: blank
   if thumbnail_rating == blank and product != blank and product.metafields.reviews.rating.value != blank
     assign thumbnail_rating_value = product.metafields.reviews.rating.value
@@ -645,7 +628,12 @@
           ></span>
         {% endfor %}
       </div>
-      <p class="sb-product-thumbnail__reviews font-body weight-regular">
+      <p
+        class="sb-product-thumbnail__reviews font-body weight-regular"
+        data-thumbnail-reviews-count
+        data-count-value="{{ thumbnail_reviews_count_number }}"
+        data-count-template="{{ 'sb.product.reviews_count' | t: count: '__COUNT__' | escape }}"
+      >
         {{ 'sb.product.reviews_count' | t: count: thumbnail_reviews_count_formatted }}
       </p>
     </div>

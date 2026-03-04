@@ -143,15 +143,6 @@
   assign announcement_text_free_shipping = settings.seasonal_announcement_copy_free_shipping | strip
   assign announcement_text_no_free_shipping = settings.seasonal_announcement_copy_no_free_shipping | strip
   assign announcement_text_blocked = settings.seasonal_announcement_copy_blocked | strip
-  if announcement_text_free_shipping == blank
-    assign announcement_text_free_shipping = '{{ Sale name }}: {{ Sitewide discount depth }}% off & free shipping in {{ Shipping country }} over {{ Free shipping threshold }}'
-  endif
-  if announcement_text_no_free_shipping == blank
-    assign announcement_text_no_free_shipping = '{{ Sale name }}: {{ Sitewide discount depth }}% off in {{ Shipping country }}'
-  endif
-  if announcement_text_blocked == blank
-    assign announcement_text_blocked = "We're not shipping to {{ Shipping country }}. Select a different country."
-  endif
 
   if seasonal_shipping_is_blocked
     assign announcement_text = announcement_text_blocked
@@ -1514,6 +1505,7 @@
         data-context="drawer"
         data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
         data-placeholder-image="{{ cart_placeholder_image }}"
+        data-line-discount-template="{{ 'sb.cart.discount_with_percent' | t: code: '__CODE__', percent: '__PERCENT__' | escape }}"
       >
         <div class="header__cart-drawer-content">
           {% render 'sb-cart-line-items',
@@ -4646,14 +4638,17 @@
   .sb-cart-line__meta {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 0;
     min-width: 0;
   }
 
   .sb-cart-line__price-group {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 8px;
+    margin-top: 6px;
+    align-items: center;
+    flex-wrap: wrap;
   }
 
   .sb-cart-line__title {
@@ -4668,9 +4663,15 @@
     color: var(--sb-color-primary-500);
   }
 
+  .sb-cart-line__discount-label {
+    color: var(--sb-color-neutral-800);
+    line-height: 1.2;
+    margin: 6px 0 0;
+  }
+
   .sb-cart-line__variant {
     color: var(--sb-color-neutral-800);
-    margin: 0;
+    margin: 6px 0 0;
   }
 
   .sb-cart-line__price {
