@@ -548,6 +548,13 @@
             "question": "How to switch songs in setlists with the Pulse?",
             "answer": "<p>You can change the songs inside of a setlist directly from the Soundbrenner Pulse. This feature is useful when you don't want to use the app to skip to the next or previous song during practice or live performance. <br/><br/><strong>1.</strong> Load a setlist to your metronome. <br/><br/><strong>2. </strong>To skip to the next song, turn the BPM Wheel of the Soundbrenner Pulse:</p><ul><li>Right </li><li>Left </li><li>Right</li></ul><p>Once the next song is selected, you will see the green light and feel a short vibration. </p><p><strong>3.</strong> To skip to the previous song, turn the BPM wheel of the Soundbrenner Pulse: </p><ul><li>Left </li><li>Right </li><li>Left </li></ul><p>Once the previous song is selected, you will see the yellow light and feel a short vibration. </p>"
           }
+        },
+        "accordion_item_nn76X8": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to improve the reliability of Pulse?",
+            "answer": "<p>Here are some tips to use your Soundbrenner Pulse most reliably:</p><ul><li>Before usage, make sure it is charged. A full charge takes about 2.5 hours. The LEDs pulse in orange color when charging and glows in green when fully charged.</li><li>Make sure your Soundbrenner Pulse is in touch with your skin when you use the touch surface. For example it works most reliably when you wear it on your wrist. </li></ul><p>Get familiar with the way touch commands work. Take a look at the <a href=\"https://youtu.be/KKBHW9k90wY\" target=\"_blank\" title=\"https://youtu.be/KKBHW9k90wY\">instructions video</a>.</p><ul><li>Activate the interaction lock while playing with the Soundbrenner Pulse. You can lock your touch surface and BPM wheel to avoid unintentional changes.  </li><li>You can activate the interaction lock from your Settings -&gt; Your Soundbrenner Pulse. </li></ul>"
+          }
         }
       },
       "block_order": [
@@ -634,7 +641,8 @@
         "accordion_item_RKQQTf",
         "accordion_item_zHxCRR",
         "accordion_item_EzReFW",
-        "accordion_item_Jtgfh8"
+        "accordion_item_Jtgfh8",
+        "accordion_item_nn76X8"
       ],
       "settings": {}
     },
