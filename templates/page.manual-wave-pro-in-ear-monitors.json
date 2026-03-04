@@ -59,6 +59,22 @@
           "type": "divider",
           "settings": {}
         },
+        "heading_xf4JHW": {
+          "type": "heading",
+          "settings": {
+            "heading": "The best way to get started"
+          }
+        },
+        "text_97pUyw": {
+          "type": "text",
+          "settings": {
+            "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use the Wave Pro in-ear monitors in the shortest time possible.</p>"
+          }
+        },
+        "divider_ezmChT": {
+          "type": "divider",
+          "settings": {}
+        },
         "chapter_2": {
           "type": "heading",
           "settings": {
@@ -109,6 +125,8 @@
           "type": "image_grid",
           "settings": {
             "fetch_whats_in_the_box_from_product": true,
+            "hide_accordion_and_title": true,
+            "accordion_title": "In the box",
             "source_metaobject": "wave-pro-in-ear-monitors",
             "item_1_text": "Item 1",
             "item_2_text": "Item 2",
@@ -205,6 +223,9 @@
         "body_1",
         "button_1",
         "divider_1",
+        "heading_xf4JHW",
+        "text_97pUyw",
+        "divider_ezmChT",
         "chapter_2",
         "body_2",
         "text_Xwbe37",
