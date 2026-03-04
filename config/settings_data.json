@@ -48,6 +48,13 @@
     "seasonal_hero_page_title": "Valentine's Day Sale is here!",
     "seasonal_hero_page_benefits": "Save up to XX% and get free shipping in XX on orders over XX.",
     "content_for_index": [],
+    "blocks": {
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
