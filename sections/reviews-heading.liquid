@@ -3,7 +3,8 @@
   assign hide_reviews_heading = false
 
   if request.page_type == 'product' and product != blank
-    assign product_settings_ref = product.metafields.custom.sbv2_product_settings.value | default: product.metafields.custom.sbv2_product_settings
+    assign product_settings_metafield = product.metafields.custom.sbv2_product_settings
+    assign product_settings_ref = product_settings_metafield.value | default: product_settings_metafield.reference | default: product_settings_metafield
     if product_settings_ref != blank
       assign hide_reviews_value = product_settings_ref.hide_reviews.value | default: product_settings_ref.hide_reviews
       if hide_reviews_value == true or hide_reviews_value == 'true' or hide_reviews_value == 1 or hide_reviews_value == '1'
@@ -27,6 +28,25 @@
     %}
   </section>
 {% endunless %}
+
+{% if hide_reviews_heading %}
+  <style>
+    #shopify-section-{{ section.id }} {
+      display: none !important;
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
+    #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block[id*='klaviyo_reviews_product_reviews']),
+    #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block > #fulfilled-reviews-all),
+    #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block > #klaviyo-reviews-all),
+    #shopify-section-{{ section.id }} + .shopify-section:has(> .shopify-app-block > #klaviyo-product-reviews-wrapper) {
+      display: none !important;
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+  </style>
+{% endif %}
 
 {% stylesheet %}
   .sb-reviews-heading {
