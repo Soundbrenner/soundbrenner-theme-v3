@@ -37,7 +37,6 @@
         const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
         const affiliateAnnouncementActiveClass = 'sb-affiliate-announcement-active';
         const affiliatePricingPendingClass = 'sb-affiliate-pricing-pending';
-        const affiliateKlaviyoPopupSuppressedClass = 'sb-affiliate-klaviyo-popup-suppressed';
         const readCookie = (name) => {
           const cookieSource = `${document.cookie || ''}`;
           if (!cookieSource) return '';
@@ -83,7 +82,6 @@
           rootNode.classList.add(affiliateHeroPendingClass);
           rootNode.classList.add(affiliateAnnouncementActiveClass);
           rootNode.classList.add(affiliatePricingPendingClass);
-          rootNode.classList.add(affiliateKlaviyoPopupSuppressedClass);
           window.setTimeout(() => {
             rootNode.classList.remove(affiliatePricingPendingClass);
           }, 4000);
@@ -125,12 +123,6 @@
       html.sb-affiliate-pricing-pending [data-value-breakdown-total-current],
       html.sb-affiliate-pricing-pending [data-value-breakdown-total-compare] {
         visibility: hidden;
-      }
-
-      html.sb-affiliate-klaviyo-popup-suppressed [role='dialog'][aria-modal='true'][class*='kl-private-reset-css'],
-      html.sb-affiliate-klaviyo-popup-suppressed [data-testid='POPUP'] {
-        display: none !important;
-        pointer-events: none !important;
       }
 
       .sb-klaviyo-popup-backdrop {
@@ -611,7 +603,6 @@
     <script>
       (() => {
         const popupOpenClass = 'sb-klaviyo-popup-open';
-        const affiliateKlaviyoPopupSuppressedClass = 'sb-affiliate-klaviyo-popup-suppressed';
         const markerSelector =
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
@@ -694,38 +685,6 @@
           if (rect.left >= window.innerWidth || rect.top >= window.innerHeight) return false;
 
           return true;
-        };
-
-        const isAffiliateKlaviyoSuppressed = () => {
-          const rootNode = document.documentElement;
-          return rootNode instanceof HTMLElement && rootNode.classList.contains(affiliateKlaviyoPopupSuppressedClass);
-        };
-
-        const maybeReleaseSuppressedPopupScrollLock = () => {
-          if (!isAffiliateKlaviyoSuppressed()) return;
-          const rootNode = document.documentElement;
-          const bodyNode = document.body;
-          if (!(rootNode instanceof HTMLElement) || !(bodyNode instanceof HTMLElement)) return;
-
-          // Do not interfere with theme-owned scroll locks (mobile menu).
-          if (rootNode.classList.contains('sb-scroll-locked') || bodyNode.classList.contains('sb-scroll-locked')) {
-            return;
-          }
-
-          rootNode.classList.remove(popupOpenClass);
-          if (rootNode.style.overflow === 'hidden') {
-            rootNode.style.overflow = '';
-          }
-          if (bodyNode.style.overflow === 'hidden') {
-            bodyNode.style.overflow = '';
-          }
-          if (bodyNode.style.position === 'fixed') {
-            bodyNode.style.position = '';
-            bodyNode.style.top = '';
-            bodyNode.style.left = '';
-            bodyNode.style.right = '';
-            bodyNode.style.width = '';
-          }
         };
 
         const extractCounterValue = (text) => {
@@ -1231,11 +1190,7 @@
             popupContainers.add(popupContainer);
           });
 
-          const shouldSuppressAffiliatePopup = isAffiliateKlaviyoSuppressed();
-
-          const hasVisiblePopup = shouldSuppressAffiliatePopup
-            ? false
-            : Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
+          const hasVisiblePopup = Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
 
           applyPopupLocalizedCopy();
           applyPopupRadiantButtons();
@@ -1244,9 +1199,6 @@
           localizePopupCountdownUnits();
           if (rootNode instanceof HTMLElement) {
             rootNode.classList.toggle(popupOpenClass, hasVisiblePopup);
-          }
-          if (shouldSuppressAffiliatePopup) {
-            maybeReleaseSuppressedPopupScrollLock();
           }
         };
 
