@@ -503,6 +503,23 @@
             "question": "FCC compliance",
             "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
           }
+        },
+        "divider_8P9EHA": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_YCjcWn": {
+          "type": "heading",
+          "settings": {
+            "heading": "FAQs"
+          }
+        },
+        "accordion_item_TxM6fP": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Placeholder question",
+            "answer": "<p>Placeholder answer.</p>"
+          }
         }
       },
       "block_order": [
@@ -582,7 +599,10 @@
         "accordion_item_9g67Q4",
         "accordion_item_3",
         "accordion_item_4",
-        "accordion_item_5"
+        "accordion_item_5",
+        "divider_8P9EHA",
+        "heading_YCjcWn",
+        "accordion_item_TxM6fP"
       ],
       "settings": {}
     },
