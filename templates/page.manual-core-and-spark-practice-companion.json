@@ -1223,6 +1223,13 @@
             "question": "How to factory reset the Core?",
             "answer": "<p>There are several reasons to factory reset your Core. For example, we recommend to factory reset the Core before reselling it, or as a last resort if you're experiencing issues and other troubleshooting steps don't work.</p><p><strong>How to factory reset the Core</strong></p><p>Simple navigate to \"Settings\" on your Core device. From there head to \"Factory reset?\", press the bottom button and select \"Yes\" by pressing the bottom button again. Your Core was now reset to its factory settings! </p>"
           }
+        },
+        "accordion_item_YNVk4P": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to improve the tuner sustain of Core?",
+            "answer": "<p>For certain instruments it can happen that the sustain of the signal is too short for a great tuning experience. This means that you only see the LED lights and note on your Core for a brief moment. This may result in an inconvenient tuning experience, that requires you to frequently strum your string. This can be improved simply by adjusting the angle of your Core when attached to the tuner mount. See below video to see the improvement potential in action!</p>"
+          }
         }
       },
       "block_order": [
@@ -1419,7 +1426,8 @@
         "accordion_item_wbfexy",
         "accordion_item_QdNUrT",
         "accordion_item_RQetYJ",
-        "accordion_item_GFAWML"
+        "accordion_item_GFAWML",
+        "accordion_item_YNVk4P"
       ],
       "settings": {}
     },
