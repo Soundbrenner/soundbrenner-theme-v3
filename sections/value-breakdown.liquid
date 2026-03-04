@@ -29,7 +29,7 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 {% assign current_price_cents = current_variant.price | default: 0 | plus: 0 %}
 {% assign current_compare_price_cents = current_variant.compare_at_price | default: 0 | plus: 0 %}
-{% assign storefront_global_discount_percent = settings.storefront_default_order_discount_depth | default: 15 | plus: 0 %}
+{% assign storefront_global_discount_percent = settings.sitewide_seasonal_discount_depth | default: 48 | plus: 0 %}
 {% if storefront_global_discount_percent < 0 %}
   {% assign storefront_global_discount_percent = 0 %}
 {% elsif storefront_global_discount_percent > 100 %}

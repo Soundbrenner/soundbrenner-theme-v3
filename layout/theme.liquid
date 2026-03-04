@@ -1478,10 +1478,10 @@
         };
 
         const seasonalDiscountRate = clampDiscountRate(
-          Number({{ settings.storefront_default_order_discount_depth | json }}) / 100
+          Number({{ settings.sitewide_seasonal_discount_depth | json }}) / 100
         );
         const affiliateDiscountRate = clampDiscountRate(
-          Number({{ settings.storefront_affiliate_order_discount_depth | json }}) / 100
+          Number({{ settings.sitewide_affiliate_discount_depth | json }}) / 100
         );
         const cartDiscountRate = clampDiscountRate(
           Number({{ storefront_cart_discount_depth | json }}) / 100
@@ -1655,10 +1655,10 @@
         };
 
         const thumbnailSeasonalDiscountRate = clampDiscountRate(
-          Number({{ settings.storefront_default_order_discount_depth | json }}) / 100
+          Number({{ settings.sitewide_seasonal_discount_depth | json }}) / 100
         );
         const thumbnailAffiliateDiscountRate = clampDiscountRate(
-          Number({{ settings.storefront_affiliate_order_discount_depth | json }}) / 100
+          Number({{ settings.sitewide_affiliate_discount_depth | json }}) / 100
         );
         const thumbnailCartDiscountRate = clampDiscountRate(
           Number({{ storefront_cart_discount_depth | json }}) / 100
