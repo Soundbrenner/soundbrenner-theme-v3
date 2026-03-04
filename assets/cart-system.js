@@ -448,6 +448,32 @@
     return [...new Set(codes)];
   };
 
+  const cartHasDiscountTitle = (cart, title) => {
+    const normalizedTitle = normalizeDiscountTitle(title);
+    if (!normalizedTitle) return false;
+
+    const cartLevelApplications = Array.isArray(cart && cart.cart_level_discount_applications)
+      ? cart.cart_level_discount_applications
+      : [];
+    const cartLevelMatch = cartLevelApplications.some((application) => {
+      const applicationTitle = normalizeDiscountTitle(application && application.title);
+      return applicationTitle && applicationTitle === normalizedTitle;
+    });
+    if (cartLevelMatch) return true;
+
+    const items = Array.isArray(cart && cart.items) ? cart.items : [];
+    return items.some((item) => {
+      const allocations = Array.isArray(item && item.line_level_discount_allocations)
+        ? item.line_level_discount_allocations
+        : [];
+      return allocations.some((allocation) => {
+        const application = allocation && allocation.discount_application ? allocation.discount_application : null;
+        const applicationTitle = normalizeDiscountTitle(application && application.title);
+        return applicationTitle && applicationTitle === normalizedTitle;
+      });
+    });
+  };
+
   const normalizeDiscountTitle = (value) => `${value == null ? '' : value}`.trim().toUpperCase();
   const normalizeDiscountType = (value) => `${value == null ? '' : value}`.trim().toLowerCase();
 
@@ -534,7 +560,7 @@
     return withTitle || summaries[0];
   };
 
-  const getCartDiscountSummary = (cart, currency = '') => {
+  const getCartDiscountSummary = (cart, currency = '', discountTemplate = '') => {
     const primarySummary = selectPrimaryCartLevelDiscountApplicationSummary(cart);
     const primaryApplication = primarySummary && primarySummary.application ? primarySummary.application : null;
     const discountAmountCents =
@@ -570,7 +596,7 @@
     }
 
     const text = Number.isFinite(percentage)
-      ? `${code} (${percentage}% OFF)`
+      ? formatLineDiscountText(discountTemplate, code, percentage, { uppercaseTitle: true })
       : code;
 
     return {
@@ -643,16 +669,21 @@
     return Math.max(0, Math.round((discountCents / originalLinePriceCents) * 100));
   };
 
-  const formatLineDiscountText = (template, title, percent) => {
-    const normalizedTitle = `${title || ''}`.trim();
+  const formatLineDiscountText = (template, title, percent, { uppercaseTitle = true } = {}) => {
+    const rawTitle = `${title || ''}`.trim();
+    const normalizedTitle = uppercaseTitle ? rawTitle.toUpperCase() : rawTitle;
     const normalizedPercent = Number.isFinite(Number(percent)) ? Math.max(0, Math.round(Number(percent))) : 0;
     if (!normalizedTitle || normalizedPercent <= 0) return '';
 
     const normalizedTemplate = `${template || ''}`.trim();
-    const resolvedTemplate = normalizedTemplate || '__CODE__ (__PERCENT__% OFF)';
+    const resolvedTemplate = normalizedTemplate || '__CODE__ (__PERCENT__%)';
+    const locale = document.documentElement.lang || undefined;
+    const formattedPercent = new Intl.NumberFormat(locale, {
+      maximumFractionDigits: 0,
+    }).format(normalizedPercent);
     return resolvedTemplate
       .replace(/__CODE__/g, normalizedTitle)
-      .replace(/__PERCENT__/g, `${normalizedPercent}`);
+      .replace(/__PERCENT__/g, formattedPercent);
   };
 
   const getItemImageUrl = (item) => {
@@ -1390,6 +1421,8 @@
       this.placeholderImage = this.dataset.placeholderImage || '';
       this.displayCurrency = `${this.dataset.currency || ''}`.trim().toUpperCase();
       this.lineDiscountTemplate = `${this.dataset.lineDiscountTemplate || ''}`;
+      this.orderDiscountTemplate =
+        `${this.dataset.orderDiscountTemplate || ''}`.trim() || `${this.lineDiscountTemplate || ''}`.trim();
       this.hasServerRenderedRows =
         this.itemListNode instanceof HTMLElement &&
         this.itemListNode.querySelector('[data-cart-line]') instanceof HTMLElement;
@@ -1699,9 +1732,35 @@
       applyDiscount(nextCodes, { source: `${this.context}-discount-add`, commit: false })
         .then((cart) => {
           if (requestId !== this.discountSubmitRequestId) return;
+          const finalizeSuccess = () => {
+            if (requestId !== this.discountSubmitRequestId) return;
+            this.discountInput.value = '';
+            this.hideDiscountError();
+          };
+
           const appliedCodes = getAppliedDiscountCodes(cart).map((code) => code.toLowerCase());
           const existingCodesLower = existingCodes.map((code) => code.toLowerCase());
           if (!appliedCodes.includes(nextCode.toLowerCase())) {
+            if (cartHasDiscountTitle(cart, nextCode)) {
+              refreshCart({
+                source: `${this.context}-discount-add`,
+                animateBadge: false,
+              })
+                .then(() => {
+                  if (requestId !== this.discountSubmitRequestId) return;
+                  finalizeSuccess();
+                })
+                .catch(() => {
+                  if (requestId !== this.discountSubmitRequestId) return;
+                  updateCartAndDispatch(cart, `${this.context}-discount-add`, {
+                    animateBadge: false,
+                    itemCount: cart.item_count || 0,
+                  });
+                  finalizeSuccess();
+                });
+              return;
+            }
+
             const discountCodes = Array.isArray(cart && cart.discount_codes) ? cart.discount_codes : [];
             const attemptedCode = nextCode.toLowerCase();
             const attemptedEntry = discountCodes.find((entry) => {
@@ -1713,7 +1772,49 @@
               const stillSameCodes =
                 appliedCodes.length === existingCodesLower.length &&
                 appliedCodes.every((code) => existingCodesLower.includes(code));
-              if (stillSameCodes) {
+
+              const previousSubtotalCents = Number.isFinite(Number(cachedCart && cachedCart.items_subtotal_price))
+                ? Number(cachedCart.items_subtotal_price)
+                : null;
+              const previousTotalCents = Number.isFinite(Number(cachedCart && cachedCart.total_price))
+                ? Number(cachedCart.total_price)
+                : null;
+              const nextSubtotalCents = Number.isFinite(Number(cart && cart.items_subtotal_price))
+                ? Number(cart.items_subtotal_price)
+                : null;
+              const nextTotalCents = Number.isFinite(Number(cart && cart.total_price))
+                ? Number(cart.total_price)
+                : null;
+              const hasMerchandiseTotals = Number.isFinite(previousSubtotalCents)
+                && Number.isFinite(previousTotalCents)
+                && Number.isFinite(nextSubtotalCents)
+                && Number.isFinite(nextTotalCents);
+              const merchandiseTotalsChanged = hasMerchandiseTotals
+                && (nextSubtotalCents !== previousSubtotalCents || nextTotalCents !== previousTotalCents);
+
+              // If merchandise totals changed, a real order-level discount impact happened.
+              // Treat it as success even when the returned code list does not immediately reflect it.
+              if (merchandiseTotalsChanged) {
+                refreshCart({
+                  source: `${this.context}-discount-add`,
+                  animateBadge: false,
+                })
+                  .then(() => {
+                    if (requestId !== this.discountSubmitRequestId) return;
+                    finalizeSuccess();
+                  })
+                  .catch(() => {
+                    if (requestId !== this.discountSubmitRequestId) return;
+                    updateCartAndDispatch(cart, `${this.context}-discount-add`, {
+                      animateBadge: false,
+                      itemCount: cart.item_count || 0,
+                    });
+                    finalizeSuccess();
+                  });
+                return;
+              }
+
+              if (stillSameCodes && !merchandiseTotalsChanged) {
                 this.showDiscountError(this.shippingDiscountErrorMessage);
               } else {
                 this.showDiscountError(this.discountCodeErrorMessage);
@@ -1727,12 +1828,6 @@
             }).catch(() => {});
             return;
           }
-
-          const finalizeSuccess = () => {
-            if (requestId !== this.discountSubmitRequestId) return;
-            this.discountInput.value = '';
-            this.hideDiscountError();
-          };
 
           refreshCart({
             source: `${this.context}-discount-add`,
@@ -2007,7 +2102,7 @@
     }
 
     renderDiscounts(cart, currency = '', { source = '', preserveInitialMarkup = false } = {}) {
-      const summary = getCartDiscountSummary(cart || {}, currency);
+      const summary = getCartDiscountSummary(cart || {}, currency, this.orderDiscountTemplate);
 
       if (this.autoDiscountRowNode) {
         this.autoDiscountRowNode.hidden = !summary.hasDiscount;
@@ -2103,6 +2198,7 @@
             lineDiscountTitle,
             lineDiscountPercent
           );
+          const comparePriceClass = lineDiscountText ? ' sb-cart-line__price--compare' : '';
           const regularLinePrice = formatMoney(hasDiscount ? originalLinePriceCents : finalLinePriceCents, currency);
           const discountedLinePrice = hasDiscount ? formatMoney(finalLinePriceCents, currency) : '';
 
@@ -2136,7 +2232,7 @@
 
           priceGroup.innerHTML = `
             <p
-              class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
+              class="sb-cart-line__price${comparePriceClass} sb-cart-shimmer-text font-caption weight-regular"
               data-cart-line-price
               data-shimmer-value="${escapeHtml(regularLinePrice)}"
             >
@@ -2225,6 +2321,7 @@
           lineDiscountTitle,
           lineDiscountPercent
         );
+        const comparePriceClass = lineDiscountText ? ' sb-cart-line__price--compare' : '';
         const regularLinePrice = formatMoney(hasDiscount ? originalLinePriceCents : finalLinePriceCents, currency);
         const discountedLinePrice = hasDiscount ? formatMoney(finalLinePriceCents, currency) : '';
         const minusButtonAttributes = effectiveQuantity <= 1 ? 'disabled aria-disabled="true"' : '';
@@ -2255,7 +2352,7 @@
               }
               <div class="sb-cart-line__price-group">
                 <p
-                  class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
+                  class="sb-cart-line__price${comparePriceClass} sb-cart-shimmer-text font-caption weight-regular"
                   data-cart-line-price
                   data-shimmer-value="${escapeHtml(regularLinePrice)}"
                 >
@@ -2346,12 +2443,15 @@
       const progressPercent = Math.max(0, Math.min(100, (subtotalCents / thresholdCents) * 100));
 
       if (this.freeShippingMessageNode) {
+        const unlockedTemplate = `${this.freeShippingNode.dataset.freeShippingUnlockedTemplate || ''}`.trim();
+        const remainingTemplate = `${this.freeShippingNode.dataset.freeShippingRemainingTemplate || ''}`.trim();
         if (reached) {
-          this.freeShippingMessageNode.innerHTML = "🥳 You've unlocked <strong>free shipping</strong>.";
-        } else {
-          this.freeShippingMessageNode.innerHTML = `👉 You're only <strong>${escapeHtml(
-            formatMoney(remainingCents, currency)
-          )}</strong> away from <strong>free shipping</strong>.`;
+          if (unlockedTemplate) {
+            this.freeShippingMessageNode.innerHTML = unlockedTemplate;
+          }
+        } else if (remainingTemplate) {
+          const formattedRemaining = escapeHtml(formatMoney(remainingCents, currency));
+          this.freeShippingMessageNode.innerHTML = remainingTemplate.replace(/__AMOUNT__/g, formattedRemaining);
         }
       }
 

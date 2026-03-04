@@ -125,26 +125,6 @@
         visibility: hidden;
       }
 
-      html.sb-affiliate-klaviyo-suppressed .klaviyo-form,
-      html.sb-affiliate-klaviyo-suppressed [data-testid^='klaviyo-form-'],
-      html.sb-affiliate-klaviyo-suppressed [class*='klaviyo-form-'],
-      html.sb-affiliate-klaviyo-suppressed iframe[src*='klaviyo'] {
-        display: none !important;
-      }
-
-      html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo [class*='klaviyo-form-'],
-      html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo [data-testid^='klaviyo-form-'] {
-        display: block !important;
-      }
-
-      html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo iframe[src*='klaviyo'] {
-        display: block !important;
-      }
-
-      html.sb-affiliate-klaviyo-suppressed .sb-footer__newsletter-klaviyo .klaviyo-form {
-        display: flex !important;
-      }
-
       .sb-klaviyo-popup-backdrop {
         -webkit-backdrop-filter: blur(var(--sb-space-8));
         backdrop-filter: blur(var(--sb-space-8));
@@ -620,140 +600,6 @@
         min-width: 92px;
       }
     </style>
-    <script>
-      (() => {
-        const suppressionClass = 'sb-affiliate-klaviyo-suppressed';
-        const rootNode = document.documentElement;
-        if (!(rootNode instanceof HTMLElement) || !rootNode.classList.contains(suppressionClass)) return;
-
-        const extractFormIds = (value) => {
-          const source = `${value || ''}`;
-          if (!source) return [];
-          const matches = source.match(/klaviyo-form-([A-Za-z0-9_-]+)/g) || [];
-          return matches.map((match) => match.replace('klaviyo-form-', ''));
-        };
-
-        const getNodeFormIds = (node) => {
-          if (!(node instanceof HTMLElement)) return [];
-          const ids = new Set();
-          extractFormIds(node.className).forEach((id) => ids.add(id));
-          extractFormIds(node.getAttribute('data-testid')).forEach((id) => ids.add(id));
-          return Array.from(ids);
-        };
-
-        const isFooterEmbedContext = (node) =>
-          node instanceof HTMLElement && Boolean(node.closest('.sb-footer__newsletter-klaviyo'));
-
-        const getAllowedEmbedFormIds = () => {
-          const allowedIds = new Set();
-          document
-            .querySelectorAll(".sb-footer__newsletter-klaviyo [class*='klaviyo-form-'], .sb-footer__newsletter-klaviyo [data-testid^='klaviyo-form-']")
-            .forEach((node) => {
-              getNodeFormIds(node).forEach((id) => allowedIds.add(id));
-            });
-          return allowedIds;
-        };
-
-        const isAllowedEmbedForm = (node, allowedEmbedIds) => {
-          if (!(node instanceof HTMLElement)) return false;
-          if (isFooterEmbedContext(node)) return true;
-
-          let currentNode = node;
-          while (currentNode && currentNode !== document.body) {
-            if (!(currentNode instanceof HTMLElement)) break;
-            const currentIds = getNodeFormIds(currentNode);
-            if (currentIds.some((id) => allowedEmbedIds.has(id))) return true;
-            currentNode = currentNode.parentElement;
-          }
-
-          return false;
-        };
-
-        const findPopupContainer = (node) => {
-          if (!(node instanceof HTMLElement)) return null;
-
-          let currentNode = node;
-          while (currentNode && currentNode !== document.body) {
-            if (!(currentNode instanceof HTMLElement)) break;
-            if (isFooterEmbedContext(currentNode)) return null;
-
-            const computedStyle = window.getComputedStyle(currentNode);
-            const zIndex = Number.parseInt(computedStyle.zIndex || '0', 10);
-            const isDialog = currentNode.getAttribute('role') === 'dialog' || currentNode.getAttribute('aria-modal') === 'true';
-            const isPopupLike = computedStyle.position === 'fixed' || (computedStyle.position === 'absolute' && zIndex >= 1000) || isDialog;
-            if (isPopupLike) return currentNode;
-
-            currentNode = currentNode.parentElement;
-          }
-
-          return node;
-        };
-
-        const hidePopupContainer = (node, allowedEmbedIds) => {
-          if (!(node instanceof HTMLElement)) return;
-          if (isAllowedEmbedForm(node, allowedEmbedIds)) return;
-
-          const popupContainer = findPopupContainer(node);
-          if (!(popupContainer instanceof HTMLElement)) return;
-          popupContainer.style.setProperty('display', 'none', 'important');
-        };
-
-        const markerSelector =
-          '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], [class*="kl-private-reset-css"], iframe[src*="klaviyo"]';
-
-        const suppressKlaviyoPopups = (scope = document) => {
-          if (!(scope instanceof Document || scope instanceof HTMLElement)) return;
-          const allowedEmbedIds = getAllowedEmbedFormIds();
-
-          const nodes = scope.querySelectorAll(markerSelector);
-          nodes.forEach((node) => {
-            if (node instanceof HTMLIFrameElement) {
-              if (isAllowedEmbedForm(node, allowedEmbedIds)) return;
-              node.style.setProperty('display', 'none', 'important');
-              return;
-            }
-            hidePopupContainer(node, allowedEmbedIds);
-          });
-        };
-
-        const processAddedNode = (node) => {
-          if (!(node instanceof HTMLElement)) return;
-          suppressKlaviyoPopups(node);
-        };
-
-        const runSuppression = () => {
-          suppressKlaviyoPopups(document);
-        };
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', runSuppression, { once: true });
-        } else {
-          runSuppression();
-        }
-
-        if (typeof MutationObserver !== 'function') return;
-        const observer = new MutationObserver((mutations) => {
-          mutations.forEach((mutation) => {
-            mutation.addedNodes.forEach((addedNode) => {
-              if (addedNode instanceof HTMLIFrameElement) {
-                suppressKlaviyoPopups(document);
-                return;
-              }
-              processAddedNode(addedNode);
-            });
-          });
-        });
-        observer.observe(document.documentElement, { childList: true, subtree: true });
-
-        const startedAt = Date.now();
-        const resuppressTimer = window.setInterval(() => {
-          suppressKlaviyoPopups(document);
-          if (Date.now() - startedAt > 5000) {
-            window.clearInterval(resuppressTimer);
-          }
-        }, 250);
-      })();
-    </script>
     <script>
       (() => {
         const popupOpenClass = 'sb-klaviyo-popup-open';
@@ -2582,10 +2428,18 @@
     <script>
       (() => {
         const rootSelector = '#klaviyo-reviews-all, #klaviyo-product-reviews-wrapper';
-        const countPattern = /\b(\d[\d.,\s\u00A0\u202F]*)(?=\s+reviews\b)/gi;
         const klaviyoStarPath =
           'M3.825 19.5L5.45 12.475L0 7.75L7.2 7.125L10 0.5L12.8 7.125L20 7.75L14.55 12.475L16.175 19.5L10 15.775L3.825 19.5Z';
-        const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
+        const locale = document.documentElement.lang || undefined;
+        const numberFormatter = new Intl.NumberFormat(locale, {
+          maximumFractionDigits: 0,
+        });
+        const ratingFormatter = new Intl.NumberFormat(locale, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        });
+        const reviewsCountTemplate = {{ 'sb.product.reviews_count' | t: count: '__COUNT__' | json }};
+        const ratingSummaryTemplate = {{ 'sb.collection_overview.rating_summary' | t: rating: '__RATING__', count: '__COUNT__' | json }};
         let formattingObserver = null;
         let widgetObserver = null;
 
@@ -2594,6 +2448,27 @@
           if (!digits) return null;
           const parsed = Number.parseInt(digits, 10);
           return Number.isFinite(parsed) ? parsed : null;
+        };
+
+        const isPlainNumericCountString = (value) =>
+          /^\s*\d[\d.,\s\u00A0\u202F]*\s*$/.test(`${value || ''}`);
+
+        const parseLocalizedDecimal = (value) => {
+          const normalized = `${value || ''}`
+            .replace(/\s|\u00A0|\u202F/g, '')
+            .replace(/,/g, '.')
+            .replace(/[^\d.\-]/g, '');
+          if (!normalized) return null;
+          const parsed = Number.parseFloat(normalized);
+          return Number.isFinite(parsed) ? parsed : null;
+        };
+
+        const replaceFirstIntegerToken = (text, formatter) => {
+          if (!text) return text;
+          return text.replace(/\d[\d.,\s\u00A0\u202F]*/u, (digits) => {
+            const parsed = parseLocalizedInteger(digits);
+            return Number.isFinite(parsed) ? formatter.format(parsed) : `${digits}`;
+          });
         };
 
         const applyCustomStarPaths = (scope = document) => {
@@ -2687,22 +2562,26 @@
           const buttons = scope.querySelectorAll('.klaviyo-star-rating-widget .kl_reviews__star_rating_widget');
           buttons.forEach((button) => {
             const aria = button.getAttribute('aria-label') || '';
-            const ratingMatch = aria.match(/([\d.,]+)\s*stars?/i);
-            const countFromAria = aria.match(/(\d[\d.,\s\u00A0\u202F]*)\s*(ratings?|reviews?)/i);
-            if (!ratingMatch) return;
+            const ariaNumericTokens = Array.from(aria.matchAll(/\d[\d.,\s\u00A0\u202F]*/g)).map((match) => `${match[0]}`.trim());
 
             const starsBadge = button.querySelector('.kl_reviews__stars_badge');
             if (!starsBadge) return;
 
             const existingLabel = button.querySelector('.kl_reviews__star_rating_widget__label');
             const countFromLabel = (existingLabel?.textContent || '').match(/(\d[\d.,\s\u00A0\u202F]*)/);
-            const rawCount = (countFromAria && countFromAria[1]) || (countFromLabel && countFromLabel[1]) || '0';
+            const ratingRaw = ariaNumericTokens[0] || '';
+            const countFromAria = ariaNumericTokens.length > 1 ? ariaNumericTokens[ariaNumericTokens.length - 1] : '';
+            const rawCount = countFromAria || (countFromLabel && countFromLabel[1]) || '0';
+            const ratingNumber = parseLocalizedDecimal(ratingRaw);
+            if (!Number.isFinite(ratingNumber)) return;
             const countNumber = parseLocalizedInteger(rawCount);
             const formattedCount = Number.isFinite(countNumber) ? numberFormatter.format(countNumber) : `${rawCount}`.trim();
-            const ratingNumber = Number(String(ratingMatch[1]).replace(',', '.'));
-            const formattedRating = Number.isFinite(ratingNumber) ? ratingNumber.toFixed(1) : ratingMatch[1];
-
-            const copy = `${formattedRating} (by ${formattedCount} musicians)`;
+            const formattedRating = ratingFormatter.format(ratingNumber);
+            const reviewsCountCopy = reviewsCountTemplate.replace(/__COUNT__/g, formattedCount);
+            const copy = `${formattedRating} (${reviewsCountCopy})`;
+            const localizedAria = ratingSummaryTemplate
+              .replace(/__RATING__/g, formattedRating)
+              .replace(/__COUNT__/g, formattedCount);
 
             let label = button.querySelector('.sb-klaviyo-average-rating');
             if (!label) {
@@ -2712,6 +2591,10 @@
             }
             if (label.textContent !== copy) {
               label.textContent = copy;
+            }
+
+            if (localizedAria && button.getAttribute('aria-label') !== localizedAria) {
+              button.setAttribute('aria-label', localizedAria);
             }
 
             if (existingLabel && existingLabel.style.display !== 'none') {
@@ -2726,15 +2609,20 @@
           targets.forEach((target) => {
             const currentText = target.textContent;
             if (!currentText) return;
+            const parsedCount = parseLocalizedInteger(currentText);
+            if (!Number.isFinite(parsedCount)) return;
+            const nextText = reviewsCountTemplate.replace(/__COUNT__/g, numberFormatter.format(parsedCount));
+            if (nextText && nextText !== currentText) target.textContent = nextText;
+          });
 
-            const nextText = currentText.replace(countPattern, (_, digits) => {
-              const parsed = parseLocalizedInteger(digits);
-              return Number.isFinite(parsed) ? numberFormatter.format(parsed) : `${digits}`;
-            });
-
-            if (nextText !== currentText) {
-              target.textContent = nextText;
-            }
+          const averageValues = root.querySelectorAll('.kl_reviews__summary__average_value');
+          averageValues.forEach((target) => {
+            const currentText = target.textContent;
+            if (!currentText) return;
+            const parsedRating = parseLocalizedDecimal(currentText);
+            if (!Number.isFinite(parsedRating)) return;
+            const nextText = ratingFormatter.format(parsedRating);
+            if (nextText && nextText !== currentText.trim()) target.textContent = nextText;
           });
 
           const filterInfoCounts = root.querySelectorAll('.kl_reviews__filter_info > span:first-child');
@@ -2742,10 +2630,7 @@
             const currentText = target.textContent;
             if (!currentText) return;
 
-            const nextText = currentText.replace(/\b(\d[\d.,\s\u00A0\u202F]*)(?=\s+reviews?\b)/i, (_, digits) => {
-              const parsed = parseLocalizedInteger(digits);
-              return Number.isFinite(parsed) ? numberFormatter.format(parsed) : `${digits}`;
-            });
+            const nextText = replaceFirstIntegerToken(currentText, numberFormatter);
 
             if (nextText !== currentText) {
               target.textContent = nextText;
@@ -2802,20 +2687,25 @@
               .replace(/\s·\s/g, ' • ')
               .trim();
 
-            const ratingMatch = nextText.match(/(\d+(?:[.,]\d+)?)/);
-            const reviewsMatch = nextText.match(/(\d[\d.,\s\u00A0\u202F]*)\s+reviews\b/i);
+            const numericTokens = Array.from(nextText.matchAll(/\d[\d.,\s\u00A0\u202F]*/g)).map((match) => `${match[0]}`.trim());
+            const ratingToken = numericTokens[0] || '';
+            const reviewsToken = numericTokens.length > 1 ? numericTokens[numericTokens.length - 1] : '';
 
-            if (ratingMatch && reviewsMatch) {
-              const ratingValue = ratingMatch[1];
-              const parsedReviewsCount = parseLocalizedInteger(reviewsMatch[1]);
+            if (ratingToken && reviewsToken) {
+              const parsedRatingValue = parseLocalizedDecimal(ratingToken);
+              const parsedReviewsCount = parseLocalizedInteger(reviewsToken);
+              const ratingValue = Number.isFinite(parsedRatingValue)
+                ? ratingFormatter.format(parsedRatingValue)
+                : ratingToken;
               const reviewsValue = Number.isFinite(parsedReviewsCount)
                 ? numberFormatter.format(parsedReviewsCount)
-                : `${reviewsMatch[1]}`.trim();
+                : `${reviewsToken}`.trim();
+              const reviewsCopy = reviewsCountTemplate.replace(/__COUNT__/g, reviewsValue);
               const nextHtml =
                 `<span class="sb-klaviyo-rating-value">${ratingValue}</span>` +
                 `<span class="sb-klaviyo-inline-star" aria-hidden="true"></span>` +
                 `<span class="sb-klaviyo-inline-dot" aria-hidden="true">•</span>` +
-                `<span class="sb-klaviyo-rating-reviews">${reviewsValue} reviews</span>`;
+                `<span class="sb-klaviyo-rating-reviews">${reviewsCopy}</span>`;
               if (target.innerHTML !== nextHtml) target.innerHTML = nextHtml;
               return;
             }
@@ -2837,6 +2727,90 @@
           applyCustomStarPaths(root);
           normalizeRangeSvgs(root);
           normalizeFilterSelects(root);
+        };
+
+        const localizeThemeRatingTokens = (scope = document) => {
+          if (!(scope instanceof Element || scope instanceof Document)) return;
+
+          scope.querySelectorAll('[data-sb-localized-count-template][data-sb-localized-count-value]').forEach((node) => {
+            if (!(node instanceof HTMLElement)) return;
+            const template = `${node.dataset.sbLocalizedCountTemplate || ''}`.trim();
+            if (!template) return;
+            const rawCountValue = `${node.dataset.sbLocalizedCountValue || ''}`;
+            if (!isPlainNumericCountString(rawCountValue)) return;
+            const parsedCount = parseLocalizedInteger(rawCountValue);
+            if (!Number.isFinite(parsedCount)) return;
+            const nextText = template.replace(/__COUNT__/g, numberFormatter.format(parsedCount));
+            if (nextText && node.textContent !== nextText) {
+              node.textContent = nextText;
+            }
+          });
+
+          scope.querySelectorAll('[data-sb-localized-rating-value]').forEach((node) => {
+            if (!(node instanceof HTMLElement)) return;
+            const parsedRating = parseLocalizedDecimal(node.dataset.sbLocalizedRatingValue || '');
+            if (!Number.isFinite(parsedRating)) return;
+            const fixedDigitsRaw = Number.parseInt(node.dataset.sbLocalizedRatingDigits || '1', 10);
+            const fixedDigits = Number.isFinite(fixedDigitsRaw) && fixedDigitsRaw >= 0 ? fixedDigitsRaw : 1;
+            const formatter = new Intl.NumberFormat(locale, {
+              minimumFractionDigits: fixedDigits,
+              maximumFractionDigits: fixedDigits,
+            });
+            const nextText = formatter.format(parsedRating);
+            if (nextText && node.textContent !== nextText) {
+              node.textContent = nextText;
+            }
+          });
+
+          scope.querySelectorAll('[data-sb-localized-rating-template][data-sb-localized-rating-value]').forEach((node) => {
+            if (!(node instanceof HTMLElement)) return;
+            const template = `${node.dataset.sbLocalizedRatingTemplate || ''}`.trim();
+            if (!template) return;
+            const parsedRating = parseLocalizedDecimal(node.dataset.sbLocalizedRatingValue || '');
+            if (!Number.isFinite(parsedRating)) return;
+            const fixedDigitsRaw = Number.parseInt(node.dataset.sbLocalizedRatingDigits || '1', 10);
+            const fixedDigits = Number.isFinite(fixedDigitsRaw) && fixedDigitsRaw >= 0 ? fixedDigitsRaw : 1;
+            const formatter = new Intl.NumberFormat(locale, {
+              minimumFractionDigits: fixedDigits,
+              maximumFractionDigits: fixedDigits,
+            });
+            const formattedRating = formatter.format(parsedRating);
+            const nextText = template.replace(/__RATING__/g, formattedRating);
+            if (nextText && node.textContent !== nextText) {
+              node.textContent = nextText;
+            }
+          });
+
+          scope.querySelectorAll('[data-sb-localized-rating-summary-template][data-sb-localized-rating-value][data-sb-localized-count-value]').forEach((node) => {
+            if (!(node instanceof HTMLElement)) return;
+            const template = `${node.dataset.sbLocalizedRatingSummaryTemplate || ''}`.trim();
+            if (!template) return;
+            const parsedRating = parseLocalizedDecimal(node.dataset.sbLocalizedRatingValue || '');
+            const rawCountValue = `${node.dataset.sbLocalizedCountValue || ''}`;
+            if (!isPlainNumericCountString(rawCountValue)) return;
+            const parsedCount = parseLocalizedInteger(rawCountValue);
+            if (!Number.isFinite(parsedRating) || !Number.isFinite(parsedCount)) return;
+            const digitsRaw = Number.parseInt(node.dataset.sbLocalizedRatingDigits || '1', 10);
+            const digits = Number.isFinite(digitsRaw) && digitsRaw >= 0 ? digitsRaw : 1;
+            const formatter = new Intl.NumberFormat(locale, {
+              minimumFractionDigits: digits,
+              maximumFractionDigits: digits,
+            });
+            const formattedRating = formatter.format(parsedRating);
+            const formattedCount = numberFormatter.format(parsedCount);
+            const nextText = template
+              .replace(/__RATING__/g, formattedRating)
+              .replace(/__COUNT__/g, formattedCount);
+            if (!nextText) return;
+            const paragraph = node.querySelector('p');
+            if (paragraph instanceof HTMLElement) {
+              if (paragraph.textContent !== nextText) {
+                paragraph.textContent = nextText;
+              }
+            } else if (node.textContent !== nextText) {
+              node.textContent = nextText;
+            }
+          });
         };
 
 
@@ -2865,6 +2839,7 @@
           normalizeRangeSvgs(document);
           normalizeFilterSelects(document);
           formatStarRatingWidgets(document);
+          localizeThemeRatingTokens(document);
 
           let isQueued = false;
           widgetObserver = new MutationObserver(() => {
@@ -2876,6 +2851,7 @@
               normalizeRangeSvgs(document);
               normalizeFilterSelects(document);
               formatStarRatingWidgets(document);
+              localizeThemeRatingTokens(document);
             });
           });
 

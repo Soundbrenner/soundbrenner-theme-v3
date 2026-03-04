@@ -4058,7 +4058,7 @@
 
       const currencyCode = `${priceRow?.dataset.currency || root.dataset.productCurrency || ''}`.trim().toUpperCase();
       const storefrontPricing = window.SBStorefrontPricing || null;
-      const reviewCountFormatter = new Intl.NumberFormat(undefined, {
+      const reviewCountFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined, {
         maximumFractionDigits: 0,
       });
       const reviewsCountTemplate = {{ 'sb.product.reviews_count' | t: count: '__COUNT__' | json }};

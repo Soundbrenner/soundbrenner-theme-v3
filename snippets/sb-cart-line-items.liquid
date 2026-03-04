@@ -65,7 +65,7 @@
                 assign item_product_discount_amount = item_product_discount_amount | plus: item_discount_amount_candidate
               endif
               if item_line_discount_title == blank and item_discount_title_candidate != blank
-                assign item_line_discount_title = item_discount_title_candidate
+                assign item_line_discount_title = item_discount_title_candidate | upcase
               endif
             endif
           endfor
@@ -147,7 +147,7 @@
           <div class="sb-cart-line__price-group">
             {% if item_has_discount %}
               <p
-                class="sb-cart-line__price sb-cart-shimmer-text font-caption weight-regular"
+                class="sb-cart-line__price{% if item_has_product_discount %} sb-cart-line__price--compare{% endif %} sb-cart-shimmer-text font-caption weight-regular"
                 data-cart-line-price
                 data-shimmer-value="{{ item_original_line_price_formatted | escape }}"
               >

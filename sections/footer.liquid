@@ -5,8 +5,10 @@
 {% assign trustpilot_entry = metaobjects.trustpilot.values | first %}
 {% assign trustpilot_rating_value = trustpilot_entry.rating.value | default: trustpilot_entry.rating %}
 {% assign footer_newsletter_arrow_icon_url = 'arrow-reduced-padding.svg' | asset_url %}
+{% assign trustpilot_rating_template = '' %}
 {% if trustpilot_rating_value != blank %}
   {% assign trustpilot_rating_text = 'sb.trustpilot.rating_out_of_five' | t: rating: trustpilot_rating_value %}
+  {% assign trustpilot_rating_template = 'sb.trustpilot.rating_out_of_five' | t: rating: '__RATING__' %}
 {% else %}
   {% assign trustpilot_rating_text = section.settings.trustpilot_rating %}
 {% endif %}
@@ -115,7 +117,13 @@
           rel="noopener noreferrer"
           aria-label="{{ 'sb.trustpilot.read_reviews' | t }}"
         >
-          <span>{{ trustpilot_rating_text }}</span>
+          <span
+            {% if trustpilot_rating_value != blank %}
+              data-sb-localized-rating-template="{{ trustpilot_rating_template | escape }}"
+              data-sb-localized-rating-value="{{ trustpilot_rating_value | escape }}"
+              data-sb-localized-rating-digits="1"
+            {% endif %}
+          >{{ trustpilot_rating_text }}</span>
         </a>
       </div>
 

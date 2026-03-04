@@ -60,6 +60,7 @@
     data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
     data-placeholder-image="{{ cart_placeholder_image }}"
     data-line-discount-template="{{ 'sb.cart.discount_with_percent' | t: code: '__CODE__', percent: '__PERCENT__' | escape }}"
+    data-order-discount-template="{{ 'sb.cart.discount_with_percent' | t: code: '__CODE__', percent: '__PERCENT__' | escape }}"
   >
     <div class="sb-cart-page">
       <div class="sb-cart-page__layout">

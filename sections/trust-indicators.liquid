@@ -18,6 +18,7 @@
   assign metronome_count_raw = trustpilot_entry.the_metronome_app_review_count.value | default: trustpilot_entry.the_metronome_app_review_count
   assign metronome_rating_display = metronome_rating_raw | strip
   assign metronome_count_display = metronome_count_raw | strip
+  assign metronome_summary_template = 'sb.trustpilot.metronome_rating_summary' | t: rating: '__RATING__', count: '__COUNT__'
   if metronome_rating_display != blank and metronome_count_display != blank
     assign metronome_summary = 'sb.trustpilot.metronome_rating_summary' | t: rating: metronome_rating_display, count: metronome_count_display
   else
@@ -153,7 +154,13 @@
             </div>
 
             {% if block.settings.show_metronome_app_ratings and metronome_summary != blank %}
-              <div class="sb-trust-indicators__text font-body weight-regular rte">
+              <div
+                class="sb-trust-indicators__text font-body weight-regular rte"
+                data-sb-localized-rating-summary-template="{{ metronome_summary_template | escape }}"
+                data-sb-localized-rating-value="{{ metronome_rating_display | escape }}"
+                data-sb-localized-rating-digits="1"
+                data-sb-localized-count-value="{{ metronome_count_display | escape }}"
+              >
                 <p>{{ metronome_summary }}</p>
               </div>
             {% elsif block.settings.text != blank %}

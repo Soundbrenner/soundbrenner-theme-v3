@@ -38,10 +38,16 @@
 
   const applyReviewFormatting = (scope = document) => {
     if (!(scope instanceof Element || scope instanceof Document)) return;
-    scope.querySelectorAll('.sb-product-thumbnail__reviews[data-review-count]').forEach((node) => {
-      const rawValue = Number.parseInt(node.dataset.reviewCount || '0', 10);
+    const locale = document.documentElement.lang || undefined;
+    const formatter = new Intl.NumberFormat(locale, {
+      maximumFractionDigits: 0,
+    });
+    scope.querySelectorAll('[data-thumbnail-reviews-count][data-count-template][data-count-value]').forEach((node) => {
+      const rawValue = Number.parseInt(`${node.dataset.countValue || ''}`.replace(/[^\d]/g, ''), 10);
       if (!Number.isFinite(rawValue)) return;
-      node.textContent = `${rawValue.toLocaleString()} reviews`;
+      const template = `${node.dataset.countTemplate || ''}`.trim();
+      if (!template) return;
+      node.textContent = template.replace(/__COUNT__/g, formatter.format(rawValue));
     });
   };
 
