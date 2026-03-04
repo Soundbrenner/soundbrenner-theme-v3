@@ -156,13 +156,13 @@
         "text_8iMfyk": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Charging</strong></p><p>While charging, the soundwave will slowly pulse in an orange color.</p>"
+            "text": "<p><strong>Charging</strong></p><p>While charging, the soundwave slowly pulses orange.</p>"
           }
         },
         "text_Je89EH": {
           "type": "text",
           "settings": {
-            "text": "<p><strong>Fully charged</strong></p><p>When charging is complete, the soundwave will turn solid green.</p>"
+            "text": "<p><strong>Fully charged</strong></p><p>When charging is complete, the soundwave turns solid green.</p>"
           }
         },
         "divider_Jd6948": {
@@ -218,7 +218,7 @@
         "text_HtN3ri": {
           "type": "text",
           "settings": {
-            "text": "<p>Insert one side of the Pulse into the band. Next, pull up on the opposite side of the band until it snaps into place.</p>"
+            "text": "<p>Insert one side of the Pulse into the band. Then pull up the opposite side of the band until it snaps into place.</p>"
           }
         },
         "image_AMXGYM": {
