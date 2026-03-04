@@ -37,6 +37,7 @@
         const affiliateHeroPendingClass = 'sb-affiliate-hero-pending';
         const affiliateAnnouncementActiveClass = 'sb-affiliate-announcement-active';
         const affiliatePricingPendingClass = 'sb-affiliate-pricing-pending';
+        const affiliateKlaviyoPopupSuppressedClass = 'sb-affiliate-klaviyo-popup-suppressed';
         const readCookie = (name) => {
           const cookieSource = `${document.cookie || ''}`;
           if (!cookieSource) return '';
@@ -82,6 +83,7 @@
           rootNode.classList.add(affiliateHeroPendingClass);
           rootNode.classList.add(affiliateAnnouncementActiveClass);
           rootNode.classList.add(affiliatePricingPendingClass);
+          rootNode.classList.add(affiliateKlaviyoPopupSuppressedClass);
           window.setTimeout(() => {
             rootNode.classList.remove(affiliatePricingPendingClass);
           }, 4000);
@@ -123,6 +125,11 @@
       html.sb-affiliate-pricing-pending [data-value-breakdown-total-current],
       html.sb-affiliate-pricing-pending [data-value-breakdown-total-compare] {
         visibility: hidden;
+      }
+
+      html.sb-affiliate-klaviyo-popup-suppressed [role='dialog'][aria-modal='true']:has([data-testid='POPUP']) {
+        visibility: hidden !important;
+        pointer-events: none !important;
       }
 
       .sb-klaviyo-popup-backdrop {
@@ -603,9 +610,12 @@
     <script>
       (() => {
         const popupOpenClass = 'sb-klaviyo-popup-open';
+        const affiliateKlaviyoPopupSuppressedClass = 'sb-affiliate-klaviyo-popup-suppressed';
         const markerSelector =
           '.klaviyo-form, [class*="klaviyo-form-"], [data-testid^="klaviyo-form-"], iframe[src*="klaviyo"]';
         const numberFormatter = new Intl.NumberFormat(document.documentElement.lang || undefined);
+        const closedPopupContainers = new WeakSet();
+        let lastSuppressionAttemptAt = 0;
         const popupLocaleCopy = {
           dialogLabel: {{ 'sb.klaviyo_popup.dialog_label' | t | json }},
           closeLabel: {{ 'sb.klaviyo_popup.close_label' | t | json }},
@@ -685,6 +695,68 @@
           if (rect.left >= window.innerWidth || rect.top >= window.innerHeight) return false;
 
           return true;
+        };
+
+        const isAffiliateKlaviyoSuppressed = () => {
+          const rootNode = document.documentElement;
+          return rootNode instanceof HTMLElement && rootNode.classList.contains(affiliateKlaviyoPopupSuppressedClass);
+        };
+
+        const closeKlaviyoPopup = (popupContainer) => {
+          if (!(popupContainer instanceof HTMLElement)) return;
+          if (closedPopupContainers.has(popupContainer)) return;
+          closedPopupContainers.add(popupContainer);
+          lastSuppressionAttemptAt = Date.now();
+
+          popupContainer.style.setProperty('opacity', '0', 'important');
+          popupContainer.style.setProperty('pointer-events', 'none', 'important');
+
+          const closeButton = popupContainer.querySelector('.klaviyo-close-form');
+          if (closeButton instanceof HTMLButtonElement) {
+            window.requestAnimationFrame(() => {
+              closeButton.click();
+            });
+            return;
+          }
+
+          const escapeEvent = new KeyboardEvent('keydown', {
+            key: 'Escape',
+            code: 'Escape',
+            keyCode: 27,
+            which: 27,
+            bubbles: true,
+            cancelable: true,
+          });
+          document.dispatchEvent(escapeEvent);
+        };
+
+        const maybeReleaseSuppressedPopupScrollLock = (hasVisiblePopup) => {
+          if (hasVisiblePopup || !isAffiliateKlaviyoSuppressed()) return;
+          if (Date.now() - lastSuppressionAttemptAt > 2500) return;
+
+          const rootNode = document.documentElement;
+          const bodyNode = document.body;
+          if (!(rootNode instanceof HTMLElement) || !(bodyNode instanceof HTMLElement)) return;
+
+          // Do not interfere with theme-owned scroll locks (mobile menu).
+          if (rootNode.classList.contains('sb-scroll-locked') || bodyNode.classList.contains('sb-scroll-locked')) {
+            return;
+          }
+
+          rootNode.classList.remove(popupOpenClass);
+          if (rootNode.style.overflow === 'hidden') {
+            rootNode.style.overflow = '';
+          }
+          if (bodyNode.style.overflow === 'hidden') {
+            bodyNode.style.overflow = '';
+          }
+          if (bodyNode.style.position === 'fixed') {
+            bodyNode.style.position = '';
+            bodyNode.style.top = '';
+            bodyNode.style.left = '';
+            bodyNode.style.right = '';
+            bodyNode.style.width = '';
+          }
         };
 
         const extractCounterValue = (text) => {
@@ -1190,7 +1262,14 @@
             popupContainers.add(popupContainer);
           });
 
-          const hasVisiblePopup = Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
+          const shouldSuppressAffiliatePopup = isAffiliateKlaviyoSuppressed();
+          if (shouldSuppressAffiliatePopup) {
+            popupContainers.forEach((popupContainer) => closeKlaviyoPopup(popupContainer));
+          }
+
+          const hasVisiblePopup = shouldSuppressAffiliatePopup
+            ? false
+            : Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
 
           applyPopupLocalizedCopy();
           applyPopupRadiantButtons();
@@ -1200,6 +1279,7 @@
           if (rootNode instanceof HTMLElement) {
             rootNode.classList.toggle(popupOpenClass, hasVisiblePopup);
           }
+          maybeReleaseSuppressedPopupScrollLock(hasVisiblePopup);
         };
 
         let frameId = 0;
