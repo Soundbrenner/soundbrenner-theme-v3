@@ -503,6 +503,58 @@
             "question": "FCC compliance",
             "answer": "<p>The product complies with part 15 of the FCC rules. Operation is subject to the following two conditions: They may not cause harmful interference. They must accept any interference received, including interference that may cause undesired operation.</p>"
           }
+        },
+        "divider_8P9EHA": {
+          "type": "divider",
+          "settings": {}
+        },
+        "heading_YCjcWn": {
+          "type": "heading",
+          "settings": {
+            "heading": "FAQs"
+          }
+        },
+        "accordion_item_TxM6fP": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to charge the Pulse in the shortest time possible?",
+            "answer": "<p>The Pulse's charging voltage is 5V. To maximize the charging speed you need a current of 0.2A (Ampere)/200mA (Milliampere). </p><p>Almost every computer USB port provides a voltage of 5V and a current of at least 0.5A. Later USB designs bring the current up to 0.9A. If you use a wall charger, most of them will provide at least 1A or more. As you can see, it's pretty easy to reach the maximum charging speed for Pulse and pretty much any USB charger you can use will accomplish this.</p><p><strong>Want to know more? See below for a detailed explanation</strong></p><p>Most USB power adapters are advertising their charging speed in Watts, for example, one of Apple's standard chargers is advertised as \"20W USB-C Power Adapter\". Similar descriptions are used for power adapters from other brands. So how to translate these advertised Watts to Ampere? The formula goes as follows:</p><p>Watts = Volt * Ampere</p><p>or</p><p>Ampere = Watts/Volt</p><p>The standard specification for USB charging is a voltage of 5V, so for example the Ampere for Apple's 20W charger is 20W/5V = 4A. In other words, with 4A it provides 20x the needed Ampere to charge a Pulse at its full speed of 0.2A. </p><p><strong>What if my charger provides more Ampere? Can this damage my device?</strong></p><p>It is absolutely safe to charge a device with a charger that has more current capacity than needed. Since the voltage is held constant (5V), the only factor that determines current draw is what the device places on the charger. Thus, the device will only draw as much current as it needs and no more.</p>"
+          }
+        },
+        "accordion_item_RKQQTf": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "Is the Pulse waterproof?",
+            "answer": "<p>The Soundbrenner Pulse is designed to be sweat proof. However, please note that your Pulse is not designed to be waterproof so any exposure to water, especially submersion, will likely damage it.</p>"
+          }
+        },
+        "accordion_item_zHxCRR": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How long does the battery of the Pulse last?",
+            "answer": "<p>The Pulse has on average 6 hours of metronome playback time.</p>"
+          }
+        },
+        "accordion_item_EzReFW": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to update the firmware of Pulse?",
+            "answer": "<p>The Soundbrenner Pulse has an internal software which is called firmware. It can be updated via our mobile app \"The Metronome by Soundbrenner\".</p><p><strong>Step 1:</strong><br/><strong>Download our app on the iOS App Store or Google Play</strong></p><p><strong>Step 2:</strong><br/><strong>Open our app and login to your Soundbrenner account.</strong></p><p><strong>Step 3:</strong><br/><strong>Connect your Soundbrenner Pulse and tap on your Pulse in the Settings </strong></p><p><strong>Step 4:</strong><br/><strong>In the device settings tap on “Software Updates” or \"Firmware Update\"</strong></p><p><strong>Step 5:</strong><br/><strong>Simply follow the on-screen instructions and wait for the firmware update to complete. It may take up to 15 minutes of waiting to complete this update.</strong></p><p><strong>Step 6:</strong><br/><strong>Congratulations! Your firmware has been successfully updated</strong></p>"
+          }
+        },
+        "accordion_item_Jtgfh8": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to switch songs in setlists with the Pulse?",
+            "answer": "<p>You can change the songs inside of a setlist directly from the Soundbrenner Pulse. This feature is useful when you don't want to use the app to skip to the next or previous song during practice or live performance. <br/><br/><strong>1.</strong> Load a setlist to your metronome. <br/><br/><strong>2. </strong>To skip to the next song, turn the BPM Wheel of the Soundbrenner Pulse:</p><ul><li>Right </li><li>Left </li><li>Right</li></ul><p>Once the next song is selected, you will see the green light and feel a short vibration. </p><p><strong>3.</strong> To skip to the previous song, turn the BPM wheel of the Soundbrenner Pulse: </p><ul><li>Left </li><li>Right </li><li>Left </li></ul><p>Once the previous song is selected, you will see the yellow light and feel a short vibration. </p>"
+          }
+        },
+        "accordion_item_nn76X8": {
+          "type": "accordion_item",
+          "settings": {
+            "question": "How to improve the reliability of Pulse?",
+            "answer": "<p>Here are some tips to use your Soundbrenner Pulse most reliably:</p><ul><li>Before usage, make sure it is charged. A full charge takes about 2.5 hours. The LEDs pulse in orange color when charging and glows in green when fully charged.</li><li>Make sure your Soundbrenner Pulse is in touch with your skin when you use the touch surface. For example it works most reliably when you wear it on your wrist. </li></ul><p>Get familiar with the way touch commands work. Take a look at the <a href=\"https://youtu.be/KKBHW9k90wY\" target=\"_blank\" title=\"https://youtu.be/KKBHW9k90wY\">instructions video</a>.</p><ul><li>Activate the interaction lock while playing with the Soundbrenner Pulse. You can lock your touch surface and BPM wheel to avoid unintentional changes.  </li><li>You can activate the interaction lock from your Settings -&gt; Your Soundbrenner Pulse. </li></ul>"
+          }
         }
       },
       "block_order": [
@@ -582,7 +634,15 @@
         "accordion_item_9g67Q4",
         "accordion_item_3",
         "accordion_item_4",
-        "accordion_item_5"
+        "accordion_item_5",
+        "divider_8P9EHA",
+        "heading_YCjcWn",
+        "accordion_item_TxM6fP",
+        "accordion_item_RKQQTf",
+        "accordion_item_zHxCRR",
+        "accordion_item_EzReFW",
+        "accordion_item_Jtgfh8",
+        "accordion_item_nn76X8"
       ],
       "settings": {}
     },
