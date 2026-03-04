@@ -180,6 +180,7 @@
         display: flex;
         justify-content: flex-end;
         padding: var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-element-gap) !important;
+        pointer-events: none;
         width: 100%;
       }
 
@@ -377,35 +378,21 @@
         }
       }
 
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading [role='progressbar'],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading progress,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading [class*='spinner' i],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading [class*='loading' i],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading [class*='progress' i] {
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) [role='progressbar'],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) progress,
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) [class*='spinner' i],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) [class*='loading' i],
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial.sb-klaviyo-popup-submit-loading button[type='button']:not(.klaviyo-close-form) [class*='progress' i] {
         display: none !important;
         opacity: 0 !important;
       }
 
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [role='progressbar'],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading progress,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='spinner' i],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='loading' i],
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading [class*='progress' i] {
-        color: var(--sb-color-neutral-900) !important;
-      }
-
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading svg,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading svg *,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading circle,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading path,
-      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--initial button[type='button'].sb-klaviyo-button-loading rect {
-        fill: var(--sb-color-neutral-900) !important;
-        stroke: var(--sb-color-neutral-900) !important;
-      }
-
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-component {
         padding: 0 var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-element-gap) !important;
+      }
+
+      [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-countdown-component {
+        padding: 0 var(--sb-klaviyo-popup-edge-padding) var(--sb-klaviyo-popup-edge-padding) !important;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'].sb-klaviyo-popup-form--success .sb-klaviyo-popup-success-body-richtext {
@@ -513,7 +500,7 @@
         -webkit-mask-position: center;
         -webkit-mask-repeat: no-repeat;
         -webkit-mask-size: var(--sb-klaviyo-popup-close-size, 20px) var(--sb-klaviyo-popup-close-size, 20px);
-        background: var(--sb-color-orange-500);
+        background: var(--sb-color-always-white);
         content: '';
         display: block;
         height: var(--sb-klaviyo-popup-close-size, 20px);
@@ -525,13 +512,21 @@
         width: var(--sb-klaviyo-popup-close-size, 20px);
       }
 
-      [data-testid='POPUP'] .klaviyo-close-form:hover::before,
-      [data-testid='POPUP'] .klaviyo-close-form:focus-visible::before {
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--initial .klaviyo-close-form::before {
+        background: var(--sb-color-always-white);
+      }
+
+      :is([data-testid='POPUP'], [role='dialog'][aria-modal='true']).sb-klaviyo-popup--success .klaviyo-close-form::before {
         background: var(--sb-color-neutral-900);
       }
 
+      [data-testid='POPUP'] .klaviyo-close-form:hover::before,
+      [data-testid='POPUP'] .klaviyo-close-form:focus-visible::before {
+        background: var(--sb-color-blue-500);
+      }
+
       [data-testid='POPUP'] .klaviyo-close-form:active::before {
-        background: var(--sb-color-neutral-900);
+        background: var(--sb-color-blue-500);
         transform: none;
       }
 
@@ -974,6 +969,9 @@
             popupForm
               .querySelectorAll('.sb-klaviyo-popup-success-body-richtext')
               .forEach((node) => node.classList.remove('sb-klaviyo-popup-success-body-richtext'));
+            popupForm
+              .querySelectorAll('.sb-klaviyo-popup-countdown-component')
+              .forEach((node) => node.classList.remove('sb-klaviyo-popup-countdown-component'));
 
             if (hasEmailInput) {
               const titleRoot = popupForm.querySelector("[data-testid='form-row']:nth-of-type(2) [id^='rich-text-']");
@@ -981,18 +979,22 @@
               const lineTwo = normalizeText(popupLocaleCopy.titleLineTwo);
               if (titleRoot instanceof HTMLElement && (lineOne || lineTwo)) {
                 titleRoot.classList.add('font-title', 'weight-bold');
-                titleRoot.replaceChildren();
-                if (lineOne) {
-                  const lineOneNode = document.createElement('p');
-                  lineOneNode.className = 'font-title weight-bold';
-                  lineOneNode.textContent = lineOne;
-                  titleRoot.appendChild(lineOneNode);
-                }
-                if (lineTwo) {
-                  const lineTwoNode = document.createElement('p');
-                  lineTwoNode.className = 'font-title weight-bold';
-                  lineTwoNode.textContent = lineTwo;
-                  titleRoot.appendChild(lineTwoNode);
+                const initialTitleSignature = [lineOne, lineTwo].join('||');
+                if (titleRoot.dataset.sbLocalizedTitleSignature !== initialTitleSignature) {
+                  titleRoot.replaceChildren();
+                  if (lineOne) {
+                    const lineOneNode = document.createElement('p');
+                    lineOneNode.className = 'font-title weight-bold';
+                    lineOneNode.textContent = lineOne;
+                    titleRoot.appendChild(lineOneNode);
+                  }
+                  if (lineTwo) {
+                    const lineTwoNode = document.createElement('p');
+                    lineTwoNode.className = 'font-title weight-bold';
+                    lineTwoNode.textContent = lineTwo;
+                    titleRoot.appendChild(lineTwoNode);
+                  }
+                  titleRoot.dataset.sbLocalizedTitleSignature = initialTitleSignature;
                 }
               }
 
@@ -1030,6 +1032,10 @@
             const successBodyComponent = successBodyRoot instanceof HTMLElement
               ? successBodyRoot.closest("[data-testid='form-component']")
               : null;
+            const countdownRoot = popupForm.querySelector("[data-testid='klaviyo-countdown']");
+            const countdownComponent = countdownRoot instanceof HTMLElement
+              ? countdownRoot.closest("[data-testid='form-component']")
+              : null;
             const successActionButton = Array.from(popupForm.querySelectorAll('button')).find(
               (button) => button instanceof HTMLButtonElement && !button.classList.contains('klaviyo-close-form')
             );
@@ -1048,15 +1054,21 @@
             if (successBodyRoot instanceof HTMLElement) {
               successBodyRoot.classList.add('sb-klaviyo-popup-success-body-richtext');
             }
+            if (countdownComponent instanceof HTMLElement) {
+              countdownComponent.classList.add('sb-klaviyo-popup-countdown-component');
+            }
 
             const successTitleText = normalizeText(popupLocaleCopy.successTitle);
             if (successTitleRoot instanceof HTMLElement && successTitleText) {
               successTitleRoot.classList.add('font-title', 'weight-bold');
-              successTitleRoot.replaceChildren();
-              const successTitleNode = document.createElement('p');
-              successTitleNode.className = 'font-title weight-bold';
-              successTitleNode.textContent = successTitleText;
-              successTitleRoot.appendChild(successTitleNode);
+              if (successTitleRoot.dataset.sbLocalizedTitleSignature !== successTitleText) {
+                successTitleRoot.replaceChildren();
+                const successTitleNode = document.createElement('p');
+                successTitleNode.className = 'font-title weight-bold';
+                successTitleNode.textContent = successTitleText;
+                successTitleRoot.appendChild(successTitleNode);
+                successTitleRoot.dataset.sbLocalizedTitleSignature = successTitleText;
+              }
             }
 
             if (successBodyRoot instanceof HTMLElement) {
@@ -1110,19 +1122,21 @@
                 }
 
                 const offerText = successLines[0];
-                if (offerText) {
-                  const offerLineNode = document.createElement('div');
-                  const offerStrong = document.createElement('strong');
-                  offerStrong.textContent = offerText;
-                  offerLineNode.appendChild(offerStrong);
-                  successBodyRoot.appendChild(offerLineNode);
-                }
-
                 const reminderText = successLines[1];
-                if (reminderText) {
-                  const reminderLineNode = document.createElement('div');
-                  reminderLineNode.textContent = reminderText;
-                  successBodyRoot.appendChild(reminderLineNode);
+                if (offerText || reminderText) {
+                  const offerLineNode = document.createElement('div');
+                  if (offerText) {
+                    const offerStrong = document.createElement('strong');
+                    offerStrong.textContent = offerText;
+                    offerLineNode.appendChild(offerStrong);
+                  }
+                  if (reminderText) {
+                    if (offerText) {
+                      offerLineNode.append(document.createTextNode(' '));
+                    }
+                    offerLineNode.append(document.createTextNode(reminderText));
+                  }
+                  successBodyRoot.appendChild(offerLineNode);
                 }
 
                 const expiresText = successLines[2];
