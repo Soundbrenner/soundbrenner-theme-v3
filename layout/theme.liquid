@@ -150,6 +150,7 @@
         --sb-klaviyo-popup-edge-padding: var(--sb-space-30);
         --sb-klaviyo-popup-element-gap: var(--sb-space-24);
         --sb-klaviyo-popup-close-size: 20px;
+        --sb-klaviyo-popup-viewport-gutter: 0px;
         overflow-x: hidden !important;
         overflow-y: auto !important;
         overscroll-behavior-x: none !important;
@@ -164,7 +165,7 @@
       [data-testid='POPUP'] > div,
       [data-testid='POPUP'] > div > div {
         box-sizing: border-box !important;
-        max-width: calc(100vw - (2 * var(--sb-klaviyo-popup-edge-padding))) !important;
+        max-width: calc(100vw - (2 * var(--sb-klaviyo-popup-viewport-gutter))) !important;
         width: 100% !important;
       }
 
@@ -172,10 +173,10 @@
         background-color: var(--sb-color-neutral-200) !important;
         border-radius: 24px !important;
         box-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25) !important;
-        max-width: calc(100vw - (2 * var(--sb-klaviyo-popup-edge-padding))) !important;
+        max-width: calc(100vw - (2 * var(--sb-klaviyo-popup-viewport-gutter))) !important;
         min-width: 0 !important;
         overflow: hidden !important;
-        width: min(450px, calc(100vw - (2 * var(--sb-klaviyo-popup-edge-padding)))) !important;
+        width: min(450px, calc(100vw - (2 * var(--sb-klaviyo-popup-viewport-gutter)))) !important;
       }
 
       [data-testid='POPUP'] img {
@@ -779,28 +780,28 @@
           }
         }
         const popupLocaleCopy = {
-          dialogLabel: popupCopyData.dialogLabel ?? 'Popup form',
-          closeLabel: popupCopyData.closeLabel ?? 'Close dialog',
-          imageAlt: popupCopyData.imageAlt ?? 'Soundbrenner Wave in a forest',
-          titleLineOne: popupCopyData.titleLineOne ?? 'Welcome offer:',
-          titleLineTwo: popupCopyData.titleLineTwo ?? 'Unlock 20% off',
-          description: popupCopyData.description ?? 'Claim your Welcome Offer and stay updated on new products and special deals.',
-          emailPlaceholder: popupCopyData.emailPlaceholder ?? 'Enter your email...',
-          emailLabel: popupCopyData.emailLabel ?? 'Enter your email',
-          buttonLabel: popupCopyData.buttonLabel ?? 'Unlock Welcome Offer',
-          engagementTemplate: popupCopyData.engagementTemplate ?? '🔥 Unlocked by __COUNT__ musicians in the last 30 days!',
-          errorRequired: popupCopyData.errorRequired ?? 'This field is required',
-          errorInvalidEmail: popupCopyData.errorInvalidEmail ?? 'This email is invalid',
-          errorGeneric: popupCopyData.errorGeneric ?? 'An error occurred when submitting. Please try again later.',
-          successTitle: popupCopyData.successTitle ?? 'Congratulations - Welcome Offer unlocked!',
-          successCodeLine: popupCopyData.successCodeLine ?? 'Your discount code: __CODE__.',
-          successOfferLine: popupCopyData.successOfferLine ?? 'Enjoy 20% off your first order, plus free shipping on qualifying purchases.',
-          successReminderLine: popupCopyData.successReminderLine ?? "Don't forget to save this code - you'll need it at checkout!",
-          successExpiresIn: popupCopyData.successExpiresIn ?? 'Expires in:',
-          timerDays: popupCopyData.timerDays ?? 'Days',
-          timerHours: popupCopyData.timerHours ?? 'Hours',
-          timerMinutes: popupCopyData.timerMinutes ?? 'Minutes',
-          timerSeconds: popupCopyData.timerSeconds ?? 'Seconds',
+          dialogLabel: `${popupCopyData.dialogLabel || ''}`,
+          closeLabel: `${popupCopyData.closeLabel || ''}`,
+          imageAlt: `${popupCopyData.imageAlt || ''}`,
+          titleLineOne: `${popupCopyData.titleLineOne || ''}`,
+          titleLineTwo: `${popupCopyData.titleLineTwo || ''}`,
+          description: `${popupCopyData.description || ''}`,
+          emailPlaceholder: `${popupCopyData.emailPlaceholder || ''}`,
+          emailLabel: `${popupCopyData.emailLabel || ''}`,
+          buttonLabel: `${popupCopyData.buttonLabel || ''}`,
+          engagementTemplate: `${popupCopyData.engagementTemplate || ''}`,
+          errorRequired: `${popupCopyData.errorRequired || ''}`,
+          errorInvalidEmail: `${popupCopyData.errorInvalidEmail || ''}`,
+          errorGeneric: `${popupCopyData.errorGeneric || ''}`,
+          successTitle: `${popupCopyData.successTitle || ''}`,
+          successCodeLine: `${popupCopyData.successCodeLine || ''}`,
+          successOfferLine: `${popupCopyData.successOfferLine || ''}`,
+          successReminderLine: `${popupCopyData.successReminderLine || ''}`,
+          successExpiresIn: `${popupCopyData.successExpiresIn || ''}`,
+          timerDays: `${popupCopyData.timerDays || ''}`,
+          timerHours: `${popupCopyData.timerHours || ''}`,
+          timerMinutes: `${popupCopyData.timerMinutes || ''}`,
+          timerSeconds: `${popupCopyData.timerSeconds || ''}`,
         };
         const decodeHtmlEntities = (value) => {
           const source = `${value || ''}`;
@@ -817,54 +818,6 @@
           if (!nextText) return;
           if (normalizeText(node.textContent) === nextText) return;
           node.textContent = nextText;
-        };
-
-        const popupScrollLockState = {
-          bodyLeft: '',
-          bodyOverflow: '',
-          bodyPosition: '',
-          bodyRight: '',
-          bodyTop: '',
-          bodyWidth: '',
-          isLocked: false,
-          scrollY: 0,
-        };
-
-        const lockPopupBackgroundScroll = () => {
-          if (popupScrollLockState.isLocked) return;
-          const bodyNode = document.body;
-          if (!(bodyNode instanceof HTMLElement)) return;
-
-          popupScrollLockState.scrollY = window.scrollY || window.pageYOffset || 0;
-          popupScrollLockState.bodyPosition = bodyNode.style.position;
-          popupScrollLockState.bodyTop = bodyNode.style.top;
-          popupScrollLockState.bodyLeft = bodyNode.style.left;
-          popupScrollLockState.bodyRight = bodyNode.style.right;
-          popupScrollLockState.bodyWidth = bodyNode.style.width;
-          popupScrollLockState.bodyOverflow = bodyNode.style.overflow;
-
-          bodyNode.style.left = '0';
-          bodyNode.style.overflow = 'hidden';
-          bodyNode.style.position = 'fixed';
-          bodyNode.style.right = '0';
-          bodyNode.style.top = `-${popupScrollLockState.scrollY}px`;
-          bodyNode.style.width = '100%';
-          popupScrollLockState.isLocked = true;
-        };
-
-        const unlockPopupBackgroundScroll = () => {
-          if (!popupScrollLockState.isLocked) return;
-          const bodyNode = document.body;
-          if (!(bodyNode instanceof HTMLElement)) return;
-
-          bodyNode.style.left = popupScrollLockState.bodyLeft;
-          bodyNode.style.overflow = popupScrollLockState.bodyOverflow;
-          bodyNode.style.position = popupScrollLockState.bodyPosition;
-          bodyNode.style.right = popupScrollLockState.bodyRight;
-          bodyNode.style.top = popupScrollLockState.bodyTop;
-          bodyNode.style.width = popupScrollLockState.bodyWidth;
-          window.scrollTo(0, popupScrollLockState.scrollY);
-          popupScrollLockState.isLocked = false;
         };
 
         const isFooterEmbedContext = (node) =>
@@ -1414,26 +1367,14 @@
             if (popupContainer.scrollLeft !== 0) popupContainer.scrollLeft = 0;
           });
 
-          const popupContainersArray = Array.from(popupContainers);
-          const hasVisiblePopup = popupContainersArray.some((popupContainer) => isVisiblePopup(popupContainer));
-          const activeElement = document.activeElement;
-          const hasFocusedElementInPopup =
-            activeElement instanceof HTMLElement
-            && popupContainersArray.some((popupContainer) => popupContainer.contains(activeElement));
-          const shouldTreatPopupAsOpen = hasVisiblePopup || hasFocusedElementInPopup;
-
-          if (shouldTreatPopupAsOpen) {
-            lockPopupBackgroundScroll();
-          } else {
-            unlockPopupBackgroundScroll();
-          }
+          const hasVisiblePopup = Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
 
           applyPopupLocalizedCopy();
           applyPopupRadiantButtons();
           localizePopupErrorMessages();
           formatPopupEngagementCounters();
           localizePopupCountdownUnits();
-          document.documentElement.classList.toggle(popupOpenClass, shouldTreatPopupAsOpen);
+          document.documentElement.classList.toggle(popupOpenClass, hasVisiblePopup);
         };
 
         let frameId = 0;
@@ -1471,9 +1412,6 @@
           ],
         });
 
-        document.addEventListener('focusin', queueUpdate, true);
-        document.addEventListener('focusout', queueUpdate, true);
-        window.addEventListener('pagehide', unlockPopupBackgroundScroll);
         window.addEventListener('resize', queueUpdate, { passive: true });
         window.addEventListener('orientationchange', queueUpdate);
       })();
