@@ -139,49 +139,18 @@
         opacity: 1;
       }
 
-      html.sb-klaviyo-popup-open,
-      html.sb-klaviyo-popup-open body {
-        overflow: hidden !important;
-        overscroll-behavior: none !important;
-      }
-
       [data-testid='POPUP'],
       [role='dialog'][aria-modal='true'] {
         --sb-klaviyo-popup-edge-padding: var(--sb-space-30);
         --sb-klaviyo-popup-element-gap: var(--sb-space-24);
         --sb-klaviyo-popup-close-size: 20px;
-        --sb-klaviyo-popup-viewport-gutter: 0px;
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-        overscroll-behavior-x: none !important;
-        overscroll-behavior-y: contain !important;
-      }
-
-      [data-testid='POPUP'],
-      [role='dialog'][aria-modal='true'] {
-        touch-action: pan-y !important;
-      }
-
-      [data-testid='POPUP'] > div,
-      [data-testid='POPUP'] > div > div {
-        box-sizing: border-box !important;
-        max-width: calc(100vw - (2 * var(--sb-klaviyo-popup-viewport-gutter))) !important;
-        width: 100% !important;
       }
 
       [data-testid='POPUP'] form[data-testid^='klaviyo-form-'] {
         background-color: var(--sb-color-neutral-200) !important;
         border-radius: 24px !important;
         box-shadow: 0 var(--sb-space-48) var(--sb-space-48) 0 var(--sb-color-always-black-25) !important;
-        max-width: calc(100vw - (2 * var(--sb-klaviyo-popup-viewport-gutter))) !important;
-        min-width: 0 !important;
         overflow: hidden !important;
-        width: min(450px, calc(100vw - (2 * var(--sb-klaviyo-popup-viewport-gutter)))) !important;
-      }
-
-      [data-testid='POPUP'] img {
-        -webkit-user-drag: none !important;
-        user-drag: none !important;
       }
 
       [data-testid='POPUP'] [data-testid='form-row']:nth-of-type(2) [data-testid='form-component'] {
@@ -1360,11 +1329,6 @@
             const popupContainer = getPopupContainer(node);
             if (!(popupContainer instanceof HTMLElement)) return;
             popupContainers.add(popupContainer);
-          });
-
-          popupContainers.forEach((popupContainer) => {
-            if (!(popupContainer instanceof HTMLElement)) return;
-            if (popupContainer.scrollLeft !== 0) popupContainer.scrollLeft = 0;
           });
 
           const hasVisiblePopup = Array.from(popupContainers).some((popupContainer) => isVisiblePopup(popupContainer));
