@@ -71,6 +71,12 @@
             "text": "<p>This video is the ultimate crash course to learn everything you need to know about how to use the Wave Pro in-ear monitors in the shortest time possible.</p>"
           }
         },
+        "vimeo_video_9nkawz": {
+          "type": "vimeo_video",
+          "settings": {
+            "video_source": "1170163978"
+          }
+        },
         "divider_ezmChT": {
           "type": "divider",
           "settings": {}
@@ -225,6 +231,7 @@
         "divider_1",
         "heading_xf4JHW",
         "text_97pUyw",
+        "vimeo_video_9nkawz",
         "divider_ezmChT",
         "chapter_2",
         "body_2",
