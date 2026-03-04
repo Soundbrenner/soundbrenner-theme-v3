@@ -224,13 +224,7 @@
         "image_AMXGYM": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Product_Pulse_Order_2.jpg"
-          }
-        },
-        "image_DTTAHQ": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Product_Pulse_Order_3.jpg"
+            "image": "shopify://shop_images/Product_Pulse_Order_2_1cbbd11a-3ee9-4e41-b390-5fe4e34ea46c.jpg"
           }
         },
         "divider_epqbmW": {
@@ -246,7 +240,7 @@
         "text_JA9R9B": {
           "type": "text",
           "settings": {
-            "text": "<p>The Pulse uses a capacitive touch surface to register your inputs for interactions. Some tips for maximum reliability:</p><ul><li>Always use two fingers flat across the surface. Don’t just use your fingertips!</li><li>Make sure that you touch the surface only for a brief moment for each tap.</li><li>Always make sure you wear the device when using the touch surface. Our sensor is designed to work best when it’s in contact with your skin.</li></ul>"
+            "text": "<p>The Pulse uses a capacitive touch surface to register your inputs. For best reliability, follow these tips:</p><ul><li>Always use two fingers placed flat across the surface. Do not use just your fingertips.</li><li>Touch the surface briefly for each tap.</li><li>Make sure you are wearing the device when using the touch surface. The sensor works best when it is in contact with your skin.</li></ul>"
           }
         },
         "image_7Y7ixP": {
@@ -542,7 +536,6 @@
         "subheading_pTGeGh",
         "text_HtN3ri",
         "image_AMXGYM",
-        "image_DTTAHQ",
         "divider_epqbmW",
         "subheading_CpjCgq",
         "text_JA9R9B",
