@@ -90,18 +90,16 @@
       >
         {{ 'sb.collection_overview.rating_summary' | t: rating: rating_display, count: all_reviews_count_display }}
       </p>
-
-      <a class="sb-collection-overview__read-all font-caption2 weight-semibold" href="{{ read_all_url }}">
-        <span>{{ 'sb.collection_overview.read_all' | t }}</span>
-        <span
-          class="sb-collection-overview__read-all-arrow"
-          aria-hidden="true"
-          style="--sb-collection-overview-arrow-url: url('{{ read_all_arrow_icon_url }}');"
-        ></span>
-      </a>
-
-      <span class="sb-collection-overview__dot" aria-hidden="true"></span>
     </div>
+
+    <a class="sb-collection-overview__read-all font-caption2 weight-semibold" href="{{ read_all_url }}" data-sb-reveal-item>
+      <span>{{ 'sb.collection_overview.read_all' | t }}</span>
+      <span
+        class="sb-collection-overview__read-all-arrow"
+        aria-hidden="true"
+        style="--sb-collection-overview-arrow-url: url('{{ read_all_arrow_icon_url }}');"
+      ></span>
+    </a>
   </div>
 
   <div class="sb-collection-overview__section-divider" aria-hidden="true" data-sb-reveal-item></div>
@@ -313,7 +311,10 @@
   }
 
   .sb-collection-overview__header-wrap {
+    align-items: center;
     display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
     justify-content: flex-start;
     width: 100%;
   }
